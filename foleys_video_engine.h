@@ -73,3 +73,5 @@
 #include "Widgets/AVComponent.h"
 
 #include "ReadWrite/FFmpegReader.h"
+
+#include "ReadWrite/AVFormatManager.h"

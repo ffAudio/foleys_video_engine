@@ -7,6 +7,7 @@
 #include "Clips/AVCompoundClip.cpp"
 
 #include "ReadWrite/AVReader.cpp"
+#include "ReadWrite/AVFormatManager.cpp"
 #include "ReadWrite/FFmpegReader.cpp"
 
 #include "Widgets/AVComponent.cpp"

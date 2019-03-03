@@ -4,6 +4,13 @@ namespace foleys
 
 bool AVMovieClip::openFromFile (const juce::File file)
 {
+    std::unique_ptr<AVReader> reader = AVFormatManager::createReaderFor (file);
+    if (reader->isOpenedOk())
+    {
+        movieReader = std::move (reader);
+        return true;
+    }
+
     return false;
 }
 

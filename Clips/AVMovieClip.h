@@ -21,7 +21,7 @@ public:
     double getCurrentTimeInSeconds() const override;
 
     juce::Image getFrame (const AVTimecode) const override;
-    
+
     juce::Image getCurrentFrame() const override;
 
     void prepareToPlay (int samplesPerBlockExpected, double sampleRate) override;
@@ -47,7 +47,7 @@ private:
     AVSize originalSize;
 
     AVTimecode originalLength;
-    
+
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AVMovieClip)
 };

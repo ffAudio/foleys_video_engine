@@ -6,7 +6,7 @@ namespace foleys
 
 class AVCompoundClip : public AVClip
 {
-    
+
 };
 
 }
