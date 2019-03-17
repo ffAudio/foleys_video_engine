@@ -54,6 +54,13 @@
 #define FOLEYS_USE_FFMPEG 1
 #endif
 
+/** Config: FOLEYS_DEBUG_LOGGING
+ Set this flag to enable logging */
+#ifndef FOLEYS_DEBUG_LOGGING
+#define FOLEYS_DEBUG_LOGGING 0
+#endif
+
+
 #pragma once
 
 
@@ -62,7 +69,9 @@
 #include <juce_audio_formats/juce_audio_formats.h>
 #include <juce_gui_basics/juce_gui_basics.h>
 
-#include "Maths/Structures.h"
+#include "Basics/Structures.h"
+#include "Basics/AudioFifo.h"
+#include "Basics/VideoFifo.h"
 #include "Clips/AVClip.h"
 #include "ReadWrite/AVReader.h"
 
@@ -72,6 +81,8 @@
 
 #include "Widgets/AVComponent.h"
 
-#include "ReadWrite/FFmpegReader.h"
+#if FOLEYS_USE_FFMPEG
+#include "ReadWrite/FFmpeg/FFmpegReader.h"
+#endif
 
 #include "ReadWrite/AVFormatManager.h"

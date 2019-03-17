@@ -34,12 +34,29 @@ public:
     bool isLooping() const override;
     void setLooping (bool shouldLoop) override;
 
+    juce::TimeSliceClient* getBackgroundJob() override;
+
 private:
+
+    class BackgroundReaderJob : public juce::TimeSliceClient
+    {
+    public:
+        BackgroundReaderJob (AVMovieClip& owner);
+        virtual ~BackgroundReaderJob() = default;
+
+        int useTimeSlice() override;
+
+        void setSuspended (bool s);
+    private:
+        AVMovieClip& owner;
+        bool suspended = true;
+    };
+    BackgroundReaderJob backgroundJob {*this};
+    friend BackgroundReaderJob;
 
     std::unique_ptr<AVReader> movieReader;
     std::vector<juce::LagrangeInterpolator> resamplers;
 
-    // as provided by JUCE, a rationale would be nicer...
     double sampleRate = {};
     juce::int64 nextReadPosition = 0;
     bool loop = false;
@@ -47,6 +64,9 @@ private:
     AVSize originalSize;
 
     AVTimecode originalLength;
+
+    VideoFifo videoFifo;
+    AudioFifo audioFifo;
 
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AVMovieClip)

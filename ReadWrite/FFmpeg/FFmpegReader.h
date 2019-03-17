@@ -12,6 +12,12 @@ public:
     FFmpegReader (juce::File file);
     ~FFmpegReader();
 
+    juce::int64 getTotalLength() const override;
+
+    void setPosition (const juce::int64 position) override;
+
+    void readNewData (VideoFifo&, AudioFifo&) override;
+
 private:
     class Pimpl;
     friend Pimpl;

@@ -45,4 +45,9 @@ void AVClip::removeSubtitleListener (SubtitleListener* listener)
     subtitleListeners.remove (listener);
 }
 
+juce::TimeSliceClient* AVClip::getBackgroundJob()
+{
+    return nullptr;
+}
+
 }

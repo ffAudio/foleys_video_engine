@@ -52,6 +52,7 @@ public:
     void addSubtitleListener (SubtitleListener* listener);
     void removeSubtitleListener (SubtitleListener* listener);
 
+    virtual juce::TimeSliceClient* getBackgroundJob();
 
 protected:
     /** Subclasses can call this to notify displays, that the time code has changed, e.g. to display a new frame */
