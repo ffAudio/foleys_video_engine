@@ -11,9 +11,11 @@ public:
     ~VideoFifo() = default;
 
     void pushVideoFrame (juce::Image& image, juce::int64 timestamp);
-    juce::Image getVideoFrame (double timestamp);
+    juce::Image getVideoFrame (double timestamp) const;
 
-    void clearFramesOlderThan (double timestamp);
+    Timecode getFrameTimecodeForTime (double time) const;
+
+    void clearFramesOlderThan (Timecode timecode);
 
     void setTimebase (double timebase);
 

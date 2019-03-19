@@ -37,6 +37,7 @@ void AudioFifo::pullSamples (const juce::AudioSourceChannelInfo& info)
             info.buffer->copyFrom (c, info.startSample + size1, audioBuffer.getReadPointer (c, pos2), size2);
     }
     audioFifo.finishedRead (size1 + size2);
+    readPosition.fetch_add (size1 + size2);
 }
 
 void AudioFifo::setPosition (const juce::int64 position)

@@ -5,7 +5,8 @@
 namespace foleys
 {
 
-class AVMovieClip : public AVClip
+class AVMovieClip : public AVClip,
+                    private juce::AsyncUpdater
 {
 public:
     AVMovieClip() = default;
@@ -17,10 +18,13 @@ public:
 
     double getLengthInSeconds() const override;
 
-    AVTimecode getCurrentTimecode() const override;
+    Timecode getCurrentTimecode() const override;
     double getCurrentTimeInSeconds() const override;
 
-    juce::Image getFrame (const AVTimecode) const override;
+    Timecode getFrameTimecodeForTime (double time) const override;
+
+
+    juce::Image getFrame (const Timecode) const override;
 
     juce::Image getCurrentFrame() const override;
 
@@ -38,6 +42,8 @@ public:
 
 private:
 
+    void handleAsyncUpdate() override;
+
     class BackgroundReaderJob : public juce::TimeSliceClient
     {
     public:
@@ -51,23 +57,24 @@ private:
         AVMovieClip& owner;
         bool suspended = true;
     };
+
     BackgroundReaderJob backgroundJob {*this};
     friend BackgroundReaderJob;
 
     std::unique_ptr<AVReader> movieReader;
     std::vector<juce::LagrangeInterpolator> resamplers;
 
-    double sampleRate = {};
+    double      sampleRate = {};
     juce::int64 nextReadPosition = 0;
-    bool loop = false;
+    Timecode    lastShownFrame;
+    bool        loop = false;
 
     AVSize originalSize;
 
-    AVTimecode originalLength;
+    Timecode originalLength;
 
     VideoFifo videoFifo;
     AudioFifo audioFifo;
-
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AVMovieClip)
 };

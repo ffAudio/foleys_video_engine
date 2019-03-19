@@ -88,9 +88,10 @@ public:
         videoStreamIdx = openCodecContext (&videoContext, AVMEDIA_TYPE_VIDEO, true);
         if (juce::isPositiveAndBelow (videoStreamIdx, static_cast<int> (formatContext->nb_streams)))
         {
+            auto* stream = formatContext->streams [videoStreamIdx];
             reader.originalSize = { videoContext->width, videoContext->height };
             reader.pixelFormat  = videoContext->pix_fmt;
-            reader.timebase     = videoContext->framerate.num / double (videoContext->framerate.den);
+            reader.timebase     = av_q2d (stream->time_base);
 
             scaler.setupScaler (videoContext->width,
                                 videoContext->height,
@@ -330,9 +331,6 @@ private:
 
     int width, height;
     enum AVPixelFormat pixelFormat  = AV_PIX_FMT_NONE;
-    AVStream *videoStream       = nullptr;
-    AVStream *audioStream       = nullptr;
-    AVStream *subtitleStream    = nullptr;
     AVFrame  *frame             = nullptr;
 
     int       videoStreamIdx    = -1;

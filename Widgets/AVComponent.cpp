@@ -2,6 +2,10 @@
 namespace foleys
 {
 
+AVComponent::AVComponent()
+{
+}
+
 AVComponent::~AVComponent()
 {
     if (clip)
@@ -51,17 +55,23 @@ void AVComponent::paint (juce::Graphics& g)
     }
 }
 
-void AVComponent::timecodeChanged (AVTimecode tc)
+void AVComponent::timecodeChanged (Timecode tc)
 {
     if (tc.count > subtitleClear.count)
     {
         subtitle.clear();
         subtitleClear.count = 0;
+        currentFrameCount = -1;
     }
-    repaint();
+
+    if (currentFrameCount != tc.count)
+    {
+        currentFrameCount = tc.count;
+        repaint();
+    }
 }
 
-void AVComponent::setSubtitle (const juce::String& text, AVTimecode until)
+void AVComponent::setSubtitle (const juce::String& text, Timecode until)
 {
     subtitle = text;
     subtitleClear = until;

@@ -11,7 +11,7 @@ struct AVSize
     int height = 0;
 };
 
-struct AVTimecode
+struct Timecode
 {
     /** The time code count. This is not necessarily incrementing in single steps, since
      for finer resolution the time base can be set different from the frame rate. */
@@ -19,13 +19,23 @@ struct AVTimecode
 
     /** The time base for audio is usually set to the sample rate and for video e.g. 1000
      to count in milli seconds. */
-    int timebase = 0;
+    double timebase = 1;
 
     /** Check if a timecode is set. A timecode is invalid, if no time base was set. */
     bool isValid() const { return timebase > 0; }
+
+    bool operator==(const Timecode& other)
+    {
+        return count == other.count && timebase == other.timebase;
+    }
+
+    bool operator!=(const Timecode& other)
+    {
+        return count != other.count || timebase != other.timebase;
+    }
 };
 
-static inline juce::String timecodeToString (AVTimecode tc)
+static inline juce::String timecodeToString (Timecode tc)
 {
     auto seconds = tc.count / double (tc.timebase);
     juce::int64 intSeconds = seconds;

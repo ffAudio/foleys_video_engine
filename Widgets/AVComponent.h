@@ -9,7 +9,7 @@ class AVComponent  : public juce::Component,
                      public AVClip::SubtitleListener
 {
 public:
-    AVComponent() = default;
+    AVComponent();
 
     virtual ~AVComponent();
 
@@ -19,17 +19,17 @@ public:
 
     void paint (juce::Graphics& g) override;
 
-    void timecodeChanged (AVTimecode) override;
+    void timecodeChanged (Timecode tc) override;
 
-    void setSubtitle (const juce::String& text, AVTimecode until) override;
-
+    void setSubtitle (const juce::String& text, Timecode until) override;
 
 private:
     juce::WeakReference<AVClip> clip;
     juce::RectanglePlacement placement { juce::RectanglePlacement::centred };
 
+    juce::int64  currentFrameCount = -1;
     juce::String subtitle;
-    AVTimecode subtitleClear;
+    Timecode subtitleClear;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AVComponent)
 };
 

@@ -17,7 +17,7 @@ public:
 
     void setImage (const juce::Image& image);
 
-    juce::Image getFrame (const AVTimecode) const override;
+    juce::Image getFrame (const Timecode) const override;
     juce::Image getCurrentFrame() const override;
 
     AVSize getOriginalSize() const override;

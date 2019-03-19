@@ -7,7 +7,7 @@ void AVImageClip::setImage (const juce::Image& imageToUse)
     image = imageToUse;
 }
 
-juce::Image AVImageClip::getFrame (const AVTimecode) const
+juce::Image AVImageClip::getFrame (const Timecode) const
 {
     return image;
 }
@@ -29,12 +29,10 @@ double AVImageClip::getCurrentTimeInSeconds() const
 
 void AVImageClip::prepareToPlay (int samplesPerBlockExpected, double sampleRate)
 {
-
 }
 
 void AVImageClip::releaseResources()
 {
-
 }
 
 void AVImageClip::getNextAudioBlock (const juce::AudioSourceChannelInfo& info)

@@ -42,19 +42,28 @@ double AVMovieClip::getCurrentTimeInSeconds() const
     return sampleRate == 0 ? 0 : nextReadPosition / sampleRate;
 }
 
-AVTimecode AVMovieClip::getCurrentTimecode() const
+Timecode AVMovieClip::getCurrentTimecode() const
 {
     return {}; // FIXME
 }
 
-juce::Image AVMovieClip::getFrame (const AVTimecode) const
+Timecode AVMovieClip::getFrameTimecodeForTime (double time) const
+{
+    return videoFifo.getFrameTimecodeForTime (time);
+}
+
+juce::Image AVMovieClip::getFrame (const Timecode) const
 {
     return {};
 }
 
 juce::Image AVMovieClip::getCurrentFrame() const
 {
-    return {};
+    auto pts = sampleRate > 0 ? nextReadPosition / sampleRate : 0.0;
+    if (movieReader && movieReader->sampleRate > 0)
+        pts = audioFifo.getReadPosition() / movieReader->sampleRate;
+
+    return videoFifo.getVideoFrame (pts);
 }
 
 void AVMovieClip::prepareToPlay (int samplesPerBlockExpected, double sampleRateToUse)
@@ -78,6 +87,23 @@ void AVMovieClip::getNextAudioBlock (const juce::AudioSourceChannelInfo& info)
         info.clearActiveBufferRegion();
     }
     nextReadPosition += info.numSamples;
+
+    triggerAsyncUpdate();
+}
+
+void AVMovieClip::handleAsyncUpdate()
+{
+    if (sampleRate > 0)
+    {
+        auto currentTimecode = videoFifo.getFrameTimecodeForTime (nextReadPosition / sampleRate);
+        if (currentTimecode != lastShownFrame)
+        {
+            sendTimecode (currentTimecode, juce::sendNotificationAsync);
+            lastShownFrame = currentTimecode;
+        }
+
+        videoFifo.clearFramesOlderThan (lastShownFrame);
+    }
 }
 
 void AVMovieClip::setNextReadPosition (juce::int64 samples)
