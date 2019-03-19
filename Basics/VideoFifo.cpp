@@ -40,7 +40,7 @@ void VideoFifo::setTimebase (double timebaseToUse)
     timebase = timebaseToUse;
 }
 
-void VideoFifo::setSize (AVSize size)
+void VideoFifo::setSize (Size size)
 {
     originalSize = size;
 }

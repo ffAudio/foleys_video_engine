@@ -17,7 +17,7 @@ juce::Image AVImageClip::getCurrentFrame() const
     return image;
 }
 
-AVSize AVImageClip::getOriginalSize() const
+Size AVImageClip::getOriginalSize() const
 {
     return { image.getWidth(), image.getHeight() };
 }

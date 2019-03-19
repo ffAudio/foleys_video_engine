@@ -13,7 +13,7 @@ public:
 
     /** returns the pixel size of the original media as a tuple.
         In some video files this can change at any frame. */
-    virtual AVSize getOriginalSize() const = 0;
+    virtual Size getOriginalSize() const = 0;
 
     /** Returns the length of the clip in seconds */
     virtual double getLengthInSeconds() const = 0;

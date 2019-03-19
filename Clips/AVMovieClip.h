@@ -14,7 +14,7 @@ public:
 
     bool openFromFile (const juce::File file);
 
-    AVSize getOriginalSize() const override;
+    Size getOriginalSize() const override;
 
     double getLengthInSeconds() const override;
 
@@ -69,7 +69,7 @@ private:
     Timecode    lastShownFrame;
     bool        loop = false;
 
-    AVSize originalSize;
+    Size originalSize;
 
     Timecode originalLength;
 

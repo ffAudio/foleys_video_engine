@@ -20,7 +20,7 @@ public:
     juce::Image getFrame (const Timecode) const override;
     juce::Image getCurrentFrame() const override;
 
-    AVSize getOriginalSize() const override;
+    Size getOriginalSize() const override;
     double getCurrentTimeInSeconds() const override;
 
 

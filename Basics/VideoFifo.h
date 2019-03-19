@@ -19,11 +19,11 @@ public:
 
     void setTimebase (double timebase);
 
-    void setSize (AVSize size);
+    void setSize (Size size);
 
 private:
     double timebase = 0;
-    AVSize originalSize;
+    Size originalSize;
 
     std::map<juce::int64, juce::Image> videoFrames;
 

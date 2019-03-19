@@ -17,7 +17,7 @@ public:
 
     virtual void readNewData (VideoFifo&, AudioFifo&) = 0;
 
-    AVSize originalSize;
+    Size originalSize;
     int    pixelFormat;
     double timebase = {};
 

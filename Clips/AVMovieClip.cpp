@@ -24,9 +24,9 @@ bool AVMovieClip::openFromFile (const juce::File file)
     return false;
 }
 
-AVSize AVMovieClip::getOriginalSize() const
+Size AVMovieClip::getOriginalSize() const
 {
-    return (movieReader != nullptr) ? movieReader->originalSize : AVSize();
+    return (movieReader != nullptr) ? movieReader->originalSize : Size();
 }
 
 double AVMovieClip::getLengthInSeconds() const
@@ -44,7 +44,7 @@ double AVMovieClip::getCurrentTimeInSeconds() const
 
 Timecode AVMovieClip::getCurrentTimecode() const
 {
-    return {}; // FIXME
+    return getFrameTimecodeForTime (getCurrentTimeInSeconds());
 }
 
 Timecode AVMovieClip::getFrameTimecodeForTime (double time) const
