@@ -56,6 +56,7 @@ private:
     private:
         AVMovieClip& owner;
         bool suspended = true;
+        bool inDecodeBlock = false;
     };
 
     BackgroundReaderJob backgroundJob {*this};

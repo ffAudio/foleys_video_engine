@@ -12,9 +12,11 @@ bool AVMovieClip::openFromFile (const juce::File file)
         movieReader = std::move (reader);
         audioFifo.setNumChannels (movieReader->numChannels);
         audioFifo.setSampleRate (movieReader->sampleRate);
+        audioFifo.setPosition (0);
 
         videoFifo.setTimebase (movieReader->timebase);
         videoFifo.setSize (movieReader->originalSize);
+        videoFifo.clear();
 
         backgroundJob.setSuspended (false);
 
@@ -150,6 +152,7 @@ int AVMovieClip::BackgroundReaderJob::useTimeSlice()
 {
     if (!suspended && owner.movieReader && owner.audioFifo.getFreeSpace() > 2048)
     {
+        juce::ScopedValueSetter<bool> guard (inDecodeBlock, true);
         owner.movieReader->readNewData (owner.videoFifo, owner.audioFifo);
         return 0;
     }
@@ -160,6 +163,9 @@ int AVMovieClip::BackgroundReaderJob::useTimeSlice()
 void AVMovieClip::BackgroundReaderJob::setSuspended (bool s)
 {
     suspended = s;
+
+    while (suspended && inDecodeBlock)
+        juce::Thread::sleep (5);
 }
 
 juce::TimeSliceClient* AVMovieClip::getBackgroundJob()

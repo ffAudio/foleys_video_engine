@@ -15,6 +15,8 @@ public:
 
     Timecode getFrameTimecodeForTime (double time) const;
 
+    void clear();
+
     void clearFramesOlderThan (Timecode timecode);
 
     void setTimebase (double timebase);

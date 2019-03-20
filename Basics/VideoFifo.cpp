@@ -26,6 +26,11 @@ Timecode VideoFifo::getFrameTimecodeForTime (double time) const
     return {};
 }
 
+void VideoFifo::clear()
+{
+    videoFrames.clear();
+}
+
 void VideoFifo::clearFramesOlderThan (Timecode timecode)
 {
     auto current = videoFrames.find (timecode.count);

@@ -171,7 +171,12 @@ public:
 
     void setPosition (juce::int64 position)
     {
-        av_seek_frame (formatContext, audioStreamIdx, position, 0);
+        FOLEYS_LOG ("Seek for sample position: " << position);
+        auto response = av_seek_frame (formatContext, audioStreamIdx, position, AVSEEK_FLAG_BACKWARD);
+        if (response < 0)
+        {
+            FOLEYS_LOG ("Error seeking in audio stream: " << getErrorString (response));
+        }
     }
 
 private:
@@ -227,7 +232,7 @@ private:
         int response = avcodec_send_packet (videoContext, &packet);
 
         if (response < 0) {
-            FOLEYS_LOG ("Error while sending video packet to the decoder: %s" << getErrorString (response));
+            FOLEYS_LOG ("Error while sending video packet to the decoder: " << getErrorString (response));
             return;
         }
 
@@ -269,7 +274,7 @@ private:
             }
             else if (response < 0)
             {
-                FOLEYS_LOG ("Error while sending audio packet to the decoder: %s" << getErrorString (response));
+                FOLEYS_LOG ("Error while sending audio packet to the decoder: " << getErrorString (response));
                 break;
             }
 
@@ -283,7 +288,7 @@ private:
             {
                 const int  channels   = av_get_channel_layout_nb_channels (frame->channel_layout);
                 const auto numSamples = frame->nb_samples;
-                const auto offset     = frame->best_effort_timestamp - audioFifo.getWritePosition();
+                const auto offset     = audioFifo.getWritePosition() - frame->best_effort_timestamp;
 
                 if (audioConvertBuffer.getNumChannels() != channels || audioConvertBuffer.getNumSamples() < numSamples)
                     audioConvertBuffer.setSize(channels, numSamples, false, false, true);
@@ -305,7 +310,7 @@ private:
         int response = avcodec_send_packet (subtitleContext, &packet);
         if (response < 0)
         {
-            FOLEYS_LOG ("Error while sending subtitle packet to the decoder: %s" << getErrorString (response));
+            FOLEYS_LOG ("Error while sending subtitle packet to the decoder: " << getErrorString (response));
         }
     }
 
