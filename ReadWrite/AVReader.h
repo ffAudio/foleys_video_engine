@@ -17,7 +17,11 @@ public:
 
     virtual void readNewData (VideoFifo&, AudioFifo&) = 0;
 
-    Size originalSize;
+    virtual bool hasVideo() const = 0;
+    virtual bool hasAudio() const = 0;
+    virtual bool hasSubtitle() const = 0;
+
+    Size   originalSize;
     int    pixelFormat;
     double timebase = {};
 

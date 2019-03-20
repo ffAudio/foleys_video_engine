@@ -18,6 +18,10 @@ public:
 
     void readNewData (VideoFifo&, AudioFifo&) override;
 
+    bool hasVideo() const override;
+    bool hasAudio() const override;
+    bool hasSubtitle() const override;
+
 private:
     class Pimpl;
     friend Pimpl;

@@ -80,7 +80,7 @@ void AVMovieClip::releaseResources()
 
 void AVMovieClip::getNextAudioBlock (const juce::AudioSourceChannelInfo& info)
 {
-    if (movieReader && movieReader->isOpenedOk())
+    if (movieReader && movieReader->isOpenedOk() && movieReader->hasAudio())
     {
         audioFifo.pullSamples (info);
     }
@@ -93,9 +93,24 @@ void AVMovieClip::getNextAudioBlock (const juce::AudioSourceChannelInfo& info)
     triggerAsyncUpdate();
 }
 
+bool AVMovieClip::hasVideo() const
+{
+    return movieReader ? movieReader->hasVideo() : false;
+}
+
+bool AVMovieClip::hasAudio() const
+{
+    return movieReader ? movieReader->hasAudio() : false;
+}
+
+bool AVMovieClip::hasSubtitle() const
+{
+    return movieReader ? movieReader->hasSubtitle() : false;
+}
+
 void AVMovieClip::handleAsyncUpdate()
 {
-    if (sampleRate > 0)
+    if (sampleRate > 0 && hasVideo())
     {
         auto currentTimecode = videoFifo.getFrameTimecodeForTime (nextReadPosition / sampleRate);
         if (currentTimecode != lastShownFrame)

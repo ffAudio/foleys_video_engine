@@ -31,6 +31,10 @@ public:
 
     virtual double getCurrentTimeInSeconds() const = 0;
 
+    virtual bool hasVideo() const = 0;
+    virtual bool hasAudio() const = 0;
+    virtual bool hasSubtitle() const = 0;
+
     struct TimecodeListener
     {
         virtual ~TimecodeListener() = default;

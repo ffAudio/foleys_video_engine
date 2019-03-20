@@ -179,6 +179,21 @@ public:
         }
     }
 
+    bool hasVideo() const
+    {
+        return videoStreamIdx >= 0;
+    }
+
+    bool hasAudio() const
+    {
+        return audioStreamIdx >= 0;
+    }
+
+    bool hasSubtitle() const
+    {
+        return subtitleStreamIdx >= 0;
+    }
+
 private:
 
     int openCodecContext (AVCodecContext** decoderContext,
@@ -211,7 +226,8 @@ private:
             }
             // Init the decoders, with or without reference counting
             av_dict_set (&opts, "refcounted_frames", refCounted ? "1" : "0", 0);
-            if (avcodec_open2 (*decoderContext, decoder, &opts) < 0) {
+            if (avcodec_open2 (*decoderContext, decoder, &opts) < 0)
+            {
                 FOLEYS_LOG ("Failed to open " + juce::String (av_get_media_type_string(type)) + " codec");
                 avcodec_free_context (decoderContext);
                 return -1;
@@ -219,9 +235,9 @@ private:
 
             return id;
         }
-        else {
-            FOLEYS_LOG ("Could not find " + juce::String (av_get_media_type_string(type)) +
-                 " stream in input file");
+        else
+        {
+            FOLEYS_LOG ("Could not find " << juce::String (av_get_media_type_string(type)) << " stream in input file");
             return -1;
         }
     }
@@ -231,7 +247,8 @@ private:
     {
         int response = avcodec_send_packet (videoContext, &packet);
 
-        if (response < 0) {
+        if (response < 0)
+        {
             FOLEYS_LOG ("Error while sending video packet to the decoder: " << getErrorString (response));
             return;
         }
@@ -241,7 +258,8 @@ private:
             if (response >= 0)
             {
                 AVRational timeBase = av_make_q (1, AV_TIME_BASE);
-                if (juce::isPositiveAndBelow(videoStreamIdx, static_cast<int> (formatContext->nb_streams))) {
+                if (juce::isPositiveAndBelow(videoStreamIdx, static_cast<int> (formatContext->nb_streams)))
+                {
                     timeBase = formatContext->streams [videoStreamIdx]->time_base;
                 }
 
@@ -372,6 +390,21 @@ void FFmpegReader::setPosition (const juce::int64 position)
 void FFmpegReader::readNewData (VideoFifo& videoFifo, AudioFifo& audioFifo)
 {
     pimpl->processPacket (videoFifo, audioFifo);
+}
+
+bool FFmpegReader::hasVideo() const
+{
+    return pimpl->hasVideo();
+}
+
+bool FFmpegReader::hasAudio() const
+{
+    return pimpl->hasAudio();
+}
+
+bool FFmpegReader::hasSubtitle() const
+{
+    return pimpl->hasSubtitle();
 }
 
 

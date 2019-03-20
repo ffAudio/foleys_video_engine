@@ -23,7 +23,6 @@ public:
     Size getOriginalSize() const override;
     double getCurrentTimeInSeconds() const override;
 
-
     void prepareToPlay (int samplesPerBlockExpected, double sampleRate) override;
     void releaseResources() override;
 
@@ -33,6 +32,10 @@ public:
     juce::int64 getTotalLength() const override;
     bool isLooping() const override;
     void setLooping (bool shouldLoop) override;
+
+    bool hasVideo() const override    { return true; };
+    bool hasAudio() const override    { return false; };
+    bool hasSubtitle() const override { return false; };
 
 private:
 

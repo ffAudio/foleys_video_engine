@@ -23,7 +23,6 @@ public:
 
     Timecode getFrameTimecodeForTime (double time) const override;
 
-
     juce::Image getFrame (const Timecode) const override;
 
     juce::Image getCurrentFrame() const override;
@@ -39,6 +38,10 @@ public:
     void setLooping (bool shouldLoop) override;
 
     juce::TimeSliceClient* getBackgroundJob() override;
+
+    bool hasVideo() const override;
+    bool hasAudio() const override;
+    bool hasSubtitle() const override;
 
 private:
 
