@@ -7,6 +7,7 @@ namespace foleys
 class AVReader
 {
 public:
+
     AVReader() = default;
     virtual ~AVReader() = default;
 
@@ -14,6 +15,8 @@ public:
     virtual juce::int64 getTotalLength() const = 0;
 
     virtual void setPosition (const juce::int64 position) = 0;
+
+    virtual juce::Image getStillImage (double seconds, Size size) = 0;
 
     virtual void readNewData (VideoFifo&, AudioFifo&) = 0;
 

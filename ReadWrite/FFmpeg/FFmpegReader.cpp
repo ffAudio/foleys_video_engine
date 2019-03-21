@@ -27,36 +27,27 @@ namespace foleys
 class FFmpegReader::Pimpl
 {
 public:
-    Pimpl (FFmpegReader& readerToUse, juce::File file)  : reader (readerToUse)
+    Pimpl (FFmpegReader& readerToUse, juce::File file, StreamTypes type)  : reader (readerToUse)
     {
         frame = av_frame_alloc();
-        openVideoFile (file);
-    }
 
-    ~Pimpl()
-    {
-        closeVideoFile();
-        av_frame_free (&frame);
-    }
-
-    bool openVideoFile (juce::File file)
-    {
         auto ret = avformat_open_input (&formatContext, file.getFullPathName().toRawUTF8(), NULL, NULL);
         if (ret < 0)
         {
             FOLEYS_LOG ("Opening file failed: " << getErrorString (ret));
-            return false;
+            return;
         }
 
         // retrieve stream information
         if (avformat_find_stream_info (formatContext, NULL) < 0)
         {
             closeVideoFile();
-            return false;
+            return;
         }
 
         // open the streams
-        audioStreamIdx = openCodecContext (&audioContext, AVMEDIA_TYPE_AUDIO, true);
+        if (type.test (StreamTypes::Audio))
+            audioStreamIdx = openCodecContext (&audioContext, AVMEDIA_TYPE_AUDIO, true);
 
         if (juce::isPositiveAndBelow (audioStreamIdx, static_cast<int> (formatContext->nb_streams)))
         {
@@ -81,11 +72,13 @@ public:
             {
                 FOLEYS_LOG ("Error initialising audio converter: " << getErrorString (ret));
                 closeVideoFile();
-                return false;
+                return;
             }
         }
 
-        videoStreamIdx = openCodecContext (&videoContext, AVMEDIA_TYPE_VIDEO, true);
+        if (type.test (StreamTypes::Video))
+            videoStreamIdx = openCodecContext (&videoContext, AVMEDIA_TYPE_VIDEO, true);
+
         if (juce::isPositiveAndBelow (videoStreamIdx, static_cast<int> (formatContext->nb_streams)))
         {
             auto* stream = formatContext->streams [videoStreamIdx];
@@ -102,13 +95,19 @@ public:
 
         }
 
+        // TODO subtitle and data stream
+
 #if FOLEYS_DEBUG_LOGGING
         av_dump_format (formatContext, 0, file.getFullPathName().toRawUTF8(), 0);
 #endif
 
         reader.opened = true;
+    }
 
-        return true;
+    ~Pimpl()
+    {
+        closeVideoFile();
+        av_frame_free (&frame);
     }
 
     void closeVideoFile()
@@ -177,6 +176,11 @@ public:
         {
             FOLEYS_LOG ("Error seeking in audio stream: " << getErrorString (response));
         }
+    }
+
+    juce::Image getStillImage (double seconds, Size size)
+    {
+        return {};
     }
 
     bool hasVideo() const
@@ -367,9 +371,9 @@ private:
 
 // ==============================================================================
 
-FFmpegReader::FFmpegReader (juce::File file)
+FFmpegReader::FFmpegReader (const juce::File& file, StreamTypes type)
 {
-    pimpl = new Pimpl (*this, file);
+    pimpl = new Pimpl (*this, file, type);
 }
 
 FFmpegReader::~FFmpegReader()
@@ -385,6 +389,11 @@ juce::int64 FFmpegReader::getTotalLength() const
 void FFmpegReader::setPosition (const juce::int64 position)
 {
     pimpl->setPosition (position);
+}
+
+juce::Image FFmpegReader::getStillImage (double seconds, Size size)
+{
+    return pimpl->getStillImage (seconds, size);
 }
 
 void FFmpegReader::readNewData (VideoFifo& videoFifo, AudioFifo& audioFifo)

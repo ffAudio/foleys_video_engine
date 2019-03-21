@@ -20,6 +20,7 @@ bool AVMovieClip::openFromFile (const juce::File file)
 
         backgroundJob.setSuspended (false);
 
+        thumbnailReader = AVFormatManager::createReaderFor (file, StreamTypes::video());
         return true;
     }
 
@@ -56,6 +57,14 @@ Timecode AVMovieClip::getFrameTimecodeForTime (double time) const
 
 juce::Image AVMovieClip::getFrame (const Timecode) const
 {
+    return {};
+}
+
+juce::Image AVMovieClip::getStillImage (double seconds, Size size)
+{
+    if (thumbnailReader)
+        return thumbnailReader->getStillImage (seconds, size);
+
     return {};
 }
 

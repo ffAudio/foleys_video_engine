@@ -17,6 +17,11 @@ juce::Image AVImageClip::getCurrentFrame() const
     return image;
 }
 
+juce::Image AVImageClip::getStillImage (double seconds, Size size)
+{
+    return image.rescaled (size.width, size.height);
+}
+
 Size AVImageClip::getOriginalSize() const
 {
     return { image.getWidth(), image.getHeight() };

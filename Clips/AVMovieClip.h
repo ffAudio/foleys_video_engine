@@ -37,6 +37,8 @@ public:
     bool isLooping() const override;
     void setLooping (bool shouldLoop) override;
 
+    juce::Image getStillImage (double seconds, Size size) override;
+
     juce::TimeSliceClient* getBackgroundJob() override;
 
     bool hasVideo() const override;
@@ -66,6 +68,7 @@ private:
     friend BackgroundReaderJob;
 
     std::unique_ptr<AVReader> movieReader;
+    std::unique_ptr<AVReader> thumbnailReader;
     std::vector<juce::LagrangeInterpolator> resamplers;
 
     double      sampleRate = {};

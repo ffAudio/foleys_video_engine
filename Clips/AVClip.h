@@ -31,6 +31,8 @@ public:
 
     virtual double getCurrentTimeInSeconds() const = 0;
 
+    virtual juce::Image getStillImage (double seconds, Size size) = 0;
+
     virtual bool hasVideo() const = 0;
     virtual bool hasAudio() const = 0;
     virtual bool hasSubtitle() const = 0;

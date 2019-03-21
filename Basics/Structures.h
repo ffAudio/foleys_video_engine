@@ -55,4 +55,61 @@ static inline juce::String timecodeToString (Timecode tc)
     + juce::String (milliSeconds).paddedLeft ('0', 3);
 }
 
+
+class StreamTypes
+{
+public:
+    enum StreamType
+    {
+        Video,
+        Audio,
+        Subtitles,
+        Data
+    };
+
+    StreamTypes (int arg)
+    {
+        types = arg;
+    }
+
+    static StreamTypes video()
+    {
+        return { 1 << StreamType::Video };
+    }
+
+    static StreamTypes audio()
+    {
+        return { 1 << StreamType::Audio };
+    }
+
+    static StreamTypes subtitles()
+    {
+        return { 1 << StreamType::Subtitles };
+    }
+
+    static StreamTypes data()
+    {
+        return { 1 << StreamType::Data };
+    }
+
+    static StreamTypes all()
+    {
+        return
+        {
+            (1 << StreamType::Video)
+            + (1 << StreamType::Audio)
+            + (1 << StreamType::Subtitles)
+            + (1 << StreamType::Data)
+        };
+    }
+
+    bool test (StreamType t)
+    {
+        return types.test (size_t (t));
+    }
+
+private:
+    std::bitset<4> types;
+};
+
 }

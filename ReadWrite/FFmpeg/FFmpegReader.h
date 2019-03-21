@@ -9,12 +9,14 @@ namespace foleys
 class FFmpegReader : public AVReader
 {
 public:
-    FFmpegReader (juce::File file);
+    FFmpegReader (const juce::File& file, StreamTypes type);
     ~FFmpegReader();
 
     juce::int64 getTotalLength() const override;
 
     void setPosition (const juce::int64 position) override;
+
+    juce::Image getStillImage (double seconds, Size size) override;
 
     void readNewData (VideoFifo&, AudioFifo&) override;
 

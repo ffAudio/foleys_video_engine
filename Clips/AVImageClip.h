@@ -33,6 +33,8 @@ public:
     bool isLooping() const override;
     void setLooping (bool shouldLoop) override;
 
+    juce::Image getStillImage (double seconds, Size size) override;
+
     bool hasVideo() const override    { return true; };
     bool hasAudio() const override    { return false; };
     bool hasSubtitle() const override { return false; };
