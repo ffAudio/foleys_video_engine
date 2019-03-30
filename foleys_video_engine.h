@@ -64,7 +64,7 @@
 #include "Clips/AVMovieClip.h"
 #include "Clips/AVCompoundClip.h"
 
-#include "Widgets/AVComponent.h"
+#include "Widgets/VideoPreview.h"
 
 #if FOLEYS_USE_FFMPEG
 #include "ReadWrite/FFmpeg/FFmpegReader.h"

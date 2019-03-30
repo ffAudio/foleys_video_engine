@@ -2,11 +2,11 @@
 namespace foleys
 {
 
-AVComponent::AVComponent()
+VideoPreview::VideoPreview()
 {
 }
 
-AVComponent::~AVComponent()
+VideoPreview::~VideoPreview()
 {
     if (clip)
     {
@@ -15,7 +15,7 @@ AVComponent::~AVComponent()
     }
 }
 
-void AVComponent::setClip (AVClip* clipToUse)
+void VideoPreview::setClip (AVClip* clipToUse)
 {
     if (clip)
     {
@@ -32,12 +32,12 @@ void AVComponent::setClip (AVClip* clipToUse)
     }
 }
 
-AVClip* AVComponent::getClip() const
+AVClip* VideoPreview::getClip() const
 {
     return clip;
 }
 
-void AVComponent::paint (juce::Graphics& g)
+void VideoPreview::paint (juce::Graphics& g)
 {
     g.fillAll (juce::Colours::black);
 
@@ -55,7 +55,7 @@ void AVComponent::paint (juce::Graphics& g)
     }
 }
 
-void AVComponent::timecodeChanged (Timecode tc)
+void VideoPreview::timecodeChanged (Timecode tc)
 {
     if (tc.count > subtitleClear.count)
     {
@@ -71,7 +71,7 @@ void AVComponent::timecodeChanged (Timecode tc)
     }
 }
 
-void AVComponent::setSubtitle (const juce::String& text, Timecode until)
+void VideoPreview::setSubtitle (const juce::String& text, Timecode until)
 {
     subtitle = text;
     subtitleClear = until;

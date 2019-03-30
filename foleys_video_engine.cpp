@@ -16,4 +16,4 @@
 #include "ReadWrite/FFmpeg/FFmpegReader.cpp"
 #endif
 
-#include "Widgets/AVComponent.cpp"
+#include "Widgets/VideoPreview.cpp"

@@ -4,14 +4,14 @@
 namespace foleys
 {
 
-class AVComponent  : public juce::Component,
-                     public AVClip::TimecodeListener,
-                     public AVClip::SubtitleListener
+class VideoPreview  : public juce::Component,
+                      public AVClip::TimecodeListener,
+                      public AVClip::SubtitleListener
 {
 public:
-    AVComponent();
+    VideoPreview();
 
-    virtual ~AVComponent();
+    virtual ~VideoPreview();
 
     void setClip (AVClip* clip);
 
@@ -30,7 +30,7 @@ private:
     juce::int64  currentFrameCount = -1;
     juce::String subtitle;
     Timecode subtitleClear;
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AVComponent)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (VideoPreview)
 };
 
 }
