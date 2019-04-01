@@ -5,6 +5,7 @@ namespace foleys
 
 AVClip::~AVClip()
 {
+    VideoEngine::getInstance()->removeAVClip (*this);
     masterReference.clear();
 }
 

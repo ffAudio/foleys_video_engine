@@ -22,6 +22,20 @@ juce::Image AVImageClip::getStillImage (double seconds, Size size)
     return image.rescaled (size.width, size.height);
 }
 
+double AVImageClip::getLengthInSeconds() const
+{
+    return std::numeric_limits<double>::max();
+}
+
+Timecode AVImageClip::getFrameTimecodeForTime (double time) const
+{
+}
+
+Timecode AVImageClip::getCurrentTimecode() const
+{
+
+}
+
 Size AVImageClip::getOriginalSize() const
 {
     return { image.getWidth(), image.getHeight() };

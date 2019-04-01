@@ -30,6 +30,7 @@ void VideoPreview::setClip (AVClip* clipToUse)
         clip->addTimecodeListener (this);
         clip->addSubtitleListener (this);
     }
+    repaint();
 }
 
 AVClip* VideoPreview::getClip() const

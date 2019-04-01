@@ -3,6 +3,7 @@
 
 #include "Basics/VideoFifo.cpp"
 #include "Basics/AudioFifo.cpp"
+#include "Basics/VideoEngine.cpp"
 
 #include "Clips/AVClip.cpp"
 #include "Clips/AVImageClip.cpp"

@@ -14,6 +14,8 @@ public:
 
     bool openFromFile (const juce::File file);
 
+    void setReader (std::unique_ptr<AVReader> reader);
+
     Size getOriginalSize() const override;
 
     double getLengthInSeconds() const override;
