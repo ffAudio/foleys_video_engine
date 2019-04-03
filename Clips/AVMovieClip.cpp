@@ -2,6 +2,11 @@
 namespace foleys
 {
 
+AVMovieClip::~AVMovieClip()
+{
+    VideoEngine::getInstance()->removeAVClip (*this);
+}
+
 bool AVMovieClip::openFromFile (const juce::File file)
 {
     backgroundJob.setSuspended (true);

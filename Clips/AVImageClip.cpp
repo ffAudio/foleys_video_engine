@@ -29,11 +29,12 @@ double AVImageClip::getLengthInSeconds() const
 
 Timecode AVImageClip::getFrameTimecodeForTime (double time) const
 {
+    return { 0, 1.0 };
 }
 
 Timecode AVImageClip::getCurrentTimecode() const
 {
-
+    return { 0, 1.0 };
 }
 
 Size AVImageClip::getOriginalSize() const

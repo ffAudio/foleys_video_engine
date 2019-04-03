@@ -10,7 +10,7 @@ class AVMovieClip : public AVClip,
 {
 public:
     AVMovieClip() = default;
-    virtual ~AVMovieClip() = default;
+    virtual ~AVMovieClip();
 
     bool openFromFile (const juce::File file);
 

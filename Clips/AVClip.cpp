@@ -5,10 +5,8 @@ namespace foleys
 
 AVClip::~AVClip()
 {
-    VideoEngine::getInstance()->removeAVClip (*this);
     masterReference.clear();
 }
-
 
 void AVClip::sendTimecode (Timecode newTimecode, juce::NotificationType nt)
 {
