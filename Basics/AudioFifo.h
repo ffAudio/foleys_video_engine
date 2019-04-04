@@ -15,6 +15,10 @@ public:
 
     void pullSamples (const juce::AudioSourceChannelInfo& info);
 
+    void pushSilence (int numSamples);
+
+    void skipSamples (int numSamples);
+
     /**
      This method will set the read and write pointer to position, render the fifo empty
      */

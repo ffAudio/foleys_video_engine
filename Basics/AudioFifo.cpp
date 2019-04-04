@@ -37,6 +37,23 @@ void AudioFifo::pullSamples (const juce::AudioSourceChannelInfo& info)
     readPosition.fetch_add (read.blockSize1 + read.blockSize2);
 }
 
+void AudioFifo::pushSilence (int numSamples)
+{
+    jassert (numSamples  <  audioFifo.getFreeSpace());
+
+    auto clear = audioFifo.write (numSamples);
+    audioBuffer.clear (clear.startIndex1, clear.blockSize1);
+    if (clear.blockSize2 > 0)
+        audioBuffer.clear (clear.startIndex2, clear.blockSize2);
+
+    writePosition.fetch_add (clear.blockSize1 + clear.blockSize2);
+}
+
+void AudioFifo::skipSamples (int numSamples)
+{
+    audioFifo.read (numSamples);
+}
+
 void AudioFifo::setPosition (const juce::int64 position)
 {
     readPosition.store (position);

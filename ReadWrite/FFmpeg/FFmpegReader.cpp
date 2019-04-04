@@ -310,10 +310,18 @@ private:
             {
                 const int  channels   = av_get_channel_layout_nb_channels (frame->channel_layout);
                 const auto numSamples = frame->nb_samples;
-                const auto offset     = audioFifo.getWritePosition() - frame->best_effort_timestamp;
+                auto offset = audioFifo.getWritePosition() - frame->best_effort_timestamp;
+
+                FOLEYS_LOG ("Audio: " << audioFifo.getWritePosition() << " free: " << audioFifo.getFreeSpace());
 
                 if (audioConvertBuffer.getNumChannels() != channels || audioConvertBuffer.getNumSamples() < numSamples)
                     audioConvertBuffer.setSize(channels, numSamples, false, false, true);
+
+                if (offset < 0)
+                {
+                    audioFifo.pushSilence (-offset);
+                    offset = 0;
+                }
 
                 if (juce::isPositiveAndBelow (offset, numSamples))
                 {
