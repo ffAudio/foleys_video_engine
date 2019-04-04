@@ -310,7 +310,8 @@ private:
             {
                 const int  channels   = av_get_channel_layout_nb_channels (frame->channel_layout);
                 const auto numSamples = frame->nb_samples;
-                auto offset = audioFifo.getWritePosition() - frame->best_effort_timestamp;
+                jassert (std::abs (audioFifo.getWritePosition() - frame->best_effort_timestamp) < std::numeric_limits<int>::max());
+                auto offset = int (audioFifo.getWritePosition() - frame->best_effort_timestamp);
 
                 FOLEYS_LOG ("Audio: " << audioFifo.getWritePosition() << " free: " << audioFifo.getFreeSpace());
 
