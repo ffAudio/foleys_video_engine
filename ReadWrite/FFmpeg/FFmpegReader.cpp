@@ -286,7 +286,7 @@ private:
                     timeBase = formatContext->streams [videoStreamIdx]->time_base;
                 }
 
-                juce::Image image (juce::Image::PixelFormat::ARGB, frame->width, frame->height, false);
+                juce::Image image = videoFifo.getOldestFrameForRecycling();
                 scaler.convertFrameToImage (image, frame);
                 videoFifo.pushVideoFrame (image, frame->best_effort_timestamp);
 

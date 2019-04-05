@@ -32,6 +32,8 @@ public:
     void pushVideoFrame (juce::Image& image, juce::int64 timestamp);
     juce::Image getVideoFrame (double timestamp) const;
 
+    juce::Image getOldestFrameForRecycling();
+
     Timecode getFrameTimecodeForTime (double time) const;
 
     void clear();
@@ -47,6 +49,8 @@ private:
     Size originalSize;
 
     std::map<juce::int64, juce::Image> videoFrames;
+    juce::int64 lastViewedFrame = -1;
+    bool reverse = false;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (VideoFifo)
 };

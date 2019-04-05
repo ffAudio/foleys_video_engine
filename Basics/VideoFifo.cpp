@@ -30,7 +30,10 @@ juce::Image VideoFifo::getVideoFrame (double timestamp) const
 {
     auto vf = videoFrames.lower_bound (timestamp / timebase);
     if (vf != videoFrames.end())
+    {
+        const_cast<juce::int64&>(lastViewedFrame) = vf->first;
         return vf->second;
+    }
 
     return {};
 }
@@ -42,6 +45,36 @@ Timecode VideoFifo::getFrameTimecodeForTime (double time) const
         return {vf->first, timebase};
 
     return {};
+}
+
+juce::Image VideoFifo::getOldestFrameForRecycling()
+{
+    juce::Image image;
+
+    if (reverse == false)
+    {
+        auto iterator = videoFrames.begin();
+        if (iterator != videoFrames.end() && iterator->first < lastViewedFrame)
+        {
+            image = iterator->second;
+            videoFrames.erase (iterator);
+        }
+    }
+    else if (! videoFrames.empty())
+    {
+        auto iterator = videoFrames.end();
+        --iterator;
+        if (iterator->first > lastViewedFrame)
+        {
+            image = iterator->second;
+            videoFrames.erase (iterator);
+        }
+    }
+
+    if (image.isNull())
+        image = juce::Image (juce::Image::ARGB, originalSize.width, originalSize.height, false);
+
+    return image;
 }
 
 void VideoFifo::clear()
