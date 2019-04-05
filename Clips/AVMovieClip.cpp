@@ -228,4 +228,4 @@ juce::TimeSliceClient* AVMovieClip::getBackgroundJob()
     return &backgroundJob;
 }
 
-}
+} // foleys

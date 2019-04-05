@@ -103,4 +103,4 @@ void AVImageClip::setLooping (bool)
 }
 
 
-} // end namespace foleys
+} // foleys

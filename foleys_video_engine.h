@@ -59,6 +59,8 @@
 #include "Basics/VideoFifo.h"
 #include "Clips/AVClip.h"
 #include "ReadWrite/AVReader.h"
+#include "Processing/CompositingContext.h"
+#include "Processing/SoftwareCompositingContext.h"
 
 #include "Clips/AVImageClip.h"
 #include "Clips/AVMovieClip.h"

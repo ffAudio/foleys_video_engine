@@ -54,4 +54,4 @@ std::unique_ptr<AVReader> AVFormatManager::createReaderFor (juce::File file, Str
     return {};
 }
 
-}
+} // foleys

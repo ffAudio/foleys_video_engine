@@ -26,4 +26,4 @@ bool AVReader::isOpenedOk() const
     return opened;
 }
 
-}
+} // foleys

@@ -105,4 +105,4 @@ void AudioFifo::setSampleRate (double sampleRateToUse)
     sampleRate = sampleRateToUse;
 }
 
-}
+} // foleys

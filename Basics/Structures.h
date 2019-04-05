@@ -131,4 +131,4 @@ private:
     std::bitset<4> types;
 };
 
-}
+} // foleys

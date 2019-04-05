@@ -29,6 +29,8 @@
 #include "Clips/AVMovieClip.cpp"
 #include "Clips/AVCompoundClip.cpp"
 
+#include "Processing/SoftwareCompositingContext.cpp"
+
 #include "ReadWrite/AVReader.cpp"
 #include "ReadWrite/AVFormatManager.cpp"
 

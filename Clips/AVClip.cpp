@@ -80,4 +80,4 @@ juce::TimeSliceClient* AVClip::getBackgroundJob()
     return nullptr;
 }
 
-}
+} // foleys

@@ -445,5 +445,5 @@ bool FFmpegReader::hasSubtitle() const
 }
 
 
-}
+} // foleys
 #endif

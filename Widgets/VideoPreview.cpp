@@ -97,4 +97,4 @@ void VideoPreview::setSubtitle (const juce::String& text, Timecode until)
     subtitleClear = until;
 }
 
-}
+} // foleys

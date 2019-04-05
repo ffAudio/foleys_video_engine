@@ -101,4 +101,4 @@ void VideoFifo::setSize (Size size)
     originalSize = size;
 }
 
-}
+} // foleys

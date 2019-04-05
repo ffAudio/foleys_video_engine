@@ -68,4 +68,4 @@ void VideoEngine::removeAVClip (AVClip& clip)
             reader->removeTimeSliceClient (client);
 }
 
-}
+} // foleys
