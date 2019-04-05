@@ -18,16 +18,18 @@
  ==============================================================================
  */
 
+#pragma once
 
 namespace foleys
 {
 
-AVCompoundClip::AVCompoundClip()
+class SoftwareCompositingContext : public CompositingContext
 {
-    composer = std::make_unique<SoftwareCompositingContext>();
+public:
+    SoftwareCompositingContext() = default;
 
-}
-
-
+private:
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SoftwareCompositingContext)
+};
 
 } // foleys

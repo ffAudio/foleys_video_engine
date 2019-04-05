@@ -26,11 +26,13 @@ namespace foleys
 class AVCompoundClip : public AVClip
 {
 public:
-
+    AVCompoundClip();
+    virtual ~AVCompoundClip() = default;
 
 private:
+    std::unique_ptr<CompositingContext> composer;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AVCompoundClip)
 };
 
-}
+} // foleys

@@ -17,17 +17,3 @@
 
  ==============================================================================
  */
-
-
-namespace foleys
-{
-
-AVCompoundClip::AVCompoundClip()
-{
-    composer = std::make_unique<SoftwareCompositingContext>();
-
-}
-
-
-
-} // foleys
