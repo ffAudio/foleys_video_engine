@@ -18,6 +18,7 @@
  ==============================================================================
  */
 
+#if FOLEYS_USE_FFMPEG
 
 #if FOLEYS_DEBUG_LOGGING
 #  define FOLEYS_LOG(textToWrite)          JUCE_BLOCK_WITH_FORCED_SEMICOLON(juce::String tempDbgBuf; tempDbgBuf << "FFmpeg: " << textToWrite; juce::Logger::outputDebugString (tempDbgBuf);)
@@ -131,3 +132,5 @@ private:
 };
 
 } // foleys
+
+#endif // FOLEYS_USE_FFMPEG
