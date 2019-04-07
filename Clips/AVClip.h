@@ -24,15 +24,16 @@ namespace foleys
 {
 
 
-class AVClip : public juce::PositionableAudioSource
+class AVClip  : public juce::PositionableAudioSource,
+                public juce::ReferenceCountedObject
 {
 public:
     AVClip() = default;
-    virtual ~AVClip();
+    virtual ~AVClip() = default;
 
     /** returns the pixel size of the original media as a tuple.
         In some video files this can change at any frame. */
-    virtual Size getOriginalSize() const = 0;
+    virtual Size getVideoSize() const = 0;
 
     /** Returns the length of the clip in seconds */
     virtual double getLengthInSeconds() const = 0;
@@ -82,6 +83,8 @@ public:
 
     virtual juce::TimeSliceClient* getBackgroundJob();
 
+    using Ptr = juce::ReferenceCountedObjectPtr<AVClip>;
+
 protected:
     /** Subclasses can call this to notify displays, that the time code has changed, e.g. to display a new frame */
     void sendTimecode (Timecode newTimecode, juce::NotificationType nt);
@@ -93,7 +96,6 @@ private:
     juce::ListenerList<TimecodeListener> timecodeListeners;
     juce::ListenerList<SubtitleListener> subtitleListeners;
 
-    JUCE_DECLARE_WEAK_REFERENCEABLE (AVClip)
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AVClip)
 };
 

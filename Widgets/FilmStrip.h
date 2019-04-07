@@ -20,34 +20,44 @@
 
 #pragma once
 
-
 namespace foleys
 {
 
-class VideoEngine  : public juce::DeletedAtShutdown,
-                     private juce::Timer
+class FilmStrip : public juce::Component
 {
 public:
-    VideoEngine();
-    ~VideoEngine();
+    FilmStrip() = default;
+    virtual ~FilmStrip();
 
-    void addClip (AVClip::Ptr clip);
-    void removeClip (AVClip::Ptr clip);
+    void setClip (AVClip::Ptr clip);
+    void paint (juce::Graphics&) override;
+    void resized() override;
 
-    void addJob (std::function<void()> job);
-    void addJob (juce::ThreadPoolJob* job, bool deleteJobWhenFinished);
-    void cancelJob (juce::ThreadPoolJob* job);
+    void setStartAndLength (double start, double length);
 
-    JUCE_DECLARE_SINGLETON (VideoEngine, true)
+    class ThumbnailJob : public juce::ThreadPoolJob
+    {
+    public:
+        ThumbnailJob (FilmStrip& owner);
+        juce::ThreadPoolJob::JobStatus runJob() override;
+    private:
+        FilmStrip& owner;
+        JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ThumbnailJob)
+    };
 private:
-    void timerCallback() override;
+    void update();
 
-    juce::ThreadPool jobThreads { juce::SystemStats::getNumCpus() };
-    std::vector<std::unique_ptr<juce::TimeSliceThread>> readingThreads;
+    void setThumbnail (int index, juce::Image image);
 
-    juce::ReferenceCountedArray<AVClip> releasePool;
+    AVClip::Ptr clip;
+    double startTime = {};
+    double timeLength = {};
+    double aspectRatio = 1.33;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (VideoEngine)
+    std::unique_ptr<ThumbnailJob> thumbnailJob;
+    std::vector<juce::Image> thumbnails;
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FilmStrip)
 };
 
-} // foleys
+}

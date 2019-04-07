@@ -25,9 +25,141 @@ namespace foleys
 AVCompoundClip::AVCompoundClip()
 {
     composer = std::make_unique<SoftwareCompositingContext>();
-
 }
 
+juce::Image AVCompoundClip::getFrame (const Timecode time) const
+{
+    return videoFifo.getVideoFrame (time.count / time.timebase);
+}
 
+juce::Image AVCompoundClip::getCurrentFrame() const
+{
+    const auto pts = sampleRate > 0 ? position.load() / sampleRate : 0.0;
+    return videoFifo.getVideoFrame (pts);
+}
+
+Size AVCompoundClip::getVideoSize() const
+{
+    return videoSize;
+}
+
+double AVCompoundClip::getCurrentTimeInSeconds() const
+{
+    return sampleRate > 0 ? position.load() / sampleRate : 0;
+}
+
+juce::Image AVCompoundClip::getStillImage (double seconds, Size size)
+{
+    return {};
+}
+
+double AVCompoundClip::getLengthInSeconds() const
+{
+    return sampleRate > 0 ? getTotalLength() / sampleRate : 0;
+}
+
+Timecode AVCompoundClip::getFrameTimecodeForTime (double time) const
+{
+}
+
+Timecode AVCompoundClip::getCurrentTimecode() const
+{
+    const auto pts = sampleRate > 0 ? position.load() / sampleRate : 0.0;
+    return getFrameTimecodeForTime (pts);
+}
+
+void AVCompoundClip::prepareToPlay (int samplesPerBlockExpected, double sampleRateToUse)
+{
+    sampleRate = sampleRateToUse;
+    buffer.setSize (2, samplesPerBlockExpected);
+
+    for (auto& descriptor : clips)
+        descriptor->clip->prepareToPlay (samplesPerBlockExpected, sampleRate);
+}
+
+void AVCompoundClip::releaseResources()
+{
+    for (auto& descriptor : clips)
+        descriptor->clip->releaseResources();
+
+    sampleRate = 0;
+}
+
+void AVCompoundClip::getNextAudioBlock (const juce::AudioSourceChannelInfo& info)
+{
+    info.clearActiveBufferRegion();
+
+    // TODO: Mix sources
+
+    position.fetch_add (info.numSamples);
+}
+
+void AVCompoundClip::setNextReadPosition (juce::int64 samples)
+{
+    position.store (samples);
+    for (auto& descriptor : clips)
+        descriptor->clip->setNextReadPosition (samples + descriptor->offset - descriptor->start);
+}
+
+juce::int64 AVCompoundClip::getNextReadPosition() const
+{
+    return position;
+}
+
+juce::int64 AVCompoundClip::getTotalLength() const
+{
+    juce::int64 length = 0;
+    for (auto& descriptor : clips)
+        length = std::max (length, descriptor->start + descriptor->length);
+
+    return length;
+}
+
+bool AVCompoundClip::isLooping() const
+{
+    return false;
+}
+
+void AVCompoundClip::setLooping (bool shouldLoop)
+{
+    juce::ignoreUnused (shouldLoop);
+}
+
+bool AVCompoundClip::hasVideo() const
+{
+    bool hasVideo = false;
+    for (auto& descriptor : clips)
+        hasVideo |= descriptor->clip->hasVideo();
+
+    return hasVideo;
+}
+
+bool AVCompoundClip::hasAudio() const
+{
+    bool hasAudio = false;
+    for (auto& descriptor : clips)
+        hasAudio |= descriptor->clip->hasAudio();
+
+    return hasAudio;
+}
+
+bool AVCompoundClip::hasSubtitle() const
+{
+    bool hasSubtitle = false;
+    for (auto& descriptor : clips)
+        hasSubtitle |= descriptor->clip->hasSubtitle();
+
+    return hasSubtitle;
+}
+
+juce::TimeSliceClient* AVCompoundClip::getBackgroundJob()
+{
+    return &videoRenderJob;
+}
+
+int AVCompoundClip::ComposingThread::useTimeSlice()
+{
+    return 10;
+}
 
 } // foleys

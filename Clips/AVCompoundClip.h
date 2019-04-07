@@ -29,8 +29,70 @@ public:
     AVCompoundClip();
     virtual ~AVCompoundClip() = default;
 
+    juce::Image getFrame (const Timecode) const override;
+    juce::Image getCurrentFrame() const override;
+
+    Size getVideoSize() const override;
+    double getCurrentTimeInSeconds() const override;
+
+    juce::Image getStillImage (double seconds, Size size) override;
+
+    double getLengthInSeconds() const override;
+    Timecode getFrameTimecodeForTime (double time) const override;
+    Timecode getCurrentTimecode() const override;
+
+    void prepareToPlay (int samplesPerBlockExpected, double sampleRate) override;
+    void releaseResources() override;
+
+    void getNextAudioBlock (const juce::AudioSourceChannelInfo&) override;
+    void setNextReadPosition (juce::int64 samples) override;
+    juce::int64 getNextReadPosition() const override;
+    juce::int64 getTotalLength() const override;
+    bool isLooping() const override;
+    void setLooping (bool shouldLoop) override;
+
+    bool hasVideo() const override;
+    bool hasAudio() const override;
+    bool hasSubtitle() const override;
+
+    juce::TimeSliceClient* getBackgroundJob() override;
+
+    struct ClipDescriptor
+    {
+        ClipDescriptor (std::unique_ptr<AVClip> clip);
+
+        /** start of the clip in samples */
+        juce::int64 start = 0;
+
+        /** length of the clip in samples */
+        juce::int64 length = 0;
+
+        /** offset in samples */
+        juce::int64 offset = 0;
+
+        std::unique_ptr<AVClip> clip;
+        JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ClipDescriptor)
+    };
 private:
+
+    class ComposingThread : public juce::TimeSliceClient
+    {
+    public:
+        ComposingThread() = default;
+        int useTimeSlice() override;
+    private:
+        JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ComposingThread)
+    };
+
+    VideoFifo videoFifo;
+    ComposingThread videoRenderJob;
+
     std::unique_ptr<CompositingContext> composer;
+    std::vector<std::unique_ptr<ClipDescriptor>> clips;
+    std::atomic<juce::int64> position = {};
+    Size videoSize;
+    double sampleRate = 0;
+    juce::AudioBuffer<float> buffer;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AVCompoundClip)
 };

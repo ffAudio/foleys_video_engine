@@ -39,3 +39,4 @@
 #endif
 
 #include "Widgets/VideoPreview.cpp"
+#include "Widgets/FilmStrip.cpp"

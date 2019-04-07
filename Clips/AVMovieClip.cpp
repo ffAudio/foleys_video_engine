@@ -21,11 +21,6 @@
 namespace foleys
 {
 
-AVMovieClip::~AVMovieClip()
-{
-    VideoEngine::getInstance()->removeAVClip (*this);
-}
-
 bool AVMovieClip::openFromFile (const juce::File file)
 {
     backgroundJob.setSuspended (true);
@@ -58,7 +53,7 @@ void AVMovieClip::setReader (std::unique_ptr<AVReader> readerToUse)
 //    thumbnailReader = AVFormatManager::createReaderFor (file, StreamTypes::video());
 }
 
-Size AVMovieClip::getOriginalSize() const
+Size AVMovieClip::getVideoSize() const
 {
     return (movieReader != nullptr) ? movieReader->originalSize : Size();
 }

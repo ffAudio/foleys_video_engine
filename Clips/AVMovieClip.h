@@ -29,13 +29,13 @@ class AVMovieClip : public AVClip,
 {
 public:
     AVMovieClip() = default;
-    virtual ~AVMovieClip();
+    virtual ~AVMovieClip() = default;
 
     bool openFromFile (const juce::File file);
 
     void setReader (std::unique_ptr<AVReader> reader);
 
-    Size getOriginalSize() const override;
+    Size getVideoSize() const override;
 
     double getLengthInSeconds() const override;
 

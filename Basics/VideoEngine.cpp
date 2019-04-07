@@ -31,6 +31,7 @@ VideoEngine::VideoEngine()
     for (auto& reader : readingThreads)
         reader->startThread();
 
+    startTimer (1000);
 }
 
 VideoEngine::~VideoEngine()
@@ -41,9 +42,11 @@ VideoEngine::~VideoEngine()
     clearSingletonInstance();
 }
 
-void VideoEngine::addAVClip (AVClip& clip)
+void VideoEngine::addClip (AVClip::Ptr clip)
 {
-    auto* client = clip.getBackgroundJob();
+    releasePool.add (clip);
+
+    auto* client = clip->getBackgroundJob();
     if (client == nullptr)
         return;
 
@@ -61,11 +64,39 @@ void VideoEngine::addAVClip (AVClip& clip)
     readingThreads [nextThread]->addTimeSliceClient (client);
 }
 
-void VideoEngine::removeAVClip (AVClip& clip)
+void VideoEngine::removeClip (AVClip::Ptr clip)
 {
-    if (auto* client = clip.getBackgroundJob())
+    if (auto* client = clip->getBackgroundJob())
         for (auto& reader : readingThreads)
             reader->removeTimeSliceClient (client);
 }
+
+void VideoEngine::addJob (std::function<void()> job)
+{
+    jobThreads.addJob (std::move (job));
+}
+
+void VideoEngine::addJob (juce::ThreadPoolJob* job, bool deleteJobWhenFinished)
+{
+    jobThreads.addJob (job, deleteJobWhenFinished);
+}
+
+void VideoEngine::cancelJob (juce::ThreadPoolJob* job)
+{
+    jobThreads.removeJob (job, true, 100);
+}
+
+void VideoEngine::timerCallback()
+{
+    for (auto* p = releasePool.end(); --p >= releasePool.begin();)
+    {
+        if ((*p)->getReferenceCount() == 1)
+        {
+            removeClip (*p);
+            releasePool.removeObject (*p);
+        }
+    }
+}
+
 
 } // foleys

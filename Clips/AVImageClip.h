@@ -39,7 +39,7 @@ public:
     juce::Image getFrame (const Timecode) const override;
     juce::Image getCurrentFrame() const override;
 
-    Size getOriginalSize() const override;
+    Size getVideoSize() const override;
     double getCurrentTimeInSeconds() const override;
 
     void prepareToPlay (int samplesPerBlockExpected, double sampleRate) override;

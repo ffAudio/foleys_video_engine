@@ -32,9 +32,9 @@ public:
 
     virtual ~VideoPreview();
 
-    void setClip (AVClip* clip);
+    void setClip (AVClip::Ptr clip);
 
-    AVClip* getClip() const;
+    AVClip::Ptr getClip() const;
 
     void paint (juce::Graphics& g) override;
 
@@ -43,7 +43,7 @@ public:
     void setSubtitle (const juce::String& text, Timecode until) override;
 
 private:
-    juce::WeakReference<AVClip> clip;
+    AVClip::Ptr clip;
     juce::RectanglePlacement placement { juce::RectanglePlacement::centred };
 
     juce::int64  currentFrameCount = -1;

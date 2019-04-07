@@ -34,7 +34,7 @@ VideoPreview::~VideoPreview()
     }
 }
 
-void VideoPreview::setClip (AVClip* clipToUse)
+void VideoPreview::setClip (AVClip::Ptr clipToUse)
 {
     if (clip)
     {
@@ -52,7 +52,7 @@ void VideoPreview::setClip (AVClip* clipToUse)
     repaint();
 }
 
-AVClip* VideoPreview::getClip() const
+AVClip::Ptr VideoPreview::getClip() const
 {
     return clip;
 }

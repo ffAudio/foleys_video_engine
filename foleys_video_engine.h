@@ -68,6 +68,7 @@
 
 #include "Basics/VideoEngine.h"
 #include "Widgets/VideoPreview.h"
+#include "Widgets/FilmStrip.h"
 
 #if FOLEYS_USE_FFMPEG
 #include "ReadWrite/FFmpeg/FFmpegReader.h"

@@ -21,10 +21,6 @@
 namespace foleys
 {
 
-AVClip::~AVClip()
-{
-    masterReference.clear();
-}
 
 void AVClip::sendTimecode (Timecode newTimecode, juce::NotificationType nt)
 {

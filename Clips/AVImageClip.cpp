@@ -56,7 +56,7 @@ Timecode AVImageClip::getCurrentTimecode() const
     return { 0, 1.0 };
 }
 
-Size AVImageClip::getOriginalSize() const
+Size AVImageClip::getVideoSize() const
 {
     return { image.getWidth(), image.getHeight() };
 }

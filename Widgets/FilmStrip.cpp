@@ -1,0 +1,126 @@
+/*
+ ==============================================================================
+
+ Copyright (c) 2019, Foleys Finest Audio - Daniel Walz
+ All rights reserved.
+
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+ INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+ OF THE POSSIBILITY OF SUCH DAMAGE.
+
+ ==============================================================================
+ */
+
+namespace foleys
+{
+
+FilmStrip::~FilmStrip()
+{
+    if (thumbnailJob != nullptr)
+        VideoEngine::getInstance()->cancelJob (thumbnailJob.get());
+}
+
+void FilmStrip::setClip (AVClip::Ptr clipToUse)
+{
+    clip = clipToUse;
+    update();
+}
+
+void FilmStrip::paint (juce::Graphics& g)
+{
+    g.fillAll (juce::Colours::black);
+    auto target = getLocalBounds().withWidth (getHeight() * aspectRatio);
+    for (auto& image : thumbnails)
+    {
+        g.drawImage (image, target.toFloat());
+        target.setX (target.getRight() + 1);
+    }
+}
+
+void FilmStrip::resized()
+{
+    update();
+}
+
+void FilmStrip::setStartAndLength (double startToUse, double lengthToUse)
+{
+    startTime = startToUse;
+    timeLength = lengthToUse;
+
+    update();
+}
+
+void FilmStrip::update()
+{
+    if (clip == nullptr || timeLength == 0)
+        return;
+
+    auto* theEngine = VideoEngine::getInstance();
+    if (thumbnailJob != nullptr)
+        theEngine->cancelJob (thumbnailJob.get());
+    else
+        thumbnailJob = std::make_unique<ThumbnailJob>(*this);
+
+    theEngine->addJob (thumbnailJob.get(), false);
+}
+
+void FilmStrip::setThumbnail (int index, juce::Image image)
+{
+    if (index >= thumbnails.size())
+        thumbnails.resize (index + 1);
+
+    thumbnails [index] = image;
+
+    repaint();
+}
+
+
+FilmStrip::ThumbnailJob::ThumbnailJob (FilmStrip& ownerToUse)
+  : juce::ThreadPoolJob ("Thumbnail Reader"),
+    owner (ownerToUse)
+{
+}
+
+juce::ThreadPoolJob::JobStatus FilmStrip::ThumbnailJob::runJob()
+{
+    auto width  = owner.getWidth();
+    auto height = owner.getHeight();
+
+    if (owner.clip == nullptr || width <= 0 || height <= 0)
+        return juce::ThreadPoolJob::jobHasFinished;
+
+    Size thumbSize { int (height * owner.aspectRatio), height };
+    double time = owner.startTime;
+    double end  = owner.startTime + owner.timeLength;
+    double step = thumbSize.width * owner.timeLength / width;
+
+    int index = 0;
+    while (! shouldExit() && time < end)
+    {
+        if (owner.clip == nullptr)
+            return juce::ThreadPoolJob::jobHasFinished;
+
+        juce::Component::SafePointer<FilmStrip> strip (&owner);
+        auto image = owner.clip->getStillImage (time, thumbSize);
+        juce::MessageManager::callAsync ([strip, index, image]() mutable
+                                         {
+                                             if (strip)
+                                                 strip->setThumbnail (index, image);
+                                         });
+
+        time += step;
+        ++index;
+    }
+
+    return juce::ThreadPoolJob::jobHasFinished;
+}
+
+
+} // foleys
