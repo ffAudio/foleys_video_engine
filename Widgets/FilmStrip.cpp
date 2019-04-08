@@ -21,6 +21,12 @@
 namespace foleys
 {
 
+FilmStrip::FilmStrip()
+{
+    setOpaque (true);
+    setInterceptsMouseClicks (false, true);
+}
+
 FilmStrip::~FilmStrip()
 {
     if (thumbnailJob != nullptr)
@@ -30,6 +36,10 @@ FilmStrip::~FilmStrip()
 void FilmStrip::setClip (AVClip::Ptr clipToUse)
 {
     clip = clipToUse;
+    if (clip != nullptr)
+    {
+        aspectRatio = clip->getVideoSize().getAspectRatio();
+    }
     update();
 }
 
@@ -53,7 +63,6 @@ void FilmStrip::setStartAndLength (double startToUse, double lengthToUse)
 {
     startTime = startToUse;
     timeLength = lengthToUse;
-
     update();
 }
 

@@ -34,6 +34,7 @@ public:
     bool openFromFile (const juce::File file);
 
     void setReader (std::unique_ptr<AVReader> reader);
+    void setThumbnailReader (std::unique_ptr<AVReader> reader);
 
     Size getVideoSize() const override;
 

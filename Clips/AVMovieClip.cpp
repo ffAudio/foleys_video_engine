@@ -28,6 +28,11 @@ bool AVMovieClip::openFromFile (const juce::File file)
     std::unique_ptr<AVReader> reader = AVFormatManager::createReaderFor (file);
     if (reader->isOpenedOk())
     {
+        if (reader->hasVideo())
+            setThumbnailReader (AVFormatManager::createReaderFor (file, StreamTypes::video()));
+        else
+            setThumbnailReader ({});
+
         setReader (std::move (reader));
         return true;
     }
@@ -49,8 +54,11 @@ void AVMovieClip::setReader (std::unique_ptr<AVReader> readerToUse)
     videoFifo.clear();
 
     backgroundJob.setSuspended (false);
+}
 
-//    thumbnailReader = AVFormatManager::createReaderFor (file, StreamTypes::video());
+void AVMovieClip::setThumbnailReader (std::unique_ptr<AVReader> reader)
+{
+    thumbnailReader = std::move (reader);
 }
 
 Size AVMovieClip::getVideoSize() const

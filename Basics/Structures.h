@@ -28,6 +28,11 @@ struct Size
 {
     int width = 0;
     int height = 0;
+
+    double getAspectRatio()
+    {
+        return (height > 0) ? width / double (height) : 1.33;
+    }
 };
 
 struct Timecode

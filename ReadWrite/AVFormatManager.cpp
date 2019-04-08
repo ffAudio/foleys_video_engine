@@ -36,6 +36,9 @@ AVClip::Ptr AVFormatManager::createClipFromFile (juce::File file)
     if (reader->isOpenedOk())
     {
         auto* clip = new AVMovieClip();
+        if (reader->hasVideo())
+            clip->setThumbnailReader (AVFormatManager::createReaderFor (file, StreamTypes::video()));
+
         clip->setReader (std::move (reader));
         return clip;
     }

@@ -171,13 +171,13 @@ public:
         auto error = av_read_frame (formatContext, &packet);
 
         if (error >= 0) {
-            if(packet.stream_index == videoStreamIdx) {
+            if (packet.stream_index == videoStreamIdx) {
                 decodePacket (packet, videoFifo);
             }
             else if (packet.stream_index == audioStreamIdx) {
                 decodePacket (packet, audioFifo);
             }
-            else if(packet.stream_index == subtitleStreamIdx) {
+            else if (packet.stream_index == subtitleStreamIdx) {
                 decodeSubtitlePacket (packet);
             }
             else {
@@ -199,7 +199,38 @@ public:
 
     juce::Image getStillImage (double seconds, Size size)
     {
-        return {};
+        scaler.setupScaler (videoContext->width,
+                            videoContext->height,
+                            videoContext->pix_fmt,
+                            size.width,
+                            size.height,
+                            AV_PIX_FMT_BGR0);
+
+        auto response = av_seek_frame (formatContext, videoStreamIdx, seconds / reader.timebase, AVSEEK_FLAG_BACKWARD);
+        if (response < 0)
+        {
+            FOLEYS_LOG ("Error seeking in video stream: " << getErrorString (response));
+        }
+
+        AVPacket packet;
+        // initialize packet, set data to NULL, let the demuxer fill it
+        packet.data = NULL;
+        packet.size = 0;
+        av_init_packet (&packet);
+
+        while (true)
+        {
+            av_read_frame (formatContext, &packet);
+            if (packet.stream_index == videoStreamIdx)
+                break;
+        }
+        response = avcodec_send_packet (videoContext, &packet);
+        response = avcodec_receive_frame(videoContext, frame);
+        juce::Image image (juce::Image::ARGB, size.width, size.height, false);
+        scaler.convertFrameToImage (image, frame);
+        av_packet_unref (&packet);
+
+        return image;
     }
 
     bool hasVideo() const

@@ -23,6 +23,8 @@ namespace foleys
 
 VideoPreview::VideoPreview()
 {
+    setOpaque (true);
+    setInterceptsMouseClicks (false, true);
 }
 
 VideoPreview::~VideoPreview()

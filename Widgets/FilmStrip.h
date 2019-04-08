@@ -26,7 +26,7 @@ namespace foleys
 class FilmStrip : public juce::Component
 {
 public:
-    FilmStrip() = default;
+    FilmStrip();
     virtual ~FilmStrip();
 
     void setClip (AVClip::Ptr clip);
