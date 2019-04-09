@@ -36,7 +36,7 @@ VideoPreview::~VideoPreview()
     }
 }
 
-void VideoPreview::setClip (AVClip::Ptr clipToUse)
+void VideoPreview::setClip (std::shared_ptr<AVClip> clipToUse)
 {
     if (clip)
     {
@@ -54,7 +54,7 @@ void VideoPreview::setClip (AVClip::Ptr clipToUse)
     repaint();
 }
 
-AVClip::Ptr VideoPreview::getClip() const
+std::shared_ptr<AVClip> VideoPreview::getClip() const
 {
     return clip;
 }

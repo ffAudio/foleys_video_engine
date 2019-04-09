@@ -24,8 +24,7 @@ namespace foleys
 {
 
 
-class AVClip  : public juce::PositionableAudioSource,
-                public juce::ReferenceCountedObject
+class AVClip  : public juce::PositionableAudioSource
 {
 public:
     AVClip() = default;
@@ -82,8 +81,6 @@ public:
     void removeSubtitleListener (SubtitleListener* listener);
 
     virtual juce::TimeSliceClient* getBackgroundJob();
-
-    using Ptr = juce::ReferenceCountedObjectPtr<AVClip>;
 
 protected:
     /** Subclasses can call this to notify displays, that the time code has changed, e.g. to display a new frame */

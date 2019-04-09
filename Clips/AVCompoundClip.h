@@ -29,7 +29,7 @@ public:
     AVCompoundClip();
     virtual ~AVCompoundClip() = default;
 
-    void addClip (AVClip::Ptr clip, double start, double length = -1, double offset = 0);
+    void addClip (std::shared_ptr<AVClip> clip, double start, double length = -1, double offset = 0);
 
     juce::Image getFrame (const Timecode) const override;
     juce::Image getCurrentFrame() const override;
@@ -61,7 +61,7 @@ public:
 
     struct ClipDescriptor
     {
-        ClipDescriptor (AVClip::Ptr clip);
+        ClipDescriptor (std::shared_ptr<AVClip> clip);
         ~ClipDescriptor();
 
         /** start of the clip in samples */
@@ -73,7 +73,7 @@ public:
         /** offset in samples */
         std::atomic<juce::int64> offset {0};
 
-        AVClip::Ptr clip;
+        std::shared_ptr<AVClip> clip;
 
     private:
         JUCE_DECLARE_WEAK_REFERENCEABLE (ClipDescriptor)

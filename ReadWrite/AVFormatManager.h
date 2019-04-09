@@ -33,7 +33,7 @@ public:
         FFmpeg
     };
 
-    static AVClip::Ptr createClipFromFile (juce::File file);
+    static std::shared_ptr<AVClip> createClipFromFile (juce::File file);
 
     static std::unique_ptr<AVReader> createReaderFor (juce::File file, StreamTypes type = StreamTypes::all());
 

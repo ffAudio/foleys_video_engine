@@ -26,10 +26,10 @@ namespace foleys
 class FilmStrip : public juce::Component
 {
 public:
-    FilmStrip();
+    FilmStrip (juce::ThreadPool& threadPool);
     virtual ~FilmStrip();
 
-    void setClip (AVClip::Ptr clip);
+    void setClip (std::shared_ptr<AVClip> clip);
     void paint (juce::Graphics&) override;
     void resized() override;
 
@@ -49,11 +49,12 @@ private:
 
     void setThumbnail (int index, juce::Image image);
 
-    AVClip::Ptr clip;
+    std::shared_ptr<AVClip> clip;
     double startTime = {};
     double timeLength = {};
     double aspectRatio = 1.33;
 
+    juce::ThreadPool& threadPool;
     std::unique_ptr<ThumbnailJob> thumbnailJob;
     std::vector<juce::Image> thumbnails;
 

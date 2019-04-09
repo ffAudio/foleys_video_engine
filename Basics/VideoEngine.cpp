@@ -21,8 +21,6 @@
 namespace foleys
 {
 
-JUCE_IMPLEMENT_SINGLETON (VideoEngine)
-
 VideoEngine::VideoEngine()
 {
     for (int i = 0; i < juce::SystemStats::getNumCpus(); ++i)
@@ -38,13 +36,27 @@ VideoEngine::~VideoEngine()
 {
     for (auto& reader : readingThreads)
         reader->stopThread (500);
-
-    clearSingletonInstance();
 }
 
-void VideoEngine::addClip (AVClip::Ptr clip)
+std::shared_ptr<AVClip> VideoEngine::createClipFromFile (juce::File file)
 {
-    releasePool.add (clip);
+    auto clip = AVFormatManager::createClipFromFile (file);
+    if (clip)
+        addToThreadPool (clip);
+
+    return clip;
+}
+
+std::shared_ptr<AVCompoundClip> VideoEngine::createCompoundClip()
+{
+    auto clip = std::make_shared<AVCompoundClip>();
+    addToThreadPool (clip);
+    return clip;
+}
+
+void VideoEngine::addToThreadPool (std::shared_ptr<AVClip> clip)
+{
+    releasePool.push_back (clip);
 
     auto* client = clip->getBackgroundJob();
     if (client == nullptr)
@@ -64,7 +76,7 @@ void VideoEngine::addClip (AVClip::Ptr clip)
     readingThreads [nextThread]->addTimeSliceClient (client);
 }
 
-void VideoEngine::removeClip (AVClip::Ptr clip)
+void VideoEngine::removeFromThreadPool (std::shared_ptr<AVClip> clip)
 {
     if (auto* client = clip->getBackgroundJob())
         for (auto& reader : readingThreads)
@@ -86,14 +98,23 @@ void VideoEngine::cancelJob (juce::ThreadPoolJob* job)
     jobThreads.removeJob (job, true, 100);
 }
 
+juce::ThreadPool& VideoEngine::getThreadPool()
+{
+    return jobThreads;
+}
+
 void VideoEngine::timerCallback()
 {
-    for (auto* p = releasePool.end(); --p >= releasePool.begin();)
+    for (auto p = releasePool.begin(); p != releasePool.end();)
     {
-        if ((*p)->getReferenceCount() == 1)
+        if (p->use_count() == 1)
         {
-            removeClip (*p);
-            releasePool.removeObject (*p);
+            removeFromThreadPool (*p);
+            p = releasePool.erase (p);
+        }
+        else
+        {
+            ++p;
         }
     }
 }

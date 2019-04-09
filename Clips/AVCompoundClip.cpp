@@ -27,7 +27,7 @@ AVCompoundClip::AVCompoundClip()
     composer = std::make_unique<SoftwareCompositingContext>();
 }
 
-void AVCompoundClip::addClip (AVClip::Ptr clip, double start, double length, double offset)
+void AVCompoundClip::addClip (std::shared_ptr<AVClip> clip, double start, double length, double offset)
 {
     if (length < 0)
         length = clip->getLengthInSeconds();
@@ -180,7 +180,7 @@ int AVCompoundClip::ComposingThread::useTimeSlice()
 
 //==============================================================================
 
-AVCompoundClip::ClipDescriptor::ClipDescriptor (AVClip::Ptr clipToUse)
+AVCompoundClip::ClipDescriptor::ClipDescriptor (std::shared_ptr<AVClip> clipToUse)
 {
     clip = clipToUse;
 }

@@ -31,21 +31,26 @@ public:
     VideoEngine();
     ~VideoEngine();
 
-    void addClip (AVClip::Ptr clip);
-    void removeClip (AVClip::Ptr clip);
+    std::shared_ptr<AVClip> createClipFromFile (juce::File file);
+    std::shared_ptr<AVCompoundClip> createCompoundClip();
 
     void addJob (std::function<void()> job);
     void addJob (juce::ThreadPoolJob* job, bool deleteJobWhenFinished);
     void cancelJob (juce::ThreadPoolJob* job);
 
-    JUCE_DECLARE_SINGLETON (VideoEngine, true)
+    juce::ThreadPool& getThreadPool();
+
 private:
+
+    void addToThreadPool (std::shared_ptr<AVClip> clip);
+    void removeFromThreadPool (std::shared_ptr<AVClip> clip);
+
     void timerCallback() override;
 
     juce::ThreadPool jobThreads { juce::SystemStats::getNumCpus() };
     std::vector<std::unique_ptr<juce::TimeSliceThread>> readingThreads;
 
-    juce::ReferenceCountedArray<AVClip> releasePool;
+    std::vector<std::shared_ptr<AVClip>> releasePool;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (VideoEngine)
 };

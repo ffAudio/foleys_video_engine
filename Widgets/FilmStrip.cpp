@@ -21,7 +21,8 @@
 namespace foleys
 {
 
-FilmStrip::FilmStrip()
+FilmStrip::FilmStrip (juce::ThreadPool& threadPoolToUse)
+  : threadPool (threadPoolToUse)
 {
     setOpaque (true);
     setInterceptsMouseClicks (false, true);
@@ -30,10 +31,10 @@ FilmStrip::FilmStrip()
 FilmStrip::~FilmStrip()
 {
     if (thumbnailJob != nullptr)
-        VideoEngine::getInstance()->cancelJob (thumbnailJob.get());
+        threadPool.removeJob (thumbnailJob.get(), true, 200);
 }
 
-void FilmStrip::setClip (AVClip::Ptr clipToUse)
+void FilmStrip::setClip (std::shared_ptr<AVClip> clipToUse)
 {
     clip = clipToUse;
     if (clip != nullptr)
@@ -71,13 +72,12 @@ void FilmStrip::update()
     if (clip == nullptr || timeLength == 0)
         return;
 
-    auto* theEngine = VideoEngine::getInstance();
     if (thumbnailJob != nullptr)
-        theEngine->cancelJob (thumbnailJob.get());
+        threadPool.removeJob (thumbnailJob.get(), true, 200);
     else
         thumbnailJob = std::make_unique<ThumbnailJob>(*this);
 
-    theEngine->addJob (thumbnailJob.get(), false);
+    threadPool.addJob (thumbnailJob.get(), false);
 }
 
 void FilmStrip::setThumbnail (int index, juce::Image image)

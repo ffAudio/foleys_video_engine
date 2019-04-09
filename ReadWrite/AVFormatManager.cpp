@@ -22,12 +22,12 @@ namespace foleys
 {
 
 
-AVClip::Ptr AVFormatManager::createClipFromFile (juce::File file)
+std::shared_ptr<AVClip> AVFormatManager::createClipFromFile (juce::File file)
 {
     auto image = juce::ImageFileFormat::loadFrom (file);
     if (image.isValid())
     {
-        auto* clip = new AVImageClip();
+        auto clip = std::make_shared<AVImageClip>();
         clip->setImage (image);
         return clip;
     }
@@ -35,7 +35,7 @@ AVClip::Ptr AVFormatManager::createClipFromFile (juce::File file)
     auto reader = AVFormatManager::createReaderFor (file);
     if (reader->isOpenedOk())
     {
-        auto* clip = new AVMovieClip();
+        auto clip = std::make_shared<AVMovieClip>();
         if (reader->hasVideo())
             clip->setThumbnailReader (AVFormatManager::createReaderFor (file, StreamTypes::video()));
 
