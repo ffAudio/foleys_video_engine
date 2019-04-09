@@ -27,6 +27,19 @@ AVCompoundClip::AVCompoundClip()
     composer = std::make_unique<SoftwareCompositingContext>();
 }
 
+void AVCompoundClip::addClip (AVClip::Ptr clip, double start, double length, double offset)
+{
+    if (length < 0)
+        length = clip->getLengthInSeconds();
+
+    auto clipDescriptor = std::make_unique<ClipDescriptor> (clip);
+    clipDescriptor->offset = offset;
+    clipDescriptor->length = length;
+
+    clips.push_back (std::move (clipDescriptor));
+}
+
+
 juce::Image AVCompoundClip::getFrame (const Timecode time) const
 {
     return videoFifo.getVideoFrame (time.count / time.timebase);
@@ -60,6 +73,7 @@ double AVCompoundClip::getLengthInSeconds() const
 
 Timecode AVCompoundClip::getFrameTimecodeForTime (double time) const
 {
+    return videoFifo.getFrameTimecodeForTime (time);
 }
 
 Timecode AVCompoundClip::getCurrentTimecode() const
@@ -152,6 +166,8 @@ bool AVCompoundClip::hasSubtitle() const
     return hasSubtitle;
 }
 
+//==============================================================================
+
 juce::TimeSliceClient* AVCompoundClip::getBackgroundJob()
 {
     return &videoRenderJob;
@@ -160,6 +176,18 @@ juce::TimeSliceClient* AVCompoundClip::getBackgroundJob()
 int AVCompoundClip::ComposingThread::useTimeSlice()
 {
     return 10;
+}
+
+//==============================================================================
+
+AVCompoundClip::ClipDescriptor::ClipDescriptor (AVClip::Ptr clipToUse)
+{
+    clip = clipToUse;
+}
+
+AVCompoundClip::ClipDescriptor::~ClipDescriptor()
+{
+    masterReference.clear();
 }
 
 } // foleys

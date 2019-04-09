@@ -206,7 +206,8 @@ public:
                             size.height,
                             AV_PIX_FMT_BGR0);
 
-        auto response = av_seek_frame (formatContext, videoStreamIdx, seconds / reader.timebase, AVSEEK_FLAG_BACKWARD);
+        auto targetPts = seconds / reader.timebase;
+        auto response = av_seek_frame (formatContext, videoStreamIdx, targetPts, AVSEEK_FLAG_BACKWARD);
         if (response < 0)
         {
             FOLEYS_LOG ("Error seeking in video stream: " << getErrorString (response));
@@ -222,10 +223,24 @@ public:
         {
             av_read_frame (formatContext, &packet);
             if (packet.stream_index == videoStreamIdx)
-                break;
+            {
+                response = avcodec_send_packet (videoContext, &packet);
+                if (response < 0)
+                {
+                    FOLEYS_LOG ("Error reading packet for still image: " << getErrorString (response));
+                    break;
+                }
+                response = avcodec_receive_frame(videoContext, frame);
+                if (response < 0)
+                {
+                    FOLEYS_LOG ("Error reading frame for still image: " << getErrorString (response));
+                }
+
+                if (frame->best_effort_timestamp + frame->pkt_duration > targetPts)
+                    break;
+            }
         }
-        response = avcodec_send_packet (videoContext, &packet);
-        response = avcodec_receive_frame(videoContext, frame);
+        FOLEYS_LOG ("Still PTS: " << frame->best_effort_timestamp << " vs. " << targetPts);
         juce::Image image (juce::Image::ARGB, size.width, size.height, false);
         scaler.convertFrameToImage (image, frame);
         av_packet_unref (&packet);
