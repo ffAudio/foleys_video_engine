@@ -34,6 +34,10 @@ public:
     AVImageClip() = default;
     virtual ~AVImageClip() = default;
 
+    juce::String getDescription() const override;
+
+    void setMediaFile (const juce::File& media);
+
     void setImage (const juce::Image& image);
 
     juce::Image getFrame (const Timecode) const override;
@@ -66,6 +70,7 @@ public:
 private:
 
     juce::Image image;
+    juce::File  mediaFile;
 
     double sampleRate = 0.0;
 

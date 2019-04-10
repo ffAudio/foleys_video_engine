@@ -30,6 +30,8 @@ public:
     AVReader() = default;
     virtual ~AVReader() = default;
 
+    virtual juce::File getMediaFile() const = 0;
+
     bool isOpenedOk() const;
     virtual juce::int64 getTotalLength() const = 0;
 

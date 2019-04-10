@@ -27,18 +27,23 @@ AVCompoundClip::AVCompoundClip()
     composer = std::make_unique<SoftwareCompositingContext>();
 }
 
+juce::String AVCompoundClip::getDescription() const
+{
+    return "Edit";
+}
+
 void AVCompoundClip::addClip (std::shared_ptr<AVClip> clip, double start, double length, double offset)
 {
-    if (length < 0)
-        length = clip->getLengthInSeconds();
-
     auto clipDescriptor = std::make_unique<ClipDescriptor> (clip);
-    clipDescriptor->offset = offset;
-    clipDescriptor->length = length;
+    clipDescriptor->name   = clip->getDescription();
+    clipDescriptor->start  = start * sampleRate;
+    clipDescriptor->offset = offset * sampleRate;
+    clipDescriptor->length = length > 0 ? length * sampleRate : clip->getTotalLength();
+
+    clip->prepareToPlay (buffer.getNumSamples(), sampleRate);
 
     clips.push_back (std::move (clipDescriptor));
 }
-
 
 juce::Image AVCompoundClip::getFrame (const Timecode time) const
 {
@@ -102,8 +107,23 @@ void AVCompoundClip::releaseResources()
 void AVCompoundClip::getNextAudioBlock (const juce::AudioSourceChannelInfo& info)
 {
     info.clearActiveBufferRegion();
+    auto pos = position.load();
 
-    // TODO: Mix sources
+    for (auto& clip : clips)
+    {
+        if (! clip->clip->hasAudio())
+            continue;
+
+        auto start = clip->start.load();
+        if (pos + info.numSamples >= start && pos < start + clip->length.load())
+        {
+            auto offset = std::max (int (start - pos), 0);
+            juce::AudioSourceChannelInfo reader (&buffer, 0, info.numSamples - offset);
+            clip->clip->getNextAudioBlock (reader);
+            for (int channel = 0; channel < buffer.getNumChannels(); ++channel)
+                info.buffer->addFrom (channel, info.startSample, buffer.getReadPointer (channel), info.numSamples - offset);
+        }
+    }
 
     position.fetch_add (info.numSamples);
 }
@@ -112,7 +132,7 @@ void AVCompoundClip::setNextReadPosition (juce::int64 samples)
 {
     position.store (samples);
     for (auto& descriptor : clips)
-        descriptor->clip->setNextReadPosition (samples + descriptor->offset - descriptor->start);
+        descriptor->clip->setNextReadPosition (std::max (juce::int64 (samples + descriptor->offset - descriptor->start), juce::int64 (descriptor->offset)));
 }
 
 juce::int64 AVCompoundClip::getNextReadPosition() const
@@ -175,7 +195,7 @@ juce::TimeSliceClient* AVCompoundClip::getBackgroundJob()
 
 int AVCompoundClip::ComposingThread::useTimeSlice()
 {
-    return 10;
+    return 1000;
 }
 
 //==============================================================================

@@ -21,6 +21,14 @@
 namespace foleys
 {
 
+juce::String AVMovieClip::getDescription() const
+{
+    if (movieReader)
+        return movieReader->getMediaFile().getFileNameWithoutExtension();
+
+    return "MovieClip";
+}
+
 bool AVMovieClip::openFromFile (const juce::File file)
 {
     backgroundJob.setSuspended (true);

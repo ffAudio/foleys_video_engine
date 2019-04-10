@@ -29,6 +29,7 @@ std::shared_ptr<AVClip> AVFormatManager::createClipFromFile (juce::File file)
     {
         auto clip = std::make_shared<AVImageClip>();
         clip->setImage (image);
+        clip->setMediaFile (file);
         return clip;
     }
 

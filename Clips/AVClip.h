@@ -30,7 +30,11 @@ public:
     AVClip() = default;
     virtual ~AVClip() = default;
 
-    /** returns the pixel size of the original media as a tuple.
+    /** returns a string describing the clip. This could be the
+        filename of the original media file */
+    virtual juce::String getDescription() const = 0;
+
+    /** returns the pixel size of the media as a tuple.
         In some video files this can change at any frame. */
     virtual Size getVideoSize() const = 0;
 

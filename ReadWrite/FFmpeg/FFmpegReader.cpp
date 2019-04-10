@@ -447,12 +447,18 @@ private:
 
 FFmpegReader::FFmpegReader (const juce::File& file, StreamTypes type)
 {
+    mediaFile = file;
     pimpl = new Pimpl (*this, file, type);
 }
 
 FFmpegReader::~FFmpegReader()
 {
     delete pimpl;
+}
+
+juce::File FFmpegReader::getMediaFile() const
+{
+    return mediaFile;
 }
 
 juce::int64 FFmpegReader::getTotalLength() const

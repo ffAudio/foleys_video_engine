@@ -21,6 +21,16 @@
 namespace foleys
 {
 
+juce::String AVImageClip::getDescription() const
+{
+    return mediaFile.getFileNameWithoutExtension();
+}
+
+void AVImageClip::setMediaFile (const juce::File& media)
+{
+    mediaFile = media;
+}
+
 void AVImageClip::setImage (const juce::Image& imageToUse)
 {
     image = imageToUse;

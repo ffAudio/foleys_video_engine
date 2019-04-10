@@ -31,6 +31,8 @@ public:
     AVMovieClip() = default;
     virtual ~AVMovieClip() = default;
 
+    juce::String getDescription() const override;
+
     bool openFromFile (const juce::File file);
 
     void setReader (std::unique_ptr<AVReader> reader);

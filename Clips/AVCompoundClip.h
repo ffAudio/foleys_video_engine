@@ -29,6 +29,8 @@ public:
     AVCompoundClip();
     virtual ~AVCompoundClip() = default;
 
+    juce::String getDescription() const override;
+
     void addClip (std::shared_ptr<AVClip> clip, double start, double length = -1, double offset = 0);
 
     juce::Image getFrame (const Timecode) const override;
@@ -63,6 +65,8 @@ public:
     {
         ClipDescriptor (std::shared_ptr<AVClip> clip);
         ~ClipDescriptor();
+
+        juce::String name;
 
         /** start of the clip in samples */
         std::atomic<juce::int64> start {0};

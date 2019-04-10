@@ -31,6 +31,8 @@ public:
     FFmpegReader (const juce::File& file, StreamTypes type);
     ~FFmpegReader();
 
+    juce::File getMediaFile() const override;
+
     juce::int64 getTotalLength() const override;
 
     void setPosition (const juce::int64 position) override;
@@ -44,6 +46,8 @@ public:
     bool hasSubtitle() const override;
 
 private:
+    juce::File mediaFile;
+
     class Pimpl;
     friend Pimpl;
 
