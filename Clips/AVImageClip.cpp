@@ -36,7 +36,7 @@ void AVImageClip::setImage (const juce::Image& imageToUse)
     image = imageToUse;
 }
 
-juce::Image AVImageClip::getFrame (const Timecode) const
+juce::Image AVImageClip::getFrame (double pts) const
 {
     return image;
 }

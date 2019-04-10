@@ -47,7 +47,7 @@ public:
 
     Timecode getFrameTimecodeForTime (double time) const override;
 
-    juce::Image getFrame (const Timecode) const override;
+    juce::Image getFrame (double pts) const override;
 
     juce::Image getCurrentFrame() const override;
 

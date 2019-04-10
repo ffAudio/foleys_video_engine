@@ -40,7 +40,7 @@ public:
 
     void setImage (const juce::Image& image);
 
-    juce::Image getFrame (const Timecode) const override;
+    juce::Image getFrame (double pts) const override;
     juce::Image getCurrentFrame() const override;
 
     Size getVideoSize() const override;

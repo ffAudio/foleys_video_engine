@@ -23,8 +23,13 @@ namespace foleys
 {
 
 AVCompoundClip::AVCompoundClip()
+  : videoRenderJob (*this)
 {
     composer = std::make_unique<SoftwareCompositingContext>();
+    videoSize = {800, 600};
+    videoFifo.setSize (videoSize);
+    videoFifo.setTimebase (0.000041666666666666665);
+
 }
 
 juce::String AVCompoundClip::getDescription() const
@@ -45,9 +50,9 @@ void AVCompoundClip::addClip (std::shared_ptr<AVClip> clip, double start, double
     clips.push_back (std::move (clipDescriptor));
 }
 
-juce::Image AVCompoundClip::getFrame (const Timecode time) const
+juce::Image AVCompoundClip::getFrame (double pts) const
 {
-    return videoFifo.getVideoFrame (time.count / time.timebase);
+    return videoFifo.getVideoFrame (pts);
 }
 
 juce::Image AVCompoundClip::getCurrentFrame() const
@@ -126,13 +131,20 @@ void AVCompoundClip::getNextAudioBlock (const juce::AudioSourceChannelInfo& info
     }
 
     position.fetch_add (info.numSamples);
+    triggerAsyncUpdate();
 }
 
 void AVCompoundClip::setNextReadPosition (juce::int64 samples)
 {
+    videoRenderJob.setSuspended (true);
+
     position.store (samples);
     for (auto& descriptor : clips)
         descriptor->clip->setNextReadPosition (std::max (juce::int64 (samples + descriptor->offset - descriptor->start), juce::int64 (descriptor->offset)));
+
+    videoFifo.clear();
+
+    videoRenderJob.setSuspended (false);
 }
 
 juce::int64 AVCompoundClip::getNextReadPosition() const
@@ -186,7 +198,27 @@ bool AVCompoundClip::hasSubtitle() const
     return hasSubtitle;
 }
 
+void AVCompoundClip::handleAsyncUpdate()
+{
+    if (sampleRate > 0 && hasVideo())
+    {
+        auto currentTimecode = videoFifo.getFrameTimecodeForTime (position.load() / sampleRate);
+        if (currentTimecode != lastShownFrame)
+        {
+            sendTimecode (currentTimecode, juce::sendNotificationAsync);
+            lastShownFrame = currentTimecode;
+        }
+
+        videoFifo.clearFramesOlderThan (lastShownFrame);
+    }
+}
+
 //==============================================================================
+
+AVCompoundClip::ComposingThread::ComposingThread (AVCompoundClip& ownerToUse)
+  : owner (ownerToUse)
+{
+}
 
 juce::TimeSliceClient* AVCompoundClip::getBackgroundJob()
 {
@@ -195,7 +227,49 @@ juce::TimeSliceClient* AVCompoundClip::getBackgroundJob()
 
 int AVCompoundClip::ComposingThread::useTimeSlice()
 {
-    return 1000;
+    juce::ScopedValueSetter<bool> guard (inRenderBlock, true);
+
+    if (owner.videoFifo.getNumAvailableFrames() >= 10)
+        return 30;
+
+    std::sort (owner.clips.begin(), owner.clips.end(), [](auto& a, auto& b){ return a->start.load() > b->start.load(); });
+
+    const int duration = 1001;
+    const double timebase = 0.000041666666666666665;
+
+    auto image = owner.videoFifo.getOldestFrameForRecycling();
+    auto nextTimeCode = owner.videoFifo.getHighestTimeCode() + duration;
+
+    auto timeInSeconds = nextTimeCode * timebase;
+    auto pos = timeInSeconds * owner.sampleRate;
+
+    juce::Graphics g (image);
+    g.fillAll (juce::Colours::black);
+
+    for (auto& clip : owner.clips)
+    {
+        auto start = clip->start.load();
+        auto end = start + clip->length.load();
+        if (pos < start || pos > end)
+            continue;
+
+        auto tc = (pos + clip->offset.load() - start) / owner.sampleRate;
+        auto frame = clip->clip->getFrame (tc);
+
+        g.drawImageWithin (frame, 0, 0, image.getWidth(), image.getHeight(), juce::RectanglePlacement::fillDestination);
+    }
+
+    owner.videoFifo.pushVideoFrame (image, nextTimeCode);
+
+    return 5;
+}
+
+void AVCompoundClip::ComposingThread::setSuspended (bool s)
+{
+    suspended = s;
+
+    while (suspended && inRenderBlock)
+        juce::Thread::sleep (5);
 }
 
 //==============================================================================

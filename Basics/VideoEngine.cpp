@@ -23,7 +23,8 @@ namespace foleys
 
 VideoEngine::VideoEngine()
 {
-    for (int i = 0; i < juce::SystemStats::getNumCpus(); ++i)
+    const int numReaders = std::max (4, juce::SystemStats::getNumCpus());
+    for (int i = 0; i < numReaders; ++i)
         readingThreads.emplace_back (std::make_unique<juce::TimeSliceThread>("Reading Thread #" + juce::String (i)));
 
     for (auto& reader : readingThreads)

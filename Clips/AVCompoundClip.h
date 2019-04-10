@@ -23,7 +23,8 @@
 namespace foleys
 {
 
-class AVCompoundClip : public AVClip
+class AVCompoundClip  : public AVClip,
+                        private juce::AsyncUpdater
 {
 public:
     AVCompoundClip();
@@ -33,7 +34,7 @@ public:
 
     void addClip (std::shared_ptr<AVClip> clip, double start, double length = -1, double offset = 0);
 
-    juce::Image getFrame (const Timecode) const override;
+    juce::Image getFrame (double pts) const override;
     juce::Image getCurrentFrame() const override;
 
     Size getVideoSize() const override;
@@ -85,12 +86,20 @@ public:
     };
 private:
 
+    void handleAsyncUpdate() override;
+
     class ComposingThread : public juce::TimeSliceClient
     {
     public:
-        ComposingThread() = default;
+        ComposingThread (AVCompoundClip& owner);
         int useTimeSlice() override;
+
+        void setSuspended (bool s);
+
     private:
+        AVCompoundClip& owner;
+        bool suspended = true;
+        bool inRenderBlock = false;
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ComposingThread)
     };
 
@@ -103,6 +112,7 @@ private:
     Size videoSize;
     double sampleRate = 0;
     juce::AudioBuffer<float> buffer;
+    Timecode lastShownFrame;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AVCompoundClip)
 };

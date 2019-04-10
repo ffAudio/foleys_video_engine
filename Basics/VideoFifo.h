@@ -32,6 +32,10 @@ public:
     void pushVideoFrame (juce::Image& image, juce::int64 timestamp);
     juce::Image getVideoFrame (double timestamp) const;
 
+    int getNumAvailableFrames() const;
+    juce::int64 getLowestTimeCode() const;
+    juce::int64 getHighestTimeCode() const;
+
     juce::Image getOldestFrameForRecycling();
 
     Timecode getFrameTimecodeForTime (double time) const;
@@ -45,6 +49,8 @@ public:
     void setSize (Size size);
 
 private:
+    juce::CriticalSection lock;
+
     double timebase = 0;
     Size originalSize;
 

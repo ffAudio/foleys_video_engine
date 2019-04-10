@@ -45,7 +45,7 @@ public:
     virtual Timecode getFrameTimecodeForTime (double time) const = 0;
 
     /** Returns the frame for a certain timecode */
-    virtual juce::Image getFrame (const Timecode) const = 0;
+    virtual juce::Image getFrame (double pts) const = 0;
 
     /** Returns the frame for the current timecode */
     virtual juce::Image getCurrentFrame() const = 0;

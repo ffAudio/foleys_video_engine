@@ -97,9 +97,9 @@ Timecode AVMovieClip::getFrameTimecodeForTime (double time) const
     return videoFifo.getFrameTimecodeForTime (time);
 }
 
-juce::Image AVMovieClip::getFrame (const Timecode) const
+juce::Image AVMovieClip::getFrame (double pts) const
 {
-    return {};
+    return videoFifo.getVideoFrame (pts);
 }
 
 juce::Image AVMovieClip::getStillImage (double seconds, Size size)
@@ -182,6 +182,8 @@ void AVMovieClip::setNextReadPosition (juce::int64 samples)
     audioFifo.setPosition (samples);
     if (movieReader)
         movieReader->setPosition (samples);
+
+    videoFifo.clear();
 
     backgroundJob.setSuspended (false);
 }
