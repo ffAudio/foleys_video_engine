@@ -186,6 +186,7 @@ void AVMovieClip::setNextReadPosition (juce::int64 samples)
     videoFifo.clear();
 
     backgroundJob.setSuspended (false);
+    triggerAsyncUpdate();
 }
 
 juce::int64 AVMovieClip::getNextReadPosition() const

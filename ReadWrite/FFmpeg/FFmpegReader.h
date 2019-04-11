@@ -29,7 +29,7 @@ class FFmpegReader : public AVReader
 {
 public:
     FFmpegReader (const juce::File& file, StreamTypes type);
-    ~FFmpegReader();
+    virtual ~FFmpegReader();
 
     juce::File getMediaFile() const override;
 
@@ -51,7 +51,7 @@ private:
     class Pimpl;
     friend Pimpl;
 
-    Pimpl* pimpl = nullptr;
+    std::unique_ptr<Pimpl> pimpl;
 
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FFmpegReader)

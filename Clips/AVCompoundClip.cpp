@@ -26,7 +26,7 @@ AVCompoundClip::AVCompoundClip()
   : videoRenderJob (*this)
 {
     composer = std::make_unique<SoftwareCompositingContext>();
-    videoSize = {800, 600};
+    videoSize = {800, 500};
     videoFifo.setSize (videoSize);
     videoFifo.setTimebase (0.000041666666666666665);
 
@@ -147,6 +147,7 @@ void AVCompoundClip::setNextReadPosition (juce::int64 samples)
     videoFifo.clear();
 
     videoRenderJob.setSuspended (false);
+    triggerAsyncUpdate();
 }
 
 juce::int64 AVCompoundClip::getNextReadPosition() const

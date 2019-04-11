@@ -448,12 +448,11 @@ private:
 FFmpegReader::FFmpegReader (const juce::File& file, StreamTypes type)
 {
     mediaFile = file;
-    pimpl = new Pimpl (*this, file, type);
+    pimpl = std::make_unique<Pimpl> (*this, file, type);
 }
 
 FFmpegReader::~FFmpegReader()
 {
-    delete pimpl;
 }
 
 juce::File FFmpegReader::getMediaFile() const
