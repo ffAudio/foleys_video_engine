@@ -39,7 +39,7 @@ juce::String AVCompoundClip::getDescription() const
 
 void AVCompoundClip::addClip (std::shared_ptr<AVClip> clip, double start, double length, double offset)
 {
-    auto clipDescriptor = std::make_unique<ClipDescriptor> (clip);
+    auto clipDescriptor = std::make_shared<ClipDescriptor> (clip);
     clipDescriptor->name   = clip->getDescription();
     clipDescriptor->start  = start * sampleRate;
     clipDescriptor->offset = offset * sampleRate;
@@ -47,7 +47,9 @@ void AVCompoundClip::addClip (std::shared_ptr<AVClip> clip, double start, double
 
     clip->prepareToPlay (buffer.getNumSamples(), sampleRate);
 
-    clips.push_back (std::move (clipDescriptor));
+    juce::ScopedLock sl (clipDescriptorLock);
+
+    clips.push_back (clipDescriptor);
 }
 
 juce::Image AVCompoundClip::getFrame (double pts) const
@@ -97,6 +99,8 @@ void AVCompoundClip::prepareToPlay (int samplesPerBlockExpected, double sampleRa
     sampleRate = sampleRateToUse;
     buffer.setSize (2, samplesPerBlockExpected);
 
+    juce::ScopedLock sl (clipDescriptorLock);
+
     for (auto& descriptor : clips)
         descriptor->clip->prepareToPlay (samplesPerBlockExpected, sampleRate);
 }
@@ -113,6 +117,8 @@ void AVCompoundClip::getNextAudioBlock (const juce::AudioSourceChannelInfo& info
 {
     info.clearActiveBufferRegion();
     auto pos = position.load();
+
+    juce::ScopedLock sl (clipDescriptorLock);
 
     for (auto& clip : clips)
     {
@@ -138,10 +144,13 @@ void AVCompoundClip::setNextReadPosition (juce::int64 samples)
 {
     videoRenderJob.setSuspended (true);
 
-    position.store (samples);
-    for (auto& descriptor : clips)
-        descriptor->clip->setNextReadPosition (std::max (juce::int64 (samples + descriptor->offset - descriptor->start), juce::int64 (descriptor->offset)));
+    {
+        juce::ScopedLock sl (clipDescriptorLock);
 
+        position.store (samples);
+        for (auto& descriptor : clips)
+            descriptor->clip->setNextReadPosition (std::max (juce::int64 (samples + descriptor->offset - descriptor->start), juce::int64 (descriptor->offset)));
+    }
     videoFifo.clear();
 
     videoRenderJob.setSuspended (false);
@@ -154,6 +163,8 @@ juce::int64 AVCompoundClip::getNextReadPosition() const
 
 juce::int64 AVCompoundClip::getTotalLength() const
 {
+    juce::ScopedLock sl (clipDescriptorLock);
+
     juce::int64 length = 0;
     for (auto& descriptor : clips)
         length = std::max (length, descriptor->start + descriptor->length);
@@ -213,6 +224,26 @@ void AVCompoundClip::handleAsyncUpdate()
     }
 }
 
+std::vector<std::shared_ptr<AVCompoundClip::ClipDescriptor>> AVCompoundClip::getActiveClips (double pts)
+{
+    juce::ScopedLock sl (clipDescriptorLock);
+
+    std::vector<std::shared_ptr<ClipDescriptor>> active;
+    auto samplePos = juce::int64 (pts * sampleRate);
+
+    for (auto clip : clips)
+    {
+        auto start = clip->start.load();
+        auto end = start + clip->length.load();
+        if (samplePos >= start && samplePos <= end)
+            active.push_back (clip);
+    }
+
+    std::sort (active.begin(), active.end(), [](auto& a, auto& b){ return a->start.load() < b->start.load(); });
+
+    return active;
+}
+
 //==============================================================================
 
 AVCompoundClip::ComposingThread::ComposingThread (AVCompoundClip& ownerToUse)
@@ -232,8 +263,6 @@ int AVCompoundClip::ComposingThread::useTimeSlice()
     if (owner.videoFifo.getNumAvailableFrames() >= 10)
         return 30;
 
-    std::sort (owner.clips.begin(), owner.clips.end(), [](auto& a, auto& b){ return a->start.load() > b->start.load(); });
-
     const int duration = 1001;
     const double timebase = 0.000041666666666666665;
 
@@ -246,15 +275,10 @@ int AVCompoundClip::ComposingThread::useTimeSlice()
     juce::Graphics g (image);
     g.fillAll (juce::Colours::black);
 
-    for (auto& clip : owner.clips)
+    for (auto& clip : owner.getActiveClips (timeInSeconds))
     {
-        auto start = clip->start.load();
-        auto end = start + clip->length.load();
-        if (pos < start || pos > end)
-            continue;
-
-        auto tc = (pos + clip->offset.load() - start) / owner.sampleRate;
-        auto frame = clip->clip->getFrame (tc);
+        const auto tc = (pos + clip->offset.load() - clip->start.load()) / owner.sampleRate;
+        const auto frame = clip->clip->getFrame (tc);
 
         g.drawImageWithin (frame, 0, 0, image.getWidth(), image.getHeight(), juce::RectanglePlacement::fillDestination);
     }
@@ -277,11 +301,6 @@ void AVCompoundClip::ComposingThread::setSuspended (bool s)
 AVCompoundClip::ClipDescriptor::ClipDescriptor (std::shared_ptr<AVClip> clipToUse)
 {
     clip = clipToUse;
-}
-
-AVCompoundClip::ClipDescriptor::~ClipDescriptor()
-{
-    masterReference.clear();
 }
 
 } // foleys

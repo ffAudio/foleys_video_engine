@@ -65,7 +65,6 @@ public:
     struct ClipDescriptor
     {
         ClipDescriptor (std::shared_ptr<AVClip> clip);
-        ~ClipDescriptor();
 
         juce::String name;
 
@@ -81,12 +80,13 @@ public:
         std::shared_ptr<AVClip> clip;
 
     private:
-        JUCE_DECLARE_WEAK_REFERENCEABLE (ClipDescriptor)
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ClipDescriptor)
     };
 private:
 
     void handleAsyncUpdate() override;
+
+    std::vector<std::shared_ptr<ClipDescriptor>> getActiveClips (double pts);
 
     class ComposingThread : public juce::TimeSliceClient
     {
@@ -103,11 +103,13 @@ private:
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ComposingThread)
     };
 
+    juce::CriticalSection clipDescriptorLock;
+
     VideoFifo videoFifo;
     ComposingThread videoRenderJob;
 
     std::unique_ptr<CompositingContext> composer;
-    std::vector<std::unique_ptr<ClipDescriptor>> clips;
+    std::vector<std::shared_ptr<ClipDescriptor>> clips;
     std::atomic<juce::int64> position = {};
     Size videoSize;
     double sampleRate = 0;
