@@ -82,11 +82,14 @@ public:
     private:
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ClipDescriptor)
     };
+
+    std::vector<std::shared_ptr<ClipDescriptor>> getClips() const;
+
 private:
 
     void handleAsyncUpdate() override;
 
-    std::vector<std::shared_ptr<ClipDescriptor>> getActiveClips (double pts);
+    std::vector<std::shared_ptr<ClipDescriptor>> getActiveClips (std::function<bool(AVCompoundClip::ClipDescriptor&)> selector) const;
 
     class ComposingThread : public juce::TimeSliceClient
     {

@@ -99,15 +99,13 @@ void AVCompoundClip::prepareToPlay (int samplesPerBlockExpected, double sampleRa
     sampleRate = sampleRateToUse;
     buffer.setSize (2, samplesPerBlockExpected);
 
-    juce::ScopedLock sl (clipDescriptorLock);
-
-    for (auto& descriptor : clips)
+    for (auto& descriptor : getClips())
         descriptor->clip->prepareToPlay (samplesPerBlockExpected, sampleRate);
 }
 
 void AVCompoundClip::releaseResources()
 {
-    for (auto& descriptor : clips)
+    for (auto& descriptor : getClips())
         descriptor->clip->releaseResources();
 
     sampleRate = 0;
@@ -118,9 +116,7 @@ void AVCompoundClip::getNextAudioBlock (const juce::AudioSourceChannelInfo& info
     info.clearActiveBufferRegion();
     auto pos = position.load();
 
-    juce::ScopedLock sl (clipDescriptorLock);
-
-    for (auto& clip : clips)
+    for (auto& clip : getActiveClips ([pos](AVCompoundClip::ClipDescriptor& clip) { return pos >= clip.start && pos < clip.start + clip.length; }))
     {
         if (! clip->clip->hasAudio())
             continue;
@@ -144,13 +140,10 @@ void AVCompoundClip::setNextReadPosition (juce::int64 samples)
 {
     videoRenderJob.setSuspended (true);
 
-    {
-        juce::ScopedLock sl (clipDescriptorLock);
+    position.store (samples);
+    for (auto& descriptor : getClips())
+        descriptor->clip->setNextReadPosition (std::max (juce::int64 (samples + descriptor->offset - descriptor->start), juce::int64 (descriptor->offset)));
 
-        position.store (samples);
-        for (auto& descriptor : clips)
-            descriptor->clip->setNextReadPosition (std::max (juce::int64 (samples + descriptor->offset - descriptor->start), juce::int64 (descriptor->offset)));
-    }
     videoFifo.clear();
 
     videoRenderJob.setSuspended (false);
@@ -163,10 +156,8 @@ juce::int64 AVCompoundClip::getNextReadPosition() const
 
 juce::int64 AVCompoundClip::getTotalLength() const
 {
-    juce::ScopedLock sl (clipDescriptorLock);
-
     juce::int64 length = 0;
-    for (auto& descriptor : clips)
+    for (auto& descriptor : getClips())
         length = std::max (length, descriptor->start + descriptor->length);
 
     return length;
@@ -185,7 +176,7 @@ void AVCompoundClip::setLooping (bool shouldLoop)
 bool AVCompoundClip::hasVideo() const
 {
     bool hasVideo = false;
-    for (auto& descriptor : clips)
+    for (auto& descriptor : getClips())
         hasVideo |= descriptor->clip->hasVideo();
 
     return hasVideo;
@@ -224,23 +215,24 @@ void AVCompoundClip::handleAsyncUpdate()
     }
 }
 
-std::vector<std::shared_ptr<AVCompoundClip::ClipDescriptor>> AVCompoundClip::getActiveClips (double pts)
+std::vector<std::shared_ptr<AVCompoundClip::ClipDescriptor>> AVCompoundClip::getClips() const
 {
     juce::ScopedLock sl (clipDescriptorLock);
+    return clips;
+}
 
+std::vector<std::shared_ptr<AVCompoundClip::ClipDescriptor>> AVCompoundClip::getActiveClips (std::function<bool(AVCompoundClip::ClipDescriptor&)> selector) const
+{
     std::vector<std::shared_ptr<ClipDescriptor>> active;
-    auto samplePos = juce::int64 (pts * sampleRate);
-
-    for (auto clip : clips)
     {
-        auto start = clip->start.load();
-        auto end = start + clip->length.load();
-        if (samplePos >= start && samplePos <= end)
-            active.push_back (clip);
+        juce::ScopedLock sl (clipDescriptorLock);
+        
+        for (auto clip : clips)
+            if (selector (*clip))
+                active.push_back (clip);
     }
 
     std::sort (active.begin(), active.end(), [](auto& a, auto& b){ return a->start.load() < b->start.load(); });
-
     return active;
 }
 
@@ -275,7 +267,7 @@ int AVCompoundClip::ComposingThread::useTimeSlice()
     juce::Graphics g (image);
     g.fillAll (juce::Colours::black);
 
-    for (auto& clip : owner.getActiveClips (timeInSeconds))
+    for (auto& clip : owner.getActiveClips ([pos](AVCompoundClip::ClipDescriptor& clip) { return pos >= clip.start && pos < clip.start + clip.length; }))
     {
         const auto tc = (pos + clip->offset.load() - clip->start.load()) / owner.sampleRate;
         const auto frame = clip->clip->getFrame (tc);
