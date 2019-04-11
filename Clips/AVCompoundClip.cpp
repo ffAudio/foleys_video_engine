@@ -37,7 +37,7 @@ juce::String AVCompoundClip::getDescription() const
     return "Edit";
 }
 
-void AVCompoundClip::addClip (std::shared_ptr<AVClip> clip, double start, double length, double offset)
+std::shared_ptr<AVCompoundClip::ClipDescriptor> AVCompoundClip::addClip (std::shared_ptr<AVClip> clip, double start, double length, double offset)
 {
     auto clipDescriptor = std::make_shared<ClipDescriptor> (clip);
     clipDescriptor->name   = clip->getDescription();
@@ -50,6 +50,8 @@ void AVCompoundClip::addClip (std::shared_ptr<AVClip> clip, double start, double
     juce::ScopedLock sl (clipDescriptorLock);
 
     clips.push_back (clipDescriptor);
+
+    return clipDescriptor;
 }
 
 juce::Image AVCompoundClip::getFrame (double pts) const

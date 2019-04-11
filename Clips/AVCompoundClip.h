@@ -32,8 +32,6 @@ public:
 
     juce::String getDescription() const override;
 
-    void addClip (std::shared_ptr<AVClip> clip, double start, double length = -1, double offset = 0);
-
     juce::Image getFrame (double pts) const override;
     juce::Image getCurrentFrame() const override;
 
@@ -82,6 +80,8 @@ public:
     private:
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ClipDescriptor)
     };
+
+    std::shared_ptr<ClipDescriptor> addClip (std::shared_ptr<AVClip> clip, double start, double length = -1, double offset = 0);
 
     std::vector<std::shared_ptr<ClipDescriptor>> getClips() const;
 
