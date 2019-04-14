@@ -37,25 +37,27 @@ VideoEngine::~VideoEngine()
 {
     for (auto& reader : readingThreads)
         reader->stopThread (500);
+
+    masterReference.clear();
 }
 
 std::shared_ptr<AVClip> VideoEngine::createClipFromFile (juce::File file)
 {
-    auto clip = AVFormatManager::createClipFromFile (file);
+    auto clip = AVFormatManager::createClipFromFile (*this, file);
     if (clip)
-        addToThreadPool (clip);
+        manageLifeTime (clip);
 
     return clip;
 }
 
 std::shared_ptr<AVCompoundClip> VideoEngine::createCompoundClip()
 {
-    auto clip = std::make_shared<AVCompoundClip>();
-    addToThreadPool (clip);
+    auto clip = std::make_shared<AVCompoundClip> (*this);
+    manageLifeTime (clip);
     return clip;
 }
 
-void VideoEngine::addToThreadPool (std::shared_ptr<AVClip> clip)
+void VideoEngine::manageLifeTime (std::shared_ptr<AVClip> clip)
 {
     releasePool.push_back (clip);
 
@@ -77,11 +79,10 @@ void VideoEngine::addToThreadPool (std::shared_ptr<AVClip> clip)
     readingThreads [nextThread]->addTimeSliceClient (client);
 }
 
-void VideoEngine::removeFromThreadPool (std::shared_ptr<AVClip> clip)
+void VideoEngine::removeFromBackgroundThreads (juce::TimeSliceClient* client)
 {
-    if (auto* client = clip->getBackgroundJob())
-        for (auto& reader : readingThreads)
-            reader->removeTimeSliceClient (client);
+    for (auto& reader : readingThreads)
+        reader->removeTimeSliceClient (client);
 }
 
 void VideoEngine::addJob (std::function<void()> job)
@@ -110,7 +111,9 @@ void VideoEngine::timerCallback()
     {
         if (p->use_count() == 1)
         {
-            removeFromThreadPool (*p);
+            if (auto* client = (*p)->getBackgroundJob())
+                removeFromBackgroundThreads (client);
+
             p = releasePool.erase (p);
         }
         else
@@ -120,5 +123,14 @@ void VideoEngine::timerCallback()
     }
 }
 
+juce::UndoManager* VideoEngine::getUndoManager()
+{
+    return undoManager;
+}
+
+void VideoEngine::setUndoManager (juce::UndoManager* undoManagerToUse)
+{
+    undoManager.setNonOwned (undoManagerToUse);
+}
 
 } // foleys

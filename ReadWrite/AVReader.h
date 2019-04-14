@@ -45,6 +45,8 @@ public:
     virtual bool hasAudio() const = 0;
     virtual bool hasSubtitle() const = 0;
 
+    virtual void setOutputSampleRate (double sampleRate) = 0;
+
     Size   originalSize;
     int    pixelFormat;
     double timebase = {};

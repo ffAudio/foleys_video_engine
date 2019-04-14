@@ -28,7 +28,7 @@ class AVMovieClip : public AVClip,
                     private juce::AsyncUpdater
 {
 public:
-    AVMovieClip() = default;
+    AVMovieClip (VideoEngine& videoEngine);
     virtual ~AVMovieClip() = default;
 
     juce::String getDescription() const override;
@@ -68,6 +68,8 @@ public:
     bool hasVideo() const override;
     bool hasAudio() const override;
     bool hasSubtitle() const override;
+
+    double getSampleRate() const override;
 
 private:
 

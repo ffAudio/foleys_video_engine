@@ -27,7 +27,7 @@ class AVCompoundClip  : public AVClip,
                         private juce::AsyncUpdater
 {
 public:
-    AVCompoundClip();
+    AVCompoundClip (VideoEngine& videoEngine);
     virtual ~AVCompoundClip() = default;
 
     juce::String getDescription() const override;
@@ -58,28 +58,64 @@ public:
     bool hasAudio() const override;
     bool hasSubtitle() const override;
 
+    double getSampleRate() const override;
+
     juce::TimeSliceClient* getBackgroundJob() override;
 
-    struct ClipDescriptor
+    struct ClipDescriptor : private juce::ValueTree::Listener
     {
-        ClipDescriptor (std::shared_ptr<AVClip> clip);
+        ClipDescriptor (AVCompoundClip& owner, std::shared_ptr<AVClip> clip);
 
-        juce::String name;
+        juce::String getDescription() const;
+        void setDescription (const juce::String& name);
 
-        /** start of the clip in samples */
-        std::atomic<juce::int64> start {0};
+        /** start of the clip in seconds */
+        double getStart() const;
+        void setStart (double start);
 
-        /** length of the clip in samples */
-        std::atomic<juce::int64> length {0};
+        /** length of the clip in seconds */
+        double getLength() const;
+        void setLength (double length);
 
-        /** offset in samples */
-        std::atomic<juce::int64> offset {0};
+        /** offset in seconds into the media */
+        double getOffset() const;
+        void setOffset (double offset);
 
         std::shared_ptr<AVClip> clip;
 
+        juce::ValueTree& getStatusTree();
+
+        void updateSampleCounts();
+
     private:
+        std::atomic<juce::int64> start {0};
+        std::atomic<juce::int64> length {0};
+        std::atomic<juce::int64> offset {0};
+
+        void valueTreePropertyChanged (juce::ValueTree& treeWhosePropertyHasChanged,
+                                       const juce::Identifier& property) override;
+
+        void valueTreeChildAdded (juce::ValueTree& parentTree,
+                                  juce::ValueTree& childWhichHasBeenAdded) override {}
+
+        void valueTreeChildRemoved (juce::ValueTree& parentTree,
+                                    juce::ValueTree& childWhichHasBeenRemoved,
+                                    int indexFromWhichChildWasRemoved) override {}
+
+        void valueTreeChildOrderChanged (juce::ValueTree& parentTreeWhoseChildrenHaveMoved,
+                                         int oldIndex, int newIndex) override {}
+
+        void valueTreeParentChanged (juce::ValueTree& treeWhoseParentHasChanged) override {}
+
+        juce::ValueTree state;
+        AVCompoundClip& owner;
+
+        friend AVCompoundClip;
+
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ClipDescriptor)
     };
+
+    juce::ValueTree& getStatusTree();
 
     std::shared_ptr<ClipDescriptor> addClip (std::shared_ptr<AVClip> clip, double start, double length = -1, double offset = 0);
 
@@ -88,6 +124,8 @@ public:
 private:
 
     void handleAsyncUpdate() override;
+
+    juce::UndoManager* getUndoManager();
 
     std::vector<std::shared_ptr<ClipDescriptor>> getActiveClips (std::function<bool(AVCompoundClip::ClipDescriptor&)> selector) const;
 
@@ -110,6 +148,8 @@ private:
 
     VideoFifo videoFifo;
     ComposingThread videoRenderJob;
+
+    juce::ValueTree state;
 
     std::unique_ptr<CompositingContext> composer;
     std::vector<std::shared_ptr<ClipDescriptor>> clips;

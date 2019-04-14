@@ -28,7 +28,7 @@ closed source software, including a free personal license. More information
 is available on https://shop.juce.com/get-juce
 
 
-This project links optionally to the FFmpeg library, see https://ffmpeg.org/legal.html. 
+This project links optionally to the FFmpeg library, see https://ffmpeg.org/legal.html.
 FFmpeg is provided under the LGPL version 2.1, so it is ok to link against it.
 However, by licensing _Foleys Video Engine_ you are still bound by their license.
 
@@ -39,7 +39,7 @@ Free use for personal and open source use
 -----------------------------------------
 
 You are allowed to use this project under the GPL v3 free of charge. In this case
-you are required to display a copyright note, that it was made using the 
+you are required to display a copyright note, that it was made using the
 Video Engine provided by _Foleys Finest Audio Ltd._
 
 
@@ -63,4 +63,3 @@ is about to come.
 
 
 Foleys Finest Audio Ltd. - Daniel Walz                        Brighton, April 2019
-

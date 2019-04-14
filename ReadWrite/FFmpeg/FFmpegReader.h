@@ -41,6 +41,8 @@ public:
 
     void readNewData (VideoFifo&, AudioFifo&) override;
 
+    void setOutputSampleRate (double sampleRate) override;
+
     bool hasVideo() const override;
     bool hasAudio() const override;
     bool hasSubtitle() const override;
@@ -52,7 +54,6 @@ private:
     friend Pimpl;
 
     std::unique_ptr<Pimpl> pimpl;
-
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FFmpegReader)
 };

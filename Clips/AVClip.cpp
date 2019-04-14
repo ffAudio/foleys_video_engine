@@ -21,6 +21,9 @@
 namespace foleys
 {
 
+AVClip::AVClip (VideoEngine& videoEngineToUse) : videoEngine (&videoEngineToUse)
+{
+}
 
 void AVClip::sendTimecode (Timecode newTimecode, juce::NotificationType nt)
 {
@@ -74,6 +77,11 @@ void AVClip::removeSubtitleListener (SubtitleListener* listener)
 juce::TimeSliceClient* AVClip::getBackgroundJob()
 {
     return nullptr;
+}
+
+VideoEngine* AVClip::getVideoEngine() const
+{
+    return videoEngine;
 }
 
 } // foleys

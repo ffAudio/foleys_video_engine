@@ -21,6 +21,11 @@
 namespace foleys
 {
 
+AVMovieClip::AVMovieClip (VideoEngine& engine)
+  : AVClip (engine)
+{
+}
+
 juce::String AVMovieClip::getDescription() const
 {
     if (movieReader)
@@ -33,7 +38,7 @@ bool AVMovieClip::openFromFile (const juce::File file)
 {
     backgroundJob.setSuspended (true);
 
-    std::unique_ptr<AVReader> reader = AVFormatManager::createReaderFor (file);
+    auto reader = AVFormatManager::createReaderFor (file);
     if (reader->isOpenedOk())
     {
         if (reader->hasVideo())
@@ -42,6 +47,7 @@ bool AVMovieClip::openFromFile (const juce::File file)
             setThumbnailReader ({});
 
         setReader (std::move (reader));
+        backgroundJob.setSuspended (false);
         return true;
     }
 
@@ -122,6 +128,8 @@ juce::Image AVMovieClip::getCurrentFrame() const
 void AVMovieClip::prepareToPlay (int samplesPerBlockExpected, double sampleRateToUse)
 {
     sampleRate = sampleRateToUse;
+    if (movieReader && movieReader->sampleRate > 0)
+        movieReader->setOutputSampleRate (sampleRate);
 }
 
 void AVMovieClip::releaseResources()
@@ -159,6 +167,11 @@ bool AVMovieClip::hasSubtitle() const
     return movieReader ? movieReader->hasSubtitle() : false;
 }
 
+double AVMovieClip::getSampleRate() const
+{
+    return sampleRate;
+}
+
 void AVMovieClip::handleAsyncUpdate()
 {
     if (sampleRate > 0 && hasVideo())
@@ -180,8 +193,18 @@ void AVMovieClip::setNextReadPosition (juce::int64 samples)
 
     nextReadPosition = samples;
     audioFifo.setPosition (samples);
-    if (movieReader)
-        movieReader->setPosition (samples);
+    if (movieReader && sampleRate > 0)
+    {
+        if (sampleRate == movieReader->sampleRate)
+        {
+            movieReader->setPosition (samples);
+        }
+        else
+        {
+            auto time = samples / sampleRate;
+            movieReader->setPosition (time * movieReader->sampleRate);
+        }
+    }
 
     videoFifo.clear();
 
@@ -226,7 +249,7 @@ int AVMovieClip::BackgroundReaderJob::useTimeSlice()
         return 0;
     }
 
-    return 50;
+    return 10;
 }
 
 void AVMovieClip::BackgroundReaderJob::setSuspended (bool s)

@@ -23,11 +23,13 @@
 namespace foleys
 {
 
+class VideoEngine;
 
 class AVClip  : public juce::PositionableAudioSource
 {
 public:
-    AVClip() = default;
+    AVClip (VideoEngine& videoEngine);
+
     virtual ~AVClip() = default;
 
     /** returns a string describing the clip. This could be the
@@ -60,6 +62,11 @@ public:
     virtual bool hasAudio() const = 0;
     virtual bool hasSubtitle() const = 0;
 
+    /**
+     This is the samplerate supplied from prepareToPlay and the sample rate
+     this clip will produce audio and use as clock source. */
+    virtual double getSampleRate() const = 0;
+
     struct TimecodeListener
     {
         virtual ~TimecodeListener() = default;
@@ -86,6 +93,8 @@ public:
 
     virtual juce::TimeSliceClient* getBackgroundJob();
 
+    VideoEngine* getVideoEngine() const;
+
 protected:
     /** Subclasses can call this to notify displays, that the time code has changed, e.g. to display a new frame */
     void sendTimecode (Timecode newTimecode, juce::NotificationType nt);
@@ -93,7 +102,10 @@ protected:
     /** Subclasses can use this to send sub titles for display or text to speech */
     void sendSubtitle (const juce::String& text, Timecode until, juce::NotificationType nt);
 
+    juce::WeakReference<VideoEngine> videoEngine;
+
 private:
+
     juce::ListenerList<TimecodeListener> timecodeListeners;
     juce::ListenerList<SubtitleListener> subtitleListeners;
 

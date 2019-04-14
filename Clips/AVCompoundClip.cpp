@@ -22,9 +22,24 @@
 namespace foleys
 {
 
-AVCompoundClip::AVCompoundClip()
-  : videoRenderJob (*this)
+namespace IDs
 {
+    juce::Identifier compoundClip { "CompoundClip" };
+
+    juce::Identifier clip         { "Clip" };
+    juce::Identifier description  { "description" };
+    juce::Identifier source       { "source" };
+    juce::Identifier start        { "start" };
+    juce::Identifier length       { "length" };
+    juce::Identifier offset       { "offset" };
+}
+
+AVCompoundClip::AVCompoundClip (VideoEngine& engine)
+  : AVClip (engine),
+    videoRenderJob (*this)
+{
+    state = juce::ValueTree (IDs::compoundClip);
+
     composer = std::make_unique<SoftwareCompositingContext>();
     videoSize = {800, 500};
     videoFifo.setSize (videoSize);
@@ -39,17 +54,21 @@ juce::String AVCompoundClip::getDescription() const
 
 std::shared_ptr<AVCompoundClip::ClipDescriptor> AVCompoundClip::addClip (std::shared_ptr<AVClip> clip, double start, double length, double offset)
 {
-    auto clipDescriptor = std::make_shared<ClipDescriptor> (clip);
-    clipDescriptor->name   = clip->getDescription();
-    clipDescriptor->start  = start * sampleRate;
-    clipDescriptor->offset = offset * sampleRate;
-    clipDescriptor->length = length > 0 ? length * sampleRate : clip->getTotalLength();
-
+    auto clipDescriptor = std::make_shared<ClipDescriptor> (*this, clip);
     clip->prepareToPlay (buffer.getNumSamples(), sampleRate);
+
+    clipDescriptor->setDescription (clip->getDescription());
+    clipDescriptor->setStart (start);
+    clipDescriptor->setOffset (offset);
+    clipDescriptor->setLength (length > 0 ? length : clip->getLengthInSeconds());
+
+    clipDescriptor->updateSampleCounts();
 
     juce::ScopedLock sl (clipDescriptorLock);
 
     clips.push_back (clipDescriptor);
+
+    state.appendChild (clipDescriptor->getStatusTree(), getUndoManager());
 
     return clipDescriptor;
 }
@@ -102,7 +121,10 @@ void AVCompoundClip::prepareToPlay (int samplesPerBlockExpected, double sampleRa
     buffer.setSize (2, samplesPerBlockExpected);
 
     for (auto& descriptor : getClips())
+    {
         descriptor->clip->prepareToPlay (samplesPerBlockExpected, sampleRate);
+        descriptor->updateSampleCounts();
+    }
 }
 
 void AVCompoundClip::releaseResources()
@@ -203,6 +225,11 @@ bool AVCompoundClip::hasSubtitle() const
     return hasSubtitle;
 }
 
+double AVCompoundClip::getSampleRate() const
+{
+    return sampleRate;
+}
+
 void AVCompoundClip::handleAsyncUpdate()
 {
     if (sampleRate > 0 && hasVideo())
@@ -218,6 +245,16 @@ void AVCompoundClip::handleAsyncUpdate()
     }
 }
 
+juce::UndoManager* AVCompoundClip::getUndoManager()
+{
+    return videoEngine ? videoEngine->getUndoManager() : nullptr;
+}
+
+juce::ValueTree& AVCompoundClip::getStatusTree()
+{
+    return state;
+}
+
 std::vector<std::shared_ptr<AVCompoundClip::ClipDescriptor>> AVCompoundClip::getClips() const
 {
     juce::ScopedLock sl (clipDescriptorLock);
@@ -229,7 +266,7 @@ std::vector<std::shared_ptr<AVCompoundClip::ClipDescriptor>> AVCompoundClip::get
     std::vector<std::shared_ptr<ClipDescriptor>> active;
     {
         juce::ScopedLock sl (clipDescriptorLock);
-        
+
         for (auto clip : clips)
             if (selector (*clip))
                 active.push_back (clip);
@@ -237,6 +274,80 @@ std::vector<std::shared_ptr<AVCompoundClip::ClipDescriptor>> AVCompoundClip::get
 
     std::sort (active.begin(), active.end(), [](auto& a, auto& b){ return a->start.load() < b->start.load(); });
     return active;
+}
+
+//==============================================================================
+
+AVCompoundClip::ClipDescriptor::ClipDescriptor (AVCompoundClip& ownerToUse, std::shared_ptr<AVClip> clipToUse)
+  : owner (ownerToUse)
+{
+    clip = clipToUse;
+    state = juce::ValueTree (IDs::clip);
+    state.addListener (this);
+}
+
+juce::String AVCompoundClip::ClipDescriptor::getDescription() const
+{
+    return state.getProperty (IDs::description, "unnamed");
+}
+
+void AVCompoundClip::ClipDescriptor::setDescription (const juce::String& name)
+{
+    state.setProperty (IDs::description, name, owner.getUndoManager());
+}
+
+double AVCompoundClip::ClipDescriptor::getStart() const
+{
+    return state.getProperty (IDs::start, 0.0);
+}
+
+void AVCompoundClip::ClipDescriptor::setStart (double s)
+{
+    state.setProperty (IDs::start, s, owner.getUndoManager());
+}
+
+double AVCompoundClip::ClipDescriptor::getLength() const
+{
+    return state.getProperty (IDs::length, 0.0);
+}
+
+void AVCompoundClip::ClipDescriptor::setLength (double l)
+{
+    state.setProperty (IDs::length, l, owner.getUndoManager());
+}
+
+double AVCompoundClip::ClipDescriptor::getOffset() const
+{
+    return state.getProperty (IDs::offset, 0.0);
+}
+
+void AVCompoundClip::ClipDescriptor::setOffset (double o)
+{
+    state.setProperty (IDs::offset, o, owner.getUndoManager());
+}
+
+void AVCompoundClip::ClipDescriptor::valueTreePropertyChanged (juce::ValueTree& treeWhosePropertyHasChanged,
+                                                               const juce::Identifier& property)
+{
+    if (treeWhosePropertyHasChanged != state)
+        return;
+
+    updateSampleCounts();
+}
+
+void AVCompoundClip::ClipDescriptor::updateSampleCounts()
+{
+    auto sampleRate = clip->getSampleRate();
+
+    start = sampleRate * double (state.getProperty (IDs::start));
+    length = sampleRate * double (state.getProperty (IDs::length));
+    offset = sampleRate * double (state.getProperty (IDs::offset));
+
+}
+
+juce::ValueTree& AVCompoundClip::ClipDescriptor::getStatusTree()
+{
+    return state;
 }
 
 //==============================================================================
@@ -256,7 +367,7 @@ int AVCompoundClip::ComposingThread::useTimeSlice()
     juce::ScopedValueSetter<bool> guard (inRenderBlock, true);
 
     if (owner.videoFifo.getNumAvailableFrames() >= 10)
-        return 30;
+        return 10;
 
     const int duration = 1001;
     const double timebase = 0.000041666666666666665;
@@ -280,7 +391,7 @@ int AVCompoundClip::ComposingThread::useTimeSlice()
 
     owner.videoFifo.pushVideoFrame (image, nextTimeCode);
 
-    return 5;
+    return 0;
 }
 
 void AVCompoundClip::ComposingThread::setSuspended (bool s)
@@ -291,11 +402,5 @@ void AVCompoundClip::ComposingThread::setSuspended (bool s)
         juce::Thread::sleep (5);
 }
 
-//==============================================================================
-
-AVCompoundClip::ClipDescriptor::ClipDescriptor (std::shared_ptr<AVClip> clipToUse)
-{
-    clip = clipToUse;
-}
 
 } // foleys

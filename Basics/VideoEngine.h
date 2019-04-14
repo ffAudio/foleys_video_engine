@@ -40,18 +40,33 @@ public:
 
     juce::ThreadPool& getThreadPool();
 
+    /**
+     This method will add the clip to the background threads and hold an auto
+     release pool to make sure, it won't be deleted in any realtime critical thread */
+    void manageLifeTime (std::shared_ptr<AVClip> clip);
+
+    /**
+     You can set an external undomanager. In this case you are responsible for detetion.
+     If you use the undomanager provided by the engine, you don't have to do anything
+     for it's lifetime. */
+    void setUndoManager (juce::UndoManager* undoManager);
+
+    juce::UndoManager* getUndoManager();
+
 private:
 
-    void addToThreadPool (std::shared_ptr<AVClip> clip);
-    void removeFromThreadPool (std::shared_ptr<AVClip> clip);
+    void removeFromBackgroundThreads (juce::TimeSliceClient* client);
 
     void timerCallback() override;
+
+    juce::OptionalScopedPointer<juce::UndoManager> undoManager { new juce::UndoManager(), true };
 
     juce::ThreadPool jobThreads { std::max (4, juce::SystemStats::getNumCpus()) };
     std::vector<std::unique_ptr<juce::TimeSliceThread>> readingThreads;
 
     std::vector<std::shared_ptr<AVClip>> releasePool;
 
+    JUCE_DECLARE_WEAK_REFERENCEABLE (VideoEngine)
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (VideoEngine)
 };
 

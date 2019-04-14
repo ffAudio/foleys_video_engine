@@ -31,7 +31,7 @@ namespace foleys
 class AVImageClip : public AVClip
 {
 public:
-    AVImageClip() = default;
+    AVImageClip (VideoEngine& videoEngine);
     virtual ~AVImageClip() = default;
 
     juce::String getDescription() const override;
@@ -66,6 +66,8 @@ public:
     bool hasVideo() const override    { return true; };
     bool hasAudio() const override    { return false; };
     bool hasSubtitle() const override { return false; };
+
+    double getSampleRate() const override;
 
 private:
 

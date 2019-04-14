@@ -21,6 +21,11 @@
 namespace foleys
 {
 
+AVImageClip::AVImageClip (VideoEngine& engine)
+  : AVClip (engine)
+{
+}
+
 juce::String AVImageClip::getDescription() const
 {
     return mediaFile.getFileNameWithoutExtension();
@@ -76,8 +81,9 @@ double AVImageClip::getCurrentTimeInSeconds() const
     return 0;
 }
 
-void AVImageClip::prepareToPlay (int samplesPerBlockExpected, double sampleRate)
+void AVImageClip::prepareToPlay (int samplesPerBlockExpected, double sampleRateToUse)
 {
+    sampleRate = sampleRateToUse;
 }
 
 void AVImageClip::releaseResources()
@@ -110,6 +116,11 @@ bool AVImageClip::isLooping() const
 
 void AVImageClip::setLooping (bool)
 {
+}
+
+double AVImageClip::getSampleRate() const
+{
+    return sampleRate;
 }
 
 

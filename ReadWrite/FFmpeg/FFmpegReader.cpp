@@ -70,24 +70,14 @@ public:
 
         if (juce::isPositiveAndBelow (audioStreamIdx, static_cast<int> (formatContext->nb_streams)))
         {
-            auto channelLayout = formatContext->streams [audioStreamIdx]->codecpar->channel_layout;
-            audioConverterContext = swr_alloc_set_opts(nullptr,
-                                                       channelLayout,              // out_ch_layout
-                                                       AV_SAMPLE_FMT_FLTP,         // out_sample_fmt
-                                                       audioContext->sample_rate,  // out_sample_rate
-                                                       channelLayout,              // in_ch_layout
-                                                       audioContext->sample_fmt,   // in_sample_fmt
-                                                       audioContext->sample_rate,  // in_sample_rate
-                                                       0,                          // log_offset
-                                                       nullptr);                   // log_ctx
+            channelLayout = formatContext->streams [audioStreamIdx]->codecpar->channel_layout;
 
             reader.sampleRate  = audioContext->sample_rate;
             reader.numChannels = audioContext->channels;
             reader.numSamples  = formatContext->streams [audioStreamIdx]->duration > 0
             ? formatContext->streams [audioStreamIdx]->duration : std::numeric_limits<juce::int64>::max();
 
-            ret = swr_init (audioConverterContext);
-            if(ret < 0)
+            if (! setOutputSampleRate (audioContext->sample_rate))
             {
                 FOLEYS_LOG ("Error initialising audio converter: " << getErrorString (ret));
                 closeVideoFile();
@@ -246,6 +236,24 @@ public:
         av_packet_unref (&packet);
 
         return image;
+    }
+
+    bool setOutputSampleRate (double sr)
+    {
+        if (audioConverterContext != nullptr)
+            swr_free(&audioConverterContext);
+
+        audioConverterContext = swr_alloc_set_opts(nullptr,
+                                                   channelLayout,              // out_ch_layout
+                                                   AV_SAMPLE_FMT_FLTP,         // out_sample_fmt
+                                                   sr,                         // out_sample_rate
+                                                   channelLayout,              // in_ch_layout
+                                                   audioContext->sample_fmt,   // in_sample_fmt
+                                                   audioContext->sample_rate,  // in_sample_rate
+                                                   0,                          // log_offset
+                                                   nullptr);                   // log_ctx
+
+        return swr_init (audioConverterContext) >= 0;
     }
 
     bool hasVideo() const
@@ -438,6 +446,9 @@ private:
     int       audioStreamIdx    = -1;
     int       subtitleStreamIdx = -1;
 
+    uint64_t  channelLayout = AV_CH_LAYOUT_STEREO;
+    double    outputSampleRate = {};
+
     juce::AudioBuffer<float>  audioConvertBuffer;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Pimpl)
@@ -478,6 +489,11 @@ juce::Image FFmpegReader::getStillImage (double seconds, Size size)
 void FFmpegReader::readNewData (VideoFifo& videoFifo, AudioFifo& audioFifo)
 {
     pimpl->processPacket (videoFifo, audioFifo);
+}
+
+void FFmpegReader::setOutputSampleRate (double sampleRate)
+{
+    pimpl->setOutputSampleRate (sampleRate);
 }
 
 bool FFmpegReader::hasVideo() const
