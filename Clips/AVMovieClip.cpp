@@ -118,7 +118,7 @@ juce::Image AVMovieClip::getFrame (double pts) const
 
 juce::Image AVMovieClip::getStillImage (double seconds, Size size)
 {
-    if (thumbnailReader)
+    if (thumbnailReader && thumbnailReader->isOpenedOk())
         return thumbnailReader->getStillImage (seconds, size);
 
     return {};
