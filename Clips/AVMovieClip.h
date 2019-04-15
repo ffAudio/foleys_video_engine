@@ -35,6 +35,8 @@ public:
 
     bool openFromFile (const juce::File file);
 
+    juce::File getMediaFile() const override;
+
     void setReader (std::unique_ptr<AVReader> reader);
     void setThumbnailReader (std::unique_ptr<AVReader> reader);
 

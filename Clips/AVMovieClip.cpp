@@ -54,6 +54,14 @@ bool AVMovieClip::openFromFile (const juce::File file)
     return false;
 }
 
+juce::File AVMovieClip::getMediaFile() const
+{
+    if (movieReader)
+        return movieReader->getMediaFile();
+
+    return {};
+}
+
 void AVMovieClip::setReader (std::unique_ptr<AVReader> readerToUse)
 {
     backgroundJob.setSuspended (true);

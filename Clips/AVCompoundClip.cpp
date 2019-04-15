@@ -32,6 +32,8 @@ namespace IDs
     juce::Identifier start        { "start" };
     juce::Identifier length       { "length" };
     juce::Identifier offset       { "offset" };
+    juce::Identifier videoLine    { "videoLine" };
+    juce::Identifier audioLine    { "audioLine" };
 }
 
 AVCompoundClip::AVCompoundClip (VideoEngine& engine)
@@ -45,6 +47,7 @@ AVCompoundClip::AVCompoundClip (VideoEngine& engine)
     videoFifo.setSize (videoSize);
     videoFifo.setTimebase (0.000041666666666666665);
 
+    state.addListener (this);
 }
 
 juce::String AVCompoundClip::getDescription() const
@@ -71,6 +74,15 @@ std::shared_ptr<AVCompoundClip::ClipDescriptor> AVCompoundClip::addClip (std::sh
     state.appendChild (clipDescriptor->getStatusTree(), getUndoManager());
 
     return clipDescriptor;
+}
+
+void AVCompoundClip::removeClip (std::shared_ptr<ClipDescriptor> descriptor)
+{
+    auto it = std::find (clips.begin(), clips.end(), descriptor);
+    if (it != clips.end())
+        clips.erase (it);
+
+    state.removeChild (descriptor->getStatusTree(), getUndoManager());
 }
 
 juce::Image AVCompoundClip::getFrame (double pts) const
@@ -245,6 +257,38 @@ void AVCompoundClip::handleAsyncUpdate()
     }
 }
 
+void AVCompoundClip::valueTreePropertyChanged (juce::ValueTree& treeWhosePropertyHasChanged,
+                                               const juce::Identifier& property)
+{
+}
+
+void AVCompoundClip::valueTreeChildAdded (juce::ValueTree& parentTree,
+                                          juce::ValueTree& childWhichHasBeenAdded)
+{
+    auto descriptor = std::make_shared<ClipDescriptor>(*this, childWhichHasBeenAdded);
+    if (descriptor->clip != nullptr)
+    {
+        descriptor->updateSampleCounts();
+
+        juce::ScopedLock sl (clipDescriptorLock);
+        clips.push_back (descriptor);
+    }
+}
+
+void AVCompoundClip::valueTreeChildRemoved (juce::ValueTree& parentTree,
+                                            juce::ValueTree& childWhichHasBeenRemoved,
+                                            int indexFromWhichChildWasRemoved)
+{
+    for (auto it = clips.begin(); it != clips.end(); ++it)
+    {
+        if ((*it)->getStatusTree() == childWhichHasBeenRemoved)
+        {
+            clips.erase (it);
+            return;
+        }
+    }
+}
+
 juce::UndoManager* AVCompoundClip::getUndoManager()
 {
     return videoEngine ? videoEngine->getUndoManager() : nullptr;
@@ -283,6 +327,22 @@ AVCompoundClip::ClipDescriptor::ClipDescriptor (AVCompoundClip& ownerToUse, std:
 {
     clip = clipToUse;
     state = juce::ValueTree (IDs::clip);
+    auto mediaFile = clip->getMediaFile();
+    if (mediaFile.getFullPathName().isNotEmpty())
+        state.setProperty (IDs::source, mediaFile.getFullPathName(), nullptr);
+
+    state.addListener (this);
+}
+
+AVCompoundClip::ClipDescriptor::ClipDescriptor (AVCompoundClip& ownerToUse, juce::ValueTree stateToUse)
+  : owner (ownerToUse)
+{
+    state = stateToUse;
+    if (state.hasProperty (IDs::source) && owner.videoEngine)
+    {
+        auto source = state.getProperty (IDs::source);
+        clip = owner.videoEngine->createClipFromFile ({source});
+    }
     state.addListener (this);
 }
 
@@ -324,6 +384,16 @@ double AVCompoundClip::ClipDescriptor::getOffset() const
 void AVCompoundClip::ClipDescriptor::setOffset (double o)
 {
     state.setProperty (IDs::offset, o, owner.getUndoManager());
+}
+
+int AVCompoundClip::ClipDescriptor::getVideoLine() const
+{
+    return state.getProperty (IDs::videoLine, 0.0);
+}
+
+void AVCompoundClip::ClipDescriptor::setVideoLine (int line)
+{
+    state.setProperty (IDs::videoLine, line, owner.getUndoManager());
 }
 
 void AVCompoundClip::ClipDescriptor::valueTreePropertyChanged (juce::ValueTree& treeWhosePropertyHasChanged,

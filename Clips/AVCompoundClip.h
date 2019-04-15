@@ -24,7 +24,8 @@ namespace foleys
 {
 
 class AVCompoundClip  : public AVClip,
-                        private juce::AsyncUpdater
+                        private juce::AsyncUpdater,
+                        private juce::ValueTree::Listener
 {
 public:
     AVCompoundClip (VideoEngine& videoEngine);
@@ -66,6 +67,8 @@ public:
     {
         ClipDescriptor (AVCompoundClip& owner, std::shared_ptr<AVClip> clip);
 
+        ClipDescriptor (AVCompoundClip& owner, juce::ValueTree state);
+
         juce::String getDescription() const;
         void setDescription (const juce::String& name);
 
@@ -80,6 +83,9 @@ public:
         /** offset in seconds into the media */
         double getOffset() const;
         void setOffset (double offset);
+
+        int getVideoLine() const;
+        void setVideoLine (int line);
 
         std::shared_ptr<AVClip> clip;
 
@@ -118,8 +124,24 @@ public:
     juce::ValueTree& getStatusTree();
 
     std::shared_ptr<ClipDescriptor> addClip (std::shared_ptr<AVClip> clip, double start, double length = -1, double offset = 0);
+    void removeClip (std::shared_ptr<ClipDescriptor> descriptor);
 
     std::vector<std::shared_ptr<ClipDescriptor>> getClips() const;
+
+    void valueTreePropertyChanged (juce::ValueTree& treeWhosePropertyHasChanged,
+                                   const juce::Identifier& property) override;
+
+    void valueTreeChildAdded (juce::ValueTree& parentTree,
+                              juce::ValueTree& childWhichHasBeenAdded) override;
+
+    void valueTreeChildRemoved (juce::ValueTree& parentTree,
+                                juce::ValueTree& childWhichHasBeenRemoved,
+                                int indexFromWhichChildWasRemoved) override;
+
+    void valueTreeChildOrderChanged (juce::ValueTree& parentTreeWhoseChildrenHaveMoved,
+                                     int oldIndex, int newIndex) override {}
+
+    void valueTreeParentChanged (juce::ValueTree& treeWhoseParentHasChanged) override {}
 
 private:
 

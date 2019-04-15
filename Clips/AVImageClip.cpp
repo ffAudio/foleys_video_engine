@@ -31,6 +31,11 @@ juce::String AVImageClip::getDescription() const
     return mediaFile.getFileNameWithoutExtension();
 }
 
+juce::File AVImageClip::getMediaFile() const
+{
+    return mediaFile;
+}
+
 void AVImageClip::setMediaFile (const juce::File& media)
 {
     mediaFile = media;

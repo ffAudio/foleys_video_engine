@@ -42,6 +42,12 @@ void AudioFifo::pushSamples (const juce::AudioBuffer<float>& samples)
     writePosition.fetch_add (write.blockSize1 + write.blockSize2);
 }
 
+void AudioFifo::setNumSamples (int samples)
+{
+    audioFifo.setTotalSize (samples);
+    audioBuffer.setSize (2, samples);
+}
+
 void AudioFifo::pullSamples (const juce::AudioSourceChannelInfo& info)
 {
     auto read = audioFifo.read (info.numSamples);

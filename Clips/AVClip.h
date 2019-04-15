@@ -32,6 +32,9 @@ public:
 
     virtual ~AVClip() = default;
 
+    /** returns the original media file to restore */
+    virtual juce::File getMediaFile() const { return {}; }
+
     /** returns a string describing the clip. This could be the
         filename of the original media file */
     virtual juce::String getDescription() const = 0;

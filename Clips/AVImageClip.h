@@ -36,6 +36,7 @@ public:
 
     juce::String getDescription() const override;
 
+    juce::File getMediaFile() const override;
     void setMediaFile (const juce::File& media);
 
     void setImage (const juce::Image& image);
