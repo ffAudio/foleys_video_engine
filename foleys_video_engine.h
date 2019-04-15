@@ -62,6 +62,7 @@
 #include "Processing/CompositingContext.h"
 #include "Processing/SoftwareCompositingContext.h"
 
+#include "Clips/AudioClip.h"
 #include "Clips/ImageClip.h"
 #include "Clips/MovieClip.h"
 #include "Clips/ComposedClip.h"

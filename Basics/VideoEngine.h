@@ -24,6 +24,8 @@
 namespace foleys
 {
 
+class AVFormatManager;
+
 class VideoEngine  : public juce::DeletedAtShutdown,
                      private juce::Timer
 {
@@ -33,6 +35,7 @@ public:
 
     std::shared_ptr<AVClip> createClipFromFile (juce::File file);
     std::shared_ptr<ComposedClip> createCompoundClip();
+    std::unique_ptr<AVReader> createReaderFor (juce::File file, StreamTypes type = StreamTypes::all());
 
     void addJob (std::function<void()> job);
     void addJob (juce::ThreadPoolJob* job, bool deleteJobWhenFinished);
@@ -58,6 +61,8 @@ private:
     void removeFromBackgroundThreads (juce::TimeSliceClient* client);
 
     void timerCallback() override;
+
+    std::unique_ptr<AVFormatManager> formatManager;
 
     juce::OptionalScopedPointer<juce::UndoManager> undoManager { new juce::UndoManager(), true };
 

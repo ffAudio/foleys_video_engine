@@ -36,13 +36,16 @@ juce::String MovieClip::getDescription() const
 
 bool MovieClip::openFromFile (const juce::File file)
 {
+    if (videoEngine == nullptr)
+        return false;
+
     backgroundJob.setSuspended (true);
 
-    auto reader = AVFormatManager::createReaderFor (file);
+    auto reader = videoEngine->createReaderFor (file);
     if (reader->isOpenedOk())
     {
         if (reader->hasVideo())
-            setThumbnailReader (AVFormatManager::createReaderFor (file, StreamTypes::video()));
+            setThumbnailReader (videoEngine->createReaderFor (file, StreamTypes::video()));
         else
             setThumbnailReader ({});
 

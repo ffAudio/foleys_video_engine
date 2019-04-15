@@ -25,6 +25,7 @@
 #include "Basics/VideoEngine.cpp"
 
 #include "Clips/AVClip.cpp"
+#include "Clips/AudioClip.cpp"
 #include "Clips/ImageClip.cpp"
 #include "Clips/MovieClip.cpp"
 #include "Clips/ComposedClip.cpp"

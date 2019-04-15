@@ -33,12 +33,16 @@ public:
         FFmpeg
     };
 
-    static std::shared_ptr<AVClip> createClipFromFile (VideoEngine& engine, juce::File file);
+    AVFormatManager();
 
-    static std::unique_ptr<AVReader> createReaderFor (juce::File file, StreamTypes type = StreamTypes::all());
+    std::shared_ptr<AVClip> createClipFromFile (VideoEngine& engine, juce::File file);
+
+    std::unique_ptr<AVReader> createReaderFor (juce::File file, StreamTypes type = StreamTypes::all());
 
 
 private:
+    juce::AudioFormatManager audioFormatManager;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AVFormatManager)
 };
 

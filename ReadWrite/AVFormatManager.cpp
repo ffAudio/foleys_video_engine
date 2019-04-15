@@ -21,6 +21,10 @@
 namespace foleys
 {
 
+AVFormatManager::AVFormatManager()
+{
+    audioFormatManager.registerBasicFormats();
+}
 
 std::shared_ptr<AVClip> AVFormatManager::createClipFromFile (VideoEngine& engine, juce::File file)
 {
@@ -31,6 +35,17 @@ std::shared_ptr<AVClip> AVFormatManager::createClipFromFile (VideoEngine& engine
         clip->setImage (image);
         clip->setMediaFile (file);
         return clip;
+    }
+
+    if (file.hasFileExtension ("wav;aif;aiff;mp3;wma;m4a"))
+    {
+        if (auto* audio = audioFormatManager.createReaderFor (file))
+        {
+            auto clip = std::make_shared<AudioClip> (engine);
+            clip->setAudioFormatReader (audio);
+            clip->setMediaFile (file);
+            return clip;
+        }
     }
 
     auto reader = AVFormatManager::createReaderFor (file);

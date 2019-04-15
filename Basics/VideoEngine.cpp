@@ -23,6 +23,8 @@ namespace foleys
 
 VideoEngine::VideoEngine()
 {
+    formatManager = std::make_unique<AVFormatManager>();
+
     const int numReaders = std::max (4, juce::SystemStats::getNumCpus());
     for (int i = 0; i < numReaders; ++i)
         readingThreads.emplace_back (std::make_unique<juce::TimeSliceThread>("Reading Thread #" + juce::String (i)));
@@ -43,7 +45,7 @@ VideoEngine::~VideoEngine()
 
 std::shared_ptr<AVClip> VideoEngine::createClipFromFile (juce::File file)
 {
-    auto clip = AVFormatManager::createClipFromFile (*this, file);
+    auto clip = formatManager->createClipFromFile (*this, file);
     if (clip)
         manageLifeTime (clip);
 
@@ -55,6 +57,11 @@ std::shared_ptr<ComposedClip> VideoEngine::createCompoundClip()
     auto clip = std::make_shared<ComposedClip> (*this);
     manageLifeTime (clip);
     return clip;
+}
+
+std::unique_ptr<AVReader> VideoEngine::createReaderFor (juce::File file, StreamTypes type)
+{
+    return formatManager->createReaderFor (file, type);
 }
 
 void VideoEngine::manageLifeTime (std::shared_ptr<AVClip> clip)
