@@ -24,7 +24,7 @@
 namespace foleys
 {
 
-class MovieClip : public AVClip,
+class MovieClip   : public AVClip,
                     private juce::AsyncUpdater
 {
 public:

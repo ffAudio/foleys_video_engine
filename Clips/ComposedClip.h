@@ -24,8 +24,8 @@ namespace foleys
 {
 
 class ComposedClip  : public AVClip,
-                        private juce::AsyncUpdater,
-                        private juce::ValueTree::Listener
+                      private juce::AsyncUpdater,
+                      private juce::ValueTree::Listener
 {
 public:
     ComposedClip (VideoEngine& videoEngine);
@@ -86,6 +86,9 @@ public:
 
         int getVideoLine() const;
         void setVideoLine (int line);
+
+        int getAudioLine() const;
+        void setAudioLine (int line);
 
         std::shared_ptr<AVClip> clip;
 

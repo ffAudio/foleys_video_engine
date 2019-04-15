@@ -396,6 +396,16 @@ void ComposedClip::ClipDescriptor::setVideoLine (int line)
     state.setProperty (IDs::videoLine, line, owner.getUndoManager());
 }
 
+int ComposedClip::ClipDescriptor::getAudioLine() const
+{
+    return state.getProperty (IDs::audioLine, 0.0);
+}
+
+void ComposedClip::ClipDescriptor::setAudioLine (int line)
+{
+    state.setProperty (IDs::audioLine, line, owner.getUndoManager());
+}
+
 void ComposedClip::ClipDescriptor::valueTreePropertyChanged (juce::ValueTree& treeWhosePropertyHasChanged,
                                                                const juce::Identifier& property)
 {
