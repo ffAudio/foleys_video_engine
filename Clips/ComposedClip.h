@@ -23,13 +23,13 @@
 namespace foleys
 {
 
-class AVCompoundClip  : public AVClip,
+class ComposedClip  : public AVClip,
                         private juce::AsyncUpdater,
                         private juce::ValueTree::Listener
 {
 public:
-    AVCompoundClip (VideoEngine& videoEngine);
-    virtual ~AVCompoundClip() = default;
+    ComposedClip (VideoEngine& videoEngine);
+    virtual ~ComposedClip() = default;
 
     juce::String getDescription() const override;
 
@@ -65,9 +65,9 @@ public:
 
     struct ClipDescriptor : private juce::ValueTree::Listener
     {
-        ClipDescriptor (AVCompoundClip& owner, std::shared_ptr<AVClip> clip);
+        ClipDescriptor (ComposedClip& owner, std::shared_ptr<AVClip> clip);
 
-        ClipDescriptor (AVCompoundClip& owner, juce::ValueTree state);
+        ClipDescriptor (ComposedClip& owner, juce::ValueTree state);
 
         juce::String getDescription() const;
         void setDescription (const juce::String& name);
@@ -114,9 +114,9 @@ public:
         void valueTreeParentChanged (juce::ValueTree& treeWhoseParentHasChanged) override {}
 
         juce::ValueTree state;
-        AVCompoundClip& owner;
+        ComposedClip& owner;
 
-        friend AVCompoundClip;
+        friend ComposedClip;
 
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ClipDescriptor)
     };
@@ -149,18 +149,18 @@ private:
 
     juce::UndoManager* getUndoManager();
 
-    std::vector<std::shared_ptr<ClipDescriptor>> getActiveClips (std::function<bool(AVCompoundClip::ClipDescriptor&)> selector) const;
+    std::vector<std::shared_ptr<ClipDescriptor>> getActiveClips (std::function<bool(ComposedClip::ClipDescriptor&)> selector) const;
 
     class ComposingThread : public juce::TimeSliceClient
     {
     public:
-        ComposingThread (AVCompoundClip& owner);
+        ComposingThread (ComposedClip& owner);
         int useTimeSlice() override;
 
         void setSuspended (bool s);
 
     private:
-        AVCompoundClip& owner;
+        ComposedClip& owner;
         bool suspended = true;
         bool inRenderBlock = false;
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ComposingThread)
@@ -181,7 +181,7 @@ private:
     juce::AudioBuffer<float> buffer;
     Timecode lastShownFrame;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AVCompoundClip)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ComposedClip)
 };
 
 } // foleys

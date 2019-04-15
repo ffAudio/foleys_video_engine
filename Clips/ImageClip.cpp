@@ -21,109 +21,109 @@
 namespace foleys
 {
 
-AVImageClip::AVImageClip (VideoEngine& engine)
+ImageClip::ImageClip (VideoEngine& engine)
   : AVClip (engine)
 {
 }
 
-juce::String AVImageClip::getDescription() const
+juce::String ImageClip::getDescription() const
 {
     return mediaFile.getFileNameWithoutExtension();
 }
 
-juce::File AVImageClip::getMediaFile() const
+juce::File ImageClip::getMediaFile() const
 {
     return mediaFile;
 }
 
-void AVImageClip::setMediaFile (const juce::File& media)
+void ImageClip::setMediaFile (const juce::File& media)
 {
     mediaFile = media;
 }
 
-void AVImageClip::setImage (const juce::Image& imageToUse)
+void ImageClip::setImage (const juce::Image& imageToUse)
 {
     image = imageToUse;
 }
 
-juce::Image AVImageClip::getFrame (double pts) const
+juce::Image ImageClip::getFrame (double pts) const
 {
     return image;
 }
 
-juce::Image AVImageClip::getCurrentFrame() const
+juce::Image ImageClip::getCurrentFrame() const
 {
     return image;
 }
 
-juce::Image AVImageClip::getStillImage (double seconds, Size size)
+juce::Image ImageClip::getStillImage (double seconds, Size size)
 {
     return image.rescaled (size.width, size.height);
 }
 
-double AVImageClip::getLengthInSeconds() const
+double ImageClip::getLengthInSeconds() const
 {
     return std::numeric_limits<double>::max();
 }
 
-Timecode AVImageClip::getFrameTimecodeForTime (double time) const
+Timecode ImageClip::getFrameTimecodeForTime (double time) const
 {
     return { 0, 1.0 };
 }
 
-Timecode AVImageClip::getCurrentTimecode() const
+Timecode ImageClip::getCurrentTimecode() const
 {
     return { 0, 1.0 };
 }
 
-Size AVImageClip::getVideoSize() const
+Size ImageClip::getVideoSize() const
 {
     return { image.getWidth(), image.getHeight() };
 }
 
-double AVImageClip::getCurrentTimeInSeconds() const
+double ImageClip::getCurrentTimeInSeconds() const
 {
     return 0;
 }
 
-void AVImageClip::prepareToPlay (int samplesPerBlockExpected, double sampleRateToUse)
+void ImageClip::prepareToPlay (int samplesPerBlockExpected, double sampleRateToUse)
 {
     sampleRate = sampleRateToUse;
 }
 
-void AVImageClip::releaseResources()
+void ImageClip::releaseResources()
 {
 }
 
-void AVImageClip::getNextAudioBlock (const juce::AudioSourceChannelInfo& info)
+void ImageClip::getNextAudioBlock (const juce::AudioSourceChannelInfo& info)
 {
     info.clearActiveBufferRegion();
 }
 
-void AVImageClip::setNextReadPosition (juce::int64)
+void ImageClip::setNextReadPosition (juce::int64)
 {
 }
 
-juce::int64 AVImageClip::getNextReadPosition() const
+juce::int64 ImageClip::getNextReadPosition() const
 {
     return 0;
 }
 
-juce::int64 AVImageClip::getTotalLength() const
+juce::int64 ImageClip::getTotalLength() const
 {
     return std::numeric_limits<juce::int64>::max();
 }
 
-bool AVImageClip::isLooping() const
+bool ImageClip::isLooping() const
 {
     return true;
 }
 
-void AVImageClip::setLooping (bool)
+void ImageClip::setLooping (bool)
 {
 }
 
-double AVImageClip::getSampleRate() const
+double ImageClip::getSampleRate() const
 {
     return sampleRate;
 }

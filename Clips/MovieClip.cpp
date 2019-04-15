@@ -21,12 +21,12 @@
 namespace foleys
 {
 
-AVMovieClip::AVMovieClip (VideoEngine& engine)
+MovieClip::MovieClip (VideoEngine& engine)
   : AVClip (engine)
 {
 }
 
-juce::String AVMovieClip::getDescription() const
+juce::String MovieClip::getDescription() const
 {
     if (movieReader)
         return movieReader->getMediaFile().getFileNameWithoutExtension();
@@ -34,7 +34,7 @@ juce::String AVMovieClip::getDescription() const
     return "MovieClip";
 }
 
-bool AVMovieClip::openFromFile (const juce::File file)
+bool MovieClip::openFromFile (const juce::File file)
 {
     backgroundJob.setSuspended (true);
 
@@ -54,7 +54,7 @@ bool AVMovieClip::openFromFile (const juce::File file)
     return false;
 }
 
-juce::File AVMovieClip::getMediaFile() const
+juce::File MovieClip::getMediaFile() const
 {
     if (movieReader)
         return movieReader->getMediaFile();
@@ -62,7 +62,7 @@ juce::File AVMovieClip::getMediaFile() const
     return {};
 }
 
-void AVMovieClip::setReader (std::unique_ptr<AVReader> readerToUse)
+void MovieClip::setReader (std::unique_ptr<AVReader> readerToUse)
 {
     backgroundJob.setSuspended (true);
 
@@ -78,17 +78,17 @@ void AVMovieClip::setReader (std::unique_ptr<AVReader> readerToUse)
     backgroundJob.setSuspended (false);
 }
 
-void AVMovieClip::setThumbnailReader (std::unique_ptr<AVReader> reader)
+void MovieClip::setThumbnailReader (std::unique_ptr<AVReader> reader)
 {
     thumbnailReader = std::move (reader);
 }
 
-Size AVMovieClip::getVideoSize() const
+Size MovieClip::getVideoSize() const
 {
     return (movieReader != nullptr) ? movieReader->originalSize : Size();
 }
 
-double AVMovieClip::getLengthInSeconds() const
+double MovieClip::getLengthInSeconds() const
 {
     if (movieReader && movieReader->isOpenedOk())
         return movieReader->getTotalLength() / sampleRate;
@@ -96,27 +96,27 @@ double AVMovieClip::getLengthInSeconds() const
     return {};
 }
 
-double AVMovieClip::getCurrentTimeInSeconds() const
+double MovieClip::getCurrentTimeInSeconds() const
 {
     return sampleRate == 0 ? 0 : nextReadPosition / sampleRate;
 }
 
-Timecode AVMovieClip::getCurrentTimecode() const
+Timecode MovieClip::getCurrentTimecode() const
 {
     return getFrameTimecodeForTime (getCurrentTimeInSeconds());
 }
 
-Timecode AVMovieClip::getFrameTimecodeForTime (double time) const
+Timecode MovieClip::getFrameTimecodeForTime (double time) const
 {
     return videoFifo.getFrameTimecodeForTime (time);
 }
 
-juce::Image AVMovieClip::getFrame (double pts) const
+juce::Image MovieClip::getFrame (double pts) const
 {
     return videoFifo.getVideoFrame (pts);
 }
 
-juce::Image AVMovieClip::getStillImage (double seconds, Size size)
+juce::Image MovieClip::getStillImage (double seconds, Size size)
 {
     if (thumbnailReader && thumbnailReader->isOpenedOk())
         return thumbnailReader->getStillImage (seconds, size);
@@ -124,7 +124,7 @@ juce::Image AVMovieClip::getStillImage (double seconds, Size size)
     return {};
 }
 
-juce::Image AVMovieClip::getCurrentFrame() const
+juce::Image MovieClip::getCurrentFrame() const
 {
     auto pts = sampleRate > 0 ? nextReadPosition / sampleRate : 0.0;
     if (movieReader && movieReader->sampleRate > 0)
@@ -133,19 +133,19 @@ juce::Image AVMovieClip::getCurrentFrame() const
     return videoFifo.getVideoFrame (pts);
 }
 
-void AVMovieClip::prepareToPlay (int samplesPerBlockExpected, double sampleRateToUse)
+void MovieClip::prepareToPlay (int samplesPerBlockExpected, double sampleRateToUse)
 {
     sampleRate = sampleRateToUse;
     if (movieReader && movieReader->sampleRate > 0)
         movieReader->setOutputSampleRate (sampleRate);
 }
 
-void AVMovieClip::releaseResources()
+void MovieClip::releaseResources()
 {
     sampleRate = 0;
 }
 
-void AVMovieClip::getNextAudioBlock (const juce::AudioSourceChannelInfo& info)
+void MovieClip::getNextAudioBlock (const juce::AudioSourceChannelInfo& info)
 {
     if (movieReader && movieReader->isOpenedOk() && movieReader->hasAudio())
     {
@@ -160,27 +160,27 @@ void AVMovieClip::getNextAudioBlock (const juce::AudioSourceChannelInfo& info)
     triggerAsyncUpdate();
 }
 
-bool AVMovieClip::hasVideo() const
+bool MovieClip::hasVideo() const
 {
     return movieReader ? movieReader->hasVideo() : false;
 }
 
-bool AVMovieClip::hasAudio() const
+bool MovieClip::hasAudio() const
 {
     return movieReader ? movieReader->hasAudio() : false;
 }
 
-bool AVMovieClip::hasSubtitle() const
+bool MovieClip::hasSubtitle() const
 {
     return movieReader ? movieReader->hasSubtitle() : false;
 }
 
-double AVMovieClip::getSampleRate() const
+double MovieClip::getSampleRate() const
 {
     return sampleRate;
 }
 
-void AVMovieClip::handleAsyncUpdate()
+void MovieClip::handleAsyncUpdate()
 {
     if (sampleRate > 0 && hasVideo())
     {
@@ -195,7 +195,7 @@ void AVMovieClip::handleAsyncUpdate()
     }
 }
 
-void AVMovieClip::setNextReadPosition (juce::int64 samples)
+void MovieClip::setNextReadPosition (juce::int64 samples)
 {
     backgroundJob.setSuspended (true);
 
@@ -220,12 +220,12 @@ void AVMovieClip::setNextReadPosition (juce::int64 samples)
     triggerAsyncUpdate();
 }
 
-juce::int64 AVMovieClip::getNextReadPosition() const
+juce::int64 MovieClip::getNextReadPosition() const
 {
     return nextReadPosition;
 }
 
-juce::int64 AVMovieClip::getTotalLength() const
+juce::int64 MovieClip::getTotalLength() const
 {
     if (movieReader && movieReader->isOpenedOk())
         return movieReader->getTotalLength();
@@ -233,22 +233,22 @@ juce::int64 AVMovieClip::getTotalLength() const
     return 0;
 }
 
-bool AVMovieClip::isLooping() const
+bool MovieClip::isLooping() const
 {
     return loop;
 }
 
-void AVMovieClip::setLooping (bool shouldLoop)
+void MovieClip::setLooping (bool shouldLoop)
 {
     loop = shouldLoop;
 }
 
-AVMovieClip::BackgroundReaderJob::BackgroundReaderJob (AVMovieClip& ownerToUse)
+MovieClip::BackgroundReaderJob::BackgroundReaderJob (MovieClip& ownerToUse)
     : owner (ownerToUse)
 {
 }
 
-int AVMovieClip::BackgroundReaderJob::useTimeSlice()
+int MovieClip::BackgroundReaderJob::useTimeSlice()
 {
     if (!suspended && owner.movieReader.get() != nullptr && owner.audioFifo.getFreeSpace() > 2048)
     {
@@ -260,7 +260,7 @@ int AVMovieClip::BackgroundReaderJob::useTimeSlice()
     return 10;
 }
 
-void AVMovieClip::BackgroundReaderJob::setSuspended (bool s)
+void MovieClip::BackgroundReaderJob::setSuspended (bool s)
 {
     suspended = s;
 
@@ -268,7 +268,7 @@ void AVMovieClip::BackgroundReaderJob::setSuspended (bool s)
         juce::Thread::sleep (5);
 }
 
-juce::TimeSliceClient* AVMovieClip::getBackgroundJob()
+juce::TimeSliceClient* MovieClip::getBackgroundJob()
 {
     return &backgroundJob;
 }

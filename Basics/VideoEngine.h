@@ -32,7 +32,7 @@ public:
     ~VideoEngine();
 
     std::shared_ptr<AVClip> createClipFromFile (juce::File file);
-    std::shared_ptr<AVCompoundClip> createCompoundClip();
+    std::shared_ptr<ComposedClip> createCompoundClip();
 
     void addJob (std::function<void()> job);
     void addJob (juce::ThreadPoolJob* job, bool deleteJobWhenFinished);

@@ -27,7 +27,7 @@ std::shared_ptr<AVClip> AVFormatManager::createClipFromFile (VideoEngine& engine
     auto image = juce::ImageFileFormat::loadFrom (file);
     if (image.isValid())
     {
-        auto clip = std::make_shared<AVImageClip> (engine);
+        auto clip = std::make_shared<ImageClip> (engine);
         clip->setImage (image);
         clip->setMediaFile (file);
         return clip;
@@ -36,7 +36,7 @@ std::shared_ptr<AVClip> AVFormatManager::createClipFromFile (VideoEngine& engine
     auto reader = AVFormatManager::createReaderFor (file);
     if (reader->isOpenedOk())
     {
-        auto clip = std::make_shared<AVMovieClip> (engine);
+        auto clip = std::make_shared<MovieClip> (engine);
         if (reader->hasVideo())
             clip->setThumbnailReader (AVFormatManager::createReaderFor (file, StreamTypes::video()));
 

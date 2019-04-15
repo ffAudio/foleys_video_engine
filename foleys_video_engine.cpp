@@ -25,9 +25,9 @@
 #include "Basics/VideoEngine.cpp"
 
 #include "Clips/AVClip.cpp"
-#include "Clips/AVImageClip.cpp"
-#include "Clips/AVMovieClip.cpp"
-#include "Clips/AVCompoundClip.cpp"
+#include "Clips/ImageClip.cpp"
+#include "Clips/MovieClip.cpp"
+#include "Clips/ComposedClip.cpp"
 
 #include "Processing/SoftwareCompositingContext.cpp"
 

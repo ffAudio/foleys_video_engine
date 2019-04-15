@@ -36,7 +36,7 @@ namespace IDs
     juce::Identifier audioLine    { "audioLine" };
 }
 
-AVCompoundClip::AVCompoundClip (VideoEngine& engine)
+ComposedClip::ComposedClip (VideoEngine& engine)
   : AVClip (engine),
     videoRenderJob (*this)
 {
@@ -50,12 +50,12 @@ AVCompoundClip::AVCompoundClip (VideoEngine& engine)
     state.addListener (this);
 }
 
-juce::String AVCompoundClip::getDescription() const
+juce::String ComposedClip::getDescription() const
 {
     return "Edit";
 }
 
-std::shared_ptr<AVCompoundClip::ClipDescriptor> AVCompoundClip::addClip (std::shared_ptr<AVClip> clip, double start, double length, double offset)
+std::shared_ptr<ComposedClip::ClipDescriptor> ComposedClip::addClip (std::shared_ptr<AVClip> clip, double start, double length, double offset)
 {
     auto clipDescriptor = std::make_shared<ClipDescriptor> (*this, clip);
     clip->prepareToPlay (buffer.getNumSamples(), sampleRate);
@@ -76,7 +76,7 @@ std::shared_ptr<AVCompoundClip::ClipDescriptor> AVCompoundClip::addClip (std::sh
     return clipDescriptor;
 }
 
-void AVCompoundClip::removeClip (std::shared_ptr<ClipDescriptor> descriptor)
+void ComposedClip::removeClip (std::shared_ptr<ClipDescriptor> descriptor)
 {
     auto it = std::find (clips.begin(), clips.end(), descriptor);
     if (it != clips.end())
@@ -85,49 +85,49 @@ void AVCompoundClip::removeClip (std::shared_ptr<ClipDescriptor> descriptor)
     state.removeChild (descriptor->getStatusTree(), getUndoManager());
 }
 
-juce::Image AVCompoundClip::getFrame (double pts) const
+juce::Image ComposedClip::getFrame (double pts) const
 {
     return videoFifo.getVideoFrame (pts);
 }
 
-juce::Image AVCompoundClip::getCurrentFrame() const
+juce::Image ComposedClip::getCurrentFrame() const
 {
     const auto pts = sampleRate > 0 ? position.load() / sampleRate : 0.0;
     return videoFifo.getVideoFrame (pts);
 }
 
-Size AVCompoundClip::getVideoSize() const
+Size ComposedClip::getVideoSize() const
 {
     return videoSize;
 }
 
-double AVCompoundClip::getCurrentTimeInSeconds() const
+double ComposedClip::getCurrentTimeInSeconds() const
 {
     return sampleRate > 0 ? position.load() / sampleRate : 0;
 }
 
-juce::Image AVCompoundClip::getStillImage (double seconds, Size size)
+juce::Image ComposedClip::getStillImage (double seconds, Size size)
 {
     return {};
 }
 
-double AVCompoundClip::getLengthInSeconds() const
+double ComposedClip::getLengthInSeconds() const
 {
     return sampleRate > 0 ? getTotalLength() / sampleRate : 0;
 }
 
-Timecode AVCompoundClip::getFrameTimecodeForTime (double time) const
+Timecode ComposedClip::getFrameTimecodeForTime (double time) const
 {
     return videoFifo.getFrameTimecodeForTime (time);
 }
 
-Timecode AVCompoundClip::getCurrentTimecode() const
+Timecode ComposedClip::getCurrentTimecode() const
 {
     const auto pts = sampleRate > 0 ? position.load() / sampleRate : 0.0;
     return getFrameTimecodeForTime (pts);
 }
 
-void AVCompoundClip::prepareToPlay (int samplesPerBlockExpected, double sampleRateToUse)
+void ComposedClip::prepareToPlay (int samplesPerBlockExpected, double sampleRateToUse)
 {
     sampleRate = sampleRateToUse;
     buffer.setSize (2, samplesPerBlockExpected);
@@ -139,7 +139,7 @@ void AVCompoundClip::prepareToPlay (int samplesPerBlockExpected, double sampleRa
     }
 }
 
-void AVCompoundClip::releaseResources()
+void ComposedClip::releaseResources()
 {
     for (auto& descriptor : getClips())
         descriptor->clip->releaseResources();
@@ -147,12 +147,12 @@ void AVCompoundClip::releaseResources()
     sampleRate = 0;
 }
 
-void AVCompoundClip::getNextAudioBlock (const juce::AudioSourceChannelInfo& info)
+void ComposedClip::getNextAudioBlock (const juce::AudioSourceChannelInfo& info)
 {
     info.clearActiveBufferRegion();
     auto pos = position.load();
 
-    for (auto& clip : getActiveClips ([pos](AVCompoundClip::ClipDescriptor& clip) { return pos >= clip.start && pos < clip.start + clip.length; }))
+    for (auto& clip : getActiveClips ([pos](ComposedClip::ClipDescriptor& clip) { return pos >= clip.start && pos < clip.start + clip.length; }))
     {
         if (! clip->clip->hasAudio())
             continue;
@@ -172,7 +172,7 @@ void AVCompoundClip::getNextAudioBlock (const juce::AudioSourceChannelInfo& info
     triggerAsyncUpdate();
 }
 
-void AVCompoundClip::setNextReadPosition (juce::int64 samples)
+void ComposedClip::setNextReadPosition (juce::int64 samples)
 {
     videoRenderJob.setSuspended (true);
 
@@ -186,12 +186,12 @@ void AVCompoundClip::setNextReadPosition (juce::int64 samples)
     triggerAsyncUpdate();
 }
 
-juce::int64 AVCompoundClip::getNextReadPosition() const
+juce::int64 ComposedClip::getNextReadPosition() const
 {
     return position;
 }
 
-juce::int64 AVCompoundClip::getTotalLength() const
+juce::int64 ComposedClip::getTotalLength() const
 {
     juce::int64 length = 0;
     for (auto& descriptor : getClips())
@@ -200,17 +200,17 @@ juce::int64 AVCompoundClip::getTotalLength() const
     return length;
 }
 
-bool AVCompoundClip::isLooping() const
+bool ComposedClip::isLooping() const
 {
     return false;
 }
 
-void AVCompoundClip::setLooping (bool shouldLoop)
+void ComposedClip::setLooping (bool shouldLoop)
 {
     juce::ignoreUnused (shouldLoop);
 }
 
-bool AVCompoundClip::hasVideo() const
+bool ComposedClip::hasVideo() const
 {
     bool hasVideo = false;
     for (auto& descriptor : getClips())
@@ -219,7 +219,7 @@ bool AVCompoundClip::hasVideo() const
     return hasVideo;
 }
 
-bool AVCompoundClip::hasAudio() const
+bool ComposedClip::hasAudio() const
 {
     bool hasAudio = false;
     for (auto& descriptor : clips)
@@ -228,7 +228,7 @@ bool AVCompoundClip::hasAudio() const
     return hasAudio;
 }
 
-bool AVCompoundClip::hasSubtitle() const
+bool ComposedClip::hasSubtitle() const
 {
     bool hasSubtitle = false;
     for (auto& descriptor : clips)
@@ -237,12 +237,12 @@ bool AVCompoundClip::hasSubtitle() const
     return hasSubtitle;
 }
 
-double AVCompoundClip::getSampleRate() const
+double ComposedClip::getSampleRate() const
 {
     return sampleRate;
 }
 
-void AVCompoundClip::handleAsyncUpdate()
+void ComposedClip::handleAsyncUpdate()
 {
     if (sampleRate > 0 && hasVideo())
     {
@@ -257,12 +257,12 @@ void AVCompoundClip::handleAsyncUpdate()
     }
 }
 
-void AVCompoundClip::valueTreePropertyChanged (juce::ValueTree& treeWhosePropertyHasChanged,
+void ComposedClip::valueTreePropertyChanged (juce::ValueTree& treeWhosePropertyHasChanged,
                                                const juce::Identifier& property)
 {
 }
 
-void AVCompoundClip::valueTreeChildAdded (juce::ValueTree& parentTree,
+void ComposedClip::valueTreeChildAdded (juce::ValueTree& parentTree,
                                           juce::ValueTree& childWhichHasBeenAdded)
 {
     auto descriptor = std::make_shared<ClipDescriptor>(*this, childWhichHasBeenAdded);
@@ -275,7 +275,7 @@ void AVCompoundClip::valueTreeChildAdded (juce::ValueTree& parentTree,
     }
 }
 
-void AVCompoundClip::valueTreeChildRemoved (juce::ValueTree& parentTree,
+void ComposedClip::valueTreeChildRemoved (juce::ValueTree& parentTree,
                                             juce::ValueTree& childWhichHasBeenRemoved,
                                             int indexFromWhichChildWasRemoved)
 {
@@ -289,23 +289,23 @@ void AVCompoundClip::valueTreeChildRemoved (juce::ValueTree& parentTree,
     }
 }
 
-juce::UndoManager* AVCompoundClip::getUndoManager()
+juce::UndoManager* ComposedClip::getUndoManager()
 {
     return videoEngine ? videoEngine->getUndoManager() : nullptr;
 }
 
-juce::ValueTree& AVCompoundClip::getStatusTree()
+juce::ValueTree& ComposedClip::getStatusTree()
 {
     return state;
 }
 
-std::vector<std::shared_ptr<AVCompoundClip::ClipDescriptor>> AVCompoundClip::getClips() const
+std::vector<std::shared_ptr<ComposedClip::ClipDescriptor>> ComposedClip::getClips() const
 {
     juce::ScopedLock sl (clipDescriptorLock);
     return clips;
 }
 
-std::vector<std::shared_ptr<AVCompoundClip::ClipDescriptor>> AVCompoundClip::getActiveClips (std::function<bool(AVCompoundClip::ClipDescriptor&)> selector) const
+std::vector<std::shared_ptr<ComposedClip::ClipDescriptor>> ComposedClip::getActiveClips (std::function<bool(ComposedClip::ClipDescriptor&)> selector) const
 {
     std::vector<std::shared_ptr<ClipDescriptor>> active;
     {
@@ -322,7 +322,7 @@ std::vector<std::shared_ptr<AVCompoundClip::ClipDescriptor>> AVCompoundClip::get
 
 //==============================================================================
 
-AVCompoundClip::ClipDescriptor::ClipDescriptor (AVCompoundClip& ownerToUse, std::shared_ptr<AVClip> clipToUse)
+ComposedClip::ClipDescriptor::ClipDescriptor (ComposedClip& ownerToUse, std::shared_ptr<AVClip> clipToUse)
   : owner (ownerToUse)
 {
     clip = clipToUse;
@@ -334,7 +334,7 @@ AVCompoundClip::ClipDescriptor::ClipDescriptor (AVCompoundClip& ownerToUse, std:
     state.addListener (this);
 }
 
-AVCompoundClip::ClipDescriptor::ClipDescriptor (AVCompoundClip& ownerToUse, juce::ValueTree stateToUse)
+ComposedClip::ClipDescriptor::ClipDescriptor (ComposedClip& ownerToUse, juce::ValueTree stateToUse)
   : owner (ownerToUse)
 {
     state = stateToUse;
@@ -346,57 +346,57 @@ AVCompoundClip::ClipDescriptor::ClipDescriptor (AVCompoundClip& ownerToUse, juce
     state.addListener (this);
 }
 
-juce::String AVCompoundClip::ClipDescriptor::getDescription() const
+juce::String ComposedClip::ClipDescriptor::getDescription() const
 {
     return state.getProperty (IDs::description, "unnamed");
 }
 
-void AVCompoundClip::ClipDescriptor::setDescription (const juce::String& name)
+void ComposedClip::ClipDescriptor::setDescription (const juce::String& name)
 {
     state.setProperty (IDs::description, name, owner.getUndoManager());
 }
 
-double AVCompoundClip::ClipDescriptor::getStart() const
+double ComposedClip::ClipDescriptor::getStart() const
 {
     return state.getProperty (IDs::start, 0.0);
 }
 
-void AVCompoundClip::ClipDescriptor::setStart (double s)
+void ComposedClip::ClipDescriptor::setStart (double s)
 {
     state.setProperty (IDs::start, s, owner.getUndoManager());
 }
 
-double AVCompoundClip::ClipDescriptor::getLength() const
+double ComposedClip::ClipDescriptor::getLength() const
 {
     return state.getProperty (IDs::length, 0.0);
 }
 
-void AVCompoundClip::ClipDescriptor::setLength (double l)
+void ComposedClip::ClipDescriptor::setLength (double l)
 {
     state.setProperty (IDs::length, l, owner.getUndoManager());
 }
 
-double AVCompoundClip::ClipDescriptor::getOffset() const
+double ComposedClip::ClipDescriptor::getOffset() const
 {
     return state.getProperty (IDs::offset, 0.0);
 }
 
-void AVCompoundClip::ClipDescriptor::setOffset (double o)
+void ComposedClip::ClipDescriptor::setOffset (double o)
 {
     state.setProperty (IDs::offset, o, owner.getUndoManager());
 }
 
-int AVCompoundClip::ClipDescriptor::getVideoLine() const
+int ComposedClip::ClipDescriptor::getVideoLine() const
 {
     return state.getProperty (IDs::videoLine, 0.0);
 }
 
-void AVCompoundClip::ClipDescriptor::setVideoLine (int line)
+void ComposedClip::ClipDescriptor::setVideoLine (int line)
 {
     state.setProperty (IDs::videoLine, line, owner.getUndoManager());
 }
 
-void AVCompoundClip::ClipDescriptor::valueTreePropertyChanged (juce::ValueTree& treeWhosePropertyHasChanged,
+void ComposedClip::ClipDescriptor::valueTreePropertyChanged (juce::ValueTree& treeWhosePropertyHasChanged,
                                                                const juce::Identifier& property)
 {
     if (treeWhosePropertyHasChanged != state)
@@ -405,7 +405,7 @@ void AVCompoundClip::ClipDescriptor::valueTreePropertyChanged (juce::ValueTree& 
     updateSampleCounts();
 }
 
-void AVCompoundClip::ClipDescriptor::updateSampleCounts()
+void ComposedClip::ClipDescriptor::updateSampleCounts()
 {
     auto sampleRate = clip->getSampleRate();
 
@@ -415,24 +415,24 @@ void AVCompoundClip::ClipDescriptor::updateSampleCounts()
 
 }
 
-juce::ValueTree& AVCompoundClip::ClipDescriptor::getStatusTree()
+juce::ValueTree& ComposedClip::ClipDescriptor::getStatusTree()
 {
     return state;
 }
 
 //==============================================================================
 
-AVCompoundClip::ComposingThread::ComposingThread (AVCompoundClip& ownerToUse)
+ComposedClip::ComposingThread::ComposingThread (ComposedClip& ownerToUse)
   : owner (ownerToUse)
 {
 }
 
-juce::TimeSliceClient* AVCompoundClip::getBackgroundJob()
+juce::TimeSliceClient* ComposedClip::getBackgroundJob()
 {
     return &videoRenderJob;
 }
 
-int AVCompoundClip::ComposingThread::useTimeSlice()
+int ComposedClip::ComposingThread::useTimeSlice()
 {
     juce::ScopedValueSetter<bool> guard (inRenderBlock, true);
 
@@ -451,7 +451,7 @@ int AVCompoundClip::ComposingThread::useTimeSlice()
     juce::Graphics g (image);
     g.fillAll (juce::Colours::black);
 
-    for (auto& clip : owner.getActiveClips ([pos](AVCompoundClip::ClipDescriptor& clip) { return pos >= clip.start && pos < clip.start + clip.length; }))
+    for (auto& clip : owner.getActiveClips ([pos](ComposedClip::ClipDescriptor& clip) { return pos >= clip.start && pos < clip.start + clip.length; }))
     {
         const auto tc = (pos + clip->offset.load() - clip->start.load()) / owner.sampleRate;
         const auto frame = clip->clip->getFrame (tc);
@@ -464,7 +464,7 @@ int AVCompoundClip::ComposingThread::useTimeSlice()
     return 0;
 }
 
-void AVCompoundClip::ComposingThread::setSuspended (bool s)
+void ComposedClip::ComposingThread::setSuspended (bool s)
 {
     suspended = s;
 

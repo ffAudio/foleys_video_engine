@@ -62,9 +62,9 @@
 #include "Processing/CompositingContext.h"
 #include "Processing/SoftwareCompositingContext.h"
 
-#include "Clips/AVImageClip.h"
-#include "Clips/AVMovieClip.h"
-#include "Clips/AVCompoundClip.h"
+#include "Clips/ImageClip.h"
+#include "Clips/MovieClip.h"
+#include "Clips/ComposedClip.h"
 
 #include "Basics/VideoEngine.h"
 #include "Widgets/VideoPreview.h"

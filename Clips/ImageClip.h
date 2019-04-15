@@ -20,38 +20,32 @@
 
 #pragma once
 
-
 namespace foleys
 {
 
-class AVMovieClip : public AVClip,
-                    private juce::AsyncUpdater
+/**
+ class ImageClip
+
+ This class delivers a still image as video.
+ */
+class ImageClip : public AVClip
 {
 public:
-    AVMovieClip (VideoEngine& videoEngine);
-    virtual ~AVMovieClip() = default;
+    ImageClip (VideoEngine& videoEngine);
+    virtual ~ImageClip() = default;
 
     juce::String getDescription() const override;
 
-    bool openFromFile (const juce::File file);
-
     juce::File getMediaFile() const override;
+    void setMediaFile (const juce::File& media);
 
-    void setReader (std::unique_ptr<AVReader> reader);
-    void setThumbnailReader (std::unique_ptr<AVReader> reader);
-
-    Size getVideoSize() const override;
-
-    double getLengthInSeconds() const override;
-
-    Timecode getCurrentTimecode() const override;
-    double getCurrentTimeInSeconds() const override;
-
-    Timecode getFrameTimecodeForTime (double time) const override;
+    void setImage (const juce::Image& image);
 
     juce::Image getFrame (double pts) const override;
-
     juce::Image getCurrentFrame() const override;
+
+    Size getVideoSize() const override;
+    double getCurrentTimeInSeconds() const override;
 
     void prepareToPlay (int samplesPerBlockExpected, double sampleRate) override;
     void releaseResources() override;
@@ -65,54 +59,25 @@ public:
 
     juce::Image getStillImage (double seconds, Size size) override;
 
-    juce::TimeSliceClient* getBackgroundJob() override;
+    double getLengthInSeconds() const override;
+    Timecode getFrameTimecodeForTime (double time) const override;
+    Timecode getCurrentTimecode() const override;
 
-    bool hasVideo() const override;
-    bool hasAudio() const override;
-    bool hasSubtitle() const override;
+
+    bool hasVideo() const override    { return true; };
+    bool hasAudio() const override    { return false; };
+    bool hasSubtitle() const override { return false; };
 
     double getSampleRate() const override;
 
 private:
 
-    void handleAsyncUpdate() override;
+    juce::Image image;
+    juce::File  mediaFile;
 
-    class BackgroundReaderJob : public juce::TimeSliceClient
-    {
-    public:
-        BackgroundReaderJob (AVMovieClip& owner);
-        virtual ~BackgroundReaderJob() = default;
+    double sampleRate = 0.0;
 
-        int useTimeSlice() override;
-
-        void setSuspended (bool s);
-    private:
-        AVMovieClip& owner;
-        bool suspended = true;
-        bool inDecodeBlock = false;
-    };
-
-    BackgroundReaderJob backgroundJob {*this};
-    friend BackgroundReaderJob;
-
-    std::unique_ptr<AVReader> movieReader;
-    std::unique_ptr<AVReader> thumbnailReader;
-    std::vector<juce::LagrangeInterpolator> resamplers;
-
-    double      sampleRate = {};
-    juce::int64 nextReadPosition = 0;
-    Timecode    lastShownFrame;
-    bool        loop = false;
-
-    Size originalSize;
-
-    Timecode originalLength;
-
-    VideoFifo videoFifo;
-    AudioFifo audioFifo;
-
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AVMovieClip)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ImageClip)
 };
-
 
 } // foleys
