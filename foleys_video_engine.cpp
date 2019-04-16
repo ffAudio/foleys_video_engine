@@ -41,3 +41,4 @@
 
 #include "Widgets/VideoPreview.cpp"
 #include "Widgets/FilmStrip.cpp"
+#include "Widgets/AudioStrip.cpp"

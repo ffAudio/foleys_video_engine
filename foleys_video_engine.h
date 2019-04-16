@@ -25,7 +25,9 @@
   name:          Video engine to read, process, display and write video in JUCE
   description:   Provides classes to read audio streams from video files or to
                  mux audio into an existing video
-  dependencies:  juce_audio_basics, juce_audio_formats, juce_gui_basics, juce_graphics, juce_core
+  dependencies:  juce_audio_basics, juce_audio_formats, juce_gui_basics,
+                 juce_graphics, juce_core, juce_audio_utils
+
   website:       https://foleysfinest.com/
 
   END_JUCE_MODULE_DECLARATION
@@ -53,6 +55,7 @@
 #include <juce_audio_formats/juce_audio_formats.h>
 #include <juce_graphics/juce_graphics.h>
 #include <juce_gui_basics/juce_gui_basics.h>
+#include <juce_audio_utils/juce_audio_utils.h>
 
 #include "Basics/Structures.h"
 #include "Basics/AudioFifo.h"
@@ -70,6 +73,7 @@
 #include "Basics/VideoEngine.h"
 #include "Widgets/VideoPreview.h"
 #include "Widgets/FilmStrip.h"
+#include "Widgets/AudioStrip.h"
 
 #if FOLEYS_USE_FFMPEG
 #include "ReadWrite/FFmpeg/FFmpegReader.h"
