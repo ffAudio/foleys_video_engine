@@ -79,7 +79,7 @@ void FilmStrip::update()
         return;
 
     if (thumbnailJob != nullptr)
-        threadPool->removeJob (thumbnailJob.get(), true, 200);
+        threadPool->removeJob (thumbnailJob.get(), true, 500);
     else
         thumbnailJob = std::make_unique<ThumbnailJob>(*this);
 

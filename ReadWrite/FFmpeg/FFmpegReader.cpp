@@ -391,7 +391,10 @@ private:
                 if (audioConvertBuffer.getNumChannels() != channels || audioConvertBuffer.getNumSamples() < numSamples)
                     audioConvertBuffer.setSize(channels, numSamples, false, false, true);
 
-                if (offset < 0)
+                if (frame->best_effort_timestamp < 0)
+                    return;
+
+                if (offset < 0 && offset > -1024)
                 {
                     audioFifo.pushSilence (-offset);
                     offset = 0;

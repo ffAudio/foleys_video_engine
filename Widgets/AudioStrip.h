@@ -57,8 +57,8 @@ private:
 
     std::unique_ptr<ThumbnailJob> thumbnailJob;
     juce::AudioThumbnailCache cache { 1 };
-    juce::AudioFormatManager  dummyManager;
-    juce::AudioThumbnail      thumbnail { 64, dummyManager, cache };
+    juce::AudioFormatManager  formatManager;
+    juce::AudioThumbnail      thumbnail { 64, formatManager, cache };
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioStrip)
 };

@@ -182,8 +182,8 @@ void ComposedClip::setNextReadPosition (juce::int64 samples)
 
     videoFifo.clear();
 
-    videoRenderJob.setSuspended (false);
     triggerAsyncUpdate();
+    videoRenderJob.setSuspended (false);
 }
 
 juce::int64 ComposedClip::getNextReadPosition() const

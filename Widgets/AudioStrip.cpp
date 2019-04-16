@@ -23,7 +23,7 @@ namespace foleys
 
 AudioStrip::AudioStrip()
 {
-    dummyManager.registerBasicFormats();
+    formatManager.registerBasicFormats();
     thumbnail.addChangeListener (this);
     setOpaque (false);
     setInterceptsMouseClicks (false, true);
@@ -35,7 +35,7 @@ void AudioStrip::setClip (std::shared_ptr<AVClip> clipToUse)
 
     if (clip && clip->getMediaFile().existsAsFile())
     {
-        if (auto* reader = dummyManager.createReaderFor (clip->getMediaFile()))
+        if (auto* reader = formatManager.createReaderFor (clip->getMediaFile()))
             thumbnail.setReader (reader, 0);
     }
 }
