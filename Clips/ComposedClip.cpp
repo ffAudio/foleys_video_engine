@@ -446,7 +446,7 @@ int ComposedClip::ComposingThread::useTimeSlice()
 {
     juce::ScopedValueSetter<bool> guard (inRenderBlock, true);
 
-    if (owner.videoFifo.getNumAvailableFrames() >= 10)
+    if (suspended || owner.videoFifo.getNumAvailableFrames() >= 10)
         return 10;
 
     const int duration = 1001;
