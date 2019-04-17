@@ -466,7 +466,7 @@ int ComposedClip::ComposingThread::useTimeSlice()
         const auto tc = (pos + clip->offset.load() - clip->start.load()) / owner.sampleRate;
         const auto frame = clip->clip->getFrame (tc);
 
-        g.drawImageWithin (frame, 0, 0, image.getWidth(), image.getHeight(), juce::RectanglePlacement::fillDestination);
+        g.drawImageWithin (frame, 0, 0, image.getWidth(), image.getHeight(), juce::RectanglePlacement::centred);
     }
 
     owner.videoFifo.pushVideoFrame (image, nextTimeCode);
