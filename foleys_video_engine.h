@@ -62,6 +62,8 @@
 #include "Basics/VideoFifo.h"
 #include "Clips/AVClip.h"
 #include "ReadWrite/AVReader.h"
+#include "ReadWrite/AVWriter.h"
+#include "ReadWrite/ClipBouncer.h"
 #include "Processing/CompositingContext.h"
 #include "Processing/SoftwareCompositingContext.h"
 
@@ -77,6 +79,7 @@
 
 #if FOLEYS_USE_FFMPEG
 #include "ReadWrite/FFmpeg/FFmpegReader.h"
+#include "ReadWrite/FFmpeg/FFmpegWriter.h"
 #endif
 
 #include "ReadWrite/AVFormatManager.h"

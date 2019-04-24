@@ -32,7 +32,7 @@ public:
 
     virtual juce::File getMediaFile() const = 0;
 
-    bool isOpenedOk() const;
+    bool isOpenedOk() const { return opened; }
     virtual juce::int64 getTotalLength() const = 0;
 
     virtual void setPosition (const juce::int64 position) = 0;

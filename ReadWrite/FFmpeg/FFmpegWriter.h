@@ -23,44 +23,43 @@
 namespace foleys
 {
 
-class VideoFifo
+class FFmpegWriter : public AVWriter
 {
 public:
-    VideoFifo() = default;
-    ~VideoFifo() = default;
 
-    void pushVideoFrame (juce::Image& image, juce::int64 timestamp);
-    std::pair<juce::int64, juce::Image> popVideoFrame();
+    FFmpegWriter (juce::File file, juce::String format = {});
 
-    juce::Image getVideoFrame (double timestamp) const;
+    juce::File getMediaFile() const override;
 
-    int getNumAvailableFrames() const;
-    juce::int64 getLowestTimeCode() const;
-    juce::int64 getHighestTimeCode() const;
+    bool isOpenedOk() const override;
 
-    juce::Image getOldestFrameForRecycling();
+    void pushSamples (const juce::AudioBuffer<float>& input, int stream = 0) override;
 
-    Timecode getFrameTimecodeForTime (double time) const;
+    void pushImage (juce::int64 pos, juce::Image image, int stream = 0) override;
 
-    size_t size() const;
+    int addVideoStream (const VideoStreamSettings& settings) override;
 
-    void clear (juce::int64 count);
+    int addAudioStream (const AudioStreamSettings& settings) override;
 
-    void clearFramesOlderThan (Timecode timecode);
+    void finishWriting() override;
 
-    VideoStreamSettings& getVideoSettings();
+    static juce::StringArray getMuxers();
+
+    static juce::StringArray getPixelFormats();
 
 private:
-    juce::CriticalSection lock;
 
-    VideoStreamSettings settings;
+    class Pimpl;
+    friend Pimpl;
 
-    std::map<juce::int64, juce::Image> videoFrames;
-    juce::int64 lastViewedFrame = -1;
-    bool reverse = false;
+    juce::File   mediaFile;
+    juce::String formatName;
+    bool         opened  = false;
+    bool         started = false;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (VideoFifo)
+    std::unique_ptr<Pimpl> pimpl;
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FFmpegWriter)
 };
-
 
 } // foleys

@@ -39,6 +39,7 @@ public:
 
     std::unique_ptr<AVReader> createReaderFor (juce::File file, StreamTypes type = StreamTypes::all());
 
+    std::unique_ptr<AVWriter> createClipWriter (juce::File file);
 
 private:
     juce::AudioFormatManager audioFormatManager;

@@ -27,11 +27,21 @@ void VideoFifo::pushVideoFrame (juce::Image& image, juce::int64 timestamp)
     videoFrames [timestamp] = image;
 }
 
+std::pair<juce::int64, juce::Image> VideoFifo::popVideoFrame()
+{
+    const juce::ScopedLock sl (lock);
+    if (videoFrames.empty())
+        return {};
+
+    auto frame = videoFrames.extract (videoFrames.begin());
+    return { frame.key(), frame.mapped() };
+}
+
 juce::Image VideoFifo::getVideoFrame (double timestamp) const
 {
     const juce::ScopedLock sl (lock);
 
-    auto vf = videoFrames.lower_bound (timestamp / timebase);
+    auto vf = videoFrames.lower_bound (timestamp * settings.timebase);
     if (vf != videoFrames.end())
     {
         const_cast<juce::int64&>(lastViewedFrame) = vf->first;
@@ -45,11 +55,16 @@ Timecode VideoFifo::getFrameTimecodeForTime (double time) const
 {
     const juce::ScopedLock sl (lock);
 
-    auto vf = videoFrames.lower_bound (time / timebase);
+    auto vf = videoFrames.lower_bound (time * settings.timebase);
     if (vf != videoFrames.end())
-        return {vf->first, timebase};
+        return { vf->first, double (settings.timebase) };
 
     return {};
+}
+
+size_t VideoFifo::size() const
+{
+    return videoFrames.size();
 }
 
 int VideoFifo::getNumAvailableFrames() const
@@ -109,17 +124,17 @@ juce::Image VideoFifo::getOldestFrameForRecycling()
     }
 
     if (image.isNull())
-        image = juce::Image (juce::Image::ARGB, originalSize.width, originalSize.height, false);
+        image = juce::Image (juce::Image::ARGB, settings.frameSize.width, settings.frameSize.height, false);
 
     return image;
 }
 
-void VideoFifo::clear()
+void VideoFifo::clear (juce::int64 count)
 {
     const juce::ScopedLock sl (lock);
 
     videoFrames.clear();
-    lastViewedFrame = 0;
+    lastViewedFrame = count;
 }
 
 void VideoFifo::clearFramesOlderThan (Timecode timecode)
@@ -133,14 +148,9 @@ void VideoFifo::clearFramesOlderThan (Timecode timecode)
     videoFrames.erase (videoFrames.begin(), --current);
 }
 
-void VideoFifo::setTimebase (double timebaseToUse)
+VideoStreamSettings& VideoFifo::getVideoSettings()
 {
-    timebase = timebaseToUse;
-}
-
-void VideoFifo::setSize (Size size)
-{
-    originalSize = size;
+    return settings;
 }
 
 } // foleys

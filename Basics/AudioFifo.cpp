@@ -101,6 +101,11 @@ int AudioFifo::getFreeSpace() const
     return audioFifo.getFreeSpace();
 }
 
+int AudioFifo::getAvailableSamples() const
+{
+    return audioFifo.getNumReady();
+}
+
 void AudioFifo::setNumChannels (int numChannels)
 {
     audioBuffer.setSize (numChannels, audioBuffer.getNumSamples());

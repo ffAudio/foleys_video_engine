@@ -18,12 +18,41 @@
  ==============================================================================
  */
 
+#pragma once
+
 namespace foleys
 {
 
-bool AVReader::isOpenedOk() const
+class AVWriter
 {
-    return opened;
-}
+public:
+
+
+
+    AVWriter() = default;
+    virtual ~AVWriter() = default;
+
+    virtual juce::File getMediaFile() const = 0;
+
+    virtual bool isOpenedOk() const = 0;
+
+    virtual void pushSamples (const juce::AudioBuffer<float>& buffer, int stream = 0) = 0;
+
+    virtual void pushImage (juce::int64 pos, juce::Image image, int stream = 0) = 0;
+
+    virtual int addVideoStream (const VideoStreamSettings& settings) = 0;
+
+    virtual int addAudioStream (const AudioStreamSettings& settings) = 0;
+
+    virtual void finishWriting() = 0;
+
+    static juce::StringArray getMuxers() { return {}; }
+
+    static juce::StringArray getPixelFormats() { return {}; }
+
+private:
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AVWriter)
+};
 
 } // foleys

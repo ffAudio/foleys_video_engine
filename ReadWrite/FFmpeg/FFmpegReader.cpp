@@ -20,22 +20,6 @@
 
 #if FOLEYS_USE_FFMPEG
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#include <libavutil/imgutils.h>
-#include <libavutil/samplefmt.h>
-#include <libavutil/timestamp.h>
-#include <libavutil/opt.h>
-#include <libavformat/avformat.h>
-#include <libswscale/swscale.h>
-#include <libswresample/swresample.h>
-
-#ifdef __cplusplus
-}
-#endif
-
 #include "FFmpegHelpers.h"
 
 
@@ -93,7 +77,7 @@ public:
             auto* stream = formatContext->streams [videoStreamIdx];
             reader.originalSize = { videoContext->width, videoContext->height };
             reader.pixelFormat  = videoContext->pix_fmt;
-            reader.timebase     = av_q2d (stream->time_base);
+            reader.timebase     = stream->time_base.num > 0 ? double (stream->time_base.den) / stream->time_base.num : AV_TIME_BASE;
 
             scaler.setupScaler (videoContext->width,
                                 videoContext->height,
@@ -181,6 +165,7 @@ public:
     {
         FOLEYS_LOG ("Seek for sample position: " << position);
         auto response = av_seek_frame (formatContext, audioStreamIdx, position, AVSEEK_FLAG_BACKWARD);
+//        auto response = avformat_seek_file (formatContext, audioStreamIdx, 0, position, position, AVSEEK_FLAG_FRAME);
         if (response < 0)
         {
             FOLEYS_LOG ("Error seeking in audio stream: " << getErrorString (response));
@@ -196,7 +181,7 @@ public:
                             size.height,
                             AV_PIX_FMT_BGR0);
 
-        auto targetPts = seconds / reader.timebase;
+        auto targetPts = seconds * reader.timebase;
         auto response = av_seek_frame (formatContext, videoStreamIdx, targetPts, AVSEEK_FLAG_BACKWARD);
         if (response < 0)
         {
@@ -335,7 +320,7 @@ private:
             if (response >= 0)
             {
                 AVRational timeBase = av_make_q (1, AV_TIME_BASE);
-                if (juce::isPositiveAndBelow(videoStreamIdx, static_cast<int> (formatContext->nb_streams)))
+                if (juce::isPositiveAndBelow (videoStreamIdx, static_cast<int> (formatContext->nb_streams)))
                 {
                     timeBase = formatContext->streams [videoStreamIdx]->time_base;
                 }
@@ -402,9 +387,9 @@ private:
 
                 if (juce::isPositiveAndBelow (offset, numSamples))
                 {
-                    swr_convert(audioConverterContext,
-                                (uint8_t**)audioConvertBuffer.getArrayOfWritePointers(), numSamples,
-                                (const uint8_t**)frame->extended_data, numSamples);
+                    swr_convert (audioConverterContext,
+                                 (uint8_t**)audioConvertBuffer.getArrayOfWritePointers(), numSamples,
+                                 (const uint8_t**)frame->extended_data, numSamples);
                     juce::AudioBuffer<float> buffer (audioConvertBuffer.getArrayOfWritePointers(), channels, int (offset), int (numSamples - offset));
                     audioFifo.pushSamples (buffer);
                 }

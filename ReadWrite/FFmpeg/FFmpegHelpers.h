@@ -18,6 +18,8 @@
  ==============================================================================
  */
 
+#pragma once
+
 #if FOLEYS_USE_FFMPEG
 
 #if FOLEYS_DEBUG_LOGGING
@@ -25,6 +27,32 @@
 #else
 #  define FOLEYS_LOG(textToWrite)
 #endif
+
+#if JUCE_MSVC
+#pragma comment (lib, "avformat.lib")
+#pragma comment (lib, "avutil.lib")
+#pragma comment (lib, "avcodec.lib")
+#pragma comment (lib, "swscale.lib")
+#pragma comment (lib, "swresample.lib")
+#pragma comment (lib, "avresample.lib")
+#endif
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#include <libavutil/imgutils.h>
+#include <libavutil/samplefmt.h>
+#include <libavutil/timestamp.h>
+#include <libavutil/opt.h>
+#include <libavformat/avformat.h>
+#include <libswscale/swscale.h>
+#include <libswresample/swresample.h>
+
+#ifdef __cplusplus
+}
+#endif
+
 
 namespace foleys
 {
@@ -129,6 +157,37 @@ private:
     int         outLinesizes[4];
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FFmpegVideoScaler)
+};
+
+
+class FFmpegAudioConverter
+{
+public:
+    FFmpegAudioConverter() = default;
+
+    ~FFmpegAudioConverter()
+    {
+        if (context != nullptr)
+            swr_free (&context);
+    }
+
+    void setupConverter (int64_t inChannelLayout,  AVSampleFormat inFormat,  int inSampleRate,
+                         int64_t outChannelLayout, AVSampleFormat outFormat, int outSampleRate)
+    {
+        context = swr_alloc_set_opts (context,
+                                      outChannelLayout,
+                                      outFormat,
+                                      outSampleRate,
+                                      inChannelLayout,
+                                      inFormat,
+                                      inSampleRate,
+                                      0,         // log_offset
+                                      nullptr);  // log_ctx
+
+    }
+private:
+    SwrContext* context = nullptr;
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FFmpegAudioConverter)
 };
 
 } // foleys

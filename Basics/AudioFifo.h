@@ -47,6 +47,7 @@ public:
     juce::int64 getReadPosition() const;
 
     int getFreeSpace() const;
+    int getAvailableSamples() const;
 
     void setNumChannels (int numChannels);
     void setSampleRate (double sampleRate);

@@ -44,8 +44,10 @@ ComposedClip::ComposedClip (VideoEngine& engine)
 
     composer = std::make_unique<SoftwareCompositingContext>();
     videoSize = {800, 500};
-    videoFifo.setSize (videoSize);
-    videoFifo.setTimebase (0.000041666666666666665);
+    auto& settings = videoFifo.getVideoSettings();
+    settings.frameSize = videoSize;
+    settings.timebase = 24000;
+    settings.defaultDuration = 1001;
 
     state.addListener (this);
 }
@@ -164,7 +166,7 @@ void ComposedClip::getNextAudioBlock (const juce::AudioSourceChannelInfo& info)
             juce::AudioSourceChannelInfo reader (&buffer, 0, info.numSamples - offset);
             clip->clip->getNextAudioBlock (reader);
             for (int channel = 0; channel < buffer.getNumChannels(); ++channel)
-                info.buffer->addFrom (channel, info.startSample, buffer.getReadPointer (channel), info.numSamples - offset);
+                info.buffer->addFrom (channel, info.startSample + offset, buffer.getReadPointer (channel), info.numSamples - offset);
         }
     }
 
@@ -180,7 +182,15 @@ void ComposedClip::setNextReadPosition (juce::int64 samples)
     for (auto& descriptor : getClips())
         descriptor->clip->setNextReadPosition (std::max (juce::int64 (samples + descriptor->offset - descriptor->start), juce::int64 (descriptor->offset)));
 
-    videoFifo.clear();
+    if (sampleRate > 0)
+    {
+        auto time = samples / sampleRate;
+        videoFifo.clear (time * videoFifo.getVideoSettings().timebase);
+    }
+    else
+    {
+        videoFifo.clear (0);
+    }
 
     triggerAsyncUpdate();
     videoRenderJob.setSuspended (false);
@@ -449,13 +459,12 @@ int ComposedClip::ComposingThread::useTimeSlice()
     if (suspended || owner.videoFifo.getNumAvailableFrames() >= 10)
         return 10;
 
-    const int duration = 1001;
-    const double timebase = 0.000041666666666666665;
+    auto& settings = owner.videoFifo.getVideoSettings();
 
     auto image = owner.videoFifo.getOldestFrameForRecycling();
-    auto nextTimeCode = owner.videoFifo.getHighestTimeCode() + duration;
+    auto nextTimeCode = owner.videoFifo.getHighestTimeCode() + settings.defaultDuration;
 
-    auto timeInSeconds = nextTimeCode * timebase;
+    auto timeInSeconds = nextTimeCode / double (settings.timebase);
     auto pos = timeInSeconds * owner.sampleRate;
 
     juce::Graphics g (image);

@@ -56,6 +56,8 @@ public:
 
     juce::UndoManager* getUndoManager();
 
+    AVFormatManager& getFormatManager();
+
 private:
 
     void removeFromBackgroundThreads (juce::TimeSliceClient* client);

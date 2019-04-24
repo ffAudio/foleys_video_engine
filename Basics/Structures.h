@@ -35,6 +35,20 @@ struct Size
     }
 };
 
+struct VideoStreamSettings
+{
+    Size frameSize;
+    int  defaultDuration = 1001;
+    int  timebase        = 24000;
+};
+
+struct AudioStreamSettings
+{
+    int numChannels       = 2;
+    int defaultNumSamples = 1024;
+    int timebase          = 48000;
+};
+
 struct Timecode
 {
     /** The time code count. This is not necessarily incrementing in single steps, since
@@ -61,7 +75,10 @@ struct Timecode
 
 static inline juce::String timecodeToString (Timecode tc)
 {
-    auto seconds = tc.count * double (tc.timebase);
+    if (tc.timebase == 0)
+        return "--:--:--.---";
+
+    auto seconds = tc.count / double (tc.timebase);
     juce::int64 intSeconds = seconds;
 
     auto milliSeconds = int (1000.0 * (seconds - intSeconds));

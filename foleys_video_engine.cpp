@@ -32,11 +32,12 @@
 
 #include "Processing/SoftwareCompositingContext.cpp"
 
-#include "ReadWrite/AVReader.cpp"
 #include "ReadWrite/AVFormatManager.cpp"
+#include "ReadWrite/ClipBouncer.cpp"
 
 #if FOLEYS_USE_FFMPEG
 #include "ReadWrite/FFmpeg/FFmpegReader.cpp"
+#include "ReadWrite/FFmpeg/FFmpegWriter.cpp"
 #endif
 
 #include "Widgets/VideoPreview.cpp"

@@ -140,4 +140,10 @@ void VideoEngine::setUndoManager (juce::UndoManager* undoManagerToUse)
     undoManager.setNonOwned (undoManagerToUse);
 }
 
+AVFormatManager& VideoEngine::getFormatManager()
+{
+    return *formatManager;
+}
+
+
 } // foleys
