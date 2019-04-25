@@ -52,7 +52,7 @@ std::shared_ptr<AVClip> VideoEngine::createClipFromFile (juce::File file)
     return clip;
 }
 
-std::shared_ptr<ComposedClip> VideoEngine::createCompoundClip()
+std::shared_ptr<ComposedClip> VideoEngine::createComposedClip()
 {
     auto clip = std::make_shared<ComposedClip> (*this);
     manageLifeTime (clip);

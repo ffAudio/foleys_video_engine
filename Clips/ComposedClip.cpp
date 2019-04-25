@@ -92,6 +92,11 @@ juce::Image ComposedClip::getFrame (double pts) const
     return videoFifo.getVideoFrame (pts);
 }
 
+bool ComposedClip::isFrameAvailable (double pts) const
+{
+    return videoFifo.isFrameAvailable (pts);
+}
+
 juce::Image ComposedClip::getCurrentFrame() const
 {
     const auto pts = sampleRate > 0 ? position.load() / sampleRate : 0.0;
@@ -192,6 +197,7 @@ void ComposedClip::setNextReadPosition (juce::int64 samples)
         videoFifo.clear (0);
     }
 
+    lastShownFrame = { -1, double (videoFifo.getVideoSettings().timebase) };
     triggerAsyncUpdate();
     videoRenderJob.setSuspended (false);
 }
@@ -245,6 +251,18 @@ bool ComposedClip::hasSubtitle() const
         hasSubtitle |= descriptor->clip->hasSubtitle();
 
     return hasSubtitle;
+}
+
+std::shared_ptr<AVClip> ComposedClip::createCopy()
+{
+    if (videoEngine == nullptr)
+        return {};
+
+    auto clipCopy = videoEngine->createComposedClip();
+    for (auto clip : getStatusTree())
+        clipCopy->getStatusTree().appendChild (clip.createCopy(), nullptr);
+
+    return clipCopy;
 }
 
 double ComposedClip::getSampleRate() const

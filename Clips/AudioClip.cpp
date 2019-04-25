@@ -118,5 +118,12 @@ Timecode AudioClip::getCurrentTimecode() const
     return {};
 }
 
+std::shared_ptr<AVClip> AudioClip::createCopy()
+{
+    if (videoEngine == nullptr)
+        return {};
+
+    return videoEngine->createClipFromFile (getMediaFile());
+}
 
 }

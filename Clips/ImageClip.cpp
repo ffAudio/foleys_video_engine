@@ -123,6 +123,14 @@ void ImageClip::setLooping (bool)
 {
 }
 
+std::shared_ptr<AVClip> ImageClip::createCopy()
+{
+    if (videoEngine == nullptr)
+        return {};
+
+    return videoEngine->createClipFromFile (getMediaFile());
+}
+
 double ImageClip::getSampleRate() const
 {
     return sampleRate;

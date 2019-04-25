@@ -34,7 +34,7 @@ public:
     ~VideoEngine();
 
     std::shared_ptr<AVClip> createClipFromFile (juce::File file);
-    std::shared_ptr<ComposedClip> createCompoundClip();
+    std::shared_ptr<ComposedClip> createComposedClip();
     std::unique_ptr<AVReader> createReaderFor (juce::File file, StreamTypes type = StreamTypes::all());
 
     void addJob (std::function<void()> job);

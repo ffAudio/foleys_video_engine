@@ -34,6 +34,8 @@ public:
     juce::String getDescription() const override;
 
     juce::Image getFrame (double pts) const override;
+    bool isFrameAvailable (double pts) const override;
+
     juce::Image getCurrentFrame() const override;
 
     Size getVideoSize() const override;
@@ -58,6 +60,8 @@ public:
     bool hasVideo() const override;
     bool hasAudio() const override;
     bool hasSubtitle() const override;
+
+    std::shared_ptr<AVClip> createCopy() override;
 
     double getSampleRate() const override;
 

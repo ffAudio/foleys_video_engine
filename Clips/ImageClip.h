@@ -43,6 +43,7 @@ public:
 
     juce::Image getFrame (double pts) const override;
     juce::Image getCurrentFrame() const override;
+    bool isFrameAvailable (double pts) const override { return image.isValid(); }
 
     Size getVideoSize() const override;
     double getCurrentTimeInSeconds() const override;
@@ -63,10 +64,11 @@ public:
     Timecode getFrameTimecodeForTime (double time) const override;
     Timecode getCurrentTimecode() const override;
 
-
     bool hasVideo() const override    { return true; };
     bool hasAudio() const override    { return false; };
     bool hasSubtitle() const override { return false; };
+
+    std::shared_ptr<AVClip> createCopy() override;
 
     double getSampleRate() const override;
 

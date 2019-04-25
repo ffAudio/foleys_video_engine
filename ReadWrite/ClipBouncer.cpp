@@ -67,6 +67,8 @@ void ClipBouncer::startRendering (bool cancelRunningJob)
 
     progress.store (0.0);
 
+    clip->prepareToPlay (audioSettings.defaultNumSamples, audioSettings.timebase);
+
     writer = videoEngine.getFormatManager().createClipWriter (mediaFile);
     if (clip->hasVideo())
         writer->addVideoStream (videoSettings);
@@ -112,9 +114,9 @@ juce::ThreadPoolJob::JobStatus ClipBouncer::RenderJob::runJob()
 
     auto  clip = bouncer.clip;
 
-
     buffer.setSize (audioSettings.numChannels, audioSettings.defaultNumSamples);
     clip->prepareToPlay (audioSettings.defaultNumSamples, audioSettings.timebase);
+    clip->setNextReadPosition (0);
 
     while (! shouldExit() && audioPosition < totalDuration)
     {
@@ -126,7 +128,7 @@ juce::ThreadPoolJob::JobStatus ClipBouncer::RenderJob::runJob()
                                               buffer.getNumChannels(),
                                               info.startSample,
                                               info.numSamples);
-        bouncer.writer->pushSamples (buffer);
+        bouncer.writer->pushSamples (writeBuffer);
 
         audioPosition += audioSettings.defaultNumSamples;
 
@@ -135,7 +137,21 @@ juce::ThreadPoolJob::JobStatus ClipBouncer::RenderJob::runJob()
         if (videoCount >= videoPosition)
         {
             videoPosition += videoSettings.defaultDuration;
-            auto frame = clip->getFrame (videoCount / double (videoSettings.timebase));
+            auto timestamp = videoCount / double (videoSettings.timebase);
+            while (! clip->isFrameAvailable (timestamp))
+            {
+                if (shouldExit())
+                {
+                    if (bouncer.onRenderingFinished)
+                        bouncer.onRenderingFinished (false);
+
+                    return juce::ThreadPoolJob::jobHasFinished;
+                }
+
+                juce::Thread::yield();
+            }
+
+            auto frame = clip->getFrame (timestamp);
 
             bouncer.writer->pushImage (videoPosition, frame);
         }

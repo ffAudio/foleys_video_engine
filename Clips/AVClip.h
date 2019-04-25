@@ -52,6 +52,9 @@ public:
     /** Returns the frame for a certain timecode */
     virtual juce::Image getFrame (double pts) const = 0;
 
+    /** Checks, if a frame is available */
+    virtual bool isFrameAvailable (double pts) const = 0;
+
     /** Returns the frame for the current timecode */
     virtual juce::Image getCurrentFrame() const = 0;
 
@@ -69,6 +72,8 @@ public:
      This is the samplerate supplied from prepareToPlay and the sample rate
      this clip will produce audio and use as clock source. */
     virtual double getSampleRate() const = 0;
+
+    virtual std::shared_ptr<AVClip> createCopy() = 0;
 
     struct TimecodeListener
     {

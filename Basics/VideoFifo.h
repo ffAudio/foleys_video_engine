@@ -33,6 +33,7 @@ public:
     std::pair<juce::int64, juce::Image> popVideoFrame();
 
     juce::Image getVideoFrame (double timestamp) const;
+    bool isFrameAvailable (double timestamp) const;
 
     int getNumAvailableFrames() const;
     juce::int64 getLowestTimeCode() const;

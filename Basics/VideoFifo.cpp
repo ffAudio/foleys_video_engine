@@ -51,6 +51,20 @@ juce::Image VideoFifo::getVideoFrame (double timestamp) const
     return {};
 }
 
+bool VideoFifo::isFrameAvailable (double timestamp) const
+{
+    const juce::ScopedLock sl (lock);
+
+    auto vf = videoFrames.lower_bound (timestamp * settings.timebase);
+    if (vf != videoFrames.end())
+    {
+        auto frameEnd = double (vf->first + settings.defaultDuration) / settings.timebase;
+        return timestamp <= frameEnd;
+    }
+
+    return false;
+}
+
 Timecode VideoFifo::getFrameTimecodeForTime (double time) const
 {
     const juce::ScopedLock sl (lock);
@@ -71,7 +85,7 @@ int VideoFifo::getNumAvailableFrames() const
 {
     const juce::ScopedLock sl (lock);
 
-    auto it = videoFrames.find (lastViewedFrame);
+    auto it = videoFrames.lower_bound (lastViewedFrame);
     return int (std::distance (it, videoFrames.end()));
 }
 

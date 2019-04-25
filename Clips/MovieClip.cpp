@@ -120,6 +120,11 @@ juce::Image MovieClip::getFrame (double pts) const
     return videoFifo.getVideoFrame (pts);
 }
 
+bool MovieClip::isFrameAvailable (double pts) const
+{
+    return videoFifo.isFrameAvailable (pts);
+}
+
 juce::Image MovieClip::getStillImage (double seconds, Size size)
 {
     if (thumbnailReader && thumbnailReader->isOpenedOk())
@@ -177,6 +182,14 @@ bool MovieClip::hasAudio() const
 bool MovieClip::hasSubtitle() const
 {
     return movieReader ? movieReader->hasSubtitle() : false;
+}
+
+std::shared_ptr<AVClip> MovieClip::createCopy()
+{
+    if (videoEngine == nullptr)
+        return {};
+
+    return videoEngine->createClipFromFile (getMediaFile());
 }
 
 double MovieClip::getSampleRate() const
