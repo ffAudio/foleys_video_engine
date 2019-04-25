@@ -41,6 +41,8 @@ public:
 
     int addAudioStream (const AudioStreamSettings& settings) override;
 
+    bool startWriting() override;
+
     void finishWriting() override;
 
     static juce::StringArray getMuxers();

@@ -74,7 +74,8 @@ void ClipBouncer::startRendering (bool cancelRunningJob)
     if (clip->hasAudio())
         writer->addAudioStream (audioSettings);
 
-    videoEngine.getThreadPool().addJob (&renderJob, false);
+    if (writer->startWriting())
+        videoEngine.getThreadPool().addJob (&renderJob, false);
 }
 
 void ClipBouncer::cancelRendering()
@@ -139,9 +140,11 @@ juce::ThreadPoolJob::JobStatus ClipBouncer::RenderJob::runJob()
             bouncer.writer->pushImage (videoPosition, frame);
         }
 
-
         bouncer.progress.store (double (audioPosition) / totalDuration);
     }
+
+    bouncer.writer->finishWriting();
+    bouncer.writer.reset();
 
     bouncer.progress.store (1.0);
 

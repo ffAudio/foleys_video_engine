@@ -44,6 +44,8 @@ public:
 
     virtual int addAudioStream (const AudioStreamSettings& settings) = 0;
 
+    virtual bool startWriting() = 0;
+
     virtual void finishWriting() = 0;
 
     static juce::StringArray getMuxers() { return {}; }

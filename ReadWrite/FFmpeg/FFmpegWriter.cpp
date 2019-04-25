@@ -227,7 +227,7 @@ struct FFmpegWriter::Pimpl
         }
 
         descriptor.scaler.convertImageToFrame (frame, image);
-        encodeWriteFrame (descriptor.context, frame);
+        encodeWriteFrame (descriptor.context, frame, formatContext->streams [descriptor.streamIndex]->time_base);
     }
 
     void encodeAudioFrame (AudioStreamDescriptor& descriptor, juce::AudioBuffer<float>& buffer, juce::int64 timestamp)
@@ -258,7 +258,39 @@ struct FFmpegWriter::Pimpl
                                   bufferSize,
                                   0);
 
-        encodeWriteFrame (descriptor.context, frame);
+        encodeWriteFrame (descriptor.context, frame, formatContext->streams [descriptor.streamIndex]->time_base);
+    }
+
+    bool startWriting()
+    {
+        if (!(formatContext->oformat->flags & AVFMT_NOFILE)) {
+            if (avio_open (&formatContext->pb, writeFile.getFullPathName().toRawUTF8(), AVIO_FLAG_WRITE) < 0) {
+                FOLEYS_LOG ("Could not open output file '" << writeFile.getFullPathName() << "'");
+                closeContainer();
+                return false;
+            }
+        }
+
+        if (formatContext->oformat->flags & AVFMT_GLOBALHEADER)
+        {
+            for (auto& descriptor : videoStreams)
+                descriptor->context->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
+
+            for (auto& descriptor : audioStreams)
+                descriptor->context->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
+        }
+
+
+        auto ret = avformat_write_header (formatContext, nullptr);
+        if (ret <0)
+        {
+            FOLEYS_LOG ("Error writing header");
+            closeContainer();
+            return false;
+        }
+
+        writer.started = true;
+        return true;
     }
 
     void finishWriting()
@@ -274,7 +306,7 @@ struct FFmpegWriter::Pimpl
                 if ((*descriptor)->context->codec->capabilities & AV_CODEC_CAP_DELAY)
                 {
                     FOLEYS_LOG ("Flushing encoder dor stream " << idx);
-                    while (encodeWriteFrame ((*descriptor)->context, nullptr));
+                    while (encodeWriteFrame ((*descriptor)->context, nullptr, formatContext->streams [(*descriptor)->streamIndex]->time_base));
                 }
             }
             else
@@ -285,14 +317,21 @@ struct FFmpegWriter::Pimpl
                     if ((*descriptor)->context->codec->capabilities & AV_CODEC_CAP_DELAY)
                     {
                         FOLEYS_LOG ("Flushing encoder dor stream " << idx);
-                        while (encodeWriteFrame ((*descriptor)->context, nullptr));
+                        while (encodeWriteFrame ((*descriptor)->context, nullptr, formatContext->streams [(*descriptor)->streamIndex]->time_base));
                     }
                 }
             }
         }
 
-        av_write_trailer (formatContext);
-        closeContainer();
+        if (av_write_trailer (formatContext) == 0)
+        {
+            videoStreams.clear();
+            audioStreams.clear();
+        }
+        else
+        {
+            closeContainer();
+        }
     }
 
     class WriteThread : public juce::TimeSliceClient
@@ -383,7 +422,7 @@ private:
             return;
         }
 
-
+        writeFile = file;
         writer.opened = true;
     }
 
@@ -407,41 +446,32 @@ private:
         }
     }
 
-    bool encodeWriteFrame (AVCodecContext* codecContext, AVFrame* frame)
+    bool encodeWriteFrame (AVCodecContext* codecContext, AVFrame* frame, AVRational streamTimeBase)
     {
         jassert (formatContext != nullptr);
 
-        AVPacket packet;
-        packet.data = NULL;
-        packet.size = 0;
-        av_init_packet (&packet);
+        AVPacket* packet = av_packet_alloc();
+        packet->data = NULL;
+        packet->size = 0;
+        av_init_packet (packet);
 
         avcodec_send_frame (codecContext, frame);
 
         av_frame_free (&frame);
 
-        int ret = 0;
-        while (ret >= 0)
+        auto ret = avcodec_receive_packet (codecContext, packet);
+        av_packet_rescale_ts (packet, codecContext->time_base, streamTimeBase);
+        if (ret == AVERROR (EAGAIN) || ret == AVERROR_EOF)
         {
-            ret = avcodec_receive_packet (codecContext, &packet);
-            if (ret == AVERROR (EAGAIN) || ret == AVERROR_EOF)
-            {
-                FOLEYS_LOG ("avcodec_receive_packet: " << ret);
-                av_packet_unref (&packet);
-                return true;
-            }
-            else if (ret < 0)
-            {
-                FOLEYS_LOG ("Error during encoding: " << ret);
-                av_packet_unref (&packet);
-                return false;
-            }
-            ret = av_interleaved_write_frame (formatContext, &packet);
-            if (ret < 0) {
-                FOLEYS_LOG ("Error muxing packet");
-                return false;
-            }
+            av_packet_unref (packet);
+            return false;
         }
+
+        if (av_interleaved_write_frame (formatContext, packet) < 0)
+            FOLEYS_LOG ("Error muxing packet");
+
+        av_packet_unref (packet);
+
         return true;
     }
 
@@ -449,6 +479,7 @@ private:
     //==============================================================================
 
     FFmpegWriter& writer;
+    juce::File    writeFile;
 
     AVFormatContext* formatContext = nullptr;
 
@@ -482,7 +513,6 @@ bool FFmpegWriter::isOpenedOk() const
 
 void FFmpegWriter::pushSamples (const juce::AudioBuffer<float>& input, int stream)
 {
-    started = true;
     if (!opened)
         return;
 
@@ -491,11 +521,15 @@ void FFmpegWriter::pushSamples (const juce::AudioBuffer<float>& input, int strea
 
 void FFmpegWriter::pushImage (juce::int64 pos, juce::Image image, int stream)
 {
-    started = true;
     if (!opened)
         return;
 
     pimpl->pushImage (pos, image, stream);
+}
+
+bool FFmpegWriter::startWriting()
+{
+    return pimpl->startWriting();
 }
 
 void FFmpegWriter::finishWriting()
