@@ -42,7 +42,7 @@
 #endif
 
 /** Config: FOLEYS_DEBUG_LOGGING
- Set this flag to enable logging */
+    Set this flag to enable logging */
 #ifndef FOLEYS_DEBUG_LOGGING
 #define FOLEYS_DEBUG_LOGGING 0
 #endif

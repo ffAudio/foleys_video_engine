@@ -90,7 +90,7 @@ struct FFmpegWriter::Pimpl
         context->height = settings.frameSize.height;
         context->pix_fmt = AV_PIX_FMT_YUV420P;
         context->sample_aspect_ratio = av_make_q (1, 1);
-        context->color_range = AVCOL_RANGE_JPEG;
+        context->color_range = AVCOL_RANGE_MPEG;
         context->bit_rate  = 480000;
         context->gop_size  = 10;
         context->time_base = av_make_q (1, settings.timebase);
@@ -149,8 +149,8 @@ struct FFmpegWriter::Pimpl
         auto* context = avcodec_alloc_context3 (encoder);
         context->sample_rate = settings.timebase;
         context->sample_fmt = AV_SAMPLE_FMT_FLTP;
-        context->channel_layout = AV_CH_LAYOUT_STEREO;
-        context->channels = av_get_channel_layout_nb_channels (AV_CH_LAYOUT_STEREO);
+        context->channel_layout = AV_CH_LAYOUT_STEREO_DOWNMIX;
+        context->channels = av_get_channel_layout_nb_channels (AV_CH_LAYOUT_STEREO_DOWNMIX);
         context->bit_rate = 64000;
         context->frame_size = settings.defaultNumSamples;
         context->bits_per_raw_sample = 32;
@@ -304,10 +304,11 @@ struct FFmpegWriter::Pimpl
             auto descriptor = std::find_if (videoStreams.begin(), videoStreams.end(), [idx](const auto& descriptor) { return descriptor->streamIndex == idx; });
             if (descriptor != videoStreams.end())
             {
-                if ((*descriptor)->context->codec->capabilities & AV_CODEC_CAP_DELAY)
+                auto* context = (*descriptor)->context;
+                if (context->codec != nullptr && context->codec->capabilities & AV_CODEC_CAP_DELAY)
                 {
-                    FOLEYS_LOG ("Flushing encoder dor stream " << idx);
-                    while (encodeWriteFrame ((*descriptor)->context, nullptr, (*descriptor)->streamIndex));
+                    FOLEYS_LOG ("Flushing video encoder stream " << idx);
+                    while (encodeWriteFrame (context, nullptr, (*descriptor)->streamIndex));
                 }
             }
             else
@@ -315,10 +316,11 @@ struct FFmpegWriter::Pimpl
                 auto descriptor = std::find_if (audioStreams.begin(), audioStreams.end(), [idx](const auto& descriptor) { return descriptor->streamIndex == idx; });
                 if (descriptor != audioStreams.end())
                 {
-                    if ((*descriptor)->context->codec->capabilities & AV_CODEC_CAP_DELAY)
+                    auto* context = (*descriptor)->context;
+                    if (context->codec != nullptr && context->codec->capabilities & AV_CODEC_CAP_DELAY)
                     {
-                        FOLEYS_LOG ("Flushing encoder dor stream " << idx);
-                        while (encodeWriteFrame ((*descriptor)->context, nullptr, (*descriptor)->streamIndex));
+                        FOLEYS_LOG ("Flushing audio encoder stream " << idx);
+                        while (encodeWriteFrame (context, nullptr, (*descriptor)->streamIndex));
                     }
                 }
             }
