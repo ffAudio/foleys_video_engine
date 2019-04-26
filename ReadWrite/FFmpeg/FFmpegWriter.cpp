@@ -83,7 +83,7 @@ struct FFmpegWriter::Pimpl
             return -1;
         }
 
-        stream->time_base = av_make_q (1, 24000);
+        stream->time_base = av_make_q (1, settings.timebase);
 
         auto* context = avcodec_alloc_context3 (encoder);
         context->width = settings.frameSize.width;
@@ -93,7 +93,7 @@ struct FFmpegWriter::Pimpl
         context->color_range = AVCOL_RANGE_JPEG;
         context->bit_rate  = 480000;
         context->gop_size  = 10;
-        context->time_base = av_make_q (1, 24000);
+        context->time_base = av_make_q (1, settings.timebase);
         avcodec_parameters_from_context (stream->codecpar, context);
 
         AVDictionary* options = nullptr;
@@ -145,7 +145,7 @@ struct FFmpegWriter::Pimpl
             return -1;
         }
 
-        stream->time_base = av_make_q (1, juce::roundToInt (settings.timebase));
+        stream->time_base = av_make_q (1, settings.timebase);
         auto* context = avcodec_alloc_context3 (encoder);
         context->sample_rate = settings.timebase;
         context->sample_fmt = AV_SAMPLE_FMT_FLTP;
@@ -154,6 +154,7 @@ struct FFmpegWriter::Pimpl
         context->bit_rate = 64000;
         context->frame_size = settings.defaultNumSamples;
         context->bits_per_raw_sample = 32;
+        context->time_base = av_make_q (1, settings.timebase);
         avcodec_parameters_from_context (stream->codecpar, context);
 
         int ret = avcodec_open2 (context, encoder, NULL);
@@ -227,7 +228,7 @@ struct FFmpegWriter::Pimpl
         }
 
         descriptor.scaler.convertImageToFrame (frame, image);
-        encodeWriteFrame (descriptor.context, frame, formatContext->streams [descriptor.streamIndex]->time_base);
+        encodeWriteFrame (descriptor.context, frame, descriptor.streamIndex);
     }
 
     void encodeAudioFrame (AudioStreamDescriptor& descriptor, juce::AudioBuffer<float>& buffer, juce::int64 timestamp)
@@ -258,7 +259,7 @@ struct FFmpegWriter::Pimpl
                                   bufferSize,
                                   0);
 
-        encodeWriteFrame (descriptor.context, frame, formatContext->streams [descriptor.streamIndex]->time_base);
+        encodeWriteFrame (descriptor.context, frame, descriptor.streamIndex);
     }
 
     bool startWriting()
@@ -306,7 +307,7 @@ struct FFmpegWriter::Pimpl
                 if ((*descriptor)->context->codec->capabilities & AV_CODEC_CAP_DELAY)
                 {
                     FOLEYS_LOG ("Flushing encoder dor stream " << idx);
-                    while (encodeWriteFrame ((*descriptor)->context, nullptr, formatContext->streams [(*descriptor)->streamIndex]->time_base));
+                    while (encodeWriteFrame ((*descriptor)->context, nullptr, (*descriptor)->streamIndex));
                 }
             }
             else
@@ -317,7 +318,7 @@ struct FFmpegWriter::Pimpl
                     if ((*descriptor)->context->codec->capabilities & AV_CODEC_CAP_DELAY)
                     {
                         FOLEYS_LOG ("Flushing encoder dor stream " << idx);
-                        while (encodeWriteFrame ((*descriptor)->context, nullptr, formatContext->streams [(*descriptor)->streamIndex]->time_base));
+                        while (encodeWriteFrame ((*descriptor)->context, nullptr, (*descriptor)->streamIndex));
                     }
                 }
             }
@@ -446,13 +447,11 @@ private:
         }
     }
 
-    bool encodeWriteFrame (AVCodecContext* codecContext, AVFrame* frame, AVRational streamTimeBase)
+    bool encodeWriteFrame (AVCodecContext* codecContext, AVFrame* frame, int streamIndex)
     {
         jassert (formatContext != nullptr);
 
         AVPacket* packet = av_packet_alloc();
-        packet->data = NULL;
-        packet->size = 0;
         av_init_packet (packet);
 
         avcodec_send_frame (codecContext, frame);
@@ -460,7 +459,8 @@ private:
         av_frame_free (&frame);
 
         auto ret = avcodec_receive_packet (codecContext, packet);
-        av_packet_rescale_ts (packet, codecContext->time_base, streamTimeBase);
+        packet->stream_index = streamIndex;
+        av_packet_rescale_ts (packet, codecContext->time_base, formatContext->streams [streamIndex]->time_base);
         if (ret == AVERROR (EAGAIN) || ret == AVERROR_EOF)
         {
             av_packet_unref (packet);
