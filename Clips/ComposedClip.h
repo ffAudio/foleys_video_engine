@@ -33,7 +33,7 @@ public:
 
     juce::String getDescription() const override;
 
-    juce::Image getFrame (double pts) const override;
+    std::pair<int64_t, juce::Image> getFrame (double pts) const override;
     bool isFrameAvailable (double pts) const override;
 
     juce::Image getCurrentFrame() const override;
@@ -165,6 +165,7 @@ private:
         int useTimeSlice() override;
 
         void setSuspended (bool s);
+        bool isSuspended() const;
 
     private:
         ComposedClip& owner;

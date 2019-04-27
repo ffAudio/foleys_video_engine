@@ -145,12 +145,14 @@ struct FFmpegWriter::Pimpl
             return -1;
         }
 
+        auto channelLayout = AV_CH_LAYOUT_STEREO;
+
         stream->time_base = av_make_q (1, settings.timebase);
         auto* context = avcodec_alloc_context3 (encoder);
         context->sample_rate = settings.timebase;
         context->sample_fmt = AV_SAMPLE_FMT_FLTP;
-        context->channel_layout = AV_CH_LAYOUT_STEREO_DOWNMIX;
-        context->channels = av_get_channel_layout_nb_channels (AV_CH_LAYOUT_STEREO_DOWNMIX);
+        context->channel_layout = channelLayout;
+        context->channels = av_get_channel_layout_nb_channels (channelLayout);
         context->bit_rate = 64000;
         context->frame_size = settings.defaultNumSamples;
         context->bits_per_raw_sample = 32;
@@ -289,6 +291,8 @@ struct FFmpegWriter::Pimpl
             closeContainer();
             return false;
         }
+
+        av_dump_format (formatContext, 0, nullptr, 1);
 
         writer.started = true;
         return true;

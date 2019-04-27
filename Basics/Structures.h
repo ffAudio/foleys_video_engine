@@ -73,6 +73,19 @@ struct Timecode
     }
 };
 
+static inline int64_t convertTimecode (double pts, const VideoStreamSettings& settings)
+{
+    if (settings.defaultDuration == 0)
+        return 0;
+
+    return settings.defaultDuration * int64_t (pts * settings.timebase / settings.defaultDuration);
+}
+
+static inline int64_t convertTimecode (double pts, const AudioStreamSettings& settings)
+{
+    return int64_t (pts * settings.timebase);
+}
+
 static inline juce::String timecodeToString (Timecode tc)
 {
     if (tc.timebase == 0)

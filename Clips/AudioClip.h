@@ -36,7 +36,7 @@ public:
 
     void setAudioFormatReader (juce::AudioFormatReader* reader);
 
-    juce::Image getFrame (double pts) const override { return {}; }
+    std::pair<int64_t, juce::Image> getFrame (double pts) const override { return {}; }
     juce::Image getCurrentFrame() const override  { return {}; }
     bool isFrameAvailable (double pts) const override { return false; }
 
@@ -68,9 +68,15 @@ public:
     double getSampleRate() const override { return sampleRate; }
 
 private:
+
+    void setupResampler();
+
     std::unique_ptr<juce::AudioFormatReaderSource> readerSource;
+    std::unique_ptr<juce::ResamplingAudioSource>   resampler;
     juce::File mediaFile;
     double sampleRate = 0.0;
+    double originalSampleRate = 0.0;
+    int    samplesPerBlock = 0;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioClip)
 };

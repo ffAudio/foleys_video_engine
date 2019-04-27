@@ -44,11 +44,13 @@ void ImageClip::setMediaFile (const juce::File& media)
 void ImageClip::setImage (const juce::Image& imageToUse)
 {
     image = imageToUse;
+    videoSettings.frameSize.width = image.getWidth();
+    videoSettings.frameSize.height = image.getHeight();
 }
 
-juce::Image ImageClip::getFrame (double pts) const
+std::pair<int64_t, juce::Image> ImageClip::getFrame (double pts) const
 {
-    return image;
+    return { convertTimecode (pts, videoSettings), image };
 }
 
 juce::Image ImageClip::getCurrentFrame() const

@@ -27,7 +27,7 @@ void VideoFifo::pushVideoFrame (juce::Image& image, juce::int64 timestamp)
     videoFrames [timestamp] = image;
 }
 
-std::pair<juce::int64, juce::Image> VideoFifo::popVideoFrame()
+std::pair<int64_t, juce::Image> VideoFifo::popVideoFrame()
 {
     const juce::ScopedLock sl (lock);
     if (videoFrames.empty())
@@ -37,7 +37,7 @@ std::pair<juce::int64, juce::Image> VideoFifo::popVideoFrame()
     return { frame.key(), frame.mapped() };
 }
 
-juce::Image VideoFifo::getVideoFrame (double timestamp) const
+std::pair<int64_t, juce::Image> VideoFifo::getVideoFrame (double timestamp) const
 {
     const juce::ScopedLock sl (lock);
 
@@ -45,7 +45,7 @@ juce::Image VideoFifo::getVideoFrame (double timestamp) const
     if (vf != videoFrames.end())
     {
         const_cast<juce::int64&>(lastViewedFrame) = vf->first;
-        return vf->second;
+        return { vf->first, vf->second };
     }
 
     return {};

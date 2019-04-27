@@ -41,7 +41,7 @@ public:
 
     void setImage (const juce::Image& image);
 
-    juce::Image getFrame (double pts) const override;
+    std::pair<int64_t, juce::Image> getFrame (double pts) const override;
     juce::Image getCurrentFrame() const override;
     bool isFrameAvailable (double pts) const override { return image.isValid(); }
 
@@ -76,6 +76,7 @@ private:
 
     juce::Image image;
     juce::File  mediaFile;
+    VideoStreamSettings videoSettings;
 
     double sampleRate = 0.0;
 

@@ -153,7 +153,7 @@ juce::ThreadPoolJob::JobStatus ClipBouncer::RenderJob::runJob()
 
             auto frame = clip->getFrame (timestamp);
 
-            bouncer.writer->pushImage (videoPosition, frame);
+            bouncer.writer->pushImage (videoPosition, frame.second);
         }
 
         bouncer.progress.store (double (audioPosition) / totalDuration);

@@ -30,9 +30,9 @@ public:
     ~VideoFifo() = default;
 
     void pushVideoFrame (juce::Image& image, juce::int64 timestamp);
-    std::pair<juce::int64, juce::Image> popVideoFrame();
+    std::pair<int64_t, juce::Image> popVideoFrame();
 
-    juce::Image getVideoFrame (double timestamp) const;
+    std::pair<int64_t, juce::Image> getVideoFrame (double timestamp) const;
     bool isFrameAvailable (double timestamp) const;
 
     int getNumAvailableFrames() const;

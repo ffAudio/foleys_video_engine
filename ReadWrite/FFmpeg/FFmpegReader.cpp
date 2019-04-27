@@ -165,7 +165,6 @@ public:
     {
         FOLEYS_LOG ("Seek for sample position: " << position);
         auto response = av_seek_frame (formatContext, audioStreamIdx, position, AVSEEK_FLAG_BACKWARD);
-//        auto response = avformat_seek_file (formatContext, audioStreamIdx, 0, position, position, AVSEEK_FLAG_FRAME);
         if (response < 0)
         {
             FOLEYS_LOG ("Error seeking in audio stream: " << getErrorString (response));
@@ -225,19 +224,17 @@ public:
 
     bool setOutputSampleRate (double sr)
     {
-        if (audioConverterContext != nullptr)
-            swr_free(&audioConverterContext);
+        audioConverterContext = swr_alloc_set_opts (audioConverterContext,
+                                                    channelLayout,              // out_ch_layout
+                                                    AV_SAMPLE_FMT_FLTP,         // out_sample_fmt
+                                                    sr,                         // out_sample_rate
+                                                    channelLayout,              // in_ch_layout
+                                                    audioContext->sample_fmt,   // in_sample_fmt
+                                                    audioContext->sample_rate,  // in_sample_rate
+                                                    0,                          // log_offset
+                                                    nullptr);                   // log_ctx
 
-        audioConverterContext = swr_alloc_set_opts(nullptr,
-                                                   channelLayout,              // out_ch_layout
-                                                   AV_SAMPLE_FMT_FLTP,         // out_sample_fmt
-                                                   sr,                         // out_sample_rate
-                                                   channelLayout,              // in_ch_layout
-                                                   audioContext->sample_fmt,   // in_sample_fmt
-                                                   audioContext->sample_rate,  // in_sample_rate
-                                                   0,                          // log_offset
-                                                   nullptr);                   // log_ctx
-
+        outputSampleRate = sr;
         return swr_init (audioConverterContext) >= 0;
     }
 
@@ -364,33 +361,36 @@ private:
                  " PTS: " << juce::String (packet.pts) <<
                  " Frame PTS: " << juce::String (frame->best_effort_timestamp));
 
-            if (frame->extended_data != nullptr)
+            if (frame->extended_data != nullptr  && reader.sampleRate > 0)
             {
                 const int  channels   = av_get_channel_layout_nb_channels (frame->channel_layout);
                 const auto numSamples = frame->nb_samples;
-                jassert (std::abs (audioFifo.getWritePosition() - frame->best_effort_timestamp) < std::numeric_limits<int>::max());
-                auto offset = int (audioFifo.getWritePosition() - frame->best_effort_timestamp);
+                const auto outTimestamp = int64_t (frame->best_effort_timestamp * outputSampleRate / reader.sampleRate);
+                const int  numProduced = numSamples * outputSampleRate / reader.sampleRate;
+
+                jassert (std::abs (audioFifo.getWritePosition() - outTimestamp) < std::numeric_limits<int>::max());
+                auto offset = int (audioFifo.getWritePosition() - outTimestamp);
 
                 FOLEYS_LOG ("Audio: " << audioFifo.getWritePosition() << " free: " << audioFifo.getFreeSpace());
 
-                if (audioConvertBuffer.getNumChannels() != channels || audioConvertBuffer.getNumSamples() < numSamples)
-                    audioConvertBuffer.setSize(channels, numSamples, false, false, true);
+                if (audioConvertBuffer.getNumChannels() != channels || audioConvertBuffer.getNumSamples() < numProduced)
+                    audioConvertBuffer.setSize(channels, numProduced, false, false, true);
 
-                if (frame->best_effort_timestamp < 0)
+                if (outTimestamp < 0)
                     return;
 
-                if (offset < 0 && offset > -1024)
+                if (offset < 0 && offset >= -2048)
                 {
                     audioFifo.pushSilence (-offset);
                     offset = 0;
                 }
 
-                if (juce::isPositiveAndBelow (offset, numSamples))
+                if (juce::isPositiveAndBelow (offset, numProduced))
                 {
                     swr_convert (audioConverterContext,
-                                 (uint8_t**)audioConvertBuffer.getArrayOfWritePointers(), numSamples,
+                                 (uint8_t**)audioConvertBuffer.getArrayOfWritePointers(), numProduced,
                                  (const uint8_t**)frame->extended_data, numSamples);
-                    juce::AudioBuffer<float> buffer (audioConvertBuffer.getArrayOfWritePointers(), channels, int (offset), int (numSamples - offset));
+                    juce::AudioBuffer<float> buffer (audioConvertBuffer.getArrayOfWritePointers(), channels, int (offset), int (numProduced - offset));
                     audioFifo.pushSamples (buffer);
                 }
             }

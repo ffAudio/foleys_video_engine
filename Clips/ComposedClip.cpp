@@ -87,7 +87,7 @@ void ComposedClip::removeClip (std::shared_ptr<ClipDescriptor> descriptor)
     state.removeChild (descriptor->getStatusTree(), getUndoManager());
 }
 
-juce::Image ComposedClip::getFrame (double pts) const
+std::pair<int64_t, juce::Image> ComposedClip::getFrame (double pts) const
 {
     return videoFifo.getVideoFrame (pts);
 }
@@ -100,7 +100,7 @@ bool ComposedClip::isFrameAvailable (double pts) const
 juce::Image ComposedClip::getCurrentFrame() const
 {
     const auto pts = sampleRate > 0 ? position.load() / sampleRate : 0.0;
-    return videoFifo.getVideoFrame (pts);
+    return videoFifo.getVideoFrame (pts).second;
 }
 
 Size ComposedClip::getVideoSize() const
@@ -144,6 +144,8 @@ void ComposedClip::prepareToPlay (int samplesPerBlockExpected, double sampleRate
         descriptor->clip->prepareToPlay (samplesPerBlockExpected, sampleRate);
         descriptor->updateSampleCounts();
     }
+
+    videoRenderJob.setSuspended (false);
 }
 
 void ComposedClip::releaseResources()
@@ -181,6 +183,7 @@ void ComposedClip::getNextAudioBlock (const juce::AudioSourceChannelInfo& info)
 
 void ComposedClip::setNextReadPosition (juce::int64 samples)
 {
+    const auto wasSuspended = videoRenderJob.isSuspended();
     videoRenderJob.setSuspended (true);
 
     position.store (samples);
@@ -199,7 +202,7 @@ void ComposedClip::setNextReadPosition (juce::int64 samples)
 
     lastShownFrame = { -1, double (videoFifo.getVideoSettings().timebase) };
     triggerAsyncUpdate();
-    videoRenderJob.setSuspended (false);
+    videoRenderJob.setSuspended (wasSuspended);
 }
 
 juce::int64 ComposedClip::getNextReadPosition() const
@@ -493,7 +496,7 @@ int ComposedClip::ComposingThread::useTimeSlice()
         const auto tc = (pos + clip->offset.load() - clip->start.load()) / owner.sampleRate;
         const auto frame = clip->clip->getFrame (tc);
 
-        g.drawImageWithin (frame, 0, 0, image.getWidth(), image.getHeight(), juce::RectanglePlacement::centred);
+        g.drawImageWithin (frame.second, 0, 0, image.getWidth(), image.getHeight(), juce::RectanglePlacement::centred);
     }
 
     owner.videoFifo.pushVideoFrame (image, nextTimeCode);
@@ -507,6 +510,11 @@ void ComposedClip::ComposingThread::setSuspended (bool s)
 
     while (suspended && inRenderBlock)
         juce::Thread::sleep (5);
+}
+
+bool ComposedClip::ComposingThread::isSuspended() const
+{
+    return suspended;
 }
 
 

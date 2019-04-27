@@ -43,14 +43,48 @@ void AudioClip::setMediaFile (const juce::File& media)
 
 void AudioClip::setAudioFormatReader (juce::AudioFormatReader* reader)
 {
+    if (reader == nullptr)
+    {
+        resampler.reset();
+        readerSource.reset();
+        return;
+    }
+
     readerSource = std::make_unique<juce::AudioFormatReaderSource>(reader, true);
+
+    setupResampler();
+}
+
+void AudioClip::setupResampler()
+{
+    if (readerSource.get() == nullptr)
+    {
+        resampler.reset();
+        return;
+    }
+
+    const auto* reader = readerSource->getAudioFormatReader();
+    originalSampleRate = reader->sampleRate;
+    if (originalSampleRate != sampleRate)
+        resampler = std::make_unique<juce::ResamplingAudioSource> (readerSource.get(), false, reader->numChannels);
+    else
+        resampler.reset();
+
+    if (resampler.get() != nullptr && sampleRate > 0)
+    {
+        resampler->setResamplingRatio (originalSampleRate / sampleRate);
+        resampler->prepareToPlay (samplesPerBlock, sampleRate);
+    }
 }
 
 void AudioClip::prepareToPlay (int samplesPerBlockExpected, double sampleRateToUse)
 {
     sampleRate = sampleRateToUse;
-    if (readerSource)
-        readerSource->prepareToPlay (samplesPerBlockExpected, sampleRate);
+    samplesPerBlock = samplesPerBlockExpected;
+
+    setupResampler();
+
+    readerSource->prepareToPlay (samplesPerBlockExpected, sampleRate);
 }
 
 void AudioClip::releaseResources()
@@ -61,25 +95,34 @@ void AudioClip::releaseResources()
 
 void AudioClip::getNextAudioBlock (const juce::AudioSourceChannelInfo& info)
 {
-    if (readerSource.get() == nullptr)
-    {
+    if (resampler.get() != nullptr)
+        resampler->getNextAudioBlock (info);
+    else if (readerSource.get() != nullptr)
+        readerSource->getNextAudioBlock (info);
+    else
         info.clearActiveBufferRegion();
-        return;
-    }
-
-    readerSource->getNextAudioBlock (info);
 }
 
 void AudioClip::setNextReadPosition (juce::int64 samples)
 {
     if (readerSource)
-        readerSource->setNextReadPosition (samples);
+    {
+        if (sampleRate > 0 && originalSampleRate != sampleRate)
+            readerSource->setNextReadPosition (samples * originalSampleRate / sampleRate);
+        else
+            readerSource->setNextReadPosition (samples);
+    }
 }
 
 juce::int64 AudioClip::getNextReadPosition() const
 {
     if (readerSource)
+    {
+        if (originalSampleRate > 0 && sampleRate != originalSampleRate)
+            return readerSource->getNextReadPosition() * sampleRate / originalSampleRate;
+
         return readerSource->getNextReadPosition();
+    }
 
     return 0;
 }
@@ -87,23 +130,28 @@ juce::int64 AudioClip::getNextReadPosition() const
 juce::int64 AudioClip::getTotalLength() const
 {
     if (readerSource)
+    {
+        if (originalSampleRate > 0 && sampleRate != originalSampleRate)
+            return readerSource->getTotalLength() * sampleRate / originalSampleRate;
+
         return readerSource->getTotalLength();
+    }
 
     return 0;
 }
 
 double AudioClip::getCurrentTimeInSeconds() const
 {
-    if (readerSource && sampleRate > 0.0)
-        return readerSource->getNextReadPosition() / sampleRate;
+    if (readerSource && originalSampleRate > 0.0)
+        return readerSource->getNextReadPosition() / originalSampleRate;
 
     return 0.0;
 }
 
 double AudioClip::getLengthInSeconds() const
 {
-    if (readerSource && sampleRate > 0.0)
-        return readerSource->getTotalLength() / sampleRate;
+    if (readerSource && originalSampleRate > 0.0)
+        return readerSource->getTotalLength() / originalSampleRate;
 
     return 0.0;
 }

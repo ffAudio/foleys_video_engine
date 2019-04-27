@@ -39,6 +39,7 @@ bool MovieClip::openFromFile (const juce::File file)
     if (videoEngine == nullptr)
         return false;
 
+    const auto wasSuspended = backgroundJob.isSuspended();
     backgroundJob.setSuspended (true);
 
     auto reader = videoEngine->createReaderFor (file);
@@ -50,7 +51,7 @@ bool MovieClip::openFromFile (const juce::File file)
             setThumbnailReader ({});
 
         setReader (std::move (reader));
-        backgroundJob.setSuspended (false);
+        backgroundJob.setSuspended (wasSuspended);
         return true;
     }
 
@@ -71,8 +72,11 @@ void MovieClip::setReader (std::unique_ptr<AVReader> readerToUse)
 
     movieReader = std::move (readerToUse);
     audioFifo.setNumChannels (movieReader->numChannels);
-    audioFifo.setSampleRate (movieReader->sampleRate);
+    audioFifo.setSampleRate (sampleRate);
     audioFifo.setPosition (0);
+
+    if (sampleRate > 0)
+        movieReader->setOutputSampleRate (sampleRate);
 
     auto& settings = videoFifo.getVideoSettings();
     settings.timebase = movieReader->timebase;
@@ -115,7 +119,7 @@ Timecode MovieClip::getFrameTimecodeForTime (double time) const
     return videoFifo.getFrameTimecodeForTime (time);
 }
 
-juce::Image MovieClip::getFrame (double pts) const
+std::pair<int64_t, juce::Image> MovieClip::getFrame (double pts) const
 {
     return videoFifo.getVideoFrame (pts);
 }
@@ -135,18 +139,24 @@ juce::Image MovieClip::getStillImage (double seconds, Size size)
 
 juce::Image MovieClip::getCurrentFrame() const
 {
-    auto pts = sampleRate > 0 ? nextReadPosition / sampleRate : 0.0;
-    if (movieReader && movieReader->sampleRate > 0)
-        pts = audioFifo.getReadPosition() / movieReader->sampleRate;
+    if (sampleRate == 0)
+        return videoFifo.getVideoFrame (0).second;
 
-    return videoFifo.getVideoFrame (pts);
+    if (movieReader)
+        return videoFifo.getVideoFrame (audioFifo.getReadPosition() / sampleRate).second;
+
+    return videoFifo.getVideoFrame (nextReadPosition / sampleRate).second;
 }
 
 void MovieClip::prepareToPlay (int samplesPerBlockExpected, double sampleRateToUse)
 {
     sampleRate = sampleRateToUse;
-    if (movieReader && movieReader->sampleRate > 0)
+    audioFifo.setSampleRate (sampleRate);
+
+    if (movieReader)
         movieReader->setOutputSampleRate (sampleRate);
+
+    backgroundJob.setSuspended (false);
 }
 
 void MovieClip::releaseResources()
@@ -270,7 +280,10 @@ MovieClip::BackgroundReaderJob::BackgroundReaderJob (MovieClip& ownerToUse)
 
 int MovieClip::BackgroundReaderJob::useTimeSlice()
 {
-    if (!suspended && owner.movieReader.get() != nullptr && owner.audioFifo.getFreeSpace() > 2048)
+    if (suspended == false &&
+        owner.sampleRate > 0 &&
+        owner.movieReader.get() != nullptr &&
+        owner.audioFifo.getFreeSpace() > 2048)
     {
         juce::ScopedValueSetter<bool> guard (inDecodeBlock, true);
         owner.movieReader->readNewData (owner.videoFifo, owner.audioFifo);
@@ -286,6 +299,11 @@ void MovieClip::BackgroundReaderJob::setSuspended (bool s)
 
     while (suspended && inDecodeBlock)
         juce::Thread::sleep (5);
+}
+
+bool MovieClip::BackgroundReaderJob::isSuspended() const
+{
+    return suspended;
 }
 
 juce::TimeSliceClient* MovieClip::getBackgroundJob()
