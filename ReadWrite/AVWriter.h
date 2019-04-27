@@ -38,7 +38,7 @@ public:
 
     virtual void pushSamples (const juce::AudioBuffer<float>& buffer, int stream = 0) = 0;
 
-    virtual void pushImage (juce::int64 pos, juce::Image image, int stream = 0) = 0;
+    virtual void pushImage (int64_t pos, juce::Image image, int stream = 0) = 0;
 
     virtual int addVideoStream (const VideoStreamSettings& settings) = 0;
 

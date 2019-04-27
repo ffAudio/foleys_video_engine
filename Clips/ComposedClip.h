@@ -101,9 +101,9 @@ public:
         void updateSampleCounts();
 
     private:
-        std::atomic<juce::int64> start {0};
-        std::atomic<juce::int64> length {0};
-        std::atomic<juce::int64> offset {0};
+        std::atomic<int64_t> start {0};
+        std::atomic<int64_t> length {0};
+        std::atomic<int64_t> offset {0};
 
         void valueTreePropertyChanged (juce::ValueTree& treeWhosePropertyHasChanged,
                                        const juce::Identifier& property) override;
@@ -183,7 +183,7 @@ private:
 
     std::unique_ptr<CompositingContext> composer;
     std::vector<std::shared_ptr<ClipDescriptor>> clips;
-    std::atomic<juce::int64> position = {};
+    std::atomic<int64_t> position = {};
     Size videoSize;
     double sampleRate = 0;
     juce::AudioBuffer<float> buffer;

@@ -190,19 +190,12 @@ void ComposedClip::setNextReadPosition (juce::int64 samples)
     for (auto& descriptor : getClips())
         descriptor->clip->setNextReadPosition (std::max (juce::int64 (samples + descriptor->offset - descriptor->start), juce::int64 (descriptor->offset)));
 
-    if (sampleRate > 0)
-    {
-        auto time = samples / sampleRate;
-        videoFifo.clear (time * videoFifo.getVideoSettings().timebase);
-    }
-    else
-    {
-        videoFifo.clear (0);
-    }
+    videoFifo.clear();
 
     lastShownFrame = { -1, double (videoFifo.getVideoSettings().timebase) };
-    triggerAsyncUpdate();
     videoRenderJob.setSuspended (wasSuspended);
+
+    triggerAsyncUpdate();
 }
 
 juce::int64 ComposedClip::getNextReadPosition() const
@@ -278,7 +271,7 @@ void ComposedClip::handleAsyncUpdate()
     if (sampleRate > 0 && hasVideo())
     {
         auto currentTimecode = videoFifo.getFrameTimecodeForTime (position.load() / sampleRate);
-        if (currentTimecode != lastShownFrame)
+        if ( currentTimecode != lastShownFrame)
         {
             sendTimecode (currentTimecode, juce::sendNotificationAsync);
             lastShownFrame = currentTimecode;
@@ -483,7 +476,10 @@ int ComposedClip::ComposingThread::useTimeSlice()
     auto& settings = owner.videoFifo.getVideoSettings();
 
     auto image = owner.videoFifo.getOldestFrameForRecycling();
-    auto nextTimeCode = owner.videoFifo.getHighestTimeCode() + settings.defaultDuration;
+    auto current = convertTimecode (owner.getCurrentTimeInSeconds(), settings);
+    auto highest = owner.videoFifo.getHighestTimeCode() + settings.defaultDuration;
+
+    auto nextTimeCode = std::max (current, highest);
 
     auto timeInSeconds = nextTimeCode / double (settings.timebase);
     auto pos = timeInSeconds * owner.sampleRate;

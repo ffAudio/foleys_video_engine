@@ -59,7 +59,7 @@ public:
             reader.sampleRate  = audioContext->sample_rate;
             reader.numChannels = audioContext->channels;
             reader.numSamples  = formatContext->streams [audioStreamIdx]->duration > 0
-            ? formatContext->streams [audioStreamIdx]->duration : std::numeric_limits<juce::int64>::max();
+            ? formatContext->streams [audioStreamIdx]->duration : std::numeric_limits<int64_t>::max();
 
             if (! setOutputSampleRate (audioContext->sample_rate))
             {
@@ -161,7 +161,7 @@ public:
         av_packet_unref (&packet);
     }
 
-    void setPosition (juce::int64 position)
+    void setPosition (int64_t position)
     {
         FOLEYS_LOG ("Seek for sample position: " << position);
         auto response = av_seek_frame (formatContext, audioStreamIdx, position, AVSEEK_FLAG_BACKWARD);
@@ -464,7 +464,7 @@ juce::int64 FFmpegReader::getTotalLength() const
     return numSamples;
 }
 
-void FFmpegReader::setPosition (const juce::int64 position)
+void FFmpegReader::setPosition (const int64_t position)
 {
     pimpl->setPosition (position);
 }

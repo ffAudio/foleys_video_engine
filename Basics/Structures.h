@@ -53,7 +53,7 @@ struct Timecode
 {
     /** The time code count. This is not necessarily incrementing in single steps, since
      for finer resolution the time base can be set different from the frame rate. */
-    juce::int64 count = -1;
+    int64_t count = -1;
 
     /** The time base for audio is usually set to the sample rate and for video e.g. 1000
      to count in milli seconds. */
@@ -92,7 +92,7 @@ static inline juce::String timecodeToString (Timecode tc)
         return "--:--:--.---";
 
     auto seconds = tc.count / double (tc.timebase);
-    juce::int64 intSeconds = seconds;
+    int64_t intSeconds = seconds;
 
     auto milliSeconds = int (1000.0 * (seconds - intSeconds));
     auto days = int (intSeconds / (3600 * 24));

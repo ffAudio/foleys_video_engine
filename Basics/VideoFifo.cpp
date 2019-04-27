@@ -21,7 +21,7 @@
 namespace foleys
 {
 
-void VideoFifo::pushVideoFrame (juce::Image& image, juce::int64 timestamp)
+void VideoFifo::pushVideoFrame (juce::Image& image, int64_t timestamp)
 {
     const juce::ScopedLock sl (lock);
     videoFrames [timestamp] = image;
@@ -44,7 +44,7 @@ std::pair<int64_t, juce::Image> VideoFifo::getVideoFrame (double timestamp) cons
     auto vf = videoFrames.lower_bound (timestamp * settings.timebase);
     if (vf != videoFrames.end())
     {
-        const_cast<juce::int64&>(lastViewedFrame) = vf->first;
+        const_cast<int64_t&>(lastViewedFrame) = vf->first;
         return { vf->first, vf->second };
     }
 
@@ -86,10 +86,13 @@ int VideoFifo::getNumAvailableFrames() const
     const juce::ScopedLock sl (lock);
 
     auto it = videoFrames.lower_bound (lastViewedFrame);
+    if (it == videoFrames.end())
+        return int (std::min (videoFrames.size(), size_t (std::numeric_limits<int>::max())));
+
     return int (std::distance (it, videoFrames.end()));
 }
 
-juce::int64 VideoFifo::getLowestTimeCode() const
+int64_t VideoFifo::getLowestTimeCode() const
 {
     const juce::ScopedLock sl (lock);
 
@@ -99,7 +102,7 @@ juce::int64 VideoFifo::getLowestTimeCode() const
     return videoFrames.cbegin()->first;
 }
 
-juce::int64 VideoFifo::getHighestTimeCode() const
+int64_t VideoFifo::getHighestTimeCode() const
 {
     const juce::ScopedLock sl (lock);
 
@@ -143,12 +146,12 @@ juce::Image VideoFifo::getOldestFrameForRecycling()
     return image;
 }
 
-void VideoFifo::clear (juce::int64 count)
+void VideoFifo::clear()
 {
     const juce::ScopedLock sl (lock);
 
     videoFrames.clear();
-    lastViewedFrame = count;
+    lastViewedFrame = -1;
 }
 
 void VideoFifo::clearFramesOlderThan (Timecode timecode)

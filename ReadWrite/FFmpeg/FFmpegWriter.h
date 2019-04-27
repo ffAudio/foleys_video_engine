@@ -35,7 +35,7 @@ public:
 
     void pushSamples (const juce::AudioBuffer<float>& input, int stream = 0) override;
 
-    void pushImage (juce::int64 pos, juce::Image image, int stream = 0) override;
+    void pushImage (int64_t pos, juce::Image image, int stream = 0) override;
 
     int addVideoStream (const VideoStreamSettings& settings) override;
 

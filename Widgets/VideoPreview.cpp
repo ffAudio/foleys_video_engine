@@ -66,7 +66,10 @@ void VideoPreview::paint (juce::Graphics& g)
     if (clip)
     {
         auto image = clip->getCurrentFrame();
-        g.drawImage (image, getLocalBounds().toFloat(), placement);
+        if (image.isNull())
+            juce::Timer::callAfterDelay (200, [&]{ repaint(); });
+        else
+            g.drawImage (image, getLocalBounds().toFloat(), placement);
     }
 
     if (subtitle.isNotEmpty())
@@ -83,10 +86,9 @@ void VideoPreview::timecodeChanged (Timecode tc)
     {
         subtitle.clear();
         subtitleClear.count = 0;
-        currentFrameCount = -1;
     }
 
-    if (currentFrameCount != tc.count)
+    if (currentFrameCount == -1 || currentFrameCount != tc.count)
     {
         currentFrameCount = tc.count;
         repaint();

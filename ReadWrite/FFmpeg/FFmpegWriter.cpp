@@ -185,7 +185,7 @@ struct FFmpegWriter::Pimpl
             while (processStreams());
     }
 
-    void pushImage (juce::int64 pos, juce::Image image, int stream)
+    void pushImage (int64_t pos, juce::Image image, int stream)
     {
         if (juce::isPositiveAndBelow (stream, videoStreams.size()) == false)
             return;
@@ -197,7 +197,7 @@ struct FFmpegWriter::Pimpl
             while (processStreams());
     }
 
-    void encodeVideoFrame (VideoStreamDescriptor& descriptor, juce::Image& image, juce::int64 timestamp)
+    void encodeVideoFrame (VideoStreamDescriptor& descriptor, juce::Image& image, int64_t timestamp)
     {
         jassert (formatContext != nullptr);
         jassert (descriptor.context != nullptr);
@@ -233,7 +233,7 @@ struct FFmpegWriter::Pimpl
         encodeWriteFrame (descriptor.context, frame, descriptor.streamIndex);
     }
 
-    void encodeAudioFrame (AudioStreamDescriptor& descriptor, juce::AudioBuffer<float>& buffer, juce::int64 timestamp)
+    void encodeAudioFrame (AudioStreamDescriptor& descriptor, juce::AudioBuffer<float>& buffer, int64_t timestamp)
     {
         FOLEYS_LOG ("encodeAudioFrame: " << timestamp << " num: " << buffer.getNumSamples());
         jassert (descriptor.settings.numChannels == buffer.getNumChannels());
@@ -525,7 +525,7 @@ void FFmpegWriter::pushSamples (const juce::AudioBuffer<float>& input, int strea
     pimpl->pushSamples (input, stream);
 }
 
-void FFmpegWriter::pushImage (juce::int64 pos, juce::Image image, int stream)
+void FFmpegWriter::pushImage (int64_t pos, juce::Image image, int stream)
 {
     if (!opened)
         return;

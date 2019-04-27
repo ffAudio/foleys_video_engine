@@ -35,7 +35,7 @@ public:
     bool isOpenedOk() const { return opened; }
     virtual juce::int64 getTotalLength() const = 0;
 
-    virtual void setPosition (const juce::int64 position) = 0;
+    virtual void setPosition (const int64_t position) = 0;
 
     virtual juce::Image getStillImage (double seconds, Size size) = 0;
 

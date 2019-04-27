@@ -81,7 +81,7 @@ void MovieClip::setReader (std::unique_ptr<AVReader> readerToUse)
     auto& settings = videoFifo.getVideoSettings();
     settings.timebase = movieReader->timebase;
     settings.frameSize = movieReader->originalSize;
-    videoFifo.clear (0);
+    videoFifo.clear();
 
     backgroundJob.setSuspended (false);
 }
@@ -239,11 +239,11 @@ void MovieClip::setNextReadPosition (juce::int64 samples)
         {
             movieReader->setPosition (time * movieReader->sampleRate);
         }
-        videoFifo.clear (time * videoFifo.getVideoSettings().timebase);
+        videoFifo.clear();
     }
     else
     {
-        videoFifo.clear (0);
+        videoFifo.clear();
     }
 
     backgroundJob.setSuspended (false);

@@ -41,10 +41,10 @@ public:
     /**
      This method will set the read and write pointer to position, render the fifo empty
      */
-    void setPosition (const juce::int64 position);
+    void setPosition (const int64_t position);
 
-    juce::int64 getWritePosition() const;
-    juce::int64 getReadPosition() const;
+    int64_t getWritePosition() const;
+    int64_t getReadPosition() const;
 
     int getFreeSpace() const;
     int getAvailableSamples() const;
@@ -57,8 +57,8 @@ public:
 private:
     double sampleRate = 0;
 
-    std::atomic<juce::int64> readPosition {};
-    std::atomic<juce::int64> writePosition {};
+    std::atomic<int64_t> readPosition {};
+    std::atomic<int64_t> writePosition {};
 
     juce::AudioBuffer<float> audioBuffer;
     juce::AbstractFifo       audioFifo;

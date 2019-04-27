@@ -29,15 +29,15 @@ public:
     VideoFifo() = default;
     ~VideoFifo() = default;
 
-    void pushVideoFrame (juce::Image& image, juce::int64 timestamp);
+    void pushVideoFrame (juce::Image& image, int64_t timestamp);
     std::pair<int64_t, juce::Image> popVideoFrame();
 
     std::pair<int64_t, juce::Image> getVideoFrame (double timestamp) const;
     bool isFrameAvailable (double timestamp) const;
 
     int getNumAvailableFrames() const;
-    juce::int64 getLowestTimeCode() const;
-    juce::int64 getHighestTimeCode() const;
+    int64_t getLowestTimeCode() const;
+    int64_t getHighestTimeCode() const;
 
     juce::Image getOldestFrameForRecycling();
 
@@ -45,7 +45,7 @@ public:
 
     size_t size() const;
 
-    void clear (juce::int64 count);
+    void clear();
 
     void clearFramesOlderThan (Timecode timecode);
 
@@ -56,8 +56,8 @@ private:
 
     VideoStreamSettings settings;
 
-    std::map<juce::int64, juce::Image> videoFrames;
-    juce::int64 lastViewedFrame = -1;
+    std::map<int64_t, juce::Image> videoFrames;
+    int64_t lastViewedFrame = -1;
     bool reverse = false;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (VideoFifo)

@@ -79,19 +79,19 @@ void AudioFifo::skipSamples (int numSamples)
     audioFifo.read (numSamples);
 }
 
-void AudioFifo::setPosition (const juce::int64 position)
+void AudioFifo::setPosition (const int64_t position)
 {
     readPosition.store (position);
     writePosition.store (position);
     audioFifo.reset();
 }
 
-juce::int64 AudioFifo::getWritePosition() const
+int64_t AudioFifo::getWritePosition() const
 {
     return writePosition.load();
 }
 
-juce::int64 AudioFifo::getReadPosition() const
+int64_t AudioFifo::getReadPosition() const
 {
     return readPosition.load();
 }
