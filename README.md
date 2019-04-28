@@ -51,10 +51,10 @@ To use the engine, just start the Projucer and add foleys_video_engine to your p
 
 We hope this is useful and are looking forward to your feedback:
 
-Email:       developer@foleysfinest.com
-github:      ffAudio / https://github.com/ffAudio
-JUCE forum:  daniel
-discord:     daniel (JUCE and theaudioprogrammer)
+Email:       developer@foleysfinest.com  
+github:      ffAudio / https://github.com/ffAudio  
+JUCE forum:  daniel  
+discord:     daniel (JUCE and theaudioprogrammer)  
 facebook:    https://fb.com/FoleysFinest/
 
 Disclaimer

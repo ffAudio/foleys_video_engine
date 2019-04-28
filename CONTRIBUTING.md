@@ -23,9 +23,9 @@ Let's have a talk about it.
 
 You can reach us at:
 
-Email:       developer@foleysfinest.com
-github:      ffAudio / https://github.com/ffAudio
-JUCE forum:  daniel
-discord:     daniel (JUCE and theaudioprogrammer)
-facebook:    https://fb.com/FoleysFinest/
+Email:       developer@foleysfinest.com  
+github:      ffAudio / https://github.com/ffAudio  
+JUCE forum:  daniel  
+discord:     daniel (JUCE and theaudioprogrammer)  
+facebook:    https://fb.com/FoleysFinest/  
 
