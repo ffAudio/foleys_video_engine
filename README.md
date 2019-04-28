@@ -35,6 +35,11 @@ Features
 - _Alternative video file backend (coming much later)_
 - _Hardware rendering backend (coming even later)_
 
+API-Documentation
+-----------------
+
+Please find the API documentation (doxygen) here: https://foleysfinest.com/foleys_video_engine/
+
 Examples
 --------
 
