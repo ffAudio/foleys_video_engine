@@ -115,6 +115,7 @@ double ComposedClip::getCurrentTimeInSeconds() const
 
 juce::Image ComposedClip::getStillImage (double seconds, Size size)
 {
+    // TODO
     return {};
 }
 
@@ -181,7 +182,7 @@ void ComposedClip::setNextReadPosition (juce::int64 samples)
 
     videoFifo.clear();
 
-    lastShownFrame = { -1, double (videoFifo.getVideoSettings().timebase) };
+    lastShownFrame = 0;
     videoRenderJob.setSuspended (wasSuspended);
 
     triggerAsyncUpdate();
@@ -259,14 +260,15 @@ void ComposedClip::handleAsyncUpdate()
 {
     if (sampleRate > 0 && hasVideo())
     {
-        auto currentTimecode = videoFifo.getFrameTimecodeForTime (position.load() / sampleRate);
-        if ( currentTimecode != lastShownFrame)
+        auto seconds = position.load() / sampleRate;
+        auto count = videoFifo.getFrameCountForTime (seconds);
+        if (count != lastShownFrame)
         {
-            sendTimecode (currentTimecode, juce::sendNotificationAsync);
-            lastShownFrame = currentTimecode;
+            sendTimecode (count, seconds, juce::sendNotificationAsync);
+            lastShownFrame = count;
         }
 
-        videoFifo.clearFramesOlderThan (lastShownFrame);
+        videoFifo.clearFramesOlderThan (count);
     }
 }
 

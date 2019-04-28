@@ -65,19 +65,20 @@ bool VideoFifo::isFrameAvailable (double timestamp) const
     return false;
 }
 
-Timecode VideoFifo::getFrameTimecodeForTime (double time) const
+int64_t VideoFifo::getFrameCountForTime (double time) const
 {
     const juce::ScopedLock sl (lock);
 
     auto vf = videoFrames.lower_bound (time * settings.timebase);
     if (vf != videoFrames.end())
-        return { vf->first, double (settings.timebase) };
+        return vf->first;
 
-    return {};
+    return -1;
 }
 
 size_t VideoFifo::size() const
 {
+    const juce::ScopedLock sl (lock);
     return videoFrames.size();
 }
 
@@ -154,11 +155,11 @@ void VideoFifo::clear()
     lastViewedFrame = -1;
 }
 
-void VideoFifo::clearFramesOlderThan (Timecode timecode)
+void VideoFifo::clearFramesOlderThan (int64_t count)
 {
     const juce::ScopedLock sl (lock);
 
-    auto current = videoFrames.find (timecode.count);
+    auto current = videoFrames.find (count);
     if (current == videoFrames.begin())
         return;
 

@@ -24,8 +24,7 @@ namespace foleys
 {
 
 class VideoPreview  : public juce::Component,
-                      public AVClip::TimecodeListener,
-                      public AVClip::SubtitleListener
+                      public AVClip::TimecodeListener
 {
 public:
     VideoPreview();
@@ -38,17 +37,12 @@ public:
 
     void paint (juce::Graphics& g) override;
 
-    void timecodeChanged (Timecode tc) override;
-
-    void setSubtitle (const juce::String& text, Timecode until) override;
+    void timecodeChanged (int64_t count, double seconds) override;
 
 private:
     std::shared_ptr<AVClip> clip;
     juce::RectanglePlacement placement { juce::RectanglePlacement::centred };
 
-    int64_t  currentFrameCount = -1;
-    juce::String subtitle;
-    Timecode subtitleClear;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (VideoPreview)
 };
 

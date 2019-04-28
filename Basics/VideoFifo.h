@@ -41,13 +41,13 @@ public:
 
     juce::Image getOldestFrameForRecycling();
 
-    Timecode getFrameTimecodeForTime (double time) const;
+    int64_t getFrameCountForTime (double time) const;
 
     size_t size() const;
 
     void clear();
 
-    void clearFramesOlderThan (Timecode timecode);
+    void clearFramesOlderThan (int64_t count);
 
     VideoStreamSettings& getVideoSettings();
 

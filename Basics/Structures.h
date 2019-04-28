@@ -49,30 +49,6 @@ struct AudioStreamSettings
     int timebase          = 48000;
 };
 
-struct Timecode
-{
-    /** The time code count. This is not necessarily incrementing in single steps, since
-     for finer resolution the time base can be set different from the frame rate. */
-    int64_t count = -1;
-
-    /** The time base for audio is usually set to the sample rate and for video e.g. 1000
-     to count in milli seconds. */
-    double timebase = 1;
-
-    /** Check if a timecode is set. A timecode is invalid, if no time base was set. */
-    bool isValid() const { return timebase > 0 && count >= 0; }
-
-    bool operator==(const Timecode& other)
-    {
-        return count == other.count && timebase == other.timebase;
-    }
-
-    bool operator!=(const Timecode& other)
-    {
-        return count != other.count || timebase != other.timebase;
-    }
-};
-
 static inline int64_t convertTimecode (double pts, const VideoStreamSettings& settings)
 {
     if (settings.defaultDuration == 0)

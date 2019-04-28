@@ -201,14 +201,15 @@ void MovieClip::handleAsyncUpdate()
 {
     if (sampleRate > 0 && hasVideo())
     {
-        auto currentTimecode = videoFifo.getFrameTimecodeForTime (nextReadPosition / sampleRate);
-        if (currentTimecode != lastShownFrame)
+        auto seconds = nextReadPosition / sampleRate;
+        auto count = videoFifo.getFrameCountForTime (seconds);
+        if (count != lastShownFrame)
         {
-            sendTimecode (currentTimecode, juce::sendNotificationAsync);
-            lastShownFrame = currentTimecode;
+            sendTimecode (count, seconds, juce::sendNotificationAsync);
+            lastShownFrame = count;
         }
 
-        videoFifo.clearFramesOlderThan (lastShownFrame);
+        videoFifo.clearFramesOlderThan (count);
     }
 }
 

@@ -100,14 +100,12 @@ private:
     std::unique_ptr<AVReader> thumbnailReader;
     std::vector<juce::LagrangeInterpolator> resamplers;
 
-    double      sampleRate = {};
-    juce::int64 nextReadPosition = 0;
-    Timecode    lastShownFrame;
-    bool        loop = false;
+    double  sampleRate = {};
+    int64_t nextReadPosition = 0;
+    int64_t lastShownFrame = -1;
+    bool    loop = false;
 
     Size originalSize;
-
-    Timecode originalLength;
 
     VideoFifo videoFifo;
     AudioFifo audioFifo;

@@ -185,7 +185,7 @@ private:
     Size videoSize;
     double sampleRate = 0;
     juce::AudioBuffer<float> buffer;
-    Timecode lastShownFrame;
+    int64_t lastShownFrame;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ComposedClip)
 };

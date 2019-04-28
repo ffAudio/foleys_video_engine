@@ -30,27 +30,19 @@ VideoPreview::VideoPreview()
 VideoPreview::~VideoPreview()
 {
     if (clip)
-    {
         clip->removeTimecodeListener (this);
-        clip->removeSubtitleListener (this);
-    }
 }
 
 void VideoPreview::setClip (std::shared_ptr<AVClip> clipToUse)
 {
     if (clip)
-    {
         clip->removeTimecodeListener (this);
-        clip->removeSubtitleListener (this);
-    }
 
     clip = clipToUse;
 
     if (clip)
-    {
         clip->addTimecodeListener (this);
-        clip->addSubtitleListener (this);
-    }
+
     repaint();
 }
 
@@ -71,34 +63,11 @@ void VideoPreview::paint (juce::Graphics& g)
         else
             g.drawImage (image, getLocalBounds().toFloat(), placement);
     }
-
-    if (subtitle.isNotEmpty())
-    {
-        g.drawFittedText (subtitle,
-                          getLocalBounds().withTop (getHeight() * 0.9),
-                          juce::Justification::centred, 3);
-    }
 }
 
-void VideoPreview::timecodeChanged (Timecode tc)
+void VideoPreview::timecodeChanged (int64_t count, double seconds)
 {
-    if (tc.count > subtitleClear.count)
-    {
-        subtitle.clear();
-        subtitleClear.count = 0;
-    }
-
-    if (currentFrameCount == -1 || currentFrameCount != tc.count)
-    {
-        currentFrameCount = tc.count;
-        repaint();
-    }
-}
-
-void VideoPreview::setSubtitle (const juce::String& text, Timecode until)
-{
-    subtitle = text;
-    subtitleClear = until;
+    repaint();
 }
 
 } // foleys

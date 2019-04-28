@@ -76,23 +76,11 @@ public:
 
         /** Listen to this callback to get notified, when the time code changes.
             This is most useful to redraw the display or encode the next frame */
-        virtual void timecodeChanged (Timecode tc) = 0;
-    };
-
-    struct SubtitleListener
-    {
-        virtual ~SubtitleListener() = default;
-
-        /** Listen to this callback to display a subtitle.
-            A time until when this text shall be displayed can be supplied. */
-        virtual void setSubtitle (const juce::String& text, Timecode until) = 0;
+        virtual void timecodeChanged (int64_t count, double seconds) = 0;
     };
 
     void addTimecodeListener (TimecodeListener* listener);
     void removeTimecodeListener (TimecodeListener* listener);
-
-    void addSubtitleListener (SubtitleListener* listener);
-    void removeSubtitleListener (SubtitleListener* listener);
 
     virtual juce::TimeSliceClient* getBackgroundJob();
 
@@ -100,17 +88,13 @@ public:
 
 protected:
     /** Subclasses can call this to notify displays, that the time code has changed, e.g. to display a new frame */
-    void sendTimecode (Timecode newTimecode, juce::NotificationType nt);
-
-    /** Subclasses can use this to send sub titles for display or text to speech */
-    void sendSubtitle (const juce::String& text, Timecode until, juce::NotificationType nt);
+    void sendTimecode (int64_t count, double seconds, juce::NotificationType nt);
 
     juce::WeakReference<VideoEngine> videoEngine;
 
 private:
 
     juce::ListenerList<TimecodeListener> timecodeListeners;
-    juce::ListenerList<SubtitleListener> subtitleListeners;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AVClip)
 };
