@@ -1,10 +1,10 @@
-Foleys Finest Audio Ltd. - Foleys Video Engine
-==============================================
+CONTRIBUTING - Foleys Video Engine
+==================================
 
 Daniel Walz - developer@foleysfinest.com - 2019
 
-Contributing
-------------
+Foleys Finest Audio Ltd.
+------------------------
 
 Foleys Finest Audio welcomes feedback, suggestions and contributions. However, since
 we offer the engine in under two different licenses, some specialities apply:

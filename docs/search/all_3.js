@@ -11,8 +11,5 @@ var searchData=
   ['foleys_5fvideo_5fengine_2eh',['foleys_video_engine.h',['../foleys__video__engine_8h.html',1,'']]],
   ['formats',['Formats',['../classfoleys_1_1AVFormatManager.html#aa79995343ddb524dcfca047f53400ba8',1,'foleys::AVFormatManager']]],
   ['framesize',['frameSize',['../structfoleys_1_1VideoStreamSettings.html#a7f0ed65473f890e43f9be49884324b84',1,'foleys::VideoStreamSettings']]],
-  ['ids',['IDs',['../namespacefoleys_1_1IDs.html',1,'foleys']]],
-  ['foleys_20finest_20audio_20ltd_2e_20_2d_20foleys_20video_20engine',['Foleys Finest Audio Ltd. - Foleys Video Engine',['../index.html',1,'']]],
-  ['foleys_20finest_20audio_20ltd_2e_20_2d_20foleys_20video_20engine',['Foleys Finest Audio Ltd. - Foleys Video Engine',['../md__Users_daniel_Developer_Video_VideoExamples_modules_foleys_video_engine_CONTRIBUTING.html',1,'']]],
-  ['foleys_20video_20engine',['Foleys Video Engine',['../md__Users_daniel_Developer_Video_VideoExamples_modules_foleys_video_engine_LICENSE.html',1,'']]]
+  ['ids',['IDs',['../namespacefoleys_1_1IDs.html',1,'foleys']]]
 ];

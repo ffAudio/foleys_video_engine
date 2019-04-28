@@ -1,5 +1,5 @@
-Foleys Video Engine
-===================
+LICENSE - Foleys Video Engine
+=============================
 
 Copyright (c) 2019, Foleys Finest Audio - Daniel Walz
 All rights reserved.
