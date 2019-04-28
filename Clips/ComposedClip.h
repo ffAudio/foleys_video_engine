@@ -44,8 +44,6 @@ public:
     juce::Image getStillImage (double seconds, Size size) override;
 
     double getLengthInSeconds() const override;
-    Timecode getFrameTimecodeForTime (double time) const override;
-    Timecode getCurrentTimecode() const override;
 
     void prepareToPlay (int samplesPerBlockExpected, double sampleRate) override;
     void releaseResources() override;

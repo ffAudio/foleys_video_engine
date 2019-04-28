@@ -123,17 +123,6 @@ double ComposedClip::getLengthInSeconds() const
     return sampleRate > 0 ? getTotalLength() / sampleRate : 0;
 }
 
-Timecode ComposedClip::getFrameTimecodeForTime (double time) const
-{
-    return videoFifo.getFrameTimecodeForTime (time);
-}
-
-Timecode ComposedClip::getCurrentTimecode() const
-{
-    const auto pts = sampleRate > 0 ? position.load() / sampleRate : 0.0;
-    return getFrameTimecodeForTime (pts);
-}
-
 void ComposedClip::prepareToPlay (int samplesPerBlockExpected, double sampleRateToUse)
 {
     sampleRate = sampleRateToUse;

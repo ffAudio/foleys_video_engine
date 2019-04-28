@@ -156,16 +156,6 @@ double AudioClip::getLengthInSeconds() const
     return 0.0;
 }
 
-Timecode AudioClip::getFrameTimecodeForTime (double time) const
-{
-    return {};
-}
-
-Timecode AudioClip::getCurrentTimecode() const
-{
-    return {};
-}
-
 std::shared_ptr<AVClip> AudioClip::createCopy()
 {
     if (videoEngine == nullptr)

@@ -56,8 +56,6 @@ public:
     juce::Image getStillImage (double seconds, Size size) override { return {}; }
 
     double getLengthInSeconds() const override;
-    Timecode getFrameTimecodeForTime (double time) const override;
-    Timecode getCurrentTimecode() const override;
 
     bool hasVideo() const override    { return false; };
     bool hasAudio() const override    { return true; };

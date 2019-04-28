@@ -68,16 +68,6 @@ double ImageClip::getLengthInSeconds() const
     return std::numeric_limits<double>::max();
 }
 
-Timecode ImageClip::getFrameTimecodeForTime (double time) const
-{
-    return { 0, 1.0 };
-}
-
-Timecode ImageClip::getCurrentTimecode() const
-{
-    return { 0, 1.0 };
-}
-
 Size ImageClip::getVideoSize() const
 {
     return { image.getWidth(), image.getHeight() };

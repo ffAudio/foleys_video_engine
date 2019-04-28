@@ -44,10 +44,7 @@ public:
 
     double getLengthInSeconds() const override;
 
-    Timecode getCurrentTimecode() const override;
     double getCurrentTimeInSeconds() const override;
-
-    Timecode getFrameTimecodeForTime (double time) const override;
 
     std::pair<int64_t, juce::Image> getFrame (double pts) const override;
     bool isFrameAvailable (double pts) const override;

@@ -86,15 +86,11 @@ static inline int64_t convertTimecode (double pts, const AudioStreamSettings& se
     return int64_t (pts * settings.timebase);
 }
 
-static inline juce::String timecodeToString (Timecode tc)
+static inline juce::String timecodeToString (double pts)
 {
-    if (tc.timebase == 0)
-        return "--:--:--.---";
+    int64_t intSeconds = pts;
 
-    auto seconds = tc.count / double (tc.timebase);
-    int64_t intSeconds = seconds;
-
-    auto milliSeconds = int (1000.0 * (seconds - intSeconds));
+    auto milliSeconds = int (1000.0 * (pts - intSeconds));
     auto days = int (intSeconds / (3600 * 24));
     intSeconds -= days * 3600 * 24;
     auto hours = int (intSeconds / 3600);
@@ -108,7 +104,6 @@ static inline juce::String timecodeToString (Timecode tc)
     + juce::String (intSeconds).paddedLeft ('0', 2) + "."
     + juce::String (milliSeconds).paddedLeft ('0', 3);
 }
-
 
 class StreamTypes
 {

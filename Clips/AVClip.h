@@ -46,9 +46,6 @@ public:
     /** Returns the length of the clip in seconds */
     virtual double getLengthInSeconds() const = 0;
 
-    /** Return the frame count for a timestamp */
-    virtual Timecode getFrameTimecodeForTime (double time) const = 0;
-
     /** Returns the frame for a certain timecode */
     virtual std::pair<int64_t, juce::Image> getFrame (double pts) const = 0;
 
@@ -57,8 +54,6 @@ public:
 
     /** Returns the frame for the current timecode */
     virtual juce::Image getCurrentFrame() const = 0;
-
-    virtual Timecode getCurrentTimecode() const = 0;
 
     virtual double getCurrentTimeInSeconds() const = 0;
 

@@ -109,16 +109,6 @@ double MovieClip::getCurrentTimeInSeconds() const
     return sampleRate == 0 ? 0 : nextReadPosition / sampleRate;
 }
 
-Timecode MovieClip::getCurrentTimecode() const
-{
-    return getFrameTimecodeForTime (getCurrentTimeInSeconds());
-}
-
-Timecode MovieClip::getFrameTimecodeForTime (double time) const
-{
-    return videoFifo.getFrameTimecodeForTime (time);
-}
-
 std::pair<int64_t, juce::Image> MovieClip::getFrame (double pts) const
 {
     return videoFifo.getVideoFrame (pts);
