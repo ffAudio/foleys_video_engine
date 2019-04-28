@@ -117,10 +117,11 @@ void ImageClip::setLooping (bool)
 
 std::shared_ptr<AVClip> ImageClip::createCopy()
 {
-    if (videoEngine == nullptr)
+    auto* engine = getVideoEngine();
+    if (engine == nullptr)
         return {};
 
-    return videoEngine->createClipFromFile (getMediaFile());
+    return engine->createClipFromFile (getMediaFile());
 }
 
 double ImageClip::getSampleRate() const

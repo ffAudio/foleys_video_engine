@@ -23,6 +23,12 @@
 namespace foleys
 {
 
+/**
+ @class VideoPreview
+
+ The VideoPreview is a juce Component, that will display the connected AVClip in
+ real time.
+ */
 class VideoPreview  : public juce::Component,
                       public AVClip::TimecodeListener
 {

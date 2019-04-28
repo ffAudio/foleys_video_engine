@@ -36,17 +36,18 @@ juce::String MovieClip::getDescription() const
 
 bool MovieClip::openFromFile (const juce::File file)
 {
-    if (videoEngine == nullptr)
+    auto* engine = getVideoEngine();
+    if (engine == nullptr)
         return false;
 
     const auto wasSuspended = backgroundJob.isSuspended();
     backgroundJob.setSuspended (true);
 
-    auto reader = videoEngine->createReaderFor (file);
+    auto reader = engine->createReaderFor (file);
     if (reader->isOpenedOk())
     {
         if (reader->hasVideo())
-            setThumbnailReader (videoEngine->createReaderFor (file, StreamTypes::video()));
+            setThumbnailReader (engine->createReaderFor (file, StreamTypes::video()));
         else
             setThumbnailReader ({});
 
@@ -179,17 +180,13 @@ bool MovieClip::hasAudio() const
     return movieReader ? movieReader->hasAudio() : false;
 }
 
-bool MovieClip::hasSubtitle() const
-{
-    return movieReader ? movieReader->hasSubtitle() : false;
-}
-
 std::shared_ptr<AVClip> MovieClip::createCopy()
 {
-    if (videoEngine == nullptr)
+    auto* engine = getVideoEngine();
+    if (engine == nullptr)
         return {};
 
-    return videoEngine->createClipFromFile (getMediaFile());
+    return engine->createClipFromFile (getMediaFile());
 }
 
 double MovieClip::getSampleRate() const

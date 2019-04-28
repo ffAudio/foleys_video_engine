@@ -24,6 +24,13 @@
 namespace foleys
 {
 
+/**
+ @class MovieClip
+
+ The MovieClip plays back a video file. It buffers an amount of audio and
+ video frames ahead of time. To check, you can call isFrameAvailable(),
+ in case you need to wait for the frame, e.g. for offline bouncing.
+ */
 class MovieClip   : public AVClip,
                     private juce::AsyncUpdater
 {
@@ -67,7 +74,6 @@ public:
 
     bool hasVideo() const override;
     bool hasAudio() const override;
-    bool hasSubtitle() const override;
 
     std::shared_ptr<AVClip> createCopy() override;
 

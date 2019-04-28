@@ -24,7 +24,7 @@ namespace foleys
 {
 
 /**
- class ImageClip
+ @class ImageClip
 
  This class delivers a still image as video.
  */
@@ -64,7 +64,6 @@ public:
 
     bool hasVideo() const override    { return true; };
     bool hasAudio() const override    { return false; };
-    bool hasSubtitle() const override { return false; };
 
     std::shared_ptr<AVClip> createCopy() override;
 

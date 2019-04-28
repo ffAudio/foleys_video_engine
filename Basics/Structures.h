@@ -49,6 +49,7 @@ struct AudioStreamSettings
     int timebase          = 48000;
 };
 
+/** Convert a time in seconds in frame counts, using the time base and duration in VideoStreamSettings */
 static inline int64_t convertTimecode (double pts, const VideoStreamSettings& settings)
 {
     if (settings.defaultDuration == 0)
@@ -57,11 +58,13 @@ static inline int64_t convertTimecode (double pts, const VideoStreamSettings& se
     return settings.defaultDuration * int64_t (pts * settings.timebase / settings.defaultDuration);
 }
 
+/** Convert a time in seconds into samples, using the sample rate in AudioStreamSettings */
 static inline int64_t convertTimecode (double pts, const AudioStreamSettings& settings)
 {
     return int64_t (pts * settings.timebase);
 }
 
+/** Convert a time in seconds into a formatted string */
 static inline juce::String timecodeToString (double pts)
 {
     int64_t intSeconds = pts;

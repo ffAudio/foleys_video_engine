@@ -230,21 +230,13 @@ bool ComposedClip::hasAudio() const
     return hasAudio;
 }
 
-bool ComposedClip::hasSubtitle() const
-{
-    bool hasSubtitle = false;
-    for (auto& descriptor : clips)
-        hasSubtitle |= descriptor->clip->hasSubtitle();
-
-    return hasSubtitle;
-}
-
 std::shared_ptr<AVClip> ComposedClip::createCopy()
 {
-    if (videoEngine == nullptr)
+    auto* engine = getVideoEngine();
+    if (engine == nullptr)
         return {};
 
-    auto clipCopy = videoEngine->createComposedClip();
+    auto clipCopy = engine->createComposedClip();
     for (auto clip : getStatusTree())
         clipCopy->getStatusTree().appendChild (clip.createCopy(), nullptr);
 
@@ -306,7 +298,11 @@ void ComposedClip::valueTreeChildRemoved (juce::ValueTree& parentTree,
 
 juce::UndoManager* ComposedClip::getUndoManager()
 {
-    return videoEngine ? videoEngine->getUndoManager() : nullptr;
+    auto* engine = getVideoEngine();
+    if (engine)
+        return engine->getUndoManager();
+
+    return nullptr;
 }
 
 juce::ValueTree& ComposedClip::getStatusTree()
@@ -353,10 +349,11 @@ ComposedClip::ClipDescriptor::ClipDescriptor (ComposedClip& ownerToUse, juce::Va
   : owner (ownerToUse)
 {
     state = stateToUse;
-    if (state.hasProperty (IDs::source) && owner.videoEngine)
+    auto* engine = owner.getVideoEngine();
+    if (state.hasProperty (IDs::source) && engine)
     {
         auto source = state.getProperty (IDs::source);
-        clip = owner.videoEngine->createClipFromFile ({source});
+        clip = engine->createClipFromFile ({ source });
     }
     state.addListener (this);
 }

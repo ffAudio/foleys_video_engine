@@ -23,6 +23,15 @@
 namespace foleys
 {
 
+/**
+ @class ComposedClip
+
+ This clip does the actual work of composing images into a video. It is assembled
+ by a number of ComposedClip::ClipDescriptor instances.
+ ComposedClip does audio mixing as well as video compositing. While the video
+ is done on a background thread ahead of time, the audio is pulled in realtime
+ to allow low latency processing.
+ */
 class ComposedClip  : public AVClip,
                       private juce::AsyncUpdater,
                       private juce::ValueTree::Listener
@@ -57,7 +66,6 @@ public:
 
     bool hasVideo() const override;
     bool hasAudio() const override;
-    bool hasSubtitle() const override;
 
     std::shared_ptr<AVClip> createCopy() override;
 
@@ -65,6 +73,12 @@ public:
 
     juce::TimeSliceClient* getBackgroundJob() override;
 
+    /**
+     @class ClipDescriptor
+
+     The ClipDescriptor configures the placement of each clip to be used
+     in compositing the ComposedClip.
+     */
     struct ClipDescriptor : private juce::ValueTree::Listener
     {
         ClipDescriptor (ComposedClip& owner, std::shared_ptr<AVClip> clip);

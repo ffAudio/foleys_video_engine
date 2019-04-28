@@ -24,6 +24,12 @@
 namespace foleys
 {
 
+/**
+ @class AVFormatManager
+
+ This class will create the appropriate type of AVClip depending on the supplied file type.
+ You don't need to create your own, the VideoEngine has an instance ready, that should be used.
+ */
 class AVFormatManager
 {
 public:

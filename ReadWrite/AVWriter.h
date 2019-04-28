@@ -23,11 +23,15 @@
 namespace foleys
 {
 
+/**
+ @class AVWriter
+
+ The AVWriter allows exporting of AVClip classes. This class is pure virtual to allow
+ different implementations for various backends.
+ */
 class AVWriter
 {
 public:
-
-
 
     AVWriter() = default;
     virtual ~AVWriter() = default;

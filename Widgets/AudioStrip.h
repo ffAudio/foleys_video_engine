@@ -23,21 +23,33 @@
 namespace foleys
 {
 
+/**
+ @class AudioStrip
+
+ This class displays the audio curves of the clip.
+ */
 class AudioStrip  : public juce::Component,
                     private juce::ChangeListener
 {
 public:
     AudioStrip();
 
+    /** Set the clip to be shown as thimbnail */
     void setClip (std::shared_ptr<AVClip> clip);
+
+    /** @Internal */
     void paint (juce::Graphics&) override;
 
+    /** Set the start time and the end time of the clip in seconds. This
+        is used to allow only a subset of thumbnails to be shown. */
     void setStartAndLength (double start, double length);
 
+    /** @Internal */
     class ThumbnailJob : public juce::ThreadPoolJob
     {
     public:
         ThumbnailJob (AudioStrip& owner);
+        /** @Internal */
         juce::ThreadPoolJob::JobStatus runJob() override;
     private:
         AudioStrip& owner;
@@ -46,9 +58,12 @@ public:
 
 private:
 
+    /** @Internal */
     void update();
+    /** @Internal */
     void changeListenerCallback (juce::ChangeBroadcaster* sender) override;
 
+    /** @Internal */
     juce::ThreadPool* getThreadPool();
 
     std::shared_ptr<AVClip> clip;

@@ -23,6 +23,12 @@
 namespace foleys
 {
 
+/**
+ @class AVReader
+
+ The AVReader allows reading of AVClip classes. This class is pure virtual to allow
+ different implementations for various backends.
+ */
 class AVReader
 {
 public:
@@ -35,8 +41,14 @@ public:
     bool isOpenedOk() const { return opened; }
     virtual juce::int64 getTotalLength() const = 0;
 
+    /**
+     Seek the reader to a certain position. This position is given in audio samples
+     */
     virtual void setPosition (const int64_t position) = 0;
 
+    /** This method allows direct access to a specific time to render thumbnails.
+        Don't use this to stream the video. Ideally use a separate reader for the
+        thumbnails. */
     virtual juce::Image getStillImage (double seconds, Size size) = 0;
 
     virtual void readNewData (VideoFifo&, AudioFifo&) = 0;

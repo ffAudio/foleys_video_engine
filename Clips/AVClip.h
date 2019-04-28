@@ -25,6 +25,17 @@ namespace foleys
 
 class VideoEngine;
 
+
+/**
+ @class AVClip
+
+ AVClip is the abstract base class of displayable/playable clips. They can provide
+ video frames an/or audio streams.
+
+ To be compatible with juce's playback engines, they inherit PositionableAudioSource.
+ Each AVClip is responsible to resample the audio to the sampleRate that is set
+ in prepareToPlay. The audio stream acts as clock master.
+ */
 class AVClip  : public juce::PositionableAudioSource
 {
 public:
@@ -59,9 +70,10 @@ public:
 
     virtual juce::Image getStillImage (double seconds, Size size) = 0;
 
+    /** Returns true, if this clip will produce visual frames */
     virtual bool hasVideo() const = 0;
+    /** Returns true, if this clip will produce audio */
     virtual bool hasAudio() const = 0;
-    virtual bool hasSubtitle() const = 0;
 
     /**
      This is the samplerate supplied from prepareToPlay and the sample rate
@@ -70,8 +82,10 @@ public:
 
     virtual std::shared_ptr<AVClip> createCopy() = 0;
 
+    /** Use a TimecodeListener to be notified, when the visual frame changes */
     struct TimecodeListener
     {
+        /** @Internal */
         virtual ~TimecodeListener() = default;
 
         /** Listen to this callback to get notified, when the time code changes.
@@ -79,20 +93,23 @@ public:
         virtual void timecodeChanged (int64_t count, double seconds) = 0;
     };
 
+    /** Register a TimecodeListener to be notified, when the visual frame changes */
     void addTimecodeListener (TimecodeListener* listener);
+    /** Unregister a TimecodeListener */
     void removeTimecodeListener (TimecodeListener* listener);
 
+    /** @Internal */
     virtual juce::TimeSliceClient* getBackgroundJob();
 
+    /** @Internal */
     VideoEngine* getVideoEngine() const;
 
 protected:
     /** Subclasses can call this to notify displays, that the time code has changed, e.g. to display a new frame */
     void sendTimecode (int64_t count, double seconds, juce::NotificationType nt);
 
-    juce::WeakReference<VideoEngine> videoEngine;
-
 private:
+    juce::WeakReference<VideoEngine> videoEngine;
 
     juce::ListenerList<TimecodeListener> timecodeListeners;
 

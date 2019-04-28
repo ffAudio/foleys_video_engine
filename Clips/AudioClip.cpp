@@ -158,10 +158,11 @@ double AudioClip::getLengthInSeconds() const
 
 std::shared_ptr<AVClip> AudioClip::createCopy()
 {
-    if (videoEngine == nullptr)
+    auto* engine = getVideoEngine();
+    if (engine == nullptr)
         return {};
 
-    return videoEngine->createClipFromFile (getMediaFile());
+    return engine->createClipFromFile (getMediaFile());
 }
 
 }

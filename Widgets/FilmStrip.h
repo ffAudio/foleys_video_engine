@@ -23,18 +23,30 @@
 namespace foleys
 {
 
+/**
+ @class FilmStrip
+
+ The FilmStrip allows to display a line of thumbnails of a video clip.
+ */
 class FilmStrip : public juce::Component
 {
 public:
     FilmStrip();
     virtual ~FilmStrip();
 
+    /** Set the clip to be shown as thimbnails */
     void setClip (std::shared_ptr<AVClip> clip);
+
+    /** @Internal */
     void paint (juce::Graphics&) override;
+    /** @Internal */
     void resized() override;
 
+    /** Set the start time and the end time of the clip in seconds. This
+        is used to allow only a subset of thumbnails to be shown. */
     void setStartAndLength (double start, double length);
 
+    /** @Internal */
     class ThumbnailJob : public juce::ThreadPoolJob
     {
     public:
@@ -45,10 +57,13 @@ public:
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ThumbnailJob)
     };
 private:
+    /** @Internal */
     void update();
 
+    /** @Internal */
     void setThumbnail (int index, juce::Image image);
 
+    /** @Internal */
     juce::ThreadPool* getThreadPool();
 
     std::shared_ptr<AVClip> clip;

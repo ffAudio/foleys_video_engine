@@ -26,8 +26,17 @@ namespace foleys
 
 class AVFormatManager;
 
-class VideoEngine  : public juce::DeletedAtShutdown,
-                     private juce::Timer
+/**
+ @class VideoEngine
+
+ The VideoEngine is handling the background tasks of the video. You should have only one
+ instance.
+
+ You can use the VideoEngine to create instances of AVClip, using the built in AVFormatManager.
+ It also manages the lifetime of the clips, managing the auto release pool and the thread
+ pools for reading ahead and for creating the thumbnails.
+ */
+class VideoEngine  : private juce::Timer
 {
 public:
     VideoEngine();

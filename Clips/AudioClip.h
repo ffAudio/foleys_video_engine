@@ -23,6 +23,13 @@
 namespace foleys
 {
 
+/**
+ @class AudioClip
+
+ The AudioClip plays back an audio file inside the video engine. It wraps around
+ a JUCE AudioFormatReaderSource.
+ */
+
 class AudioClip : public AVClip
 {
 public:
@@ -59,7 +66,6 @@ public:
 
     bool hasVideo() const override    { return false; };
     bool hasAudio() const override    { return true; };
-    bool hasSubtitle() const override { return false; };
 
     std::shared_ptr<AVClip> createCopy() override;
 
