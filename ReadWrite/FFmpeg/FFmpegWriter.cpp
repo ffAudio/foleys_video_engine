@@ -27,24 +27,6 @@ namespace foleys
 
 struct FFmpegWriter::Pimpl
 {
-    struct VideoStreamDescriptor
-    {
-        FFmpegVideoScaler    scaler;
-        int                  streamIndex = -1;
-        AVCodecContext*      context = nullptr;
-        VideoStreamSettings  settings;
-        VideoFifo            videoBuffer;
-    };
-
-    struct AudioStreamDescriptor
-    {
-        FFmpegAudioConverter converter;
-        int                  streamIndex = -1;
-        AVCodecContext*      context = nullptr;
-        AudioStreamSettings  settings;
-        AudioFifo            sampleBuffer;
-    };
-
     Pimpl(FFmpegWriter& owner) : writer (owner)
     {
         openContainer (writer.mediaFile, writer.formatName);

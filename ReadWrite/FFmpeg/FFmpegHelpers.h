@@ -190,6 +190,25 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FFmpegAudioConverter)
 };
 
+struct VideoStreamDescriptor
+{
+    FFmpegVideoScaler    scaler;
+    int                  streamIndex = -1;
+    AVCodecContext*      context = nullptr;
+    VideoStreamSettings  settings;
+    VideoFifo            videoBuffer;
+};
+
+struct AudioStreamDescriptor
+{
+    FFmpegAudioConverter converter;
+    int                  streamIndex = -1;
+    AVCodecContext*      context = nullptr;
+    AudioStreamSettings  settings;
+    AudioFifo            sampleBuffer;
+};
+
+
 } // foleys
 
 #endif // FOLEYS_USE_FFMPEG

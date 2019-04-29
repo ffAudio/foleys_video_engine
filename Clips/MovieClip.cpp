@@ -142,6 +142,7 @@ juce::Image MovieClip::getCurrentFrame() const
 void MovieClip::prepareToPlay (int samplesPerBlockExpected, double sampleRateToUse)
 {
     sampleRate = sampleRateToUse;
+    audioFifo.setNumSamples (sampleRate);
     audioFifo.setSampleRate (sampleRate);
 
     if (movieReader)

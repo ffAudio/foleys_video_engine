@@ -187,18 +187,15 @@ public:
             FOLEYS_LOG ("Error seeking in video stream: " << getErrorString (response));
         }
 
-        AVPacket packet;
-        // initialize packet, set data to NULL, let the demuxer fill it
-        packet.data = NULL;
-        packet.size = 0;
-        av_init_packet (&packet);
+        AVPacket* packet = av_packet_alloc();
+        av_init_packet (packet);
 
         while (true)
         {
-            av_read_frame (formatContext, &packet);
-            if (packet.stream_index == videoStreamIdx)
+            av_read_frame (formatContext, packet);
+            if (packet->stream_index == videoStreamIdx)
             {
-                response = avcodec_send_packet (videoContext, &packet);
+                response = avcodec_send_packet (videoContext, packet);
                 if (response < 0)
                 {
                     FOLEYS_LOG ("Error reading packet for still image: " << getErrorString (response));
@@ -217,7 +214,7 @@ public:
         FOLEYS_LOG ("Still PTS: " << frame->best_effort_timestamp << " vs. " << targetPts);
         juce::Image image (juce::Image::ARGB, size.width, size.height, false);
         scaler.convertFrameToImage (image, frame);
-        av_packet_unref (&packet);
+        av_packet_unref (packet);
 
         return image;
     }

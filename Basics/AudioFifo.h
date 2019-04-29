@@ -26,7 +26,7 @@ namespace foleys
 class AudioFifo
 {
 public:
-    AudioFifo (int size = 768000);
+    AudioFifo (int size = 48000);
 
     ~AudioFifo() = default;
 
