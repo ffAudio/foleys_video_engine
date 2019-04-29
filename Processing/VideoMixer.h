@@ -18,30 +18,23 @@
  ==============================================================================
  */
 
-#include "foleys_video_engine.h"
+#pragma once
 
-#include "Basics/VideoFifo.cpp"
-#include "Basics/AudioFifo.cpp"
-#include "Basics/VideoEngine.cpp"
+namespace foleys
+{
 
-#include "Clips/AVClip.cpp"
-#include "Clips/AudioClip.cpp"
-#include "Clips/ImageClip.cpp"
-#include "Clips/MovieClip.cpp"
-#include "Clips/ComposedClip.cpp"
-#include "Clips/ClipDescriptor.cpp"
+class VideoMixer
+{
+public:
+    VideoMixer() = default;
+    virtual ~VideoMixer() = default;
 
-#include "Processing/SoftwareVideoMixer.cpp"
-#include "Processing/DefaultAudioMixer.cpp"
+    virtual void compose (juce::Image& target,
+                          double timeInSeconds,
+                          const std::vector<std::shared_ptr<ClipDescriptor>>& clips) = 0;
 
-#include "ReadWrite/AVFormatManager.cpp"
-#include "ReadWrite/ClipBouncer.cpp"
+private:
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (VideoMixer)
+};
 
-#if FOLEYS_USE_FFMPEG
-#include "ReadWrite/FFmpeg/FFmpegReader.cpp"
-#include "ReadWrite/FFmpeg/FFmpegWriter.cpp"
-#endif
-
-#include "Widgets/VideoPreview.cpp"
-#include "Widgets/FilmStrip.cpp"
-#include "Widgets/AudioStrip.cpp"
+} // foleys

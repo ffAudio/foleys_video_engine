@@ -23,13 +23,21 @@
 namespace foleys
 {
 
-class SoftwareCompositingContext : public CompositingContext
+class DefaultAudioMixer : public AudioMixer
 {
 public:
-    SoftwareCompositingContext() = default;
+    DefaultAudioMixer() = default;
+
+    void setup (int numChannels, double sampleRate, int samplesPerBlockExpected) override;
+
+    void mixAudio (const juce::AudioSourceChannelInfo& info,
+                   const int64_t position,
+                   const std::vector<std::shared_ptr<ClipDescriptor>>& clips) override;
 
 private:
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SoftwareCompositingContext)
+    juce::AudioBuffer<float> mixBuffer;
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DefaultAudioMixer)
 };
 
 } // foleys

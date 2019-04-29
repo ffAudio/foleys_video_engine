@@ -73,73 +73,6 @@ public:
 
     juce::TimeSliceClient* getBackgroundJob() override;
 
-    /**
-     @class ClipDescriptor
-
-     The ClipDescriptor configures the placement of each clip to be used
-     in compositing the ComposedClip.
-     */
-    struct ClipDescriptor : private juce::ValueTree::Listener
-    {
-        ClipDescriptor (ComposedClip& owner, std::shared_ptr<AVClip> clip);
-
-        ClipDescriptor (ComposedClip& owner, juce::ValueTree state);
-
-        juce::String getDescription() const;
-        void setDescription (const juce::String& name);
-
-        /** start of the clip in seconds */
-        double getStart() const;
-        void setStart (double start);
-
-        /** length of the clip in seconds */
-        double getLength() const;
-        void setLength (double length);
-
-        /** offset in seconds into the media */
-        double getOffset() const;
-        void setOffset (double offset);
-
-        int getVideoLine() const;
-        void setVideoLine (int line);
-
-        int getAudioLine() const;
-        void setAudioLine (int line);
-
-        std::shared_ptr<AVClip> clip;
-
-        juce::ValueTree& getStatusTree();
-
-        void updateSampleCounts();
-
-    private:
-        std::atomic<int64_t> start {0};
-        std::atomic<int64_t> length {0};
-        std::atomic<int64_t> offset {0};
-
-        void valueTreePropertyChanged (juce::ValueTree& treeWhosePropertyHasChanged,
-                                       const juce::Identifier& property) override;
-
-        void valueTreeChildAdded (juce::ValueTree& parentTree,
-                                  juce::ValueTree& childWhichHasBeenAdded) override {}
-
-        void valueTreeChildRemoved (juce::ValueTree& parentTree,
-                                    juce::ValueTree& childWhichHasBeenRemoved,
-                                    int indexFromWhichChildWasRemoved) override {}
-
-        void valueTreeChildOrderChanged (juce::ValueTree& parentTreeWhoseChildrenHaveMoved,
-                                         int oldIndex, int newIndex) override {}
-
-        void valueTreeParentChanged (juce::ValueTree& treeWhoseParentHasChanged) override {}
-
-        juce::ValueTree state;
-        ComposedClip& owner;
-
-        friend ComposedClip;
-
-        JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ClipDescriptor)
-    };
-
     juce::ValueTree& getStatusTree();
 
     std::shared_ptr<ClipDescriptor> addClip (std::shared_ptr<AVClip> clip, double start, double length = -1, double offset = 0);
@@ -162,13 +95,15 @@ public:
 
     void valueTreeParentChanged (juce::ValueTree& treeWhoseParentHasChanged) override {}
 
+    juce::UndoManager* getUndoManager();
+
 private:
 
     void handleAsyncUpdate() override;
 
-    juce::UndoManager* getUndoManager();
+    double convertToSamples (int64_t pos) const;
 
-    std::vector<std::shared_ptr<ClipDescriptor>> getActiveClips (std::function<bool(ComposedClip::ClipDescriptor&)> selector) const;
+    std::vector<std::shared_ptr<ClipDescriptor>> getActiveClips (std::function<bool(ClipDescriptor&)> selector) const;
 
     class ComposingThread : public juce::TimeSliceClient
     {
@@ -193,12 +128,15 @@ private:
 
     juce::ValueTree state;
 
-    std::unique_ptr<CompositingContext> composer;
+    AudioStreamSettings audioSettings;
+
+    std::unique_ptr<VideoMixer> videoMixer;
+    std::unique_ptr<AudioMixer> audioMixer;
+
     std::vector<std::shared_ptr<ClipDescriptor>> clips;
     std::atomic<int64_t> position = {};
     Size videoSize;
-    double sampleRate = 0;
-    juce::AudioBuffer<float> buffer;
+
     int64_t lastShownFrame;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ComposedClip)
