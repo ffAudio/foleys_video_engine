@@ -356,7 +356,7 @@ int ComposedClip::ComposingThread::useTimeSlice()
     auto timeInSeconds = nextTimeCode / double (settings.timebase);
     auto pos = timeInSeconds * owner.getSampleRate();
 
-    owner.videoMixer->compose (image, timeInSeconds, owner.getActiveClips ([pos](ClipDescriptor& clip) { return clip.clip->hasVideo() && pos >= clip.start && pos < clip.start + clip.length; }));
+    owner.videoMixer->compose (image, nextTimeCode, timeInSeconds, owner.getActiveClips ([pos](ClipDescriptor& clip) { return clip.clip->hasVideo() && pos >= clip.start && pos < clip.start + clip.length; }));
 
     owner.videoFifo.pushVideoFrame (image, nextTimeCode);
 

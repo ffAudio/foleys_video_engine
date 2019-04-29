@@ -22,9 +22,12 @@ namespace foleys
 {
 
 void SoftwareVideoMixer::compose (juce::Image& target,
-                                  double timeInSeconds,
-                                  const std::vector<std::shared_ptr<ClipDescriptor>>& clips)
+                                  int64_t count,
+                                  double  timeInSeconds,
+                                  const   std::vector<std::shared_ptr<ClipDescriptor>>& clips)
 {
+    juce::ignoreUnused (count);
+
     juce::Graphics g (target);
     g.fillAll (juce::Colours::black);
 
