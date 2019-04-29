@@ -18,30 +18,23 @@
  ==============================================================================
  */
 
-#include "foleys_video_engine.h"
+namespace foleys
+{
 
-#include "Basics/VideoFifo.cpp"
-#include "Basics/AudioFifo.cpp"
-#include "Basics/VideoEngine.cpp"
+void SoftwareVideoMixer::compose (juce::Image& target,
+                                  double timeInSeconds,
+                                  const std::vector<std::shared_ptr<ClipDescriptor>>& clips)
+{
+    juce::Graphics g (target);
+    g.fillAll (juce::Colours::black);
 
-#include "Clips/AVClip.cpp"
-#include "Clips/AudioClip.cpp"
-#include "Clips/ImageClip.cpp"
-#include "Clips/MovieClip.cpp"
-#include "Clips/ComposedClip.cpp"
-#include "Clips/ClipDescriptor.cpp"
+    for (const auto& clip : clips)
+    {
+        const auto clipTime = timeInSeconds + clip->getOffset() - clip->getStart();
+        const auto frame = clip->clip->getFrame (clipTime);
 
-#include "Processing/SoftwareVideoMixer.cpp"
-#include "Processing/DefaultAudioMixer.cpp"
+        g.drawImageWithin (frame.second, 0, 0, target.getWidth(), target.getHeight(), juce::RectanglePlacement::centred);
+    }
+}
 
-#include "ReadWrite/AVFormatManager.cpp"
-#include "ReadWrite/ClipBouncer.cpp"
-
-#if FOLEYS_USE_FFMPEG
-#include "ReadWrite/FFmpeg/FFmpegReader.cpp"
-#include "ReadWrite/FFmpeg/FFmpegWriter.cpp"
-#endif
-
-#include "Widgets/VideoPreview.cpp"
-#include "Widgets/FilmStrip.cpp"
-#include "Widgets/AudioStrip.cpp"
+} // foleys

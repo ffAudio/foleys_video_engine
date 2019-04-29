@@ -18,19 +18,30 @@
  ==============================================================================
  */
 
-#pragma once
-
 namespace foleys
 {
 
-class CompositingContext
+void DefaultAudioMixer::setup (int numChannels, double sampleRate, int samplesPerBlockExpected)
 {
-public:
-    CompositingContext() = default;
-    virtual ~CompositingContext() = default;
+    mixBuffer.setSize (numChannels, samplesPerBlockExpected);
+}
 
-private:
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CompositingContext)
+void DefaultAudioMixer::mixAudio (const juce::AudioSourceChannelInfo& info,
+                                  const int64_t position,
+                                  const std::vector<std::shared_ptr<ClipDescriptor>>& clips)
+{
+    for (auto& clip : clips)
+    {
+        auto start = clip->getStartInSamples();
+        if (position + info.numSamples >= start && position < start + clip->getLengthInSamples())
+        {
+            auto offset = std::max (int (start - position), 0);
+            juce::AudioSourceChannelInfo reader (&mixBuffer, 0, info.numSamples - offset);
+            clip->clip->getNextAudioBlock (reader);
+            for (int channel = 0; channel < mixBuffer.getNumChannels(); ++channel)
+                info.buffer->addFrom (channel, info.startSample + offset, mixBuffer.getReadPointer (channel), info.numSamples - offset);
+        }
+    }
+}
+
 };
-
-} // foleys

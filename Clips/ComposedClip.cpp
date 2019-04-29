@@ -42,12 +42,14 @@ ComposedClip::ComposedClip (VideoEngine& engine)
 {
     state = juce::ValueTree (IDs::compoundClip);
 
-    composer = std::make_unique<SoftwareCompositingContext>();
+    videoMixer = std::make_unique<SoftwareVideoMixer>();
     videoSize = {800, 500};
     auto& settings = videoFifo.getVideoSettings();
     settings.frameSize = videoSize;
     settings.timebase = 24000;
     settings.defaultDuration = 1001;
+
+    audioMixer = std::make_unique<DefaultAudioMixer>();
 
     state.addListener (this);
 }
@@ -57,10 +59,10 @@ juce::String ComposedClip::getDescription() const
     return "Edit";
 }
 
-std::shared_ptr<ComposedClip::ClipDescriptor> ComposedClip::addClip (std::shared_ptr<AVClip> clip, double start, double length, double offset)
+std::shared_ptr<ClipDescriptor> ComposedClip::addClip (std::shared_ptr<AVClip> clip, double start, double length, double offset)
 {
     auto clipDescriptor = std::make_shared<ClipDescriptor> (*this, clip);
-    clip->prepareToPlay (buffer.getNumSamples(), sampleRate);
+    clip->prepareToPlay (audioSettings.defaultNumSamples, audioSettings.timebase);
 
     clipDescriptor->setDescription (clip->getDescription());
     clipDescriptor->setStart (start);
@@ -99,8 +101,7 @@ bool ComposedClip::isFrameAvailable (double pts) const
 
 juce::Image ComposedClip::getCurrentFrame() const
 {
-    const auto pts = sampleRate > 0 ? position.load() / sampleRate : 0.0;
-    return videoFifo.getVideoFrame (pts).second;
+    return videoFifo.getVideoFrame (getCurrentTimeInSeconds()).second;
 }
 
 Size ComposedClip::getVideoSize() const
@@ -110,7 +111,7 @@ Size ComposedClip::getVideoSize() const
 
 double ComposedClip::getCurrentTimeInSeconds() const
 {
-    return sampleRate > 0 ? position.load() / sampleRate : 0;
+    return convertToSamples (position.load());
 }
 
 juce::Image ComposedClip::getStillImage (double seconds, Size size)
@@ -121,17 +122,19 @@ juce::Image ComposedClip::getStillImage (double seconds, Size size)
 
 double ComposedClip::getLengthInSeconds() const
 {
-    return sampleRate > 0 ? getTotalLength() / sampleRate : 0;
+    return convertToSamples (getTotalLength());
 }
 
 void ComposedClip::prepareToPlay (int samplesPerBlockExpected, double sampleRateToUse)
 {
-    sampleRate = sampleRateToUse;
-    buffer.setSize (2, samplesPerBlockExpected);
+    audioSettings.timebase = sampleRateToUse;
+    audioSettings.defaultNumSamples = samplesPerBlockExpected;
+
+    audioMixer->setup (audioSettings.numChannels, audioSettings.timebase, audioSettings.defaultNumSamples);
 
     for (auto& descriptor : getClips())
     {
-        descriptor->clip->prepareToPlay (samplesPerBlockExpected, sampleRate);
+        descriptor->clip->prepareToPlay (audioSettings.defaultNumSamples, audioSettings.timebase);
         descriptor->updateSampleCounts();
     }
 
@@ -142,8 +145,6 @@ void ComposedClip::releaseResources()
 {
     for (auto& descriptor : getClips())
         descriptor->clip->releaseResources();
-
-    sampleRate = 0;
 }
 
 void ComposedClip::getNextAudioBlock (const juce::AudioSourceChannelInfo& info)
@@ -151,21 +152,7 @@ void ComposedClip::getNextAudioBlock (const juce::AudioSourceChannelInfo& info)
     info.clearActiveBufferRegion();
     auto pos = position.load();
 
-    for (auto& clip : getActiveClips ([pos](ComposedClip::ClipDescriptor& clip) { return pos >= clip.start && pos < clip.start + clip.length; }))
-    {
-        if (! clip->clip->hasAudio())
-            continue;
-
-        auto start = clip->start.load();
-        if (pos + info.numSamples >= start && pos < start + clip->length.load())
-        {
-            auto offset = std::max (int (start - pos), 0);
-            juce::AudioSourceChannelInfo reader (&buffer, 0, info.numSamples - offset);
-            clip->clip->getNextAudioBlock (reader);
-            for (int channel = 0; channel < buffer.getNumChannels(); ++channel)
-                info.buffer->addFrom (channel, info.startSample + offset, buffer.getReadPointer (channel), info.numSamples - offset);
-        }
-    }
+    audioMixer->mixAudio (info, position.load(), getActiveClips ([pos](ClipDescriptor& clip) { return clip.clip->hasAudio() && pos >= clip.start && pos < clip.start + clip.length; }));
 
     position.fetch_add (info.numSamples);
     triggerAsyncUpdate();
@@ -245,14 +232,14 @@ std::shared_ptr<AVClip> ComposedClip::createCopy()
 
 double ComposedClip::getSampleRate() const
 {
-    return sampleRate;
+    return audioSettings.timebase;
 }
 
 void ComposedClip::handleAsyncUpdate()
 {
-    if (sampleRate > 0 && hasVideo())
+    if (audioSettings.timebase > 0 && hasVideo())
     {
-        auto seconds = position.load() / sampleRate;
+        auto seconds = getCurrentTimeInSeconds();
         auto count = videoFifo.getFrameCountForTime (seconds);
         if (count != lastShownFrame)
         {
@@ -262,6 +249,14 @@ void ComposedClip::handleAsyncUpdate()
 
         videoFifo.clearFramesOlderThan (count);
     }
+}
+
+double ComposedClip::convertToSamples (int64_t pos) const
+{
+    if (audioSettings.timebase > 0)
+        return pos / double (audioSettings.timebase);
+
+    return {};
 }
 
 void ComposedClip::valueTreePropertyChanged (juce::ValueTree& treeWhosePropertyHasChanged,
@@ -310,13 +305,13 @@ juce::ValueTree& ComposedClip::getStatusTree()
     return state;
 }
 
-std::vector<std::shared_ptr<ComposedClip::ClipDescriptor>> ComposedClip::getClips() const
+std::vector<std::shared_ptr<ClipDescriptor>> ComposedClip::getClips() const
 {
     juce::ScopedLock sl (clipDescriptorLock);
     return clips;
 }
 
-std::vector<std::shared_ptr<ComposedClip::ClipDescriptor>> ComposedClip::getActiveClips (std::function<bool(ComposedClip::ClipDescriptor&)> selector) const
+std::vector<std::shared_ptr<ClipDescriptor>> ComposedClip::getActiveClips (std::function<bool(ClipDescriptor&)> selector) const
 {
     std::vector<std::shared_ptr<ClipDescriptor>> active;
     {
@@ -329,117 +324,6 @@ std::vector<std::shared_ptr<ComposedClip::ClipDescriptor>> ComposedClip::getActi
 
     std::sort (active.begin(), active.end(), [](auto& a, auto& b){ return a->start.load() < b->start.load(); });
     return active;
-}
-
-//==============================================================================
-
-ComposedClip::ClipDescriptor::ClipDescriptor (ComposedClip& ownerToUse, std::shared_ptr<AVClip> clipToUse)
-  : owner (ownerToUse)
-{
-    clip = clipToUse;
-    state = juce::ValueTree (IDs::clip);
-    auto mediaFile = clip->getMediaFile();
-    if (mediaFile.getFullPathName().isNotEmpty())
-        state.setProperty (IDs::source, mediaFile.getFullPathName(), nullptr);
-
-    state.addListener (this);
-}
-
-ComposedClip::ClipDescriptor::ClipDescriptor (ComposedClip& ownerToUse, juce::ValueTree stateToUse)
-  : owner (ownerToUse)
-{
-    state = stateToUse;
-    auto* engine = owner.getVideoEngine();
-    if (state.hasProperty (IDs::source) && engine)
-    {
-        auto source = state.getProperty (IDs::source);
-        clip = engine->createClipFromFile ({ source });
-    }
-    state.addListener (this);
-}
-
-juce::String ComposedClip::ClipDescriptor::getDescription() const
-{
-    return state.getProperty (IDs::description, "unnamed");
-}
-
-void ComposedClip::ClipDescriptor::setDescription (const juce::String& name)
-{
-    state.setProperty (IDs::description, name, owner.getUndoManager());
-}
-
-double ComposedClip::ClipDescriptor::getStart() const
-{
-    return state.getProperty (IDs::start, 0.0);
-}
-
-void ComposedClip::ClipDescriptor::setStart (double s)
-{
-    state.setProperty (IDs::start, s, owner.getUndoManager());
-}
-
-double ComposedClip::ClipDescriptor::getLength() const
-{
-    return state.getProperty (IDs::length, 0.0);
-}
-
-void ComposedClip::ClipDescriptor::setLength (double l)
-{
-    state.setProperty (IDs::length, l, owner.getUndoManager());
-}
-
-double ComposedClip::ClipDescriptor::getOffset() const
-{
-    return state.getProperty (IDs::offset, 0.0);
-}
-
-void ComposedClip::ClipDescriptor::setOffset (double o)
-{
-    state.setProperty (IDs::offset, o, owner.getUndoManager());
-}
-
-int ComposedClip::ClipDescriptor::getVideoLine() const
-{
-    return state.getProperty (IDs::videoLine, 0.0);
-}
-
-void ComposedClip::ClipDescriptor::setVideoLine (int line)
-{
-    state.setProperty (IDs::videoLine, line, owner.getUndoManager());
-}
-
-int ComposedClip::ClipDescriptor::getAudioLine() const
-{
-    return state.getProperty (IDs::audioLine, 0.0);
-}
-
-void ComposedClip::ClipDescriptor::setAudioLine (int line)
-{
-    state.setProperty (IDs::audioLine, line, owner.getUndoManager());
-}
-
-void ComposedClip::ClipDescriptor::valueTreePropertyChanged (juce::ValueTree& treeWhosePropertyHasChanged,
-                                                               const juce::Identifier& property)
-{
-    if (treeWhosePropertyHasChanged != state)
-        return;
-
-    updateSampleCounts();
-}
-
-void ComposedClip::ClipDescriptor::updateSampleCounts()
-{
-    auto sampleRate = clip->getSampleRate();
-
-    start = sampleRate * double (state.getProperty (IDs::start));
-    length = sampleRate * double (state.getProperty (IDs::length));
-    offset = sampleRate * double (state.getProperty (IDs::offset));
-
-}
-
-juce::ValueTree& ComposedClip::ClipDescriptor::getStatusTree()
-{
-    return state;
 }
 
 //==============================================================================
@@ -470,18 +354,9 @@ int ComposedClip::ComposingThread::useTimeSlice()
     auto nextTimeCode = std::max (current, highest);
 
     auto timeInSeconds = nextTimeCode / double (settings.timebase);
-    auto pos = timeInSeconds * owner.sampleRate;
+    auto pos = timeInSeconds * owner.getSampleRate();
 
-    juce::Graphics g (image);
-    g.fillAll (juce::Colours::black);
-
-    for (auto& clip : owner.getActiveClips ([pos](ComposedClip::ClipDescriptor& clip) { return pos >= clip.start && pos < clip.start + clip.length; }))
-    {
-        const auto tc = (pos + clip->offset.load() - clip->start.load()) / owner.sampleRate;
-        const auto frame = clip->clip->getFrame (tc);
-
-        g.drawImageWithin (frame.second, 0, 0, image.getWidth(), image.getHeight(), juce::RectanglePlacement::centred);
-    }
+    owner.videoMixer->compose (image, timeInSeconds, owner.getActiveClips ([pos](ClipDescriptor& clip) { return clip.clip->hasVideo() && pos >= clip.start && pos < clip.start + clip.length; }));
 
     owner.videoFifo.pushVideoFrame (image, nextTimeCode);
 
