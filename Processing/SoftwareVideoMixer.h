@@ -29,8 +29,9 @@ public:
     SoftwareVideoMixer() = default;
 
     void compose (juce::Image& target,
-                  double timeInSeconds,
-                  const std::vector<std::shared_ptr<ClipDescriptor>>& clips) override;
+                  int64_t count,
+                  double  timeInSeconds,
+                  const   std::vector<std::shared_ptr<ClipDescriptor>>& clips) override;
 
 private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SoftwareVideoMixer)
