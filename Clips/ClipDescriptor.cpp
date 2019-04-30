@@ -134,4 +134,27 @@ juce::ValueTree& ClipDescriptor::getStatusTree()
     return state;
 }
 
+void ClipDescriptor::addAudioProcessor (std::unique_ptr<juce::AudioProcessor> processor, int index)
+{
+    auto holder = std::make_unique<AudioProcessorHolder>();
+    holder->processor = std::move (processor);
+
+    for (auto parameter : holder->processor->getParameters())
+        if (parameter->isAutomatable())
+            holder->parameters.push_back (std::make_unique<AutomationParameter> (*processor, *parameter));
+
+    juce::ScopedLock sl (owner.getCallbackLock());
+    if (juce::isPositiveAndBelow (index, audioProcessors.size()))
+        audioProcessors.insert (std::next (audioProcessors.begin(), index), std::move (holder));
+    else
+        audioProcessors.push_back (std::move (holder));
+}
+
+void ClipDescriptor::removeAudioProcessor (int index)
+{
+    juce::ScopedLock sl (owner.getCallbackLock());
+    audioProcessors.erase (std::next (audioProcessors.begin(), index));
+}
+
+
 } // foleys
