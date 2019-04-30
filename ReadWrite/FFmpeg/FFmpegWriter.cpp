@@ -86,6 +86,9 @@ struct FFmpegWriter::Pimpl
             av_opt_set (context->priv_data, "profile", "baseline", AV_OPT_SEARCH_CHILDREN);
         }
 
+        if (formatContext->oformat->flags & AVFMT_GLOBALHEADER)
+            context->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
+
         int ret = avcodec_open2 (context, encoder, &options);
         if (ret < 0) {
             DBG ("Cannot open video encoder: " << codec);
@@ -140,6 +143,9 @@ struct FFmpegWriter::Pimpl
         context->bits_per_raw_sample = 32;
         context->time_base = av_make_q (1, settings.timebase);
         avcodec_parameters_from_context (stream->codecpar, context);
+
+        if (formatContext->oformat->flags & AVFMT_GLOBALHEADER)
+            context->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
 
         int ret = avcodec_open2 (context, encoder, NULL);
         if (ret < 0) {
@@ -255,16 +261,6 @@ struct FFmpegWriter::Pimpl
                 return false;
             }
         }
-
-        if (formatContext->oformat->flags & AVFMT_GLOBALHEADER)
-        {
-            for (auto& descriptor : videoStreams)
-                descriptor->context->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
-
-            for (auto& descriptor : audioStreams)
-                descriptor->context->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
-        }
-
 
         auto ret = avformat_write_header (formatContext, nullptr);
         if (ret <0)
