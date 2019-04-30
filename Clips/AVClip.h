@@ -63,11 +63,14 @@ public:
     /** Checks, if a frame is available */
     virtual bool isFrameAvailable (double pts) const = 0;
 
-    /** Returns the frame for the current timecode */
+    /** Returns the frame for the current time */
     virtual juce::Image getCurrentFrame() const = 0;
 
+    /** Return the clip's read position in seconds */
     virtual double getCurrentTimeInSeconds() const = 0;
 
+    /** This returns a still frame on the selected position. Don't use
+        this method for streaming a video, because it will be slow */
     virtual juce::Image getStillImage (double seconds, Size size) = 0;
 
     /** Returns true, if this clip will produce visual frames */
@@ -80,6 +83,9 @@ public:
      this clip will produce audio and use as clock source. */
     virtual double getSampleRate() const = 0;
 
+    /** This returns a copy of the clip. Note that this will not work properly
+        if the clip is not properly registered in the engine, because the
+        copy will automatically be registered with the engine as well. */
     virtual std::shared_ptr<AVClip> createCopy() = 0;
 
     /** Use a TimecodeListener to be notified, when the visual frame changes */

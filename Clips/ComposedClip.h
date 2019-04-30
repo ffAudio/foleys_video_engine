@@ -73,6 +73,8 @@ public:
 
     juce::TimeSliceClient* getBackgroundJob() override;
 
+    /** The ValueTree describes the media and positions of the individual clips.
+        You can use this to listen to changes or to serialise a clip / project */
     juce::ValueTree& getStatusTree();
 
     std::shared_ptr<ClipDescriptor> addClip (std::shared_ptr<AVClip> clip, double start, double length = -1, double offset = 0);
@@ -96,6 +98,10 @@ public:
     void valueTreeParentChanged (juce::ValueTree& treeWhoseParentHasChanged) override {}
 
     juce::UndoManager* getUndoManager();
+
+    /** This lock is used, when the vector of clips is changed, or when a clip is altered
+        in a way, that it cannot render correctly, e.g. when adding or removing an audio plugin */
+    juce::CriticalSection& getCallbackLock() { return clipDescriptorLock; }
 
 private:
 

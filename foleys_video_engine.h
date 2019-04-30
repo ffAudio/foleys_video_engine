@@ -61,6 +61,7 @@
 #include "Basics/Structures.h"
 #include "Basics/AudioFifo.h"
 #include "Basics/VideoFifo.h"
+#include "Basics/Automation.h"
 #include "Clips/AVClip.h"
 #include "Clips/ClipDescriptor.h"
 #include "ReadWrite/AVReader.h"

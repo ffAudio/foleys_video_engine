@@ -67,6 +67,16 @@ struct ClipDescriptor : private juce::ValueTree::Listener
 
     void updateSampleCounts();
 
+    struct AudioProcessorHolder
+    {
+        std::unique_ptr<juce::AudioProcessor> processor;
+
+        std::vector<std::unique_ptr<AutomationParameter>> parameters;
+    };
+
+    void addAudioProcessor (std::unique_ptr<juce::AudioProcessor> processor, int index=-1);
+    void removeAudioProcessor (int index);
+
 private:
     std::atomic<int64_t> start {0};
     std::atomic<int64_t> length {0};
@@ -89,6 +99,8 @@ private:
 
     juce::ValueTree state;
     ComposedClip& owner;
+
+    std::vector<std::unique_ptr<AudioProcessorHolder>> audioProcessors;
 
     friend ComposedClip;
 
