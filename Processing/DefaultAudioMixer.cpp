@@ -38,6 +38,12 @@ void DefaultAudioMixer::mixAudio (const juce::AudioSourceChannelInfo& info,
             auto offset = std::max (int (start - position), 0);
             juce::AudioSourceChannelInfo reader (&mixBuffer, 0, info.numSamples - offset);
             clip->clip->getNextAudioBlock (reader);
+
+            juce::AudioBuffer<float> procBuffer (mixBuffer.getArrayOfWritePointers(), mixBuffer.getNumChannels(), 0, info.numSamples - offset);
+            juce::MidiBuffer midiDummy;
+            for (auto& proc : clip->audioProcessors)
+                proc->processor->processBlock (procBuffer, midiDummy);
+
             for (int channel = 0; channel < mixBuffer.getNumChannels(); ++channel)
                 info.buffer->addFrom (channel, info.startSample + offset, mixBuffer.getReadPointer (channel), info.numSamples - offset);
         }

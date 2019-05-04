@@ -88,3 +88,5 @@
 #endif
 
 #include "ReadWrite/AVFormatManager.h"
+
+#include "Processing/PanningAudioProcessor.h"

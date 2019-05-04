@@ -235,6 +235,11 @@ double ComposedClip::getSampleRate() const
     return audioSettings.timebase;
 }
 
+int ComposedClip::getDefaultBufferSize() const
+{
+    return audioSettings.defaultNumSamples;
+}
+
 void ComposedClip::handleAsyncUpdate()
 {
     if (audioSettings.timebase > 0 && hasVideo())

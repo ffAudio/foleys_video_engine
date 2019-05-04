@@ -122,7 +122,6 @@ void ClipDescriptor::updateSampleCounts()
     start = sampleRate * double (state.getProperty (IDs::start));
     length = sampleRate * double (state.getProperty (IDs::length));
     offset = sampleRate * double (state.getProperty (IDs::offset));
-
 }
 
 int64_t ClipDescriptor::getStartInSamples() const { return start; }
@@ -141,7 +140,9 @@ void ClipDescriptor::addAudioProcessor (std::unique_ptr<juce::AudioProcessor> pr
 
     for (auto parameter : holder->processor->getParameters())
         if (parameter->isAutomatable())
-            holder->parameters.push_back (std::make_unique<AutomationParameter> (*processor, *parameter));
+            holder->parameters.push_back (std::make_unique<AutomationParameter> (*holder->processor, *parameter));
+
+    holder->processor->prepareToPlay (owner.getSampleRate(), owner.getDefaultBufferSize());
 
     juce::ScopedLock sl (owner.getCallbackLock());
     if (juce::isPositiveAndBelow (index, audioProcessors.size()))
