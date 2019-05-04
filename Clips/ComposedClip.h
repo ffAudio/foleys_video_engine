@@ -71,6 +71,8 @@ public:
 
     double getSampleRate() const override;
 
+    int getDefaultBufferSize() const;
+
     juce::TimeSliceClient* getBackgroundJob() override;
 
     /** The ValueTree describes the media and positions of the individual clips.
