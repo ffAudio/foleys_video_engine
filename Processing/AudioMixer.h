@@ -33,6 +33,7 @@ public:
 
     virtual void mixAudio (const juce::AudioSourceChannelInfo& info,
                            const int64_t position,
+                           const double  timeInSeconds,
                            const std::vector<std::shared_ptr<ClipDescriptor>>& clips) = 0;
 
 private:

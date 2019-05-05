@@ -135,6 +135,7 @@ private:
     ComposingThread videoRenderJob;
 
     juce::ValueTree state;
+    bool manualStateChange = false;
 
     AudioStreamSettings audioSettings;
 

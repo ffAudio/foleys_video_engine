@@ -26,6 +26,7 @@ AutomationParameter::AutomationParameter (juce::AudioProcessor&          process
   : processor (processorToUse),
     parameter (parameterToUse)
 {
+    value = parameter.getDefaultValue();
 }
 
 void AutomationParameter::updateProcessor (double pts)

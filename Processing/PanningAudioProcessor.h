@@ -49,7 +49,7 @@ public:
                                                                               [](const juce::String& text) { return text.getFloatValue(); } ));
 
         parameters.emplace_back (std::make_unique<juce::AudioParameterFloat> (paramPan, NEEDS_TRANS ("Panning"),
-                                                                              juce::NormalisableRange<float>(-1.0, 1.0, 0.1),
+                                                                              juce::NormalisableRange<float>(-1.0, 1.0, 0.01),
                                                                               0.0f,
                                                                               NEEDS_TRANS ("Panning"),
                                                                               juce::AudioProcessorParameter::genericParameter,
