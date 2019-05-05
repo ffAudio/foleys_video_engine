@@ -69,9 +69,14 @@ struct ClipDescriptor : private juce::ValueTree::Listener
 
     struct AudioProcessorHolder
     {
+        ~AudioProcessorHolder();
+
         std::unique_ptr<juce::AudioProcessor> processor;
 
         std::vector<std::unique_ptr<AutomationParameter>> parameters;
+
+        void updateAutomation (double pts);
+
     };
 
     void addAudioProcessor (std::unique_ptr<juce::AudioProcessor> processor, int index=-1);

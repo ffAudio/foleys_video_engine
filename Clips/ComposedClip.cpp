@@ -75,6 +75,7 @@ std::shared_ptr<ClipDescriptor> ComposedClip::addClip (std::shared_ptr<AVClip> c
 
     clips.push_back (clipDescriptor);
 
+    juce::ScopedValueSetter<bool> manual (manualStateChange, true);
     state.appendChild (clipDescriptor->getStatusTree(), getUndoManager());
 
     return clipDescriptor;
@@ -152,7 +153,10 @@ void ComposedClip::getNextAudioBlock (const juce::AudioSourceChannelInfo& info)
     info.clearActiveBufferRegion();
     auto pos = position.load();
 
-    audioMixer->mixAudio (info, position.load(), getActiveClips ([pos](ClipDescriptor& clip) { return clip.clip->hasAudio() && pos >= clip.start && pos < clip.start + clip.length; }));
+    audioMixer->mixAudio (info,
+                          position.load(),
+                          getCurrentTimeInSeconds(),
+                          getActiveClips ([pos](ClipDescriptor& clip) { return clip.clip->hasAudio() && pos >= clip.start && pos < clip.start + clip.length; }));
 
     position.fetch_add (info.numSamples);
     triggerAsyncUpdate();
@@ -272,6 +276,9 @@ void ComposedClip::valueTreePropertyChanged (juce::ValueTree& treeWhosePropertyH
 void ComposedClip::valueTreeChildAdded (juce::ValueTree& parentTree,
                                           juce::ValueTree& childWhichHasBeenAdded)
 {
+    if (manualStateChange)
+        return;
+
     auto descriptor = std::make_shared<ClipDescriptor>(*this, childWhichHasBeenAdded);
     if (descriptor->clip != nullptr)
     {
@@ -286,6 +293,9 @@ void ComposedClip::valueTreeChildRemoved (juce::ValueTree& parentTree,
                                             juce::ValueTree& childWhichHasBeenRemoved,
                                             int indexFromWhichChildWasRemoved)
 {
+    if (manualStateChange)
+        return;
+
     for (auto it = clips.begin(); it != clips.end(); ++it)
     {
         if ((*it)->getStatusTree() == childWhichHasBeenRemoved)

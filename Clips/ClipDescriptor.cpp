@@ -157,5 +157,17 @@ void ClipDescriptor::removeAudioProcessor (int index)
     audioProcessors.erase (std::next (audioProcessors.begin(), index));
 }
 
+//==============================================================================
+
+ClipDescriptor::AudioProcessorHolder::~AudioProcessorHolder()
+{
+    processor->releaseResources();
+}
+
+void ClipDescriptor::AudioProcessorHolder::updateAutomation (double pts)
+{
+    for (auto& parameter : parameters)
+        parameter->updateProcessor (pts);
+}
 
 } // foleys
