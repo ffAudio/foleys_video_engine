@@ -41,29 +41,43 @@ void AudioClip::setMediaFile (const juce::File& media)
     mediaFile = media;
 }
 
-void AudioClip::setAudioFormatReader (juce::AudioFormatReader* reader)
+void AudioClip::setAudioFormatReader (juce::AudioFormatReader* readerToUse, int samplesToBuffer)
 {
-    if (reader == nullptr)
+    if (readerToUse == nullptr)
     {
         resampler.reset();
         readerSource.reset();
+        reader.reset();
         return;
     }
 
-    readerSource = std::make_unique<juce::AudioFormatReaderSource>(reader, true);
+    reader.reset (readerToUse);
+
+    if (samplesToBuffer > 0 && getVideoEngine() != nullptr)
+    {
+        readerSource = std::make_unique<juce::BufferingAudioSource>(new juce::AudioFormatReaderSource (reader.get(), false),
+                                                                    getVideoEngine()->getNextTimeSliceThread(),
+                                                                    true,
+                                                                    samplesToBuffer,
+                                                                    reader->numChannels);
+    }
+    else
+    {
+        readerSource = std::make_unique<juce::AudioFormatReaderSource>(reader.get(), false);
+    }
 
     setupResampler();
 }
 
 void AudioClip::setupResampler()
 {
-    if (readerSource.get() == nullptr)
+    if (reader.get() == nullptr)
     {
         resampler.reset();
+        readerSource.reset();
         return;
     }
 
-    const auto* reader = readerSource->getAudioFormatReader();
     originalSampleRate = reader->sampleRate;
     if (originalSampleRate != sampleRate)
         resampler = std::make_unique<juce::ResamplingAudioSource> (readerSource.get(), false, reader->numChannels);
