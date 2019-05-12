@@ -41,7 +41,7 @@ public:
     juce::File getMediaFile() const override;
     void setMediaFile (const juce::File& media);
 
-    void setAudioFormatReader (juce::AudioFormatReader* reader);
+    void setAudioFormatReader (juce::AudioFormatReader* reader, int samplesToBuffer = 48000);
 
     std::pair<int64_t, juce::Image> getFrame (double pts) const override { return {}; }
     juce::Image getCurrentFrame() const override  { return {}; }
@@ -75,7 +75,8 @@ private:
 
     void setupResampler();
 
-    std::unique_ptr<juce::AudioFormatReaderSource> readerSource;
+    std::unique_ptr<juce::AudioFormatReader>       reader;
+    std::unique_ptr<juce::PositionableAudioSource> readerSource;
     std::unique_ptr<juce::ResamplingAudioSource>   resampler;
     juce::File mediaFile;
     double sampleRate = 0.0;
