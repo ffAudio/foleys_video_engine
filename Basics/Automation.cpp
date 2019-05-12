@@ -1,6 +1,6 @@
 /*
  ==============================================================================
- 
+
  Copyright (c) 2019, Foleys Finest Audio - Daniel Walz
  All rights reserved.
  
@@ -14,7 +14,7 @@
  LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  ==============================================================================
  */
 
@@ -27,11 +27,18 @@ AutomationParameter::AutomationParameter (juce::AudioProcessor&          process
     parameter (parameterToUse)
 {
     value = parameter.getDefaultValue();
+    parameter.addListener (this);
+}
+
+AutomationParameter::~AutomationParameter()
+{
+    parameter.removeListener (this);
 }
 
 void AutomationParameter::updateProcessor (double pts)
 {
-    parameter.setValue (getValueForTime (pts));
+    if (!gestureInProgress)
+        parameter.setValue (getValueForTime (pts));
 }
 
 void AutomationParameter::setValue (double pts, double newValue)
@@ -80,6 +87,31 @@ double AutomationParameter::getValueForTime (double pts) const
 
     auto interpolated = range.first->second + (pts - range.first->first) * (range.second->second - range.first->second) / (range.second->first - range.first->first);
     return juce::jlimit (0.0, 1.0, interpolated);
+}
+
+juce::String AutomationParameter::getName() const
+{
+    return parameter.getName (128);
+}
+
+double AutomationParameter::getValue() const
+{
+    return value;
+}
+
+const std::map<double, double>& AutomationParameter::getKeyframes() const
+{
+    return keyframes;
+}
+
+void AutomationParameter::parameterValueChanged (int parameterIndex, float newValue)
+{
+
+}
+
+void AutomationParameter::parameterGestureChanged (int parameterIndex, bool gestureIsStarting)
+{
+    gestureInProgress = gestureIsStarting;
 }
 
 } // foleys

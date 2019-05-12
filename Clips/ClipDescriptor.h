@@ -69,20 +69,33 @@ struct ClipDescriptor : private juce::ValueTree::Listener
 
     struct AudioProcessorHolder
     {
+        AudioProcessorHolder (ClipDescriptor& owner, std::unique_ptr<juce::AudioProcessor> processor);
+        AudioProcessorHolder (ClipDescriptor& owner, const juce::ValueTree& state, int index=-1);
+
         ~AudioProcessorHolder();
 
         std::unique_ptr<juce::AudioProcessor> processor;
 
-        std::vector<std::unique_ptr<AutomationParameter>> parameters;
-
         void updateAutomation (double pts);
 
+        juce::ValueTree getProcessorState() const;
+
+    private:
+        ClipDescriptor& owner;
+        juce::ValueTree state;
+
+        std::vector<std::unique_ptr<AutomationParameter>> parameters;
+
+        JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioProcessorHolder)
     };
 
+    void addAudioProcessor (std::unique_ptr<AudioProcessorHolder> processor, int index=-1);
     void addAudioProcessor (std::unique_ptr<juce::AudioProcessor> processor, int index=-1);
     void removeAudioProcessor (int index);
 
     std::vector<std::unique_ptr<AudioProcessorHolder>> audioProcessors;
+
+    ComposedClip& getOwningClip();
 
 private:
     std::atomic<int64_t> start {0};
@@ -93,11 +106,11 @@ private:
                                    const juce::Identifier& property) override;
 
     void valueTreeChildAdded (juce::ValueTree& parentTree,
-                              juce::ValueTree& childWhichHasBeenAdded) override {}
+                              juce::ValueTree& childWhichHasBeenAdded) override;
 
     void valueTreeChildRemoved (juce::ValueTree& parentTree,
                                 juce::ValueTree& childWhichHasBeenRemoved,
-                                int indexFromWhichChildWasRemoved) override {}
+                                int indexFromWhichChildWasRemoved) override;
 
     void valueTreeChildOrderChanged (juce::ValueTree& parentTreeWhoseChildrenHaveMoved,
                                      int oldIndex, int newIndex) override {}
@@ -105,6 +118,8 @@ private:
     void valueTreeParentChanged (juce::ValueTree& treeWhoseParentHasChanged) override {}
 
     juce::ValueTree state;
+    bool manualStateChange = false;
+
     ComposedClip& owner;
 
     friend ComposedClip;

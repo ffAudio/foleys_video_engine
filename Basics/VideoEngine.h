@@ -24,8 +24,6 @@
 namespace foleys
 {
 
-class AVFormatManager;
-
 /**
  @class VideoEngine
 
@@ -67,13 +65,24 @@ public:
 
     AVFormatManager& getFormatManager();
 
+    std::unique_ptr<juce::AudioProcessor> createAudioPluginInstance (const juce::String& identifierString,
+                                                                     double sampleRate,
+                                                                     int blockSize,
+                                                                     juce::String& error) const;
+
+    juce::TimeSliceThread& getNextTimeSliceThread();
+
 private:
 
     void removeFromBackgroundThreads (juce::TimeSliceClient* client);
 
     void timerCallback() override;
 
-    std::unique_ptr<AVFormatManager> formatManager;
+    AVFormatManager formatManager;
+
+    AudioPluginManager audioPluginManager;
+
+    std::unique_ptr<VideoPluginManager> videoPluginManager;
 
     juce::OptionalScopedPointer<juce::UndoManager> undoManager { new juce::UndoManager(), true };
 

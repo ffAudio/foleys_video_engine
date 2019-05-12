@@ -18,33 +18,29 @@
  ==============================================================================
  */
 
-#include "foleys_video_engine.h"
+#pragma once
 
-#include "Basics/VideoFifo.cpp"
-#include "Basics/AudioFifo.cpp"
-#include "Basics/VideoEngine.cpp"
-#include "Basics/Automation.cpp"
+namespace foleys
+{
 
-#include "Clips/AVClip.cpp"
-#include "Clips/AudioClip.cpp"
-#include "Clips/ImageClip.cpp"
-#include "Clips/MovieClip.cpp"
-#include "Clips/ComposedClip.cpp"
-#include "Clips/ClipDescriptor.cpp"
+class AudioPluginManager
+{
+public:
+    AudioPluginManager();
 
-#include "Plugins/AudioPluginManager.cpp"
+    std::unique_ptr<juce::AudioProcessor> createAudioPluginInstance (const juce::String& identifierString,
+                                                                     double sampleRate,
+                                                                     int blockSize,
+                                                                     juce::String& error) const;
 
-#include "Processing/SoftwareVideoMixer.cpp"
-#include "Processing/DefaultAudioMixer.cpp"
+private:
 
-#include "ReadWrite/AVFormatManager.cpp"
-#include "ReadWrite/ClipBouncer.cpp"
+    std::map<juce::String, std::function<std::unique_ptr<juce::AudioProcessor>()>> factories;
 
-#if FOLEYS_USE_FFMPEG
-#include "ReadWrite/FFmpeg/FFmpegReader.cpp"
-#include "ReadWrite/FFmpeg/FFmpegWriter.cpp"
-#endif
+    juce::KnownPluginList          knownPluginList;
+    juce::AudioPluginFormatManager pluginManager;
 
-#include "Widgets/VideoPreview.cpp"
-#include "Widgets/FilmStrip.cpp"
-#include "Widgets/AudioStrip.cpp"
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioPluginManager)
+};
+
+}

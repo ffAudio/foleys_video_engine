@@ -30,10 +30,12 @@ namespace foleys
  to store and playback automation values. It is used in the ClipDescriptor's
  AudioProcessorHolder.
  */
-class AutomationParameter
+class AutomationParameter  : private juce::AudioProcessorParameter::Listener
 {
 public:
     AutomationParameter (juce::AudioProcessor&, juce::AudioProcessorParameter&);
+
+    ~AutomationParameter();
 
     void updateProcessor (double pts);
 
@@ -42,6 +44,16 @@ public:
     void addKeyframe (double pts, double value);
 
     void setKeyframe (size_t index, double pts, double value);
+
+    juce::String getName() const;
+
+    double getValue() const;
+
+    const std::map<double, double>& getKeyframes() const;
+
+    void parameterValueChanged (int parameterIndex, float newValue) override;
+
+    void parameterGestureChanged (int parameterIndex, bool gestureIsStarting) override;
 
 private:
 
@@ -52,6 +64,8 @@ private:
 
     double value = 0.0;
     std::map<double, double> keyframes;
+    bool gestureInProgress = false;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AutomationParameter)
 };
 

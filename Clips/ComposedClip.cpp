@@ -24,16 +24,18 @@ namespace foleys
 
 namespace IDs
 {
-    juce::Identifier compoundClip { "CompoundClip" };
+    static juce::Identifier compoundClip { "CompoundClip" };
 
-    juce::Identifier clip         { "Clip" };
-    juce::Identifier description  { "description" };
-    juce::Identifier source       { "source" };
-    juce::Identifier start        { "start" };
-    juce::Identifier length       { "length" };
-    juce::Identifier offset       { "offset" };
-    juce::Identifier videoLine    { "videoLine" };
-    juce::Identifier audioLine    { "audioLine" };
+    static juce::Identifier clip         { "Clip" };
+    static juce::Identifier description  { "description" };
+    static juce::Identifier source       { "source" };
+    static juce::Identifier start        { "start" };
+    static juce::Identifier length       { "length" };
+    static juce::Identifier offset       { "offset" };
+    static juce::Identifier videoLine    { "videoLine" };
+    static juce::Identifier audioLine    { "audioLine" };
+    static juce::Identifier audioProcessors { "AudioProcessors" };
+    static juce::Identifier videoProcessors { "VideoProcessors" };
 }
 
 ComposedClip::ComposedClip (VideoEngine& engine)
