@@ -23,7 +23,7 @@ namespace foleys
 
 VideoEngine::VideoEngine()
 {
-    formatManager = std::make_unique<AVFormatManager>();
+    videoPluginManager = std::make_unique<VideoPluginManager>();
 
     const int numReaders = std::max (4, juce::SystemStats::getNumCpus());
     for (int i = 0; i < numReaders; ++i)
@@ -45,7 +45,7 @@ VideoEngine::~VideoEngine()
 
 std::shared_ptr<AVClip> VideoEngine::createClipFromFile (juce::File file)
 {
-    auto clip = formatManager->createClipFromFile (*this, file);
+    auto clip = formatManager.createClipFromFile (*this, file);
     if (clip)
         manageLifeTime (clip);
 
@@ -61,16 +61,12 @@ std::shared_ptr<ComposedClip> VideoEngine::createComposedClip()
 
 std::unique_ptr<AVReader> VideoEngine::createReaderFor (juce::File file, StreamTypes type)
 {
-    return formatManager->createReaderFor (file, type);
+    return formatManager.createReaderFor (file, type);
 }
 
-void VideoEngine::manageLifeTime (std::shared_ptr<AVClip> clip)
+juce::TimeSliceThread& VideoEngine::getNextTimeSliceThread()
 {
-    releasePool.push_back (clip);
-
-    auto* client = clip->getBackgroundJob();
-    if (client == nullptr)
-        return;
+    jassert (!readingThreads.empty());
 
     int minClients = std::numeric_limits<int>::max();
     int nextThread = 0;
@@ -83,7 +79,19 @@ void VideoEngine::manageLifeTime (std::shared_ptr<AVClip> clip)
             nextThread = i;
         }
     }
-    readingThreads [nextThread]->addTimeSliceClient (client);
+
+    return *readingThreads [nextThread];
+}
+
+void VideoEngine::manageLifeTime (std::shared_ptr<AVClip> clip)
+{
+    releasePool.push_back (clip);
+
+    auto* client = clip->getBackgroundJob();
+    if (client == nullptr)
+        return;
+
+    getNextTimeSliceThread().addTimeSliceClient (client);
 }
 
 void VideoEngine::removeFromBackgroundThreads (juce::TimeSliceClient* client)
@@ -142,7 +150,15 @@ void VideoEngine::setUndoManager (juce::UndoManager* undoManagerToUse)
 
 AVFormatManager& VideoEngine::getFormatManager()
 {
-    return *formatManager;
+    return formatManager;
+}
+
+std::unique_ptr<juce::AudioProcessor> VideoEngine::createAudioPluginInstance (const juce::String& identifierString,
+                                                                              double sampleRate,
+                                                                              int blockSize,
+                                                                              juce::String& error) const
+{
+    return audioPluginManager.createAudioPluginInstance (identifierString, sampleRate, blockSize, error);
 }
 
 

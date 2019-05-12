@@ -18,33 +18,18 @@
  ==============================================================================
  */
 
-#include "foleys_video_engine.h"
+#pragma once
 
-#include "Basics/VideoFifo.cpp"
-#include "Basics/AudioFifo.cpp"
-#include "Basics/VideoEngine.cpp"
-#include "Basics/Automation.cpp"
+namespace foleys
+{
 
-#include "Clips/AVClip.cpp"
-#include "Clips/AudioClip.cpp"
-#include "Clips/ImageClip.cpp"
-#include "Clips/MovieClip.cpp"
-#include "Clips/ComposedClip.cpp"
-#include "Clips/ClipDescriptor.cpp"
+class VideoPluginManager
+{
+public:
+    VideoPluginManager() = default;
 
-#include "Plugins/AudioPluginManager.cpp"
+private:
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (VideoPluginManager)
+};
 
-#include "Processing/SoftwareVideoMixer.cpp"
-#include "Processing/DefaultAudioMixer.cpp"
-
-#include "ReadWrite/AVFormatManager.cpp"
-#include "ReadWrite/ClipBouncer.cpp"
-
-#if FOLEYS_USE_FFMPEG
-#include "ReadWrite/FFmpeg/FFmpegReader.cpp"
-#include "ReadWrite/FFmpeg/FFmpegWriter.cpp"
-#endif
-
-#include "Widgets/VideoPreview.cpp"
-#include "Widgets/FilmStrip.cpp"
-#include "Widgets/AudioStrip.cpp"
+}

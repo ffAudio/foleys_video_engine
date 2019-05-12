@@ -37,6 +37,9 @@ class PanningAudioProcessor : public juce::AudioProcessor
     static inline juce::String paramPan  { "Pan" };
 
 public:
+
+    static juce::String getPluginName() { return "Panning"; }
+
     juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout()
     {
         std::vector<std::unique_ptr<juce::RangedAudioParameter>> parameters;
@@ -46,7 +49,7 @@ public:
                                                                               NEEDS_TRANS ("Gain"),
                                                                               juce::AudioProcessorParameter::genericParameter,
                                                                               [](float value, int) { return juce::String (value, 1) + " dB"; },
-                                                                              [](const juce::String& text) { return text.getFloatValue(); } ));
+                                                                              [](const juce::String& text) { return text.dropLastCharacters (3).getFloatValue(); } ));
 
         parameters.emplace_back (std::make_unique<juce::AudioParameterFloat> (paramPan, NEEDS_TRANS ("Panning"),
                                                                               juce::NormalisableRange<float>(-1.0, 1.0, 0.01),
@@ -58,7 +61,7 @@ public:
                                                                                   juce::String (juce::roundToInt (value * 100.0f)) + " R"; },
                                                                               [](const juce::String& text) { return text.startsWith ("L ") ?
                                                                                   text.substring (2).getFloatValue() * -100.0f :
-                                                                                  text.endsWith (" R") ? text.getFloatValue() * 100.0f : 0.0f; } ));
+                                                                                  text.endsWith (" R") ? text.dropLastCharacters (2).getFloatValue() * 100.0f : 0.0f; } ));
 
         return { parameters.begin(), parameters.end() };
     }
@@ -81,6 +84,9 @@ public:
     {
         const int numIn  = getMainBusNumInputChannels();
         const int numOut = getMainBusNumOutputChannels();
+
+        // Did you call prepareToPlay?
+        jassert (lastGains.size() >= numOut);
 
         if (numOut == 2 && numIn == 1)
             buffer.copyFrom (1, 0, buffer.getReadPointer (0), buffer.getNumSamples());
@@ -114,7 +120,7 @@ public:
     bool acceptsMidi() const override { return false; }
     bool producesMidi() const override { return false; }
 
-    const juce::String getName() const override { return "Panning"; }
+    const juce::String getName() const override { return getPluginName(); }
     void releaseResources() override {}
     juce::AudioProcessorEditor* createEditor() override { return nullptr; }
     bool hasEditor() const override { return false; }

@@ -64,8 +64,12 @@
 #include "Basics/Automation.h"
 #include "Clips/AVClip.h"
 #include "Clips/ClipDescriptor.h"
+#include "Plugins/AudioPluginManager.h"
+#include "Plugins/VideoProcessor.h"
+#include "Plugins/VideoPluginManager.h"
 #include "ReadWrite/AVReader.h"
 #include "ReadWrite/AVWriter.h"
+#include "ReadWrite/AVFormatManager.h"
 #include "ReadWrite/ClipBouncer.h"
 #include "Processing/AudioMixer.h"
 #include "Processing/VideoMixer.h"
@@ -87,6 +91,4 @@
 #include "ReadWrite/FFmpeg/FFmpegWriter.h"
 #endif
 
-#include "ReadWrite/AVFormatManager.h"
-
-#include "Processing/PanningAudioProcessor.h"
+#include "Plugins/PanningAudioProcessor.h"
