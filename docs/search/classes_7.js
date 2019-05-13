@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['videoengine',['VideoEngine',['../classfoleys_1_1VideoEngine.html',1,'foleys']]],
-  ['videofifo',['VideoFifo',['../classfoleys_1_1VideoFifo.html',1,'foleys']]],
-  ['videopreview',['VideoPreview',['../classfoleys_1_1VideoPreview.html',1,'foleys']]],
-  ['videostreamsettings',['VideoStreamSettings',['../structfoleys_1_1VideoStreamSettings.html',1,'foleys']]]
+  ['size',['Size',['../structfoleys_1_1Size.html',1,'foleys']]],
+  ['softwarevideomixer',['SoftwareVideoMixer',['../classfoleys_1_1SoftwareVideoMixer.html',1,'foleys']]],
+  ['streamtypes',['StreamTypes',['../classfoleys_1_1StreamTypes.html',1,'foleys']]]
 ];

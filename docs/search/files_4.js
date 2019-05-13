@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['license_2emd',['LICENSE.md',['../LICENSE_8md.html',1,'']]]
+  ['imageclip_2ecpp',['ImageClip.cpp',['../ImageClip_8cpp.html',1,'']]],
+  ['imageclip_2eh',['ImageClip.h',['../ImageClip_8h.html',1,'']]]
 ];
