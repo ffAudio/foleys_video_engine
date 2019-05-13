@@ -188,9 +188,9 @@ juce::int64 ComposedClip::getNextReadPosition() const
 
 juce::int64 ComposedClip::getTotalLength() const
 {
-    juce::int64 length = 0;
+    int64_t length = 0;
     for (auto& descriptor : getClips())
-        length = std::max (length, descriptor->start + descriptor->length);
+        length = std::max (length, descriptor->start.load() + descriptor->length.load());
 
     return length;
 }

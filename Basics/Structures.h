@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <bitset>
 
 namespace foleys
 {

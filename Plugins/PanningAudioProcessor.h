@@ -86,7 +86,7 @@ public:
         const int numOut = getMainBusNumOutputChannels();
 
         // Did you call prepareToPlay?
-        jassert (lastGains.size() >= numOut);
+        jassert (int (lastGains.size()) >= numOut);
 
         if (numOut == 2 && numIn == 1)
             buffer.copyFrom (1, 0, buffer.getReadPointer (0), buffer.getNumSamples());
