@@ -33,7 +33,7 @@ namespace foleys
 class AutomationParameter  : private juce::AudioProcessorParameter::Listener
 {
 public:
-    AutomationParameter (juce::AudioProcessor&, juce::AudioProcessorParameter&);
+    AutomationParameter (ClipDescriptor::AudioProcessorHolder&, juce::AudioProcessor&, juce::AudioProcessorParameter&);
 
     ~AutomationParameter();
 
@@ -51,6 +51,10 @@ public:
 
     const std::map<double, double>& getKeyframes() const;
 
+    void loadFromValueTree (const juce::ValueTree& state);
+
+    void saveToValueTree (juce::ValueTree& state, juce::UndoManager* undo) const;
+
     void parameterValueChanged (int parameterIndex, float newValue) override;
 
     void parameterGestureChanged (int parameterIndex, bool gestureIsStarting) override;
@@ -59,8 +63,9 @@ private:
 
     double getValueForTime (double pts) const;
 
-    juce::AudioProcessor&          processor;
-    juce::AudioProcessorParameter& parameter;
+    ClipDescriptor::AudioProcessorHolder& holder;
+    juce::AudioProcessor&                 processor;
+    juce::AudioProcessorParameter&        parameter;
 
     double value = 0.0;
     std::map<double, double> keyframes;
