@@ -24,6 +24,7 @@ namespace foleys
 {
 
 class ComposedClip;
+class AutomationParameter;
 
 /**
  @class ClipDescriptor
@@ -55,6 +56,8 @@ struct ClipDescriptor : private juce::ValueTree::Listener
     int64_t getOffsetInSamples() const;
     void setOffset (double offset);
 
+    double getCurrentPTS() const;
+
     int getVideoLine() const;
     void setVideoLine (int line);
 
@@ -78,7 +81,11 @@ struct ClipDescriptor : private juce::ValueTree::Listener
 
         void updateAutomation (double pts);
 
-        juce::ValueTree getProcessorState() const;
+        void synchroniseState (AutomationParameter& parameter);
+
+        juce::ValueTree& getProcessorState();
+
+        ClipDescriptor& getOwningClip();
 
     private:
         ClipDescriptor& owner;
@@ -96,6 +103,7 @@ struct ClipDescriptor : private juce::ValueTree::Listener
     std::vector<std::unique_ptr<AudioProcessorHolder>> audioProcessors;
 
     ComposedClip& getOwningClip();
+    const ComposedClip& getOwningClip() const;
 
 private:
     std::atomic<int64_t> start {0};

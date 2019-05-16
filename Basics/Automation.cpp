@@ -3,7 +3,7 @@
 
  Copyright (c) 2019, Foleys Finest Audio - Daniel Walz
  All rights reserved.
- 
+
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
@@ -21,9 +21,18 @@
 namespace foleys
 {
 
-AutomationParameter::AutomationParameter (juce::AudioProcessor&          processorToUse,
-                                          juce::AudioProcessorParameter& parameterToUse)
-  : processor (processorToUse),
+namespace IDs
+{
+    static juce::Identifier value           { "Value" };
+    static juce::Identifier keyframe        { "Keyframe" };
+    static juce::Identifier time            { "Time" };
+}
+
+AutomationParameter::AutomationParameter (ClipDescriptor::AudioProcessorHolder& holderToUse,
+                                          juce::AudioProcessor&                 processorToUse,
+                                          juce::AudioProcessorParameter&        parameterToUse)
+  : holder    (holderToUse),
+    processor (processorToUse),
     parameter (parameterToUse)
 {
     value = parameter.getDefaultValue();
@@ -104,9 +113,45 @@ const std::map<double, double>& AutomationParameter::getKeyframes() const
     return keyframes;
 }
 
+void AutomationParameter::loadFromValueTree (const juce::ValueTree& state)
+{
+    if (state.hasProperty (IDs::value))
+        value = double (state.getProperty (IDs::value));
+
+    std::map<double, double> newKeyframes;
+    for (const auto& child : state)
+    {
+        if (!child.hasProperty (IDs::time) || !child.hasProperty (IDs::value))
+            continue;
+
+        auto t = double (child.getProperty (IDs::time));
+        auto v = double (child.getProperty (IDs::value));
+        newKeyframes [t] = v;
+    }
+
+    keyframes = newKeyframes;
+}
+
+void AutomationParameter::saveToValueTree (juce::ValueTree& state, juce::UndoManager* undo) const
+{
+    state.setProperty (IDs::value, value, undo);
+
+    state.removeAllChildren (undo);
+    for (const auto& k : keyframes)
+    {
+        juce::ValueTree node { IDs::keyframe };
+        node.setProperty (IDs::time, k.first, undo);
+        node.setProperty (IDs::value, k.second, undo);
+        state.appendChild (node, undo);
+    }
+}
+
 void AutomationParameter::parameterValueChanged (int parameterIndex, float newValue)
 {
+    auto pts = holder.getOwningClip().getCurrentPTS();
+    setValue (pts, newValue);
 
+    holder.synchroniseState (*this);
 }
 
 void AutomationParameter::parameterGestureChanged (int parameterIndex, bool gestureIsStarting)
