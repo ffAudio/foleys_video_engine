@@ -47,7 +47,7 @@ AutomationParameter::~AutomationParameter()
 void AutomationParameter::updateProcessor (double pts)
 {
     if (!gestureInProgress)
-        parameter.setValue (getValueForTime (pts));
+        parameter.setValueNotifyingHost (getValueForTime (pts));
 }
 
 void AutomationParameter::setValue (double pts, double newValue)
