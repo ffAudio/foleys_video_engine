@@ -60,11 +60,15 @@ void AutomationParameter::setValue (double pts, double newValue)
     auto diff = newValue - getValueForTime (pts);
     for (auto& k : keyframes)
         k.second = juce::jlimit (0.0, 1.0, k.second + diff);
+
+    holder.synchroniseState (*this);
 }
 
 void AutomationParameter::addKeyframe (double pts, double newValue)
 {
     keyframes [pts] = juce::jlimit (0.0, 1.0, newValue);
+
+    holder.synchroniseState (*this);
 }
 
 void AutomationParameter::setKeyframe (size_t index, double pts, double newValue)
@@ -76,6 +80,8 @@ void AutomationParameter::setKeyframe (size_t index, double pts, double newValue
         keyframes.erase (it);
         keyframes [pts] = newValue;
     }
+
+    holder.synchroniseState (*this);
 }
 
 double AutomationParameter::getValueForTime (double pts) const
@@ -150,8 +156,6 @@ void AutomationParameter::parameterValueChanged (int parameterIndex, float newVa
 {
     auto pts = holder.getOwningClip().getCurrentPTS();
     setValue (pts, newValue);
-
-    holder.synchroniseState (*this);
 }
 
 void AutomationParameter::parameterGestureChanged (int parameterIndex, bool gestureIsStarting)

@@ -70,7 +70,7 @@ struct ClipDescriptor : private juce::ValueTree::Listener
 
     void updateSampleCounts();
 
-    struct AudioProcessorHolder
+    struct AudioProcessorHolder  : private juce::ValueTree::Listener
     {
         AudioProcessorHolder (ClipDescriptor& owner, std::unique_ptr<juce::AudioProcessor> processor);
         AudioProcessorHolder (ClipDescriptor& owner, const juce::ValueTree& state, int index=-1);
@@ -82,14 +82,33 @@ struct ClipDescriptor : private juce::ValueTree::Listener
         void updateAutomation (double pts);
 
         void synchroniseState (AutomationParameter& parameter);
+        void synchroniseParameter (const juce::ValueTree& tree);
 
         juce::ValueTree& getProcessorState();
 
         ClipDescriptor& getOwningClip();
 
     private:
+
+        void valueTreePropertyChanged (juce::ValueTree& treeWhosePropertyHasChanged,
+                                       const juce::Identifier& property) override;
+
+        void valueTreeChildAdded (juce::ValueTree& parentTree,
+                                  juce::ValueTree& childWhichHasBeenAdded) override;
+
+        void valueTreeChildRemoved (juce::ValueTree& parentTree,
+                                    juce::ValueTree& childWhichHasBeenRemoved,
+                                    int indexFromWhichChildWasRemoved) override;
+
+        void valueTreeChildOrderChanged (juce::ValueTree& parentTreeWhoseChildrenHaveMoved,
+                                         int oldIndex, int newIndex) override {}
+
+        void valueTreeParentChanged (juce::ValueTree& treeWhoseParentHasChanged) override {}
+
         ClipDescriptor& owner;
         juce::ValueTree state;
+
+        bool isUpdating = false;
 
         std::vector<std::unique_ptr<AutomationParameter>> parameters;
 
