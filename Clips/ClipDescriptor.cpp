@@ -303,10 +303,14 @@ ClipDescriptor::AudioProcessorHolder::AudioProcessorHolder (ClipDescriptor& owne
         if (node.isValid())
             newParameter->loadFromValueTree (node);
     }
+
+    state.addListener (this);
 }
 
 ClipDescriptor::AudioProcessorHolder::~AudioProcessorHolder()
 {
+    state.removeListener (this);
+
     if (processor.get() != nullptr)
         processor->releaseResources();
 }
@@ -319,6 +323,11 @@ void ClipDescriptor::AudioProcessorHolder::updateAutomation (double pts)
 
 void ClipDescriptor::AudioProcessorHolder::synchroniseState (AutomationParameter& parameter)
 {
+    if (isUpdating)
+        return;
+
+    juce::ScopedValueSetter<bool> updating (isUpdating, true);
+
     auto* undo = getOwningClip().getOwningClip().getUndoManager();
 
     auto node = state.getChildWithProperty (IDs::name, parameter.getName());
@@ -329,6 +338,19 @@ void ClipDescriptor::AudioProcessorHolder::synchroniseState (AutomationParameter
         state.appendChild (node, undo);
     }
     parameter.saveToValueTree (node, undo);
+}
+
+void ClipDescriptor::AudioProcessorHolder::synchroniseParameter (const juce::ValueTree& tree)
+{
+    if (isUpdating || tree.hasProperty (IDs::name) == false)
+        return;
+
+    juce::ScopedValueSetter<bool> updating (isUpdating, true);
+
+    const auto& name = tree.getProperty (IDs::name).toString();
+    for (auto& parameter : parameters)
+        if (parameter->getName() == name)
+            parameter->loadFromValueTree (tree);
 }
 
 juce::ValueTree& ClipDescriptor::AudioProcessorHolder::getProcessorState()
@@ -357,6 +379,35 @@ juce::ValueTree& ClipDescriptor::AudioProcessorHolder::getProcessorState()
 ClipDescriptor& ClipDescriptor::AudioProcessorHolder::getOwningClip()
 {
     return owner;
+}
+
+void ClipDescriptor::AudioProcessorHolder::valueTreePropertyChanged (juce::ValueTree& treeWhosePropertyHasChanged,
+                                                                     const juce::Identifier& property)
+{
+    if (treeWhosePropertyHasChanged.getType() == IDs::parameter)
+        synchroniseParameter (treeWhosePropertyHasChanged);
+    else if (treeWhosePropertyHasChanged.getType() == IDs::keyframe)
+        synchroniseParameter (treeWhosePropertyHasChanged.getParent());
+}
+
+void ClipDescriptor::AudioProcessorHolder::valueTreeChildAdded (juce::ValueTree& parentTree,
+                                                                juce::ValueTree& childWhichHasBeenAdded)
+{
+    juce::ignoreUnused (childWhichHasBeenAdded);
+
+    if (parentTree.getType() == IDs::parameter)
+        synchroniseParameter (parentTree);
+}
+
+void ClipDescriptor::AudioProcessorHolder::valueTreeChildRemoved (juce::ValueTree& parentTree,
+                                                                  juce::ValueTree& childWhichHasBeenRemoved,
+                                                                  int indexFromWhichChildWasRemoved)
+{
+    juce::ignoreUnused (childWhichHasBeenRemoved);
+    juce::ignoreUnused (indexFromWhichChildWasRemoved);
+
+    if (parentTree.getType() == IDs::parameter)
+        synchroniseParameter (parentTree);
 }
 
 } // foleys
