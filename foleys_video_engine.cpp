@@ -33,6 +33,7 @@
 #include "Clips/ClipDescriptor.cpp"
 
 #include "Plugins/AudioPluginManager.cpp"
+#include "Plugins/VideoPluginManager.cpp"
 
 #include "Processing/SoftwareVideoMixer.cpp"
 #include "Processing/DefaultAudioMixer.cpp"

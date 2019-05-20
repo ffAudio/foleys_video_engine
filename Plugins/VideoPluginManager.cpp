@@ -23,19 +23,24 @@
 namespace foleys
 {
 
-class VideoPluginManager
+VideoPluginManager::VideoPluginManager()
 {
-public:
-    VideoPluginManager();
+    factories ["BUILTIN: " + PositioningVideoProcessor::getPluginName()] = [] { return std::make_unique<PositioningVideoProcessor>(); };
+}
 
-    std::unique_ptr<VideoProcessor> createVideoPluginInstance (const juce::String& identifierString,
-                                                               juce::String& error) const;
+std::unique_ptr<VideoProcessor> VideoPluginManager::createVideoPluginInstance (const juce::String& identifierString,
+                                                                               juce::String& error) const
+{
+    auto factory = factories.find (identifierString);
+    if (factory != factories.cend())
+    {
+        error.clear();
+        return factory->second();
+    }
 
-private:
+    error = NEEDS_TRANS ("Plugin not known");
+    return {};
+}
 
-    std::map<juce::String, std::function<std::unique_ptr<VideoProcessor>()>> factories;
-
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (VideoPluginManager)
-};
 
 }

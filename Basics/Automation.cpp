@@ -28,12 +28,12 @@ namespace IDs
     static juce::Identifier time            { "Time" };
 }
 
-AutomationParameter::AutomationParameter (ClipDescriptor::AudioProcessorHolder& holderToUse,
-                                          juce::AudioProcessor&                 processorToUse,
-                                          juce::AudioProcessorParameter&        parameterToUse)
-  : holder    (holderToUse),
-    processor (processorToUse),
-    parameter (parameterToUse)
+AutomationParameter::AutomationParameter (ClipDescriptor::ProcessorHolder&  holderToUse,
+                                          juce::ControllableProcessorBase&  processorToUse,
+                                          juce::AudioProcessorParameter&    parameterToUse)
+  : holder     (holderToUse),
+    processor  (processorToUse),
+    parameter  (parameterToUse)
 {
     value = parameter.getDefaultValue();
     parameter.addListener (this);
@@ -56,10 +56,12 @@ void AutomationParameter::setValue (double pts, double newValue)
     {
         value = newValue;
     }
-
-    auto diff = newValue - getValueForTime (pts);
-    for (auto& k : keyframes)
-        k.second = juce::jlimit (0.0, 1.0, k.second + diff);
+    else
+    {
+        auto diff = newValue - getValueForTime (pts);
+        for (auto& k : keyframes)
+            k.second = juce::jlimit (0.0, 1.0, k.second + diff);
+    }
 
     holder.synchroniseState (*this);
 }
@@ -75,8 +77,8 @@ void AutomationParameter::setKeyframe (size_t index, double pts, double newValue
 {
     if (juce::isPositiveAndBelow (index, keyframes.size()))
     {
-        auto it = keyframes.begin();
-        std::advance (it, index);
+        auto it = std::next (keyframes.begin(), index);
+
         keyframes.erase (it);
         keyframes [pts] = newValue;
     }
@@ -154,7 +156,7 @@ void AutomationParameter::saveToValueTree (juce::ValueTree& state, juce::UndoMan
 
 void AutomationParameter::parameterValueChanged (int parameterIndex, float newValue)
 {
-    auto pts = holder.getOwningClip().getCurrentPTS();
+    auto pts = holder.getOwningClipDescriptor().getCurrentPTS();
     setValue (pts, newValue);
 }
 

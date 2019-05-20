@@ -70,14 +70,14 @@ struct ClipDescriptor : private juce::ValueTree::Listener
 
     void updateSampleCounts();
 
-    struct AudioProcessorHolder  : private juce::ValueTree::Listener
+    struct ProcessorHolder  : private juce::ValueTree::Listener
     {
-        AudioProcessorHolder (ClipDescriptor& owner, std::unique_ptr<juce::AudioProcessor> processor);
-        AudioProcessorHolder (ClipDescriptor& owner, const juce::ValueTree& state, int index=-1);
+        ProcessorHolder (ClipDescriptor& owner, std::unique_ptr<juce::ControllableProcessorBase> processor);
+        ProcessorHolder (ClipDescriptor& owner, const juce::ValueTree& state, int index=-1);
 
-        ~AudioProcessorHolder();
+        ~ProcessorHolder();
 
-        std::unique_ptr<juce::AudioProcessor> processor;
+        std::unique_ptr<juce::ControllableProcessorBase> processor;
 
         void updateAutomation (double pts);
 
@@ -86,7 +86,7 @@ struct ClipDescriptor : private juce::ValueTree::Listener
 
         juce::ValueTree& getProcessorState();
 
-        ClipDescriptor& getOwningClip();
+        ClipDescriptor& getOwningClipDescriptor();
 
     private:
 
@@ -112,14 +112,20 @@ struct ClipDescriptor : private juce::ValueTree::Listener
 
         std::vector<std::unique_ptr<AutomationParameter>> parameters;
 
-        JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioProcessorHolder)
+        JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ProcessorHolder)
     };
 
-    void addAudioProcessor (std::unique_ptr<AudioProcessorHolder> processor, int index=-1);
+    void addAudioProcessor (std::unique_ptr<ProcessorHolder> processor, int index=-1);
     void addAudioProcessor (std::unique_ptr<juce::AudioProcessor> processor, int index=-1);
     void removeAudioProcessor (int index);
 
-    std::vector<std::unique_ptr<AudioProcessorHolder>> audioProcessors;
+    std::vector<std::unique_ptr<ProcessorHolder>> audioProcessors;
+
+    void addVideoProcessor (std::unique_ptr<ProcessorHolder> processor, int index=-1);
+    void addVideoProcessor (std::unique_ptr<VideoProcessor> processor, int index=-1);
+    void removeVideoProcessor (int index);
+
+    std::vector<std::unique_ptr<ProcessorHolder>> videoProcessors;
 
     ComposedClip& getOwningClip();
     const ComposedClip& getOwningClip() const;

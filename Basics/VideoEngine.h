@@ -65,6 +65,9 @@ public:
 
     AVFormatManager& getFormatManager();
 
+    std::unique_ptr<VideoProcessor> createVideoPluginInstance (const juce::String& identifierString,
+                                                               juce::String& error) const;
+
     std::unique_ptr<juce::AudioProcessor> createAudioPluginInstance (const juce::String& identifierString,
                                                                      double sampleRate,
                                                                      int blockSize,
@@ -82,7 +85,7 @@ private:
 
     AudioPluginManager audioPluginManager;
 
-    std::unique_ptr<VideoPluginManager> videoPluginManager;
+    VideoPluginManager videoPluginManager;
 
     juce::OptionalScopedPointer<juce::UndoManager> undoManager { new juce::UndoManager(), true };
 

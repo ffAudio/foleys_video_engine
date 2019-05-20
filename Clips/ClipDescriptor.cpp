@@ -24,6 +24,7 @@ namespace foleys
 namespace IDs
 {
     static juce::Identifier audioProcessor  { "AudioProcessor" };
+    static juce::Identifier videoProcessor  { "VideoProcessor" };
     static juce::Identifier identifier      { "Identifier" };
     static juce::Identifier name            { "Name" };
     static juce::Identifier parameter       { "Parameter" };
@@ -59,11 +60,11 @@ ClipDescriptor::ClipDescriptor (ComposedClip& ownerToUse, juce::ValueTree stateT
 
         const auto audioProcessorsNode = state.getOrCreateChildWithName (IDs::audioProcessors, nullptr);
         for (const auto& audioProcessor : audioProcessorsNode)
-            addAudioProcessor (std::make_unique<AudioProcessorHolder>(*this, audioProcessor));
+            addAudioProcessor (std::make_unique<ProcessorHolder>(*this, audioProcessor));
 
-//        const auto videoProcessorsNode = state.getOrCreateChildWithName (IDs::videoProcessors, nullptr);
-//        for (const auto& videoProcessor : videoProcessorsNode)
-//            addVideoProcessor (videoProcessor);
+        const auto videoProcessorsNode = state.getOrCreateChildWithName (IDs::videoProcessors, nullptr);
+        for (const auto& videoProcessor : videoProcessorsNode)
+            addVideoProcessor (std::make_unique<ProcessorHolder>(*this, videoProcessor));
 
     }
     state.addListener (this);
@@ -150,7 +151,11 @@ void ClipDescriptor::valueTreeChildAdded (juce::ValueTree& parentTree,
         return;
 
     if (parentTree.getType() == IDs::audioProcessors)
-        addAudioProcessor (std::make_unique<AudioProcessorHolder>(*this, childWhichHasBeenAdded),
+        addAudioProcessor (std::make_unique<ProcessorHolder>(*this, childWhichHasBeenAdded),
+                           parentTree.indexOf (childWhichHasBeenAdded));
+
+    if (parentTree.getType() == IDs::videoProcessors)
+        addVideoProcessor (std::make_unique<ProcessorHolder>(*this, childWhichHasBeenAdded),
                            parentTree.indexOf (childWhichHasBeenAdded));
 }
 
@@ -163,6 +168,9 @@ void ClipDescriptor::valueTreeChildRemoved (juce::ValueTree& parentTree,
 
     if (parentTree.getType() == IDs::audioProcessors)
         removeAudioProcessor (indexFromWhichChildWasRemoved);
+
+    if (parentTree.getType() == IDs::videoProcessors)
+        removeVideoProcessor (indexFromWhichChildWasRemoved);
 }
 
 void ClipDescriptor::updateSampleCounts()
@@ -183,12 +191,12 @@ juce::ValueTree& ClipDescriptor::getStatusTree()
     return state;
 }
 
-void ClipDescriptor::addAudioProcessor (std::unique_ptr<AudioProcessorHolder> processor, int index)
+void ClipDescriptor::addAudioProcessor (std::unique_ptr<ProcessorHolder> processor, int index)
 {
     auto* undo = owner.getUndoManager();
 
-    if (processor->processor.get() != nullptr)
-        processor->processor->prepareToPlay (owner.getSampleRate(), owner.getDefaultBufferSize());
+    if (auto* audioProcessor = dynamic_cast<juce::AudioProcessor*> (processor->processor.get()))
+        audioProcessor->prepareToPlay (owner.getSampleRate(), owner.getDefaultBufferSize());
 
     {
         juce::ScopedValueSetter<bool> manual (manualStateChange, true);
@@ -205,13 +213,42 @@ void ClipDescriptor::addAudioProcessor (std::unique_ptr<AudioProcessorHolder> pr
 
 void ClipDescriptor::addAudioProcessor (std::unique_ptr<juce::AudioProcessor> processor, int index)
 {
-    addAudioProcessor (std::make_unique<AudioProcessorHolder>(*this, std::move (processor)), index);
+    addAudioProcessor (std::make_unique<ProcessorHolder>(*this, std::move (processor)), index);
 }
 
 void ClipDescriptor::removeAudioProcessor (int index)
 {
     juce::ScopedLock sl (owner.getCallbackLock());
     audioProcessors.erase (std::next (audioProcessors.begin(), index));
+}
+
+void ClipDescriptor::addVideoProcessor (std::unique_ptr<ProcessorHolder> processor, int index)
+{
+    auto* undo = owner.getUndoManager();
+
+    {
+        juce::ScopedValueSetter<bool> manual (manualStateChange, true);
+        auto processorsNode = state.getOrCreateChildWithName (IDs::videoProcessors, undo);
+        processorsNode.addChild (processor->getProcessorState(), index, undo);
+    }
+
+    juce::ScopedLock sl (owner.getCallbackLock());
+    if (juce::isPositiveAndBelow (index, videoProcessors.size()))
+        videoProcessors.insert (std::next (videoProcessors.begin(), index), std::move (processor));
+    else
+        videoProcessors.push_back (std::move (processor));
+
+}
+
+void ClipDescriptor::addVideoProcessor (std::unique_ptr<VideoProcessor> processor, int index)
+{
+    addVideoProcessor (std::make_unique<ProcessorHolder>(*this, std::move (processor)), index);
+}
+
+void ClipDescriptor::removeVideoProcessor (int index)
+{
+    juce::ScopedLock sl (owner.getCallbackLock());
+    videoProcessors.erase (std::next (videoProcessors.begin(), index));
 }
 
 ComposedClip& ClipDescriptor::getOwningClip()
@@ -226,25 +263,32 @@ const ComposedClip& ClipDescriptor::getOwningClip() const
 
 //==============================================================================
 
-ClipDescriptor::AudioProcessorHolder::AudioProcessorHolder (ClipDescriptor& ownerToUse,
-                                                            std::unique_ptr<juce::AudioProcessor> processorToUse)
+ClipDescriptor::ProcessorHolder::ProcessorHolder (ClipDescriptor& ownerToUse,
+                                                  std::unique_ptr<juce::ControllableProcessorBase> processorToUse)
   : owner (ownerToUse)
 {
-    state = juce::ValueTree { IDs::audioProcessor };
     processor = std::move (processorToUse);
+
     if (processor.get() != nullptr)
     {
+        if (dynamic_cast<juce::AudioProcessor*>(processor.get()) != nullptr)
+            state = juce::ValueTree { IDs::audioProcessor };
+        else if (dynamic_cast<VideoProcessor*>(processor.get()) != nullptr)
+            state = juce::ValueTree { IDs::videoProcessor };
+        else
+        {
+            // You can only put juce::AudioProcessors or VideoProcessors into ProcessorHolder
+            jassertfalse;
+        }
+
         state.setProperty (IDs::name, processor->getName(), nullptr);
 
         if (auto* instance = dynamic_cast<juce::AudioPluginInstance*>(processor.get()))
-        {
-            auto identifier = instance->getPluginDescription().createIdentifierString();
-            state.setProperty (IDs::identifier, identifier, nullptr);
-        }
+            state.setProperty (IDs::identifier,
+                               instance->getPluginDescription().createIdentifierString(),
+                               nullptr);
         else
-        {
             state.setProperty (IDs::identifier, "BUILTIN: " + processor->getName(), nullptr);
-        }
 
         for (auto parameter : processor->getParameters())
             if (parameter->isAutomatable())
@@ -269,8 +313,8 @@ ClipDescriptor::AudioProcessorHolder::AudioProcessorHolder (ClipDescriptor& owne
     }
 }
 
-ClipDescriptor::AudioProcessorHolder::AudioProcessorHolder (ClipDescriptor& ownerToUse,
-                                                            const juce::ValueTree& stateToUse, int index)
+ClipDescriptor::ProcessorHolder::ProcessorHolder (ClipDescriptor& ownerToUse,
+                                                  const juce::ValueTree& stateToUse, int index)
   : owner (ownerToUse)
 {
     state = stateToUse;
@@ -286,7 +330,15 @@ ClipDescriptor::AudioProcessorHolder::AudioProcessorHolder (ClipDescriptor& owne
     }
 
     juce::String error;
-    processor = engine->createAudioPluginInstance (identifier, composedClip.getSampleRate(), composedClip.getDefaultBufferSize(), error);
+    if (state.getType() == IDs::audioProcessor)
+        processor = engine->createAudioPluginInstance (identifier, composedClip.getSampleRate(), composedClip.getDefaultBufferSize(), error);
+    else if (state.getType() == IDs::videoProcessor)
+        processor = engine->createVideoPluginInstance (identifier, error);
+    else
+    {
+        // you shouldn't feed anything than audioProcessor or videoProcessor states here
+        jassertfalse;
+    }
 
     state.setProperty (IDs::pluginStatus, error, nullptr);
 
@@ -298,7 +350,7 @@ ClipDescriptor::AudioProcessorHolder::AudioProcessorHolder (ClipDescriptor& owne
         if (!parameter->isAutomatable())
             continue;
 
-        auto& newParameter = parameters.emplace_back (std::make_unique<AutomationParameter>(*this, *processor, *parameter));
+        auto& newParameter = parameters.emplace_back (std::make_unique<AutomationParameter> (*this, *processor, *parameter));
         auto node = state.getChildWithProperty (IDs::name, parameter->getName (64));
         if (node.isValid())
             newParameter->loadFromValueTree (node);
@@ -307,28 +359,28 @@ ClipDescriptor::AudioProcessorHolder::AudioProcessorHolder (ClipDescriptor& owne
     state.addListener (this);
 }
 
-ClipDescriptor::AudioProcessorHolder::~AudioProcessorHolder()
+ClipDescriptor::ProcessorHolder::~ProcessorHolder()
 {
     state.removeListener (this);
 
-    if (processor.get() != nullptr)
-        processor->releaseResources();
+    if (auto* audioProcessor = dynamic_cast<juce::AudioProcessor*> (processor.get()))
+        audioProcessor->releaseResources();
 }
 
-void ClipDescriptor::AudioProcessorHolder::updateAutomation (double pts)
+void ClipDescriptor::ProcessorHolder::updateAutomation (double pts)
 {
     for (auto& parameter : parameters)
         parameter->updateProcessor (pts);
 }
 
-void ClipDescriptor::AudioProcessorHolder::synchroniseState (AutomationParameter& parameter)
+void ClipDescriptor::ProcessorHolder::synchroniseState (AutomationParameter& parameter)
 {
     if (isUpdating)
         return;
 
     juce::ScopedValueSetter<bool> updating (isUpdating, true);
 
-    auto* undo = getOwningClip().getOwningClip().getUndoManager();
+    auto* undo = getOwningClipDescriptor().getOwningClip().getUndoManager();
 
     auto node = state.getChildWithProperty (IDs::name, parameter.getName());
     if (!node.isValid())
@@ -340,7 +392,7 @@ void ClipDescriptor::AudioProcessorHolder::synchroniseState (AutomationParameter
     parameter.saveToValueTree (node, undo);
 }
 
-void ClipDescriptor::AudioProcessorHolder::synchroniseParameter (const juce::ValueTree& tree)
+void ClipDescriptor::ProcessorHolder::synchroniseParameter (const juce::ValueTree& tree)
 {
     if (isUpdating || tree.hasProperty (IDs::name) == false)
         return;
@@ -353,7 +405,7 @@ void ClipDescriptor::AudioProcessorHolder::synchroniseParameter (const juce::Val
             parameter->loadFromValueTree (tree);
 }
 
-juce::ValueTree& ClipDescriptor::AudioProcessorHolder::getProcessorState()
+juce::ValueTree& ClipDescriptor::ProcessorHolder::getProcessorState()
 {
     auto* undo = owner.getOwningClip().getUndoManager();
 
@@ -376,13 +428,13 @@ juce::ValueTree& ClipDescriptor::AudioProcessorHolder::getProcessorState()
     return state;
 }
 
-ClipDescriptor& ClipDescriptor::AudioProcessorHolder::getOwningClip()
+ClipDescriptor& ClipDescriptor::ProcessorHolder::getOwningClipDescriptor()
 {
     return owner;
 }
 
-void ClipDescriptor::AudioProcessorHolder::valueTreePropertyChanged (juce::ValueTree& treeWhosePropertyHasChanged,
-                                                                     const juce::Identifier& property)
+void ClipDescriptor::ProcessorHolder::valueTreePropertyChanged (juce::ValueTree& treeWhosePropertyHasChanged,
+                                                                const juce::Identifier& property)
 {
     if (treeWhosePropertyHasChanged.getType() == IDs::parameter)
         synchroniseParameter (treeWhosePropertyHasChanged);
@@ -390,8 +442,8 @@ void ClipDescriptor::AudioProcessorHolder::valueTreePropertyChanged (juce::Value
         synchroniseParameter (treeWhosePropertyHasChanged.getParent());
 }
 
-void ClipDescriptor::AudioProcessorHolder::valueTreeChildAdded (juce::ValueTree& parentTree,
-                                                                juce::ValueTree& childWhichHasBeenAdded)
+void ClipDescriptor::ProcessorHolder::valueTreeChildAdded (juce::ValueTree& parentTree,
+                                                           juce::ValueTree& childWhichHasBeenAdded)
 {
     juce::ignoreUnused (childWhichHasBeenAdded);
 
@@ -399,9 +451,9 @@ void ClipDescriptor::AudioProcessorHolder::valueTreeChildAdded (juce::ValueTree&
         synchroniseParameter (parentTree);
 }
 
-void ClipDescriptor::AudioProcessorHolder::valueTreeChildRemoved (juce::ValueTree& parentTree,
-                                                                  juce::ValueTree& childWhichHasBeenRemoved,
-                                                                  int indexFromWhichChildWasRemoved)
+void ClipDescriptor::ProcessorHolder::valueTreeChildRemoved (juce::ValueTree& parentTree,
+                                                             juce::ValueTree& childWhichHasBeenRemoved,
+                                                             int indexFromWhichChildWasRemoved)
 {
     juce::ignoreUnused (childWhichHasBeenRemoved);
     juce::ignoreUnused (indexFromWhichChildWasRemoved);
