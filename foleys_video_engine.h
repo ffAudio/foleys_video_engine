@@ -59,14 +59,14 @@
 #include <juce_audio_utils/juce_audio_utils.h>
 
 #include "Basics/Structures.h"
+#include "Plugins/AudioPluginManager.h"
+#include "Plugins/VideoProcessor.h"
+#include "Plugins/VideoPluginManager.h"
 #include "Basics/AudioFifo.h"
 #include "Basics/VideoFifo.h"
 #include "Clips/AVClip.h"
 #include "Clips/ClipDescriptor.h"
 #include "Basics/Automation.h"
-#include "Plugins/AudioPluginManager.h"
-#include "Plugins/VideoProcessor.h"
-#include "Plugins/VideoPluginManager.h"
 #include "ReadWrite/AVReader.h"
 #include "ReadWrite/AVWriter.h"
 #include "ReadWrite/AVFormatManager.h"
@@ -92,3 +92,4 @@
 #endif
 
 #include "Plugins/PanningAudioProcessor.h"
+#include "Plugins/PositioningVideoProcessor.h"

@@ -23,8 +23,6 @@ namespace foleys
 
 VideoEngine::VideoEngine()
 {
-    videoPluginManager = std::make_unique<VideoPluginManager>();
-
     const int numReaders = std::max (4, juce::SystemStats::getNumCpus());
     for (int i = 0; i < numReaders; ++i)
         readingThreads.emplace_back (std::make_unique<juce::TimeSliceThread>("Reading Thread #" + juce::String (i)));
@@ -151,6 +149,12 @@ void VideoEngine::setUndoManager (juce::UndoManager* undoManagerToUse)
 AVFormatManager& VideoEngine::getFormatManager()
 {
     return formatManager;
+}
+
+std::unique_ptr<VideoProcessor> VideoEngine::createVideoPluginInstance (const juce::String& identifierString,
+                                                                        juce::String& error) const
+{
+    return videoPluginManager.createVideoPluginInstance (identifierString, error);
 }
 
 std::unique_ptr<juce::AudioProcessor> VideoEngine::createAudioPluginInstance (const juce::String& identifierString,

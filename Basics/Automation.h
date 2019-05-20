@@ -33,7 +33,9 @@ namespace foleys
 class AutomationParameter  : private juce::AudioProcessorParameter::Listener
 {
 public:
-    AutomationParameter (ClipDescriptor::AudioProcessorHolder&, juce::AudioProcessor&, juce::AudioProcessorParameter&);
+    AutomationParameter (ClipDescriptor::ProcessorHolder&,
+                         juce::ControllableProcessorBase&,
+                         juce::AudioProcessorParameter&);
 
     ~AutomationParameter();
 
@@ -63,9 +65,9 @@ private:
 
     double getValueForTime (double pts) const;
 
-    ClipDescriptor::AudioProcessorHolder& holder;
-    juce::AudioProcessor&                 processor;
-    juce::AudioProcessorParameter&        parameter;
+    ClipDescriptor::ProcessorHolder&   holder;
+    juce::ControllableProcessorBase&   processor;
+    juce::AudioProcessorParameter&     parameter;
 
     double value = 0.0;
     std::map<double, double> keyframes;

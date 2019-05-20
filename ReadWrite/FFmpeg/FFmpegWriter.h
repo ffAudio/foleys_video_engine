@@ -51,7 +51,7 @@ public:
 
 private:
 
-    class Pimpl;
+    struct Pimpl;
     friend Pimpl;
 
     juce::File   mediaFile;

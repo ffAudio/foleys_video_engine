@@ -23,7 +23,7 @@
 namespace foleys
 {
 
-class VideoProcessor
+class VideoProcessor  : public juce::ControllableProcessorBase
 {
 public:
 
