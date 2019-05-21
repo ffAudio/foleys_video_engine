@@ -64,6 +64,7 @@
 #include "Plugins/VideoPluginManager.h"
 #include "Basics/AudioFifo.h"
 #include "Basics/VideoFifo.h"
+#include "Processing/ProcessorController.h"
 #include "Clips/AVClip.h"
 #include "Clips/ClipDescriptor.h"
 #include "Basics/Automation.h"

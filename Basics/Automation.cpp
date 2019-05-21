@@ -28,9 +28,9 @@ namespace IDs
     static juce::Identifier time            { "Time" };
 }
 
-AutomationParameter::AutomationParameter (ClipDescriptor::ProcessorController&  controllerToUse,
-                                          juce::ControllableProcessorBase&      processorToUse,
-                                          juce::AudioProcessorParameter&        parameterToUse)
+AutomationParameter::AutomationParameter (ProcessorController&              controllerToUse,
+                                          juce::ControllableProcessorBase&  processorToUse,
+                                          juce::AudioProcessorParameter&    parameterToUse)
   : controller (controllerToUse),
     processor  (processorToUse),
     parameter  (parameterToUse)
