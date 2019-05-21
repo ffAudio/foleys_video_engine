@@ -52,6 +52,9 @@ void AutomationParameter::updateProcessor (double pts)
 
 void AutomationParameter::setValue (double pts, double newValue)
 {
+    if (!gestureInProgress)
+        return;
+
     if (keyframes.empty())
     {
         value = newValue;
@@ -63,14 +66,16 @@ void AutomationParameter::setValue (double pts, double newValue)
             k.second = juce::jlimit (0.0, 1.0, k.second + diff);
     }
 
-    holder.synchroniseState (*this);
+    if (! manualUpdate)
+        holder.synchroniseState (*this);
 }
 
 void AutomationParameter::addKeyframe (double pts, double newValue)
 {
     keyframes [pts] = juce::jlimit (0.0, 1.0, newValue);
 
-    holder.synchroniseState (*this);
+    if (! manualUpdate)
+        holder.synchroniseState (*this);
 }
 
 void AutomationParameter::setKeyframe (size_t index, double pts, double newValue)
@@ -83,7 +88,8 @@ void AutomationParameter::setKeyframe (size_t index, double pts, double newValue
         keyframes [pts] = newValue;
     }
 
-    holder.synchroniseState (*this);
+    if (! manualUpdate)
+        holder.synchroniseState (*this);
 }
 
 double AutomationParameter::getValueForTime (double pts) const
@@ -91,18 +97,20 @@ double AutomationParameter::getValueForTime (double pts) const
     if (keyframes.empty())
         return value;
 
-    const auto& prev = keyframes.lower_bound (pts);
-    if (prev == keyframes.cend())
-        return keyframes.begin()->first;
+    const auto& next = keyframes.upper_bound (pts);
+    if (next == keyframes.begin())
+        return next->second;
 
-    const auto range = keyframes.equal_range (pts);
-    if (range.first == keyframes.cend())
-        return keyframes.cbegin()->second;
+    const auto& prev = std::next (next, -1);
+    if (next == keyframes.cend())
+        return prev->second;
 
-    if (range.second == keyframes.cend())
-        return (--keyframes.cend())->second;
+    auto dy = next->first - prev->first;
+    if (dy == 0.0)
+        return juce::jlimit (0.0, 1.0, 0.5 * (prev->second + next->second));
 
-    auto interpolated = range.first->second + (pts - range.first->first) * (range.second->second - range.first->second) / (range.second->first - range.first->first);
+    auto dx = next->second - prev->second;
+    auto interpolated = prev->second + (pts - prev->first) * dx / dy;
     return juce::jlimit (0.0, 1.0, interpolated);
 }
 
@@ -123,6 +131,8 @@ const std::map<double, double>& AutomationParameter::getKeyframes() const
 
 void AutomationParameter::loadFromValueTree (const juce::ValueTree& state)
 {
+    juce::ScopedValueSetter<bool>(manualUpdate, true);
+
     if (state.hasProperty (IDs::value))
         value = double (state.getProperty (IDs::value));
 
@@ -140,8 +150,13 @@ void AutomationParameter::loadFromValueTree (const juce::ValueTree& state)
     keyframes = newKeyframes;
 }
 
-void AutomationParameter::saveToValueTree (juce::ValueTree& state, juce::UndoManager* undo) const
+void AutomationParameter::saveToValueTree (juce::ValueTree& state, juce::UndoManager* undo)
 {
+    if (manualUpdate)
+        return;
+
+    juce::ScopedValueSetter<bool>(manualUpdate, true);
+
     state.setProperty (IDs::value, value, undo);
 
     state.removeAllChildren (undo);

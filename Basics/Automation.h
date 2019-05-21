@@ -28,7 +28,7 @@ namespace foleys
 
  This class references a RangedAudioParameter in an AudioProcessor, allowing
  to store and playback automation values. It is used in the ClipDescriptor's
- AudioProcessorHolder.
+ ProcessorHolder.
  */
 class AutomationParameter  : private juce::AudioProcessorParameter::Listener
 {
@@ -55,7 +55,7 @@ public:
 
     void loadFromValueTree (const juce::ValueTree& state);
 
-    void saveToValueTree (juce::ValueTree& state, juce::UndoManager* undo) const;
+    void saveToValueTree (juce::ValueTree& state, juce::UndoManager* undo);
 
     void parameterValueChanged (int parameterIndex, float newValue) override;
 
@@ -72,6 +72,7 @@ private:
     double value = 0.0;
     std::map<double, double> keyframes;
     bool gestureInProgress = false;
+    bool manualUpdate = false;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AutomationParameter)
 };

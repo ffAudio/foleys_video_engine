@@ -28,7 +28,17 @@ class SoftwareVideoMixer : public VideoMixer
 public:
     SoftwareVideoMixer() = default;
 
+    /**
+     The ComposedClip will call this to let you compose the various clips.
+     @param target is the image to render into
+     @param settings are the stream settings of the produced stream
+     @param count is the frame counter in settings.timebase
+     @param timeInSeconds is the current time in seconds, since the originating stream
+            has not necessarily the same timebase
+     @param clips is a vector of ClipDescriptors. Each ClipDescriptor has it's own list of processors.
+     */
     void compose (juce::Image& target,
+                  VideoStreamSettings settings,
                   int64_t count,
                   double  timeInSeconds,
                   const   std::vector<std::shared_ptr<ClipDescriptor>>& clips) override;
