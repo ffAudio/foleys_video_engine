@@ -115,26 +115,6 @@ double ClipDescriptor::getCurrentPTS() const
     return getOwningClip().getCurrentTimeInSeconds() + getOffset() - getStart();
 }
 
-int ClipDescriptor::getVideoLine() const
-{
-    return state.getProperty (IDs::videoLine, 0.0);
-}
-
-void ClipDescriptor::setVideoLine (int line)
-{
-    state.setProperty (IDs::videoLine, line, owner.getUndoManager());
-}
-
-int ClipDescriptor::getAudioLine() const
-{
-    return state.getProperty (IDs::audioLine, 0.0);
-}
-
-void ClipDescriptor::setAudioLine (int line)
-{
-    state.setProperty (IDs::audioLine, line, owner.getUndoManager());
-}
-
 void ClipDescriptor::valueTreePropertyChanged (juce::ValueTree& treeWhosePropertyHasChanged,
                                                              const juce::Identifier& property)
 {
