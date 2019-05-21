@@ -25,10 +25,11 @@ namespace foleys
 
 namespace IDs
 {
-    static juce::String zoom   { "zoom" };
-    static juce::String aspect { "aspect" };
-    static juce::String transX { "transX" };
-    static juce::String transY { "transY" };
+    static juce::String zoom     { "zoom" };
+    static juce::String aspect   { "aspect" };
+    static juce::String rotation { "rotation" };
+    static juce::String transX   { "transX" };
+    static juce::String transY   { "transY" };
 }
 
 class PositioningVideoProcessor : public VideoProcessor
@@ -40,10 +41,11 @@ public:
 
     PositioningVideoProcessor()
     {
-        zoom   = state.getRawParameterValue (IDs::zoom);
-        aspect = state.getRawParameterValue (IDs::aspect);
-        transX = state.getRawParameterValue (IDs::transX);
-        transY = state.getRawParameterValue (IDs::transY);
+        zoom     = state.getRawParameterValue (IDs::zoom);
+        aspect   = state.getRawParameterValue (IDs::aspect);
+        rotation = state.getRawParameterValue (IDs::rotation);
+        transX   = state.getRawParameterValue (IDs::transX);
+        transY   = state.getRawParameterValue (IDs::transY);
     }
 
     void processFrameReplacing (juce::Image& frame, int64_t count, const VideoStreamSettings& settings, double clipDuration) override
@@ -62,7 +64,9 @@ public:
         else if (*aspect > 1.0f)
             scaleY *= 2.0f - *aspect;
 
-        g.drawImageTransformed (input, juce::AffineTransform::translation (*transX * input.getWidth(), *transY * input.getHeight()).scaled (scaleX, scaleY));
+        g.drawImageTransformed (input, juce::AffineTransform::rotation (*rotation * juce::MathConstants<float>::pi / 180.0f, output.getWidth() * 0.5f, output.getHeight() * 0.5f)
+                                .translated (*transX * output.getWidth(), *transY * output.getHeight())
+                                .scaled (scaleX, scaleY));
     }
 
     juce::AudioProcessorEditor* createEditor() override     { return nullptr; }
@@ -73,10 +77,11 @@ private:
     juce::AudioProcessorValueTreeState state { *this, &undo, "PARAMETERS",
         { std::make_unique<juce::AudioParameterFloat> (IDs::zoom, "Zoom", juce::NormalisableRange<float> (0.0f, 100.0f), 1.0f),
             std::make_unique<juce::AudioParameterFloat> (IDs::aspect, "Aspect Ratio", juce::NormalisableRange<float> (0.0f, 2.0f), 1.0f),
+            std::make_unique<juce::AudioParameterFloat> (IDs::rotation, "Rotation", juce::NormalisableRange<float> (-360.0f, 360.0f), 0.0f),
             std::make_unique<juce::AudioParameterFloat> (IDs::transX, "Horiz. Translation", juce::NormalisableRange<float> (-1.0f, 1.0f), 0.0f),
             std::make_unique<juce::AudioParameterFloat> (IDs::transY, "Vert. Translation", juce::NormalisableRange<float> (-1.0f, 1.0f), 0.0f)} };
 
-    float *zoom, *aspect, *transX, *transY;
+    float *zoom, *aspect, *rotation, *transX, *transY;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PositioningVideoProcessor)
 };
