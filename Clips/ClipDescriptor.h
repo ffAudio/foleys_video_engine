@@ -32,8 +32,9 @@ class AutomationParameter;
  The ClipDescriptor configures the placement of each clip to be used
  in compositing the ComposedClip.
  */
-struct ClipDescriptor : private juce::ValueTree::Listener
+class ClipDescriptor : private juce::ValueTree::Listener
 {
+public:
     ClipDescriptor (ComposedClip& owner, std::shared_ptr<AVClip> clip);
 
     ClipDescriptor (ComposedClip& owner, juce::ValueTree state);
@@ -69,51 +70,6 @@ struct ClipDescriptor : private juce::ValueTree::Listener
     juce::ValueTree& getStatusTree();
 
     void updateSampleCounts();
-
-    struct ProcessorController  : private juce::ValueTree::Listener
-    {
-        ProcessorController (ClipDescriptor& owner, std::unique_ptr<juce::ControllableProcessorBase> processor);
-        ProcessorController (ClipDescriptor& owner, const juce::ValueTree& state, int index=-1);
-
-        ~ProcessorController();
-
-        std::unique_ptr<juce::ControllableProcessorBase> processor;
-
-        void updateAutomation (double pts);
-
-        void synchroniseState (AutomationParameter& parameter);
-        void synchroniseParameter (const juce::ValueTree& tree);
-
-        juce::ValueTree& getProcessorState();
-
-        ClipDescriptor& getOwningClipDescriptor();
-
-    private:
-
-        void valueTreePropertyChanged (juce::ValueTree& treeWhosePropertyHasChanged,
-                                       const juce::Identifier& property) override;
-
-        void valueTreeChildAdded (juce::ValueTree& parentTree,
-                                  juce::ValueTree& childWhichHasBeenAdded) override;
-
-        void valueTreeChildRemoved (juce::ValueTree& parentTree,
-                                    juce::ValueTree& childWhichHasBeenRemoved,
-                                    int indexFromWhichChildWasRemoved) override;
-
-        void valueTreeChildOrderChanged (juce::ValueTree& parentTreeWhoseChildrenHaveMoved,
-                                         int oldIndex, int newIndex) override {}
-
-        void valueTreeParentChanged (juce::ValueTree& treeWhoseParentHasChanged) override {}
-
-        ClipDescriptor& owner;
-        juce::ValueTree state;
-
-        bool isUpdating = false;
-
-        std::vector<std::unique_ptr<AutomationParameter>> parameters;
-
-        JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ProcessorController)
-    };
 
     void addAudioProcessor (std::unique_ptr<ProcessorController> processor, int index=-1);
     void addAudioProcessor (std::unique_ptr<juce::AudioProcessor> processor, int index=-1);

@@ -35,6 +35,7 @@
 #include "Plugins/AudioPluginManager.cpp"
 #include "Plugins/VideoPluginManager.cpp"
 
+#include "Processing/ProcessorController.cpp"
 #include "Processing/SoftwareVideoMixer.cpp"
 #include "Processing/DefaultAudioMixer.cpp"
 
