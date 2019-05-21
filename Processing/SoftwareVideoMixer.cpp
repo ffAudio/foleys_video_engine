@@ -21,10 +21,11 @@
 namespace foleys
 {
 
-void SoftwareVideoMixer::compose (juce::Image& target,
-                                  int64_t count,
-                                  double  timeInSeconds,
-                                  const   std::vector<std::shared_ptr<ClipDescriptor>>& clips)
+void SoftwareVideoMixer::compose (juce::Image&        target,
+                                  VideoStreamSettings settings,
+                                  int64_t             count,
+                                  double              timeInSeconds,
+                                  const std::vector<std::shared_ptr<ClipDescriptor>>& clips)
 {
     juce::ignoreUnused (count);
 
@@ -34,9 +35,23 @@ void SoftwareVideoMixer::compose (juce::Image& target,
     for (const auto& clip : clips)
     {
         const auto clipTime = timeInSeconds + clip->getOffset() - clip->getStart();
-        const auto frame = clip->clip->getFrame (clipTime);
+        auto frame = clip->clip->getFrame (clipTime).second;
 
-        g.drawImageWithin (frame.second, 0, 0, target.getWidth(), target.getHeight(), juce::RectanglePlacement::centred);
+        if (frame.isNull())
+            continue;
+
+        auto factor = std::min (double (target.getWidth()) / frame.getWidth(),
+                                double (target.getHeight()) / frame.getHeight());
+        frame = frame.rescaled (frame.getWidth() * factor, frame.getHeight() * factor);
+
+        for (auto& processor : clip->videoProcessors)
+        {
+            processor->updateAutomation ((timeInSeconds - clip->getStart()) + clip->getOffset());
+            if (auto* videoProcessor = dynamic_cast<VideoProcessor*> (processor->processor.get()))
+                videoProcessor->processFrameReplacing (frame, count, settings, clip->getLength());
+        }
+
+        g.drawImageAt (frame, 0, 0);
     }
 }
 

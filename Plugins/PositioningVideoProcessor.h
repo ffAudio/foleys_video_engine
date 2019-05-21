@@ -25,8 +25,8 @@ namespace foleys
 
 namespace IDs
 {
-    static juce::String scaleX { "scaleX" };
-    static juce::String scaleY { "scaleY" };
+    static juce::String zoom   { "zoom" };
+    static juce::String aspect { "aspect" };
     static juce::String transX { "transX" };
     static juce::String transY { "transY" };
 }
@@ -40,8 +40,8 @@ public:
 
     PositioningVideoProcessor()
     {
-        scaleX = state.getRawParameterValue (IDs::scaleX);
-        scaleY = state.getRawParameterValue (IDs::scaleY);
+        zoom   = state.getRawParameterValue (IDs::zoom);
+        aspect = state.getRawParameterValue (IDs::aspect);
         transX = state.getRawParameterValue (IDs::transX);
         transY = state.getRawParameterValue (IDs::transY);
     }
@@ -53,11 +53,16 @@ public:
 
     void processFrame (juce::Image& output, const juce::Image& input, int64_t count, const VideoStreamSettings& settings, double clipDuration) override
     {
+        output = juce::Image (juce::Image::ARGB, settings.frameSize.width, settings.frameSize.height, true);
         juce::Graphics g (output);
-        g.fillAll (juce::Colours::transparentBlack);
+        auto scaleX = *zoom;
+        auto scaleY = *zoom;
+        if (*aspect < 1.0f)
+            scaleX *= *aspect;
+        else if (*aspect > 1.0f)
+            scaleY *= 2.0f - *aspect;
 
-        g.drawImageTransformed (input, juce::AffineTransform::scale (*scaleX, *scaleY).translated (*transX * input.getWidth(), *transY * input.getHeight()));
-
+        g.drawImageTransformed (input, juce::AffineTransform::translation (*transX * input.getWidth(), *transY * input.getHeight()).scaled (scaleX, scaleY));
     }
 
     juce::AudioProcessorEditor* createEditor() override     { return nullptr; }
@@ -66,12 +71,12 @@ public:
 private:
     juce::UndoManager undo;
     juce::AudioProcessorValueTreeState state { *this, &undo, "PARAMETERS",
-        { std::make_unique<juce::AudioParameterFloat> (IDs::scaleX, "Horiz. Scale", juce::NormalisableRange<float> (0.0f, 100.0f), 1.0f),
-            std::make_unique<juce::AudioParameterFloat> (IDs::scaleY, "Vert. Scale", juce::NormalisableRange<float> (0.0f, 100.0f), 1.0f),
+        { std::make_unique<juce::AudioParameterFloat> (IDs::zoom, "Zoom", juce::NormalisableRange<float> (0.0f, 100.0f), 1.0f),
+            std::make_unique<juce::AudioParameterFloat> (IDs::aspect, "Aspect Ratio", juce::NormalisableRange<float> (0.0f, 2.0f), 1.0f),
             std::make_unique<juce::AudioParameterFloat> (IDs::transX, "Horiz. Translation", juce::NormalisableRange<float> (-1.0f, 1.0f), 0.0f),
             std::make_unique<juce::AudioParameterFloat> (IDs::transY, "Vert. Translation", juce::NormalisableRange<float> (-1.0f, 1.0f), 0.0f)} };
 
-    float *scaleX, *scaleY, *transX, *transY;
+    float *zoom, *aspect, *transX, *transY;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PositioningVideoProcessor)
 };

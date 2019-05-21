@@ -29,10 +29,11 @@ public:
     VideoMixer() = default;
     virtual ~VideoMixer() = default;
 
-    virtual void compose (juce::Image& target,
-                          int64_t count,
-                          double  timeInSeconds,
-                          const   std::vector<std::shared_ptr<ClipDescriptor>>& clips) = 0;
+    virtual void compose (juce::Image&        target,
+                          VideoStreamSettings settings,
+                          int64_t             count,
+                          double              timeInSeconds,
+                          const std::vector<std::shared_ptr<ClipDescriptor>>& clips) = 0;
 
 private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (VideoMixer)

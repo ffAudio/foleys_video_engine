@@ -198,6 +198,7 @@ void ClipDescriptor::addAudioProcessor (std::unique_ptr<ProcessorHolder> process
     if (auto* audioProcessor = dynamic_cast<juce::AudioProcessor*> (processor->processor.get()))
         audioProcessor->prepareToPlay (owner.getSampleRate(), owner.getDefaultBufferSize());
 
+    if (manualStateChange == false)
     {
         juce::ScopedValueSetter<bool> manual (manualStateChange, true);
         auto processorsNode = state.getOrCreateChildWithName (IDs::audioProcessors, undo);
@@ -226,6 +227,7 @@ void ClipDescriptor::addVideoProcessor (std::unique_ptr<ProcessorHolder> process
 {
     auto* undo = owner.getUndoManager();
 
+    if (manualStateChange == false)
     {
         juce::ScopedValueSetter<bool> manual (manualStateChange, true);
         auto processorsNode = state.getOrCreateChildWithName (IDs::videoProcessors, undo);
