@@ -28,10 +28,10 @@ namespace IDs
     static juce::Identifier time            { "Time" };
 }
 
-AutomationParameter::AutomationParameter (ClipDescriptor::ProcessorHolder&  holderToUse,
-                                          juce::ControllableProcessorBase&  processorToUse,
-                                          juce::AudioProcessorParameter&    parameterToUse)
-  : holder     (holderToUse),
+AutomationParameter::AutomationParameter (ClipDescriptor::ProcessorController&  controllerToUse,
+                                          juce::ControllableProcessorBase&      processorToUse,
+                                          juce::AudioProcessorParameter&        parameterToUse)
+  : controller (controllerToUse),
     processor  (processorToUse),
     parameter  (parameterToUse)
 {
@@ -67,7 +67,7 @@ void AutomationParameter::setValue (double pts, double newValue)
     }
 
     if (! manualUpdate)
-        holder.synchroniseState (*this);
+        controller.synchroniseState (*this);
 }
 
 void AutomationParameter::addKeyframe (double pts, double newValue)
@@ -75,7 +75,7 @@ void AutomationParameter::addKeyframe (double pts, double newValue)
     keyframes [pts] = juce::jlimit (0.0, 1.0, newValue);
 
     if (! manualUpdate)
-        holder.synchroniseState (*this);
+        controller.synchroniseState (*this);
 }
 
 void AutomationParameter::setKeyframe (size_t index, double pts, double newValue)
@@ -89,7 +89,7 @@ void AutomationParameter::setKeyframe (size_t index, double pts, double newValue
     }
 
     if (! manualUpdate)
-        holder.synchroniseState (*this);
+        controller.synchroniseState (*this);
 }
 
 double AutomationParameter::getValueForTime (double pts) const
@@ -171,7 +171,7 @@ void AutomationParameter::saveToValueTree (juce::ValueTree& state, juce::UndoMan
 
 void AutomationParameter::parameterValueChanged (int parameterIndex, float newValue)
 {
-    auto pts = holder.getOwningClipDescriptor().getCurrentPTS();
+    auto pts = controller.getOwningClipDescriptor().getCurrentPTS();
     setValue (pts, newValue);
 }
 

@@ -70,12 +70,12 @@ struct ClipDescriptor : private juce::ValueTree::Listener
 
     void updateSampleCounts();
 
-    struct ProcessorHolder  : private juce::ValueTree::Listener
+    struct ProcessorController  : private juce::ValueTree::Listener
     {
-        ProcessorHolder (ClipDescriptor& owner, std::unique_ptr<juce::ControllableProcessorBase> processor);
-        ProcessorHolder (ClipDescriptor& owner, const juce::ValueTree& state, int index=-1);
+        ProcessorController (ClipDescriptor& owner, std::unique_ptr<juce::ControllableProcessorBase> processor);
+        ProcessorController (ClipDescriptor& owner, const juce::ValueTree& state, int index=-1);
 
-        ~ProcessorHolder();
+        ~ProcessorController();
 
         std::unique_ptr<juce::ControllableProcessorBase> processor;
 
@@ -112,20 +112,20 @@ struct ClipDescriptor : private juce::ValueTree::Listener
 
         std::vector<std::unique_ptr<AutomationParameter>> parameters;
 
-        JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ProcessorHolder)
+        JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ProcessorController)
     };
 
-    void addAudioProcessor (std::unique_ptr<ProcessorHolder> processor, int index=-1);
+    void addAudioProcessor (std::unique_ptr<ProcessorController> processor, int index=-1);
     void addAudioProcessor (std::unique_ptr<juce::AudioProcessor> processor, int index=-1);
     void removeAudioProcessor (int index);
 
-    std::vector<std::unique_ptr<ProcessorHolder>> audioProcessors;
+    std::vector<std::unique_ptr<ProcessorController>> audioProcessors;
 
-    void addVideoProcessor (std::unique_ptr<ProcessorHolder> processor, int index=-1);
+    void addVideoProcessor (std::unique_ptr<ProcessorController> processor, int index=-1);
     void addVideoProcessor (std::unique_ptr<VideoProcessor> processor, int index=-1);
     void removeVideoProcessor (int index);
 
-    std::vector<std::unique_ptr<ProcessorHolder>> videoProcessors;
+    std::vector<std::unique_ptr<ProcessorController>> videoProcessors;
 
     ComposedClip& getOwningClip();
     const ComposedClip& getOwningClip() const;
