@@ -32,8 +32,6 @@ namespace IDs
     static juce::Identifier start        { "start" };
     static juce::Identifier length       { "length" };
     static juce::Identifier offset       { "offset" };
-    static juce::Identifier videoLine    { "videoLine" };
-    static juce::Identifier audioLine    { "audioLine" };
     static juce::Identifier audioProcessors { "AudioProcessors" };
     static juce::Identifier videoProcessors { "VideoProcessors" };
 }

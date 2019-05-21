@@ -59,12 +59,6 @@ public:
 
     double getCurrentPTS() const;
 
-    int getVideoLine() const;
-    void setVideoLine (int line);
-
-    int getAudioLine() const;
-    void setAudioLine (int line);
-
     std::shared_ptr<AVClip> clip;
 
     juce::ValueTree& getStatusTree();
