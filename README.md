@@ -28,10 +28,11 @@ Features
 - Normalise different sample rates and frame rates
 - Compositing of multiple videos or still images in layers (paint on top)
 - Writing of video clips
-- _Automatable parameters for video composition (available soon)_
-- _Audio plugins for clips and stems (available soon)_
-- _Video generator plugins for titles, backgrounds etc. (coming later)_
+- Audio plugins for clips
+- Automatable parameters for video composition
 - _Video plugins for image processing / colour adjustments etc. (coming later)_
+- _Multiple audio stems per ComposedClip (avadilable soon)_
+- _Video generator plugins for titles, backgrounds etc. (coming later)_
 - _Alternative video file backend (coming much later)_
 - _Hardware rendering backend (coming even later)_
 
