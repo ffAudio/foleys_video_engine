@@ -24,26 +24,44 @@ namespace foleys
 {
 
 class ClipDescriptor;
-class AutomationParameter;
+class ParameterAutomation;
 
 class ProcessorController  : private juce::ValueTree::Listener
 {
 public:
-    ProcessorController (ClipDescriptor& owner, std::unique_ptr<juce::ControllableProcessorBase> processor);
+    ProcessorController (ClipDescriptor& owner, std::unique_ptr<juce::AudioProcessor> processor);
+    ProcessorController (ClipDescriptor& owner, std::unique_ptr<VideoProcessor> processor);
     ProcessorController (ClipDescriptor& owner, const juce::ValueTree& state, int index=-1);
 
     ~ProcessorController();
 
-    std::unique_ptr<juce::ControllableProcessorBase> processor;
-
     void updateAutomation (double pts);
 
-    void synchroniseState (AutomationParameter& parameter);
+    void synchroniseState (ParameterAutomation& parameter);
     void synchroniseParameter (const juce::ValueTree& tree);
 
     juce::ValueTree& getProcessorState();
 
     ClipDescriptor& getOwningClipDescriptor();
+
+    struct ProcessorAdapter
+    {
+        ProcessorAdapter() = default;
+        virtual ~ProcessorAdapter() = default;
+
+        virtual const juce::String getName() const = 0;
+        virtual const juce::String getIdentifierString() const = 0;
+
+        virtual VideoProcessor* getVideoProcessor() { return nullptr; }
+        virtual juce::AudioProcessor* getAudioProcessor() { return nullptr; }
+
+        virtual void createAutomatedParameters (ProcessorController& controller,
+                                                std::vector<std::unique_ptr<ParameterAutomation>>& parameters,
+                                                juce::ValueTree& parameterNode) = 0;
+    };
+
+    juce::AudioProcessor* getAudioProcessor();
+    VideoProcessor* getVideoProcessor();
 
 private:
 
@@ -67,7 +85,8 @@ private:
 
     bool isUpdating = false;
 
-    std::vector<std::unique_ptr<AutomationParameter>> parameters;
+    std::unique_ptr<ProcessorAdapter> adapter;
+    std::vector<std::unique_ptr<ParameterAutomation>> parameters;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ProcessorController)
 };

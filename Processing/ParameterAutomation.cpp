@@ -28,29 +28,17 @@ namespace IDs
     static juce::Identifier time            { "Time" };
 }
 
-AutomationParameter::AutomationParameter (ProcessorController&              controllerToUse,
-                                          juce::ControllableProcessorBase&  processorToUse,
-                                          juce::AudioProcessorParameter&    parameterToUse)
-  : controller (controllerToUse),
-    processor  (processorToUse),
-    parameter  (parameterToUse)
+ParameterAutomation::ParameterAutomation (ProcessorController&                   controllerToUse)
+  : controller (controllerToUse)
 {
-    value = parameter.getDefaultValue();
-    parameter.addListener (this);
 }
 
-AutomationParameter::~AutomationParameter()
+void ParameterAutomation::setValue (double valueToUse)
 {
-    parameter.removeListener (this);
+    value = valueToUse;
 }
 
-void AutomationParameter::updateProcessor (double pts)
-{
-    if (!gestureInProgress)
-        parameter.setValueNotifyingHost (getValueForTime (pts));
-}
-
-void AutomationParameter::setValue (double pts, double newValue)
+void ParameterAutomation::setValue (double pts, double newValue)
 {
     if (!gestureInProgress)
         return;
@@ -70,7 +58,7 @@ void AutomationParameter::setValue (double pts, double newValue)
         controller.synchroniseState (*this);
 }
 
-void AutomationParameter::addKeyframe (double pts, double newValue)
+void ParameterAutomation::addKeyframe (double pts, double newValue)
 {
     keyframes [pts] = juce::jlimit (0.0, 1.0, newValue);
 
@@ -78,7 +66,7 @@ void AutomationParameter::addKeyframe (double pts, double newValue)
         controller.synchroniseState (*this);
 }
 
-void AutomationParameter::setKeyframe (size_t index, double pts, double newValue)
+void ParameterAutomation::setKeyframe (size_t index, double pts, double newValue)
 {
     if (juce::isPositiveAndBelow (index, keyframes.size()))
     {
@@ -92,7 +80,7 @@ void AutomationParameter::setKeyframe (size_t index, double pts, double newValue
         controller.synchroniseState (*this);
 }
 
-double AutomationParameter::getValueForTime (double pts) const
+double ParameterAutomation::getValueForTime (double pts) const
 {
     if (keyframes.empty())
         return value;
@@ -114,22 +102,17 @@ double AutomationParameter::getValueForTime (double pts) const
     return juce::jlimit (0.0, 1.0, interpolated);
 }
 
-juce::String AutomationParameter::getName() const
-{
-    return parameter.getName (128);
-}
-
-double AutomationParameter::getValue() const
+double ParameterAutomation::getValue() const
 {
     return value;
 }
 
-const std::map<double, double>& AutomationParameter::getKeyframes() const
+const std::map<double, double>& ParameterAutomation::getKeyframes() const
 {
     return keyframes;
 }
 
-void AutomationParameter::loadFromValueTree (const juce::ValueTree& state)
+void ParameterAutomation::loadFromValueTree (const juce::ValueTree& state)
 {
     juce::ScopedValueSetter<bool>(manualUpdate, true);
 
@@ -150,7 +133,7 @@ void AutomationParameter::loadFromValueTree (const juce::ValueTree& state)
     keyframes = newKeyframes;
 }
 
-void AutomationParameter::saveToValueTree (juce::ValueTree& state, juce::UndoManager* undo)
+void ParameterAutomation::saveToValueTree (juce::ValueTree& state, juce::UndoManager* undo)
 {
     if (manualUpdate)
         return;
@@ -169,15 +152,84 @@ void AutomationParameter::saveToValueTree (juce::ValueTree& state, juce::UndoMan
     }
 }
 
-void AutomationParameter::parameterValueChanged (int parameterIndex, float newValue)
+//==============================================================================
+
+AudioParameterAutomation::AudioParameterAutomation (ProcessorController& controllerToUse,
+                                                    juce::AudioProcessorParameter& parameterToUse)
+  : ParameterAutomation (controllerToUse),
+    parameter (parameterToUse)
+{
+    setValue (parameter.getDefaultValue());
+    parameter.addListener (this);
+}
+AudioParameterAutomation::~AudioParameterAutomation()
+{
+    parameter.removeListener (this);
+}
+
+juce::String AudioParameterAutomation::getName() const
+{
+    return parameter.getName (128);
+}
+
+void AudioParameterAutomation::updateProcessor (double pts)
+{
+    if (!gestureInProgress)
+        parameter.setValueNotifyingHost (getValueForTime (pts));
+}
+
+void AudioParameterAutomation::parameterValueChanged (int parameterIndex, float newValue)
 {
     auto pts = controller.getOwningClipDescriptor().getCurrentPTS();
     setValue (pts, newValue);
 }
 
-void AutomationParameter::parameterGestureChanged (int parameterIndex, bool gestureIsStarting)
+void AudioParameterAutomation::parameterGestureChanged (int parameterIndex, bool gestureIsStarting)
 {
     gestureInProgress = gestureIsStarting;
 }
+
+//==============================================================================
+
+VideoParameterAutomation::VideoParameterAutomation (ProcessorController& controllerToUse,
+                                                    ProcessorParameter& parameterToUse)
+  : ParameterAutomation (controllerToUse),
+    parameter (parameterToUse)
+{
+    setValue (parameter.normaliseValue (parameter.getDefaultValue()));
+    parameter.addListener (this);
+}
+VideoParameterAutomation::~VideoParameterAutomation()
+{
+    parameter.removeListener (this);
+}
+
+juce::String VideoParameterAutomation::getName() const
+{
+    return parameter.getName();
+}
+
+void VideoParameterAutomation::updateProcessor (double pts)
+{
+    if (!gestureInProgress)
+        parameter.setNormalisedValue (getValueForTime (pts));
+}
+
+void VideoParameterAutomation::valueChanged (double newValue)
+{
+    auto pts = controller.getOwningClipDescriptor().getCurrentPTS();
+    setValue (pts, newValue);
+}
+
+void VideoParameterAutomation::gestureStarted()
+{
+    gestureInProgress = true;
+}
+
+void VideoParameterAutomation::gestureFinished()
+{
+    gestureInProgress = false;
+}
+
 
 } // foleys

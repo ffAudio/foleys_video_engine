@@ -44,10 +44,10 @@ void SoftwareVideoMixer::compose (juce::Image&        target,
                                 double (target.getHeight()) / frame.getHeight());
         frame = frame.rescaled (frame.getWidth() * factor, frame.getHeight() * factor);
 
-        for (auto& processor : clip->videoProcessors)
+        for (auto& controller : clip->videoProcessors)
         {
-            processor->updateAutomation ((timeInSeconds - clip->getStart()) + clip->getOffset());
-            if (auto* videoProcessor = dynamic_cast<VideoProcessor*> (processor->processor.get()))
+            controller->updateAutomation ((timeInSeconds - clip->getStart()) + clip->getOffset());
+            if (auto* videoProcessor = controller->getVideoProcessor())
                 videoProcessor->processFrameReplacing (frame, count, settings, clip->getLength());
         }
 

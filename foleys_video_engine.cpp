@@ -23,7 +23,6 @@
 #include "Basics/VideoFifo.cpp"
 #include "Basics/AudioFifo.cpp"
 #include "Basics/VideoEngine.cpp"
-#include "Basics/Automation.cpp"
 
 #include "Clips/AVClip.cpp"
 #include "Clips/AudioClip.cpp"
@@ -35,6 +34,8 @@
 #include "Plugins/AudioPluginManager.cpp"
 #include "Plugins/VideoPluginManager.cpp"
 
+#include "Processing/ParameterAutomation.cpp"
+#include "Processing/ProcessorParameter.cpp"
 #include "Processing/ProcessorController.cpp"
 #include "Processing/SoftwareVideoMixer.cpp"
 #include "Processing/DefaultAudioMixer.cpp"

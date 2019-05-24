@@ -42,10 +42,10 @@ void DefaultAudioMixer::mixAudio (const juce::AudioSourceChannelInfo& info,
 
             juce::AudioBuffer<float> procBuffer (mixBuffer.getArrayOfWritePointers(), mixBuffer.getNumChannels(), 0, info.numSamples - offset);
             juce::MidiBuffer midiDummy;
-            for (auto& processor : clip->audioProcessors)
+            for (auto& controller : clip->audioProcessors)
             {
-                processor->updateAutomation ((timeInSeconds - clip->getStart()) + clip->getOffset());
-                if (auto* audioProcessor = dynamic_cast<juce::AudioProcessor*> (processor->processor.get()))
+                controller->updateAutomation ((timeInSeconds - clip->getStart()) + clip->getOffset());
+                if (auto* audioProcessor = controller->getAudioProcessor())
                     if (! audioProcessor->isSuspended())
                         audioProcessor->processBlock (procBuffer, midiDummy);
             }
