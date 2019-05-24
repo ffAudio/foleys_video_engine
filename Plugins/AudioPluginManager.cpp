@@ -37,8 +37,8 @@ std::unique_ptr<juce::AudioProcessor> AudioPluginManager::createAudioPluginInsta
     if (factory != factories.cend())
         return factory->second();
 
-    auto* description = knownPluginList.getTypeForIdentifierString (identifierString);
-    if (description == nullptr)
+    auto description = knownPluginList.getTypeForIdentifierString (identifierString);
+    if (description.get() == nullptr)
     {
         error = NEEDS_TRANS ("Plugin not known");
         return {};
