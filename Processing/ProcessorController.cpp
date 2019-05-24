@@ -22,54 +22,142 @@
 namespace foleys
 {
 
-ProcessorController::ProcessorController (ClipDescriptor& ownerToUse,
-                                          std::unique_ptr<juce::ControllableProcessorBase> processorToUse)
-: owner (ownerToUse)
+//==============================================================================
+
+struct AudioProcessorAdapter : public ProcessorController::ProcessorAdapter
 {
-    processor = std::move (processorToUse);
+    AudioProcessorAdapter (std::unique_ptr<juce::AudioProcessor> p) : processor (std::move (p)) {}
 
-    if (processor.get() != nullptr)
+    const juce::String getName() const override
     {
-        if (dynamic_cast<juce::AudioProcessor*>(processor.get()) != nullptr)
-            state = juce::ValueTree { IDs::audioProcessor };
-        else if (dynamic_cast<VideoProcessor*>(processor.get()) != nullptr)
-            state = juce::ValueTree { IDs::videoProcessor };
-        else
-        {
-            // You can only put juce::AudioProcessors or VideoProcessors into ProcessorController
-            jassertfalse;
-        }
+        return processor->getName();
+    }
 
-        state.setProperty (IDs::name, processor->getName(), nullptr);
-
+    const juce::String getIdentifierString() const override
+    {
         if (auto* instance = dynamic_cast<juce::AudioPluginInstance*>(processor.get()))
-            state.setProperty (IDs::identifier,
-                               instance->getPluginDescription().createIdentifierString(),
-                               nullptr);
+            return instance->getPluginDescription().createIdentifierString();
         else
-            state.setProperty (IDs::identifier, "BUILTIN: " + processor->getName(), nullptr);
+            return "BUILTIN: " + processor->getName();
+    }
+
+    juce::AudioProcessor* getAudioProcessor() override { return processor.get(); }
+    std::unique_ptr<juce::AudioProcessor> processor;
+
+    void createAutomatedParameters (ProcessorController& controller,
+                                    std::vector<std::unique_ptr<ParameterAutomation>>& parameters,
+                                    juce::ValueTree& parameterNode) override
+    {
+        if (processor.get() == nullptr)
+            return;
 
         for (auto parameter : processor->getParameters())
             if (parameter->isAutomatable())
-                parameters.push_back (std::make_unique<AutomationParameter> (*this, *processor, *parameter));
-    }
+                parameters.push_back (std::make_unique<AudioParameterAutomation> (controller, *parameter));
 
-    for (auto& parameter : parameters)
-    {
-        juce::ValueTree automation { IDs::parameter };
-        automation.setProperty (IDs::name, parameter->getName(), nullptr);
-        automation.setProperty (IDs::value, parameter->getValue(), nullptr);
-
-        for (const auto& key : parameter->getKeyframes())
+        for (auto& parameter : parameters)
         {
-            juce::ValueTree keyframeNode { IDs::keyframe };
-            keyframeNode.setProperty (IDs::time, key.first, nullptr);
-            keyframeNode.setProperty (IDs::value, key.second, nullptr);
-            automation.appendChild ( keyframeNode, nullptr);
+            auto node = parameterNode.getChildWithProperty (IDs::name, parameter->getName());
+            if (node.isValid())
+                parameter->loadFromValueTree (node);
+            else
+            {
+                juce::ValueTree automation { IDs::parameter };
+                automation.setProperty (IDs::name, parameter->getName(), nullptr);
+                automation.setProperty (IDs::value, parameter->getValue(), nullptr);
+
+                for (const auto& key : parameter->getKeyframes())
+                {
+                    juce::ValueTree keyframeNode { IDs::keyframe };
+                    keyframeNode.setProperty (IDs::time, key.first, nullptr);
+                    keyframeNode.setProperty (IDs::value, key.second, nullptr);
+                    automation.appendChild ( keyframeNode, nullptr);
+                }
+                parameterNode.appendChild (automation, nullptr);
+            }
         }
 
-        state.appendChild (automation, nullptr);
     }
+
+};
+
+struct VideoProcessorAdapter : public ProcessorController::ProcessorAdapter
+{
+    VideoProcessorAdapter (std::unique_ptr<VideoProcessor> p) : processor (std::move (p)) {}
+
+    const juce::String getName() const override
+    {
+        return processor->getName();
+    }
+
+    const juce::String getIdentifierString() const override
+    {
+        return "BUILTIN: " + processor->getName();
+    }
+
+    VideoProcessor* getVideoProcessor() override { return processor.get(); }
+    std::unique_ptr<VideoProcessor> processor;
+
+    void createAutomatedParameters (ProcessorController& controller,
+                                    std::vector<std::unique_ptr<ParameterAutomation>>& parameters,
+                                    juce::ValueTree& parameterNode) override
+    {
+        if (processor.get() == nullptr)
+            return;
+
+        for (auto parameter : processor->getParameters())
+            parameters.push_back (std::make_unique<VideoParameterAutomation> (controller, *parameter));
+
+        for (auto& parameter : parameters)
+        {
+            auto node = parameterNode.getChildWithProperty (IDs::name, parameter->getName());
+            if (node.isValid())
+                parameter->loadFromValueTree (node);
+            else
+            {
+                juce::ValueTree automation { IDs::parameter };
+                automation.setProperty (IDs::name, parameter->getName(), nullptr);
+                automation.setProperty (IDs::value, parameter->getValue(), nullptr);
+
+                for (const auto& key : parameter->getKeyframes())
+                {
+                    juce::ValueTree keyframeNode { IDs::keyframe };
+                    keyframeNode.setProperty (IDs::time, key.first, nullptr);
+                    keyframeNode.setProperty (IDs::value, key.second, nullptr);
+                    automation.appendChild ( keyframeNode, nullptr);
+                }
+                parameterNode.appendChild (automation, nullptr);
+            }
+        }
+
+    }
+
+};
+
+//==============================================================================
+
+ProcessorController::ProcessorController (ClipDescriptor& ownerToUse,
+                                          std::unique_ptr<juce::AudioProcessor> processorToUse)
+: owner (ownerToUse)
+{
+    adapter = std::make_unique<AudioProcessorAdapter> (std::move (processorToUse));
+    state = juce::ValueTree { IDs::audioProcessor };
+    state.setProperty (IDs::name, adapter->getName(), nullptr);
+    state.setProperty (IDs::identifier, adapter->getIdentifierString(), nullptr);
+
+    adapter->createAutomatedParameters (*this, parameters, state);
+}
+
+ProcessorController::ProcessorController (ClipDescriptor& ownerToUse,
+                                          std::unique_ptr<VideoProcessor> processorToUse)
+: owner (ownerToUse)
+{
+    adapter = std::make_unique<VideoProcessorAdapter> (std::move (processorToUse));
+    state = juce::ValueTree { IDs::videoProcessor };
+    state.setProperty (IDs::name, adapter->getName(), nullptr);
+    state.setProperty (IDs::identifier, adapter->getIdentifierString(), nullptr);
+
+    adapter->createAutomatedParameters (*this, parameters, state);
 }
 
 ProcessorController::ProcessorController (ClipDescriptor& ownerToUse,
@@ -90,30 +178,31 @@ ProcessorController::ProcessorController (ClipDescriptor& ownerToUse,
 
     juce::String error;
     if (state.getType() == IDs::audioProcessor)
-        processor = engine->createAudioPluginInstance (identifier, composedClip.getSampleRate(), composedClip.getDefaultBufferSize(), error);
+    {
+        auto processor = engine->createAudioPluginInstance (identifier, composedClip.getSampleRate(), composedClip.getDefaultBufferSize(), error);
+        if (processor.get() != nullptr)
+        {
+            adapter = std::make_unique<AudioProcessorAdapter> (std::move (processor));
+            adapter->createAutomatedParameters (*this, parameters, state);
+        }
+    }
     else if (state.getType() == IDs::videoProcessor)
-        processor = engine->createVideoPluginInstance (identifier, error);
+    {
+        auto processor = engine->createVideoPluginInstance (identifier, error);
+        if (processor.get() != nullptr)
+        {
+            adapter = std::make_unique<VideoProcessorAdapter> (std::move (processor));
+            adapter->createAutomatedParameters (*this, parameters, state);
+        }
+    }
     else
     {
         // you shouldn't feed anything than audioProcessor or videoProcessor states here
+        error = NEEDS_TRANS ("Unknown processor type");
         jassertfalse;
     }
 
     state.setProperty (IDs::pluginStatus, error, nullptr);
-
-    if (processor.get() == nullptr)
-        return;
-
-    for (auto* parameter : processor->getParameters())
-    {
-        if (!parameter->isAutomatable())
-            continue;
-
-        auto& newParameter = parameters.emplace_back (std::make_unique<AutomationParameter> (*this, *processor, *parameter));
-        auto node = state.getChildWithProperty (IDs::name, parameter->getName (64));
-        if (node.isValid())
-            newParameter->loadFromValueTree (node);
-    }
 
     state.addListener (this);
 }
@@ -122,7 +211,7 @@ ProcessorController::~ProcessorController()
 {
     state.removeListener (this);
 
-    if (auto* audioProcessor = dynamic_cast<juce::AudioProcessor*> (processor.get()))
+    if (auto* audioProcessor = adapter->getAudioProcessor())
         audioProcessor->releaseResources();
 }
 
@@ -132,7 +221,7 @@ void ProcessorController::updateAutomation (double pts)
         parameter->updateProcessor (pts);
 }
 
-void ProcessorController::synchroniseState (AutomationParameter& parameter)
+void ProcessorController::synchroniseState (ParameterAutomation& parameter)
 {
     if (isUpdating)
         return;
@@ -192,6 +281,16 @@ ClipDescriptor& ProcessorController::getOwningClipDescriptor()
     return owner;
 }
 
+juce::AudioProcessor* ProcessorController::getAudioProcessor()
+{
+    return adapter->getAudioProcessor();
+}
+
+VideoProcessor* ProcessorController::getVideoProcessor()
+{
+    return adapter->getVideoProcessor();
+}
+
 void ProcessorController::valueTreePropertyChanged (juce::ValueTree& treeWhosePropertyHasChanged,
                                                     const juce::Identifier& property)
 {
@@ -220,5 +319,6 @@ void ProcessorController::valueTreeChildRemoved (juce::ValueTree& parentTree,
     if (parentTree.getType() == IDs::parameter)
         synchroniseParameter (parentTree);
 }
+
 
 }

@@ -37,6 +37,17 @@ class PositioningVideoProcessor : public VideoProcessor
 public:
     static juce::String getPluginName() { return "Positioning"; }
 
+    std::vector<std::unique_ptr<ProcessorParameter>> createParameters()
+    {
+        std::vector<std::unique_ptr<ProcessorParameter>> params;
+        params.emplace_back (std::make_unique<ProcessorParameterFloat> (IDs::zoom, "Zoom", juce::NormalisableRange<double> (0.0, 100.0), 1.0));
+        params.emplace_back (std::make_unique<ProcessorParameterFloat> (IDs::aspect, "Aspect Ratio", juce::NormalisableRange<double> (0.0, 2.0), 1.0));
+        params.emplace_back (std::make_unique<ProcessorParameterFloat> (IDs::rotation, "Rotation", juce::NormalisableRange<double> (-360.0, 360.0), 0.0));
+        params.emplace_back (std::make_unique<ProcessorParameterFloat> (IDs::transX, "Horiz. Translation", juce::NormalisableRange<double> (-1.0, 1.0), 0.0));
+        params.emplace_back (std::make_unique<ProcessorParameterFloat> (IDs::transY, "Vert. Translation", juce::NormalisableRange<double> (-1.0, 1.0), 0.0));
+        return params;
+    }
+
     const juce::String getName() const override { return PositioningVideoProcessor::getPluginName(); }
 
     PositioningVideoProcessor()
@@ -69,19 +80,16 @@ public:
                                 .scaled (scaleX, scaleY));
     }
 
-    juce::AudioProcessorEditor* createEditor() override     { return nullptr; }
-    bool hasEditor() const override                         { return false; }
+    std::vector<ProcessorParameter*> getParameters() override
+    {
+        return state.getParameters();
+    }
 
 private:
     juce::UndoManager undo;
-    juce::AudioProcessorValueTreeState state { *this, &undo, "PARAMETERS",
-        { std::make_unique<juce::AudioParameterFloat> (IDs::zoom, "Zoom", juce::NormalisableRange<float> (0.0f, 100.0f), 1.0f),
-            std::make_unique<juce::AudioParameterFloat> (IDs::aspect, "Aspect Ratio", juce::NormalisableRange<float> (0.0f, 2.0f), 1.0f),
-            std::make_unique<juce::AudioParameterFloat> (IDs::rotation, "Rotation", juce::NormalisableRange<float> (-360.0f, 360.0f), 0.0f),
-            std::make_unique<juce::AudioParameterFloat> (IDs::transX, "Horiz. Translation", juce::NormalisableRange<float> (-1.0f, 1.0f), 0.0f),
-            std::make_unique<juce::AudioParameterFloat> (IDs::transY, "Vert. Translation", juce::NormalisableRange<float> (-1.0f, 1.0f), 0.0f)} };
+    ProcessorState state { this, &undo, "PARAMETERS", createParameters() };
 
-    float *zoom, *aspect, *rotation, *transX, *transY;
+    double *zoom, *aspect, *rotation, *transX, *transY;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PositioningVideoProcessor)
 };

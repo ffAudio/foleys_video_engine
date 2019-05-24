@@ -23,13 +23,16 @@
 namespace foleys
 {
 
-class VideoProcessor  : public juce::ControllableProcessorBase
+class VideoProcessor
 {
 public:
 
     VideoProcessor() = default;
 
     virtual ~VideoProcessor() = default;
+
+    /** Override this method to return a human readable name to identify the processor later */
+    virtual const juce::String getName() const = 0;
 
     /**
      Override this method to implement the actual video processing.
@@ -55,6 +58,7 @@ public:
         processFrameReplacing (output, count, settings, clipDuration);
     }
 
+    virtual std::vector<ProcessorParameter*> getParameters() = 0;
 private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (VideoProcessor)
 };

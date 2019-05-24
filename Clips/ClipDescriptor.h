@@ -24,7 +24,6 @@ namespace foleys
 {
 
 class ComposedClip;
-class AutomationParameter;
 
 /**
  @class ClipDescriptor
@@ -65,13 +64,13 @@ public:
 
     void updateSampleCounts();
 
-    void addAudioProcessor (std::unique_ptr<ProcessorController> processor, int index=-1);
+    void addAudioProcessor (std::unique_ptr<ProcessorController> controller, int index=-1);
     void addAudioProcessor (std::unique_ptr<juce::AudioProcessor> processor, int index=-1);
     void removeAudioProcessor (int index);
 
     std::vector<std::unique_ptr<ProcessorController>> audioProcessors;
 
-    void addVideoProcessor (std::unique_ptr<ProcessorController> processor, int index=-1);
+    void addVideoProcessor (std::unique_ptr<ProcessorController> controller, int index=-1);
     void addVideoProcessor (std::unique_ptr<VideoProcessor> processor, int index=-1);
     void removeVideoProcessor (int index);
 

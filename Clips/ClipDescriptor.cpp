@@ -171,25 +171,25 @@ juce::ValueTree& ClipDescriptor::getStatusTree()
     return state;
 }
 
-void ClipDescriptor::addAudioProcessor (std::unique_ptr<ProcessorController> processor, int index)
+void ClipDescriptor::addAudioProcessor (std::unique_ptr<ProcessorController> controller, int index)
 {
     auto* undo = owner.getUndoManager();
 
-    if (auto* audioProcessor = dynamic_cast<juce::AudioProcessor*> (processor->processor.get()))
+    if (auto* audioProcessor = controller->getAudioProcessor())
         audioProcessor->prepareToPlay (owner.getSampleRate(), owner.getDefaultBufferSize());
 
     if (manualStateChange == false)
     {
         juce::ScopedValueSetter<bool> manual (manualStateChange, true);
         auto processorsNode = state.getOrCreateChildWithName (IDs::audioProcessors, undo);
-        processorsNode.addChild (processor->getProcessorState(), index, undo);
+        processorsNode.addChild (controller->getProcessorState(), index, undo);
     }
 
     juce::ScopedLock sl (owner.getCallbackLock());
     if (juce::isPositiveAndBelow (index, audioProcessors.size()))
-        audioProcessors.insert (std::next (audioProcessors.begin(), index), std::move (processor));
+        audioProcessors.insert (std::next (audioProcessors.begin(), index), std::move (controller));
     else
-        audioProcessors.push_back (std::move (processor));
+        audioProcessors.push_back (std::move (controller));
 }
 
 void ClipDescriptor::addAudioProcessor (std::unique_ptr<juce::AudioProcessor> processor, int index)
@@ -203,7 +203,7 @@ void ClipDescriptor::removeAudioProcessor (int index)
     audioProcessors.erase (std::next (audioProcessors.begin(), index));
 }
 
-void ClipDescriptor::addVideoProcessor (std::unique_ptr<ProcessorController> processor, int index)
+void ClipDescriptor::addVideoProcessor (std::unique_ptr<ProcessorController> controller, int index)
 {
     auto* undo = owner.getUndoManager();
 
@@ -211,14 +211,14 @@ void ClipDescriptor::addVideoProcessor (std::unique_ptr<ProcessorController> pro
     {
         juce::ScopedValueSetter<bool> manual (manualStateChange, true);
         auto processorsNode = state.getOrCreateChildWithName (IDs::videoProcessors, undo);
-        processorsNode.addChild (processor->getProcessorState(), index, undo);
+        processorsNode.addChild (controller->getProcessorState(), index, undo);
     }
 
     juce::ScopedLock sl (owner.getCallbackLock());
     if (juce::isPositiveAndBelow (index, videoProcessors.size()))
-        videoProcessors.insert (std::next (videoProcessors.begin(), index), std::move (processor));
+        videoProcessors.insert (std::next (videoProcessors.begin(), index), std::move (controller));
     else
-        videoProcessors.push_back (std::move (processor));
+        videoProcessors.push_back (std::move (controller));
 
 }
 
