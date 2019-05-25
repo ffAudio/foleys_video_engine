@@ -39,6 +39,8 @@ public:
 
     virtual juce::String getName() const = 0;
 
+    virtual int getNumSteps() const = 0;
+
     virtual void updateProcessor (double pts) = 0;
 
     void setValue (double value);
@@ -49,6 +51,8 @@ public:
 
     void setKeyframe (size_t index, double pts, double value);
 
+    double getValueForTime (double pts) const;
+
     double getValue() const;
 
     const std::map<double, double>& getKeyframes() const;
@@ -57,11 +61,12 @@ public:
 
     void saveToValueTree (juce::ValueTree& state, juce::UndoManager* undo);
 
+    virtual juce::String getText (float normalisedValue, int numDigits = 0) const = 0;
+    virtual double getValueForText (const juce::String& text) const = 0;
+
 protected:
 
-    double getValueForTime (double pts) const;
-
-    ProcessorController&                   controller;
+    ProcessorController& controller;
 
     bool gestureInProgress = false;
 
@@ -84,11 +89,17 @@ public:
 
     juce::String getName() const override;
 
+    int getNumSteps() const override;
+
     void updateProcessor (double pts) override;
 
     void parameterValueChanged (int parameterIndex, float newValue) override;
 
     void parameterGestureChanged (int parameterIndex, bool gestureIsStarting) override;
+
+    juce::String getText (float normalisedValue, int numDigits = 0) const override;
+    double getValueForText (const juce::String& text) const override;
+
 private:
 
     juce::AudioProcessorParameter& parameter;
@@ -107,11 +118,16 @@ public:
 
     juce::String getName() const override;
 
+    int getNumSteps() const override;
+
     void updateProcessor (double pts) override;
 
-    void valueChanged (double newValue) override;
-    void gestureStarted() override;
-    void gestureFinished() override;
+    void valueChanged (ProcessorParameter& parameter, double newValue) override;
+    void gestureStarted (ProcessorParameter& parameter) override;
+    void gestureFinished (ProcessorParameter& parameter) override;
+
+    juce::String getText (float normalisedValue, int numDigits = 0) const override;
+    double getValueForText (const juce::String& text) const override;
 
 private:
 

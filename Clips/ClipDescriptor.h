@@ -61,6 +61,9 @@ public:
         relative to this clip. */
     double getCurrentPTS() const;
 
+    /** Transforms a time relative to the containing clip into a local time in ClipDescriptor. */
+    double getClipTimeInDescriptorTime (double time) const;
+
     std::shared_ptr<AVClip> clip;
 
     /** Grants access to the underlying state. Your GUI may use this to add private data.

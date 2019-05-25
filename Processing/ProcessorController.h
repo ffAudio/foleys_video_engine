@@ -57,6 +57,9 @@ public:
 
     ~ProcessorController();
 
+    /** Returns the name of the controlled processor */
+    juce::String getName() const;
+
     /**
      This sets all parameters in the contained processor according to the current
      time point in seconds.
@@ -101,6 +104,8 @@ public:
     /** Returns the controlled VideoProcessor. Can be nullptr, if it controlls a
         AudioProcessor or if loading of the plugin failed. */
     VideoProcessor* getVideoProcessor();
+
+    std::vector<std::unique_ptr<ParameterAutomation>>& getParameters();
 
 private:
 

@@ -32,9 +32,9 @@ public:
         Listener() = default;
         virtual ~Listener() = default;
 
-        virtual void valueChanged (double newValue) = 0;
-        virtual void gestureStarted() = 0;
-        virtual void gestureFinished() = 0;
+        virtual void valueChanged (ProcessorParameter& parameter, double newValue) = 0;
+        virtual void gestureStarted (ProcessorParameter& parameter) = 0;
+        virtual void gestureFinished (ProcessorParameter& parameter) = 0;
     };
 
     /**
@@ -50,6 +50,8 @@ public:
     const juce::String& getParameterID() const;
     const juce::String& getName() const;
 
+    virtual const int getNumSteps() const = 0;
+
     virtual double* getRawParameterValue() = 0;
 
     virtual double getNormalisedValue() const = 0;
@@ -61,6 +63,9 @@ public:
 
     virtual double normaliseValue (double realValue) = 0;
     virtual double unnormalisedValue (double normalValue) = 0;
+
+    virtual juce::String getText (float normalisedValue, int numDigits = 0) const = 0;
+    virtual double getValueForText (const juce::String& text) const = 0;
 
     void beginGesture();
     void endGesture();
@@ -89,8 +94,10 @@ public:
                              const juce::String& name,
                              juce::NormalisableRange<double> range,
                              double defaultValue,
-                             std::function<double(const juce::String&)> textToValue = nullptr,
-                             std::function<juce::String (double)> valueToText = nullptr);
+                             std::function<juce::String (double, int)> valueToText = nullptr,
+                             std::function<double(const juce::String&)> textToValue = nullptr);
+
+    const int getNumSteps() const override;
 
     double* getRawParameterValue() override;
 
@@ -104,10 +111,17 @@ public:
     double normaliseValue (double realValue) override;
     double unnormalisedValue (double normalValue) override;
 
+    juce::String getText (float normalisedValue, int numDigits = 0) const override;
+    double getValueForText (const juce::String& text) const override;
+
 private:
     juce::NormalisableRange<double> range;
     double value = {};
     double defaultValue = {};
+
+    std::function<juce::String (double, int)> valueToText;
+    std::function<double(const juce::String&)> textToValue;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ProcessorParameterFloat)
 };
 

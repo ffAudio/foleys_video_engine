@@ -40,11 +40,27 @@ public:
     std::vector<std::unique_ptr<ProcessorParameter>> createParameters()
     {
         std::vector<std::unique_ptr<ProcessorParameter>> params;
-        params.emplace_back (std::make_unique<ProcessorParameterFloat> (IDs::zoom, "Zoom", juce::NormalisableRange<double> (0.0, 100.0), 1.0));
-        params.emplace_back (std::make_unique<ProcessorParameterFloat> (IDs::aspect, "Aspect Ratio", juce::NormalisableRange<double> (0.0, 2.0), 1.0));
-        params.emplace_back (std::make_unique<ProcessorParameterFloat> (IDs::rotation, "Rotation", juce::NormalisableRange<double> (-360.0, 360.0), 0.0));
-        params.emplace_back (std::make_unique<ProcessorParameterFloat> (IDs::transX, "Horiz. Translation", juce::NormalisableRange<double> (-1.0, 1.0), 0.0));
-        params.emplace_back (std::make_unique<ProcessorParameterFloat> (IDs::transY, "Vert. Translation", juce::NormalisableRange<double> (-1.0, 1.0), 0.0));
+        params.emplace_back (std::make_unique<ProcessorParameterFloat> (IDs::zoom, "Zoom", juce::NormalisableRange<double> (0.0, 1000.0), 100.0,
+                                                                        [](double value, int) { return juce::String (value, 1) + " %"; },
+                                                                        [](const juce::String& text) { return text.getDoubleValue(); }) );
+        params.emplace_back (std::make_unique<ProcessorParameterFloat> (IDs::aspect, "Aspect Ratio", juce::NormalisableRange<double> (0.001, 1.999, 0.001), 1.0,
+                                                                        [](double value, int) {
+                                                                            if (value < 1.0) return "1 : " + juce::String (1.0 / value, 2);
+                                                                            return juce::String (1.0 / (2.0 - value), 2) + " : 1"; },
+                                                                        [](const juce::String& text) {
+                                                                            auto num = juce::StringArray::fromTokens (text, true);
+                                                                            auto a = num.size() > 0 ? num [0].getDoubleValue() : 0.0;
+                                                                            auto b = num.size() > 1 ? num[1].getDoubleValue() : 1.0;
+                                                                            return a > b ? a / b : b / (2.0 - a); }) );
+        params.emplace_back (std::make_unique<ProcessorParameterFloat> (IDs::rotation, "Rotation", juce::NormalisableRange<double> (-360.0, 360.0), 0.0,
+                                                                        [](double value, int) { return juce::String (value, 1) + "º"; },
+                                                                        [](const juce::String& text) { return text.getDoubleValue(); }) );
+        params.emplace_back (std::make_unique<ProcessorParameterFloat> (IDs::transX, "Horiz. Translation", juce::NormalisableRange<double> (-1.0, 1.0), 0.0,
+                                                                        [](double value, int) { return juce::String (value * 100.0, 1) + " %"; },
+                                                                        [](const juce::String& text) { return text.getDoubleValue() / 100.0; }) );
+        params.emplace_back (std::make_unique<ProcessorParameterFloat> (IDs::transY, "Vert. Translation", juce::NormalisableRange<double> (-1.0, 1.0), 0.0,
+                                                                        [](double value, int) { return juce::String (value * 100.0, 1) + " %"; },
+                                                                        [](const juce::String& text) { return text.getDoubleValue() / 100.0; }) );
         return params;
     }
 
@@ -67,17 +83,19 @@ public:
     void processFrame (juce::Image& output, const juce::Image& input, int64_t count, const VideoStreamSettings& settings, double clipDuration) override
     {
         output = juce::Image (juce::Image::ARGB, settings.frameSize.width, settings.frameSize.height, true);
+        auto dx = (output.getWidth() - input.getWidth()) * 0.5;
+        auto dy = (output.getHeight() - input.getHeight()) * 0.5;
         juce::Graphics g (output);
-        auto scaleX = *zoom;
-        auto scaleY = *zoom;
+        auto scaleX = *zoom / 100.0;
+        auto scaleY = *zoom / 100.0;
         if (*aspect < 1.0f)
             scaleX *= *aspect;
         else if (*aspect > 1.0f)
             scaleY *= 2.0f - *aspect;
 
         g.drawImageTransformed (input, juce::AffineTransform::rotation (*rotation * juce::MathConstants<float>::pi / 180.0f, output.getWidth() * 0.5f, output.getHeight() * 0.5f)
-                                .translated (*transX * output.getWidth(), *transY * output.getHeight())
-                                .scaled (scaleX, scaleY));
+                                .scaled (scaleX, scaleY, output.getWidth() * 0.5f, output.getHeight() * 0.5f)
+                                .translated (dx + *transX * output.getWidth(), dy + *transY * output.getHeight()));
     }
 
     std::vector<ProcessorParameter*> getParameters() override

@@ -112,7 +112,12 @@ void ClipDescriptor::setOffset (double o)
 
 double ClipDescriptor::getCurrentPTS() const
 {
-    return getOwningClip().getCurrentTimeInSeconds() + getOffset() - getStart();
+    return getClipTimeInDescriptorTime (getOwningClip().getCurrentTimeInSeconds());
+}
+
+double ClipDescriptor::getClipTimeInDescriptorTime (double time) const
+{
+    return time + getOffset() - getStart();
 }
 
 void ClipDescriptor::valueTreePropertyChanged (juce::ValueTree& treeWhosePropertyHasChanged,

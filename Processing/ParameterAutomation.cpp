@@ -172,6 +172,21 @@ juce::String AudioParameterAutomation::getName() const
     return parameter.getName (128);
 }
 
+int AudioParameterAutomation::getNumSteps() const
+{
+    return parameter.getNumSteps();
+}
+
+juce::String AudioParameterAutomation::getText (float normalisedValue, int numDigits) const
+{
+    return parameter.getText (normalisedValue, numDigits);
+}
+
+double AudioParameterAutomation::getValueForText (const juce::String& text) const
+{
+    return parameter.getValueForText (text);
+}
+
 void AudioParameterAutomation::updateProcessor (double pts)
 {
     if (!gestureInProgress)
@@ -209,24 +224,39 @@ juce::String VideoParameterAutomation::getName() const
     return parameter.getName();
 }
 
+int VideoParameterAutomation::getNumSteps() const
+{
+    return parameter.getNumSteps();
+}
+
+juce::String VideoParameterAutomation::getText (float normalisedValue, int numDigits) const
+{
+    return parameter.getText (normalisedValue, numDigits);
+}
+
+double VideoParameterAutomation::getValueForText (const juce::String& text) const
+{
+    return parameter.getValueForText (text);
+}
+
 void VideoParameterAutomation::updateProcessor (double pts)
 {
     if (!gestureInProgress)
         parameter.setNormalisedValue (getValueForTime (pts));
 }
 
-void VideoParameterAutomation::valueChanged (double newValue)
+void VideoParameterAutomation::valueChanged (ProcessorParameter&, double newValue)
 {
     auto pts = controller.getOwningClipDescriptor().getCurrentPTS();
     setValue (pts, newValue);
 }
 
-void VideoParameterAutomation::gestureStarted()
+void VideoParameterAutomation::gestureStarted (ProcessorParameter&)
 {
     gestureInProgress = true;
 }
 
-void VideoParameterAutomation::gestureFinished()
+void VideoParameterAutomation::gestureFinished (ProcessorParameter&)
 {
     gestureInProgress = false;
 }

@@ -41,7 +41,7 @@ const juce::String& ProcessorParameter::getName() const
 
 void ProcessorParameter::sendUpdateNotification()
 {
-    listeners.call ([v = getRealValue()](Listener& l) { l.valueChanged (v); });
+    listeners.call ([this, v = getRealValue()](Listener& l) { l.valueChanged (*this, v); });
 }
 
 void ProcessorParameter::beginGesture()
@@ -49,13 +49,13 @@ void ProcessorParameter::beginGesture()
     jassert (gestureInProgress == 0);
 
     ++gestureInProgress;
-    listeners.call ([](Listener& l) { l.gestureStarted(); });
+    listeners.call ([this](Listener& l) { l.gestureStarted (*this); });
 }
 
 void ProcessorParameter::endGesture()
 {
     --gestureInProgress;
-    listeners.call ([](Listener& l) { l.gestureFinished(); });
+    listeners.call ([this](Listener& l) { l.gestureFinished (*this); });
 }
 
 bool ProcessorParameter::isGestureInProgress() const
@@ -78,14 +78,20 @@ ProcessorParameterFloat::ProcessorParameterFloat (const juce::String& id,
                                                   const juce::String& nameToUse,
                                                   juce::NormalisableRange<double> rangeToUse,
                                                   double defaultToUse,
-                                                  std::function<double(const juce::String&)> textToValue,
-                                                  std::function<juce::String (double)> valueToText)
+                                                  std::function<juce::String (double, int)> valueToTextToUse,
+                                                  std::function<double(const juce::String&)> textToValueToUse)
   : ProcessorParameter (id, nameToUse),
     range (rangeToUse),
     value (defaultToUse),
-    defaultValue (defaultToUse)
+    defaultValue (defaultToUse),
+    valueToText (valueToTextToUse),
+    textToValue (textToValueToUse)
 {
+}
 
+const int ProcessorParameterFloat::getNumSteps() const
+{
+    return range.interval == 0 ? 0 : (range.end - range.start) / range.interval;
 }
 
 double ProcessorParameterFloat::getNormalisedValue() const
@@ -136,6 +142,21 @@ double ProcessorParameterFloat::normaliseValue (double realValue)
 double ProcessorParameterFloat::unnormalisedValue (double normalValue)
 {
     return range.convertFrom0to1 (normalValue);
+}
+
+juce::String ProcessorParameterFloat::getText (float normalisedValue, int numDigits) const
+{
+    auto normal = range.convertFrom0to1 (normalisedValue);
+    if (valueToText != nullptr)
+        return valueToText (normal, numDigits);
+
+    return juce::String (normal, numDigits);
+}
+
+double ProcessorParameterFloat::getValueForText (const juce::String& text) const
+{
+    auto normal = textToValue != nullptr ? textToValue (text) : text.getDoubleValue();
+    return range.convertTo0to1 (normal);
 }
 
 //==============================================================================
