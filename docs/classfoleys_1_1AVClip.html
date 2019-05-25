@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>foleys_video_engine: foleys::AVClip Class Reference</title>
+<title>foleys_video_engine: AVClip Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -72,24 +72,24 @@ $(function() {
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="classfoleys_1_1AVClip-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">foleys::AVClip Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
+<div class="title">AVClip Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
 
 <p><a class="el" href="classfoleys_1_1AVClip.html" title="AVClip is the abstract base class of displayable/playable clips.">AVClip</a> is the abstract base class of displayable/playable clips.  
  <a href="classfoleys_1_1AVClip.html#details">More...</a></p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for foleys::AVClip:</div>
+  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for AVClip:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
  <div class="center">
-  <img src="classfoleys_1_1AVClip.png" usemap="#foleys::AVClip_map" alt=""/>
-  <map id="foleys::AVClip_map" name="foleys::AVClip_map">
-<area href="classfoleys_1_1AudioClip.html" title="The AudioClip plays back an audio file inside the video engine." alt="foleys::AudioClip" shape="rect" coords="0,112,154,136"/>
-<area href="classfoleys_1_1ComposedClip.html" title="This clip does the actual work of composing images into a video." alt="foleys::ComposedClip" shape="rect" coords="164,112,318,136"/>
-<area href="classfoleys_1_1ImageClip.html" title="This class delivers a still image as video." alt="foleys::ImageClip" shape="rect" coords="328,112,482,136"/>
-<area href="classfoleys_1_1MovieClip.html" title="The MovieClip plays back a video file." alt="foleys::MovieClip" shape="rect" coords="492,112,646,136"/>
+  <img src="classfoleys_1_1AVClip.png" usemap="#AVClip_map" alt=""/>
+  <map id="AVClip_map" name="AVClip_map">
+<area href="classfoleys_1_1AudioClip.html" title="The AudioClip plays back an audio file inside the video engine." alt="AudioClip" shape="rect" coords="0,112,154,136"/>
+<area href="classfoleys_1_1ComposedClip.html" title="This clip does the actual work of composing images into a video." alt="ComposedClip" shape="rect" coords="164,112,318,136"/>
+<area href="classfoleys_1_1ImageClip.html" title="This class delivers a still image as video." alt="ImageClip" shape="rect" coords="328,112,482,136"/>
+<area href="classfoleys_1_1MovieClip.html" title="The MovieClip plays back a video file." alt="MovieClip" shape="rect" coords="492,112,646,136"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -101,81 +101,81 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a93b173887d4e71460ea6d39c0c997f63"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVClip.html#a93b173887d4e71460ea6d39c0c997f63">AVClip</a> (<a class="el" href="classfoleys_1_1VideoEngine.html">VideoEngine</a> &amp;videoEngine)</td></tr>
-<tr class="separator:a93b173887d4e71460ea6d39c0c997f63"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab2c4cc80280c2a98a784c6fb62842187"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVClip.html#ab2c4cc80280c2a98a784c6fb62842187">~AVClip</a> ()=default</td></tr>
-<tr class="separator:ab2c4cc80280c2a98a784c6fb62842187"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a04a15a2f0afedf02e6161faf898031dc"><td class="memItemLeft" align="right" valign="top">virtual juce::File&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVClip.html#a04a15a2f0afedf02e6161faf898031dc">getMediaFile</a> () const</td></tr>
-<tr class="memdesc:a04a15a2f0afedf02e6161faf898031dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns the original media file to restore  <a href="#a04a15a2f0afedf02e6161faf898031dc">More...</a><br /></td></tr>
-<tr class="separator:a04a15a2f0afedf02e6161faf898031dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a85b5d1de88eafe6b1b08052e14110d52"><td class="memItemLeft" align="right" valign="top">virtual juce::String&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVClip.html#a85b5d1de88eafe6b1b08052e14110d52">getDescription</a> () const =0</td></tr>
-<tr class="memdesc:a85b5d1de88eafe6b1b08052e14110d52"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns a string describing the clip.  <a href="#a85b5d1de88eafe6b1b08052e14110d52">More...</a><br /></td></tr>
-<tr class="separator:a85b5d1de88eafe6b1b08052e14110d52"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a36a15afa89fa22fbc06cdc596bf66b4f"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="structfoleys_1_1Size.html">Size</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVClip.html#a36a15afa89fa22fbc06cdc596bf66b4f">getVideoSize</a> () const =0</td></tr>
-<tr class="memdesc:a36a15afa89fa22fbc06cdc596bf66b4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns the pixel size of the media as a tuple.  <a href="#a36a15afa89fa22fbc06cdc596bf66b4f">More...</a><br /></td></tr>
-<tr class="separator:a36a15afa89fa22fbc06cdc596bf66b4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d2d9782c4f4c14a5e32b1a1f063d2e2"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVClip.html#a6d2d9782c4f4c14a5e32b1a1f063d2e2">getLengthInSeconds</a> () const =0</td></tr>
-<tr class="memdesc:a6d2d9782c4f4c14a5e32b1a1f063d2e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the length of the clip in seconds.  <a href="#a6d2d9782c4f4c14a5e32b1a1f063d2e2">More...</a><br /></td></tr>
-<tr class="separator:a6d2d9782c4f4c14a5e32b1a1f063d2e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a127037fd2103f0b1606040282d9884a3"><td class="memItemLeft" align="right" valign="top">virtual std::pair&lt; int64_t, juce::Image &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVClip.html#a127037fd2103f0b1606040282d9884a3">getFrame</a> (double pts) const =0</td></tr>
-<tr class="memdesc:a127037fd2103f0b1606040282d9884a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the frame for a certain timecode.  <a href="#a127037fd2103f0b1606040282d9884a3">More...</a><br /></td></tr>
-<tr class="separator:a127037fd2103f0b1606040282d9884a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c534bac6b738d43a2a5c15ef08617bf"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVClip.html#a9c534bac6b738d43a2a5c15ef08617bf">isFrameAvailable</a> (double pts) const =0</td></tr>
-<tr class="memdesc:a9c534bac6b738d43a2a5c15ef08617bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks, if a frame is available.  <a href="#a9c534bac6b738d43a2a5c15ef08617bf">More...</a><br /></td></tr>
-<tr class="separator:a9c534bac6b738d43a2a5c15ef08617bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af5e2218d354b835cdc757861d01c544e"><td class="memItemLeft" align="right" valign="top">virtual juce::Image&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVClip.html#af5e2218d354b835cdc757861d01c544e">getCurrentFrame</a> () const =0</td></tr>
-<tr class="memdesc:af5e2218d354b835cdc757861d01c544e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the frame for the current time.  <a href="#af5e2218d354b835cdc757861d01c544e">More...</a><br /></td></tr>
-<tr class="separator:af5e2218d354b835cdc757861d01c544e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a42b375de4ff4ae57cd3dd14b70d71677"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVClip.html#a42b375de4ff4ae57cd3dd14b70d71677">getCurrentTimeInSeconds</a> () const =0</td></tr>
-<tr class="memdesc:a42b375de4ff4ae57cd3dd14b70d71677"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the clip's read position in seconds.  <a href="#a42b375de4ff4ae57cd3dd14b70d71677">More...</a><br /></td></tr>
-<tr class="separator:a42b375de4ff4ae57cd3dd14b70d71677"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac32e5aeececab03761d0f1e99aff36cb"><td class="memItemLeft" align="right" valign="top">virtual juce::Image&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVClip.html#ac32e5aeececab03761d0f1e99aff36cb">getStillImage</a> (double seconds, <a class="el" href="structfoleys_1_1Size.html">Size</a> size)=0</td></tr>
-<tr class="memdesc:ac32e5aeececab03761d0f1e99aff36cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">This returns a still frame on the selected position.  <a href="#ac32e5aeececab03761d0f1e99aff36cb">More...</a><br /></td></tr>
-<tr class="separator:ac32e5aeececab03761d0f1e99aff36cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a89d2ec710d252a2c60fc1de3de7a15a6"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVClip.html#a89d2ec710d252a2c60fc1de3de7a15a6">hasVideo</a> () const =0</td></tr>
-<tr class="memdesc:a89d2ec710d252a2c60fc1de3de7a15a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true, if this clip will produce visual frames.  <a href="#a89d2ec710d252a2c60fc1de3de7a15a6">More...</a><br /></td></tr>
-<tr class="separator:a89d2ec710d252a2c60fc1de3de7a15a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad6167c2e95afbd8a46c1510291bf60d6"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVClip.html#ad6167c2e95afbd8a46c1510291bf60d6">hasAudio</a> () const =0</td></tr>
-<tr class="memdesc:ad6167c2e95afbd8a46c1510291bf60d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true, if this clip will produce audio.  <a href="#ad6167c2e95afbd8a46c1510291bf60d6">More...</a><br /></td></tr>
-<tr class="separator:ad6167c2e95afbd8a46c1510291bf60d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a61c5ac9702baa8fa60400be48b599333"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVClip.html#a61c5ac9702baa8fa60400be48b599333">getSampleRate</a> () const =0</td></tr>
-<tr class="memdesc:a61c5ac9702baa8fa60400be48b599333"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is the samplerate supplied from prepareToPlay and the sample rate this clip will produce audio and use as clock source.  <a href="#a61c5ac9702baa8fa60400be48b599333">More...</a><br /></td></tr>
-<tr class="separator:a61c5ac9702baa8fa60400be48b599333"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a579586c25211a364c7c0fab5bd6f1f13"><td class="memItemLeft" align="right" valign="top">virtual std::shared_ptr&lt; <a class="el" href="classfoleys_1_1AVClip.html">AVClip</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVClip.html#a579586c25211a364c7c0fab5bd6f1f13">createCopy</a> ()=0</td></tr>
-<tr class="memdesc:a579586c25211a364c7c0fab5bd6f1f13"><td class="mdescLeft">&#160;</td><td class="mdescRight">This returns a copy of the clip.  <a href="#a579586c25211a364c7c0fab5bd6f1f13">More...</a><br /></td></tr>
-<tr class="separator:a579586c25211a364c7c0fab5bd6f1f13"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac8e169de33f4ad8dbc59205c2cc79de0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVClip.html#ac8e169de33f4ad8dbc59205c2cc79de0">addTimecodeListener</a> (<a class="el" href="structfoleys_1_1AVClip_1_1TimecodeListener.html">TimecodeListener</a> *listener)</td></tr>
-<tr class="memdesc:ac8e169de33f4ad8dbc59205c2cc79de0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register a <a class="el" href="structfoleys_1_1AVClip_1_1TimecodeListener.html" title="Use a TimecodeListener to be notified, when the visual frame changes.">TimecodeListener</a> to be notified, when the visual frame changes.  <a href="#ac8e169de33f4ad8dbc59205c2cc79de0">More...</a><br /></td></tr>
-<tr class="separator:ac8e169de33f4ad8dbc59205c2cc79de0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a569abcda738bd3760ddbd30d620c4c48"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVClip.html#a569abcda738bd3760ddbd30d620c4c48">removeTimecodeListener</a> (<a class="el" href="structfoleys_1_1AVClip_1_1TimecodeListener.html">TimecodeListener</a> *listener)</td></tr>
-<tr class="memdesc:a569abcda738bd3760ddbd30d620c4c48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unregister a <a class="el" href="structfoleys_1_1AVClip_1_1TimecodeListener.html" title="Use a TimecodeListener to be notified, when the visual frame changes.">TimecodeListener</a>.  <a href="#a569abcda738bd3760ddbd30d620c4c48">More...</a><br /></td></tr>
-<tr class="separator:a569abcda738bd3760ddbd30d620c4c48"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a85f17a5a724c83589f4b7a661a055fd6"><td class="memItemLeft" align="right" valign="top">virtual juce::TimeSliceClient *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVClip.html#a85f17a5a724c83589f4b7a661a055fd6">getBackgroundJob</a> ()</td></tr>
-<tr class="memdesc:a85f17a5a724c83589f4b7a661a055fd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">@Internal  <a href="#a85f17a5a724c83589f4b7a661a055fd6">More...</a><br /></td></tr>
-<tr class="separator:a85f17a5a724c83589f4b7a661a055fd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8bcde683b325deef24e99714951da555"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classfoleys_1_1VideoEngine.html">VideoEngine</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVClip.html#a8bcde683b325deef24e99714951da555">getVideoEngine</a> () const</td></tr>
-<tr class="memdesc:a8bcde683b325deef24e99714951da555"><td class="mdescLeft">&#160;</td><td class="mdescRight">@Internal  <a href="#a8bcde683b325deef24e99714951da555">More...</a><br /></td></tr>
-<tr class="separator:a8bcde683b325deef24e99714951da555"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48fa9431d26f6e26365d8e539bf4c493"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVClip.html#a48fa9431d26f6e26365d8e539bf4c493">AVClip</a> (<a class="el" href="classfoleys_1_1VideoEngine.html">VideoEngine</a> &amp;videoEngine)</td></tr>
+<tr class="separator:a48fa9431d26f6e26365d8e539bf4c493"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abad90ffd5f40b14674da4b0d40130550"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVClip.html#abad90ffd5f40b14674da4b0d40130550">~AVClip</a> ()=default</td></tr>
+<tr class="separator:abad90ffd5f40b14674da4b0d40130550"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb2df09d20f0e436940a931e834a5b04"><td class="memItemLeft" align="right" valign="top">virtual juce::File&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVClip.html#adb2df09d20f0e436940a931e834a5b04">getMediaFile</a> () const</td></tr>
+<tr class="memdesc:adb2df09d20f0e436940a931e834a5b04"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns the original media file to restore  <a href="#adb2df09d20f0e436940a931e834a5b04">More...</a><br /></td></tr>
+<tr class="separator:adb2df09d20f0e436940a931e834a5b04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac1a685bbea72b7dd6e5db5b16aa3edb0"><td class="memItemLeft" align="right" valign="top">virtual juce::String&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVClip.html#ac1a685bbea72b7dd6e5db5b16aa3edb0">getDescription</a> () const =0</td></tr>
+<tr class="memdesc:ac1a685bbea72b7dd6e5db5b16aa3edb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns a string describing the clip.  <a href="#ac1a685bbea72b7dd6e5db5b16aa3edb0">More...</a><br /></td></tr>
+<tr class="separator:ac1a685bbea72b7dd6e5db5b16aa3edb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17a63d8dd0becab8809f33b422df2bf6"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="structfoleys_1_1Size.html">Size</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVClip.html#a17a63d8dd0becab8809f33b422df2bf6">getVideoSize</a> () const =0</td></tr>
+<tr class="memdesc:a17a63d8dd0becab8809f33b422df2bf6"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns the pixel size of the media as a tuple.  <a href="#a17a63d8dd0becab8809f33b422df2bf6">More...</a><br /></td></tr>
+<tr class="separator:a17a63d8dd0becab8809f33b422df2bf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a368043d53f3b94c27710e039d2387289"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVClip.html#a368043d53f3b94c27710e039d2387289">getLengthInSeconds</a> () const =0</td></tr>
+<tr class="memdesc:a368043d53f3b94c27710e039d2387289"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the length of the clip in seconds.  <a href="#a368043d53f3b94c27710e039d2387289">More...</a><br /></td></tr>
+<tr class="separator:a368043d53f3b94c27710e039d2387289"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13e61677c0b0a262a6d0d51695c32981"><td class="memItemLeft" align="right" valign="top">virtual std::pair&lt; int64_t, juce::Image &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVClip.html#a13e61677c0b0a262a6d0d51695c32981">getFrame</a> (double pts) const =0</td></tr>
+<tr class="memdesc:a13e61677c0b0a262a6d0d51695c32981"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the frame for a certain timecode.  <a href="#a13e61677c0b0a262a6d0d51695c32981">More...</a><br /></td></tr>
+<tr class="separator:a13e61677c0b0a262a6d0d51695c32981"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d7f61b87cb9b8757e9ddff1bac0ae46"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVClip.html#a1d7f61b87cb9b8757e9ddff1bac0ae46">isFrameAvailable</a> (double pts) const =0</td></tr>
+<tr class="memdesc:a1d7f61b87cb9b8757e9ddff1bac0ae46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks, if a frame is available.  <a href="#a1d7f61b87cb9b8757e9ddff1bac0ae46">More...</a><br /></td></tr>
+<tr class="separator:a1d7f61b87cb9b8757e9ddff1bac0ae46"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5ea99df2a855ab5d51320cfcf8f8c71"><td class="memItemLeft" align="right" valign="top">virtual juce::Image&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVClip.html#ac5ea99df2a855ab5d51320cfcf8f8c71">getCurrentFrame</a> () const =0</td></tr>
+<tr class="memdesc:ac5ea99df2a855ab5d51320cfcf8f8c71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the frame for the current time.  <a href="#ac5ea99df2a855ab5d51320cfcf8f8c71">More...</a><br /></td></tr>
+<tr class="separator:ac5ea99df2a855ab5d51320cfcf8f8c71"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada50c87cccbfc61cd2498003490f932f"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVClip.html#ada50c87cccbfc61cd2498003490f932f">getCurrentTimeInSeconds</a> () const =0</td></tr>
+<tr class="memdesc:ada50c87cccbfc61cd2498003490f932f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the clip's read position in seconds.  <a href="#ada50c87cccbfc61cd2498003490f932f">More...</a><br /></td></tr>
+<tr class="separator:ada50c87cccbfc61cd2498003490f932f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a655dd2e37e784257a7636fda9603f9dc"><td class="memItemLeft" align="right" valign="top">virtual juce::Image&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVClip.html#a655dd2e37e784257a7636fda9603f9dc">getStillImage</a> (double seconds, <a class="el" href="structfoleys_1_1Size.html">Size</a> size)=0</td></tr>
+<tr class="memdesc:a655dd2e37e784257a7636fda9603f9dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">This returns a still frame on the selected position.  <a href="#a655dd2e37e784257a7636fda9603f9dc">More...</a><br /></td></tr>
+<tr class="separator:a655dd2e37e784257a7636fda9603f9dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac83a4ed84dd21947ade6e0288aa93e1"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVClip.html#aac83a4ed84dd21947ade6e0288aa93e1">hasVideo</a> () const =0</td></tr>
+<tr class="memdesc:aac83a4ed84dd21947ade6e0288aa93e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true, if this clip will produce visual frames.  <a href="#aac83a4ed84dd21947ade6e0288aa93e1">More...</a><br /></td></tr>
+<tr class="separator:aac83a4ed84dd21947ade6e0288aa93e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c0218cfedafc948ea9050a665578d6e"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVClip.html#a5c0218cfedafc948ea9050a665578d6e">hasAudio</a> () const =0</td></tr>
+<tr class="memdesc:a5c0218cfedafc948ea9050a665578d6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true, if this clip will produce audio.  <a href="#a5c0218cfedafc948ea9050a665578d6e">More...</a><br /></td></tr>
+<tr class="separator:a5c0218cfedafc948ea9050a665578d6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aedda4ffe30cc9e2d0dcd4a67e59f9460"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVClip.html#aedda4ffe30cc9e2d0dcd4a67e59f9460">getSampleRate</a> () const =0</td></tr>
+<tr class="memdesc:aedda4ffe30cc9e2d0dcd4a67e59f9460"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is the samplerate supplied from prepareToPlay and the sample rate this clip will produce audio and use as clock source.  <a href="#aedda4ffe30cc9e2d0dcd4a67e59f9460">More...</a><br /></td></tr>
+<tr class="separator:aedda4ffe30cc9e2d0dcd4a67e59f9460"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30f8e4f7949fbae2a94fcd4271abe594"><td class="memItemLeft" align="right" valign="top">virtual std::shared_ptr&lt; <a class="el" href="classfoleys_1_1AVClip.html">AVClip</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVClip.html#a30f8e4f7949fbae2a94fcd4271abe594">createCopy</a> ()=0</td></tr>
+<tr class="memdesc:a30f8e4f7949fbae2a94fcd4271abe594"><td class="mdescLeft">&#160;</td><td class="mdescRight">This returns a copy of the clip.  <a href="#a30f8e4f7949fbae2a94fcd4271abe594">More...</a><br /></td></tr>
+<tr class="separator:a30f8e4f7949fbae2a94fcd4271abe594"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04c9b04b7b73196f2e661c09060918f5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVClip.html#a04c9b04b7b73196f2e661c09060918f5">addTimecodeListener</a> (<a class="el" href="structfoleys_1_1AVClip_1_1TimecodeListener.html">TimecodeListener</a> *listener)</td></tr>
+<tr class="memdesc:a04c9b04b7b73196f2e661c09060918f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register a <a class="el" href="structfoleys_1_1AVClip_1_1TimecodeListener.html" title="Use a TimecodeListener to be notified, when the visual frame changes.">TimecodeListener</a> to be notified, when the visual frame changes.  <a href="#a04c9b04b7b73196f2e661c09060918f5">More...</a><br /></td></tr>
+<tr class="separator:a04c9b04b7b73196f2e661c09060918f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4fb3ddf8007139394f233b60c675ba5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVClip.html#ab4fb3ddf8007139394f233b60c675ba5">removeTimecodeListener</a> (<a class="el" href="structfoleys_1_1AVClip_1_1TimecodeListener.html">TimecodeListener</a> *listener)</td></tr>
+<tr class="memdesc:ab4fb3ddf8007139394f233b60c675ba5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unregister a <a class="el" href="structfoleys_1_1AVClip_1_1TimecodeListener.html" title="Use a TimecodeListener to be notified, when the visual frame changes.">TimecodeListener</a>.  <a href="#ab4fb3ddf8007139394f233b60c675ba5">More...</a><br /></td></tr>
+<tr class="separator:ab4fb3ddf8007139394f233b60c675ba5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5014c847acdcbb3ad197fed85583f3e"><td class="memItemLeft" align="right" valign="top">virtual juce::TimeSliceClient *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVClip.html#af5014c847acdcbb3ad197fed85583f3e">getBackgroundJob</a> ()</td></tr>
+<tr class="memdesc:af5014c847acdcbb3ad197fed85583f3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">@Internal  <a href="#af5014c847acdcbb3ad197fed85583f3e">More...</a><br /></td></tr>
+<tr class="separator:af5014c847acdcbb3ad197fed85583f3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aecb43a41a8d68dc9295356a4c737e41f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classfoleys_1_1VideoEngine.html">VideoEngine</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVClip.html#aecb43a41a8d68dc9295356a4c737e41f">getVideoEngine</a> () const</td></tr>
+<tr class="memdesc:aecb43a41a8d68dc9295356a4c737e41f"><td class="mdescLeft">&#160;</td><td class="mdescRight">@Internal  <a href="#aecb43a41a8d68dc9295356a4c737e41f">More...</a><br /></td></tr>
+<tr class="separator:aecb43a41a8d68dc9295356a4c737e41f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a552ce6b4803b4dae356dcbff5d95e1c9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVClip.html#a552ce6b4803b4dae356dcbff5d95e1c9">sendTimecode</a> (int64_t count, double seconds, juce::NotificationType nt)</td></tr>
-<tr class="memdesc:a552ce6b4803b4dae356dcbff5d95e1c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subclasses can call this to notify displays, that the time code has changed, e.g.  <a href="#a552ce6b4803b4dae356dcbff5d95e1c9">More...</a><br /></td></tr>
-<tr class="separator:a552ce6b4803b4dae356dcbff5d95e1c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff4df7964e6ef08abb899a29475c49d0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVClip.html#aff4df7964e6ef08abb899a29475c49d0">sendTimecode</a> (int64_t count, double seconds, juce::NotificationType nt)</td></tr>
+<tr class="memdesc:aff4df7964e6ef08abb899a29475c49d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subclasses can call this to notify displays, that the time code has changed, e.g.  <a href="#aff4df7964e6ef08abb899a29475c49d0">More...</a><br /></td></tr>
+<tr class="separator:aff4df7964e6ef08abb899a29475c49d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classfoleys_1_1AVClip.html" title="AVClip is the abstract base class of displayable/playable clips.">AVClip</a> is the abstract base class of displayable/playable clips. </p>
 <p>They can provide video frames an/or audio streams.</p>
 <p>To be compatible with juce's playback engines, they inherit PositionableAudioSource. Each <a class="el" href="classfoleys_1_1AVClip.html" title="AVClip is the abstract base class of displayable/playable clips.">AVClip</a> is responsible to resample the audio to the sampleRate that is set in prepareToPlay. The audio stream acts as clock master. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a93b173887d4e71460ea6d39c0c997f63"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a93b173887d4e71460ea6d39c0c997f63">&#9670;&nbsp;</a></span>AVClip()</h2>
+<a id="a48fa9431d26f6e26365d8e539bf4c493"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a48fa9431d26f6e26365d8e539bf4c493">&#9670;&nbsp;</a></span>AVClip()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">foleys::AVClip::AVClip </td>
+          <td class="memname"><a class="el" href="classfoleys_1_1AVClip.html">AVClip</a> </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classfoleys_1_1VideoEngine.html">VideoEngine</a> &amp;&#160;</td>
           <td class="paramname"><em>videoEngine</em></td><td>)</td>
@@ -186,8 +186,8 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ab2c4cc80280c2a98a784c6fb62842187"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab2c4cc80280c2a98a784c6fb62842187">&#9670;&nbsp;</a></span>~AVClip()</h2>
+<a id="abad90ffd5f40b14674da4b0d40130550"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abad90ffd5f40b14674da4b0d40130550">&#9670;&nbsp;</a></span>~AVClip()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -196,7 +196,7 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual foleys::AVClip::~AVClip </td>
+          <td class="memname">virtual ~<a class="el" href="classfoleys_1_1AVClip.html">AVClip</a> </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -212,8 +212,8 @@ Protected Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a04a15a2f0afedf02e6161faf898031dc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a04a15a2f0afedf02e6161faf898031dc">&#9670;&nbsp;</a></span>getMediaFile()</h2>
+<a id="adb2df09d20f0e436940a931e834a5b04"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adb2df09d20f0e436940a931e834a5b04">&#9670;&nbsp;</a></span>getMediaFile()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -222,7 +222,7 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual juce::File foleys::AVClip::getMediaFile </td>
+          <td class="memname">virtual juce::File getMediaFile </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -237,12 +237,12 @@ Protected Member Functions</h2></td></tr>
 
 <p>returns the original media file to restore </p>
 
-<p>Reimplemented in <a class="el" href="classfoleys_1_1MovieClip.html#a2c4001f44d439db95a9c4c90f2d4ffd6">foleys::MovieClip</a>, <a class="el" href="classfoleys_1_1AudioClip.html#acdea92f8dcc8e6ce84786cfcf9b37d72">foleys::AudioClip</a>, and <a class="el" href="classfoleys_1_1ImageClip.html#a8436f8b929850ca1add5269d6cb7afd5">foleys::ImageClip</a>.</p>
+<p>Reimplemented in <a class="el" href="classfoleys_1_1MovieClip.html#ac14d25e8279d5a5d97994fc93e35f0d2">MovieClip</a>, <a class="el" href="classfoleys_1_1AudioClip.html#ac14d25e8279d5a5d97994fc93e35f0d2">AudioClip</a>, and <a class="el" href="classfoleys_1_1ImageClip.html#ac14d25e8279d5a5d97994fc93e35f0d2">ImageClip</a>.</p>
 
 </div>
 </div>
-<a id="a85b5d1de88eafe6b1b08052e14110d52"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a85b5d1de88eafe6b1b08052e14110d52">&#9670;&nbsp;</a></span>getDescription()</h2>
+<a id="ac1a685bbea72b7dd6e5db5b16aa3edb0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac1a685bbea72b7dd6e5db5b16aa3edb0">&#9670;&nbsp;</a></span>getDescription()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -251,7 +251,7 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual juce::String foleys::AVClip::getDescription </td>
+          <td class="memname">virtual juce::String getDescription </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -267,12 +267,12 @@ Protected Member Functions</h2></td></tr>
 <p>returns a string describing the clip. </p>
 <p>This could be the filename of the original media file </p>
 
-<p>Implemented in <a class="el" href="classfoleys_1_1ComposedClip.html#ab606dd36382ed1db67142eafb8348b60">foleys::ComposedClip</a>, <a class="el" href="classfoleys_1_1MovieClip.html#aa2f3cf33042b9b95577f20a7533bb4d7">foleys::MovieClip</a>, <a class="el" href="classfoleys_1_1AudioClip.html#a878523931b6f025bbc1f619e35739c5e">foleys::AudioClip</a>, and <a class="el" href="classfoleys_1_1ImageClip.html#affb49c7dc2b8244a189996a367e4bdc4">foleys::ImageClip</a>.</p>
+<p>Implemented in <a class="el" href="classfoleys_1_1ComposedClip.html#a014639146d6a5d1b103d8b8af9240634">ComposedClip</a>, <a class="el" href="classfoleys_1_1MovieClip.html#a014639146d6a5d1b103d8b8af9240634">MovieClip</a>, <a class="el" href="classfoleys_1_1AudioClip.html#a014639146d6a5d1b103d8b8af9240634">AudioClip</a>, and <a class="el" href="classfoleys_1_1ImageClip.html#a014639146d6a5d1b103d8b8af9240634">ImageClip</a>.</p>
 
 </div>
 </div>
-<a id="a36a15afa89fa22fbc06cdc596bf66b4f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a36a15afa89fa22fbc06cdc596bf66b4f">&#9670;&nbsp;</a></span>getVideoSize()</h2>
+<a id="a17a63d8dd0becab8809f33b422df2bf6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a17a63d8dd0becab8809f33b422df2bf6">&#9670;&nbsp;</a></span>getVideoSize()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -281,7 +281,7 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="structfoleys_1_1Size.html">Size</a> foleys::AVClip::getVideoSize </td>
+          <td class="memname">virtual <a class="el" href="structfoleys_1_1Size.html">Size</a> getVideoSize </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -297,12 +297,12 @@ Protected Member Functions</h2></td></tr>
 <p>returns the pixel size of the media as a tuple. </p>
 <p>In some video files this can change at any frame. </p>
 
-<p>Implemented in <a class="el" href="classfoleys_1_1AudioClip.html#a206c319c78c853dfda11fc65db73d6f6">foleys::AudioClip</a>, <a class="el" href="classfoleys_1_1ComposedClip.html#a64ab2767726a0497ebc01010a957afbf">foleys::ComposedClip</a>, <a class="el" href="classfoleys_1_1MovieClip.html#a716f2fac572357925f3def5b5b3d5e8c">foleys::MovieClip</a>, and <a class="el" href="classfoleys_1_1ImageClip.html#ac85d79b0440481b52c4bf09542492b02">foleys::ImageClip</a>.</p>
+<p>Implemented in <a class="el" href="classfoleys_1_1AudioClip.html#ae2aee23fb6ae2aca0e5411027f732749">AudioClip</a>, <a class="el" href="classfoleys_1_1ComposedClip.html#ae2aee23fb6ae2aca0e5411027f732749">ComposedClip</a>, <a class="el" href="classfoleys_1_1MovieClip.html#ae2aee23fb6ae2aca0e5411027f732749">MovieClip</a>, and <a class="el" href="classfoleys_1_1ImageClip.html#ae2aee23fb6ae2aca0e5411027f732749">ImageClip</a>.</p>
 
 </div>
 </div>
-<a id="a6d2d9782c4f4c14a5e32b1a1f063d2e2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6d2d9782c4f4c14a5e32b1a1f063d2e2">&#9670;&nbsp;</a></span>getLengthInSeconds()</h2>
+<a id="a368043d53f3b94c27710e039d2387289"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a368043d53f3b94c27710e039d2387289">&#9670;&nbsp;</a></span>getLengthInSeconds()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -311,7 +311,7 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual double foleys::AVClip::getLengthInSeconds </td>
+          <td class="memname">virtual double getLengthInSeconds </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -326,12 +326,12 @@ Protected Member Functions</h2></td></tr>
 
 <p>Returns the length of the clip in seconds. </p>
 
-<p>Implemented in <a class="el" href="classfoleys_1_1AudioClip.html#a035015cd7f45cb8e18779362f3967315">foleys::AudioClip</a>, <a class="el" href="classfoleys_1_1ImageClip.html#adb45de874d95ae0fa484962d3733ef5f">foleys::ImageClip</a>, <a class="el" href="classfoleys_1_1ComposedClip.html#a7cfac61a91b6cb4ca6db4ce0a30b1a44">foleys::ComposedClip</a>, and <a class="el" href="classfoleys_1_1MovieClip.html#a97fe160977ce4b90a0995f1e29ac90f5">foleys::MovieClip</a>.</p>
+<p>Implemented in <a class="el" href="classfoleys_1_1AudioClip.html#a058f80a9bbfb1d31eac4312628dcd042">AudioClip</a>, <a class="el" href="classfoleys_1_1ImageClip.html#a058f80a9bbfb1d31eac4312628dcd042">ImageClip</a>, <a class="el" href="classfoleys_1_1ComposedClip.html#a058f80a9bbfb1d31eac4312628dcd042">ComposedClip</a>, and <a class="el" href="classfoleys_1_1MovieClip.html#a058f80a9bbfb1d31eac4312628dcd042">MovieClip</a>.</p>
 
 </div>
 </div>
-<a id="a127037fd2103f0b1606040282d9884a3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a127037fd2103f0b1606040282d9884a3">&#9670;&nbsp;</a></span>getFrame()</h2>
+<a id="a13e61677c0b0a262a6d0d51695c32981"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13e61677c0b0a262a6d0d51695c32981">&#9670;&nbsp;</a></span>getFrame()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -340,7 +340,7 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual std::pair&lt;int64_t, juce::Image&gt; foleys::AVClip::getFrame </td>
+          <td class="memname">virtual std::pair&lt;int64_t, juce::Image&gt; getFrame </td>
           <td>(</td>
           <td class="paramtype">double&#160;</td>
           <td class="paramname"><em>pts</em></td><td>)</td>
@@ -356,12 +356,12 @@ Protected Member Functions</h2></td></tr>
 
 <p>Returns the frame for a certain timecode. </p>
 
-<p>Implemented in <a class="el" href="classfoleys_1_1MovieClip.html#a2cea28b3594800c24c1ca1e906cec253">foleys::MovieClip</a>, <a class="el" href="classfoleys_1_1AudioClip.html#a7df4b5d511e91e368487270a75762d42">foleys::AudioClip</a>, <a class="el" href="classfoleys_1_1ComposedClip.html#a87b34eafda3ddb2154c5105bc7647d7a">foleys::ComposedClip</a>, and <a class="el" href="classfoleys_1_1ImageClip.html#a6f8d66e062ca6b877b3970d42135a347">foleys::ImageClip</a>.</p>
+<p>Implemented in <a class="el" href="classfoleys_1_1MovieClip.html#a3f29c5660454e4224cc21ddea4c350eb">MovieClip</a>, <a class="el" href="classfoleys_1_1AudioClip.html#a8a8201b1b1c80e5195d23aaccfa4f1c6">AudioClip</a>, <a class="el" href="classfoleys_1_1ComposedClip.html#a3f29c5660454e4224cc21ddea4c350eb">ComposedClip</a>, and <a class="el" href="classfoleys_1_1ImageClip.html#a3f29c5660454e4224cc21ddea4c350eb">ImageClip</a>.</p>
 
 </div>
 </div>
-<a id="a9c534bac6b738d43a2a5c15ef08617bf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9c534bac6b738d43a2a5c15ef08617bf">&#9670;&nbsp;</a></span>isFrameAvailable()</h2>
+<a id="a1d7f61b87cb9b8757e9ddff1bac0ae46"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d7f61b87cb9b8757e9ddff1bac0ae46">&#9670;&nbsp;</a></span>isFrameAvailable()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -370,7 +370,7 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual bool foleys::AVClip::isFrameAvailable </td>
+          <td class="memname">virtual bool isFrameAvailable </td>
           <td>(</td>
           <td class="paramtype">double&#160;</td>
           <td class="paramname"><em>pts</em></td><td>)</td>
@@ -386,12 +386,12 @@ Protected Member Functions</h2></td></tr>
 
 <p>Checks, if a frame is available. </p>
 
-<p>Implemented in <a class="el" href="classfoleys_1_1MovieClip.html#a6917025d3c5114bb9e9c64040955eff6">foleys::MovieClip</a>, <a class="el" href="classfoleys_1_1AudioClip.html#a1c619a29532ea132dd060acf23392fb2">foleys::AudioClip</a>, <a class="el" href="classfoleys_1_1ComposedClip.html#a4e7f1918452029c531876c8cd32e5e02">foleys::ComposedClip</a>, and <a class="el" href="classfoleys_1_1ImageClip.html#aa26666e6a4415ce7c6c5622a48ff900e">foleys::ImageClip</a>.</p>
+<p>Implemented in <a class="el" href="classfoleys_1_1MovieClip.html#ac3d3676f324d9c3a6a5ffcea1fa6fe1c">MovieClip</a>, <a class="el" href="classfoleys_1_1AudioClip.html#ac3d3676f324d9c3a6a5ffcea1fa6fe1c">AudioClip</a>, <a class="el" href="classfoleys_1_1ComposedClip.html#ac3d3676f324d9c3a6a5ffcea1fa6fe1c">ComposedClip</a>, and <a class="el" href="classfoleys_1_1ImageClip.html#ac3d3676f324d9c3a6a5ffcea1fa6fe1c">ImageClip</a>.</p>
 
 </div>
 </div>
-<a id="af5e2218d354b835cdc757861d01c544e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af5e2218d354b835cdc757861d01c544e">&#9670;&nbsp;</a></span>getCurrentFrame()</h2>
+<a id="ac5ea99df2a855ab5d51320cfcf8f8c71"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac5ea99df2a855ab5d51320cfcf8f8c71">&#9670;&nbsp;</a></span>getCurrentFrame()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -400,7 +400,7 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual juce::Image foleys::AVClip::getCurrentFrame </td>
+          <td class="memname">virtual juce::Image getCurrentFrame </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -415,12 +415,12 @@ Protected Member Functions</h2></td></tr>
 
 <p>Returns the frame for the current time. </p>
 
-<p>Implemented in <a class="el" href="classfoleys_1_1MovieClip.html#a2257eb5f313bf2332b126e579b9d7be7">foleys::MovieClip</a>, <a class="el" href="classfoleys_1_1ComposedClip.html#aada945804ac0fcf3441a20b1a39b8dbf">foleys::ComposedClip</a>, <a class="el" href="classfoleys_1_1AudioClip.html#a794a643f80bba86e9e8b546ad4926d85">foleys::AudioClip</a>, and <a class="el" href="classfoleys_1_1ImageClip.html#acda0dcacf536d57e741e1cce66fc8a8a">foleys::ImageClip</a>.</p>
+<p>Implemented in <a class="el" href="classfoleys_1_1MovieClip.html#a43da797ba1d0be8b977b680e30a4bc4e">MovieClip</a>, <a class="el" href="classfoleys_1_1ComposedClip.html#a43da797ba1d0be8b977b680e30a4bc4e">ComposedClip</a>, <a class="el" href="classfoleys_1_1AudioClip.html#a43da797ba1d0be8b977b680e30a4bc4e">AudioClip</a>, and <a class="el" href="classfoleys_1_1ImageClip.html#a43da797ba1d0be8b977b680e30a4bc4e">ImageClip</a>.</p>
 
 </div>
 </div>
-<a id="a42b375de4ff4ae57cd3dd14b70d71677"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a42b375de4ff4ae57cd3dd14b70d71677">&#9670;&nbsp;</a></span>getCurrentTimeInSeconds()</h2>
+<a id="ada50c87cccbfc61cd2498003490f932f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada50c87cccbfc61cd2498003490f932f">&#9670;&nbsp;</a></span>getCurrentTimeInSeconds()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -429,7 +429,7 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual double foleys::AVClip::getCurrentTimeInSeconds </td>
+          <td class="memname">virtual double getCurrentTimeInSeconds </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -444,12 +444,12 @@ Protected Member Functions</h2></td></tr>
 
 <p>Return the clip's read position in seconds. </p>
 
-<p>Implemented in <a class="el" href="classfoleys_1_1MovieClip.html#a2976dca12fe5bf443bc1045422a9db98">foleys::MovieClip</a>, <a class="el" href="classfoleys_1_1AudioClip.html#a06eaa015b30e3654912ff9f0bdf430c2">foleys::AudioClip</a>, <a class="el" href="classfoleys_1_1ComposedClip.html#a2720dc2f682fcc41c78b404d93165e33">foleys::ComposedClip</a>, and <a class="el" href="classfoleys_1_1ImageClip.html#abd8e26df823513f0981edca44742bf6f">foleys::ImageClip</a>.</p>
+<p>Implemented in <a class="el" href="classfoleys_1_1MovieClip.html#ae5bba736ff85e6feee28cc80530e2af1">MovieClip</a>, <a class="el" href="classfoleys_1_1AudioClip.html#ae5bba736ff85e6feee28cc80530e2af1">AudioClip</a>, <a class="el" href="classfoleys_1_1ComposedClip.html#ae5bba736ff85e6feee28cc80530e2af1">ComposedClip</a>, and <a class="el" href="classfoleys_1_1ImageClip.html#ae5bba736ff85e6feee28cc80530e2af1">ImageClip</a>.</p>
 
 </div>
 </div>
-<a id="ac32e5aeececab03761d0f1e99aff36cb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac32e5aeececab03761d0f1e99aff36cb">&#9670;&nbsp;</a></span>getStillImage()</h2>
+<a id="a655dd2e37e784257a7636fda9603f9dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a655dd2e37e784257a7636fda9603f9dc">&#9670;&nbsp;</a></span>getStillImage()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -458,7 +458,7 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual juce::Image foleys::AVClip::getStillImage </td>
+          <td class="memname">virtual juce::Image getStillImage </td>
           <td>(</td>
           <td class="paramtype">double&#160;</td>
           <td class="paramname"><em>seconds</em>, </td>
@@ -485,12 +485,12 @@ Protected Member Functions</h2></td></tr>
 <p>This returns a still frame on the selected position. </p>
 <p>Don't use this method for streaming a video, because it will be slow </p>
 
-<p>Implemented in <a class="el" href="classfoleys_1_1MovieClip.html#a238937246faa328a806108d868beb8a3">foleys::MovieClip</a>, <a class="el" href="classfoleys_1_1AudioClip.html#a1cb9814a85ba2487b4e7c5b8a63a6c99">foleys::AudioClip</a>, <a class="el" href="classfoleys_1_1ImageClip.html#acef3bf165ece936dd1d5c93d5de9b556">foleys::ImageClip</a>, and <a class="el" href="classfoleys_1_1ComposedClip.html#a0773b4403b1fa0f70da5e4c05ccc5160">foleys::ComposedClip</a>.</p>
+<p>Implemented in <a class="el" href="classfoleys_1_1MovieClip.html#afae70eec0c45157458c0dae26b6434eb">MovieClip</a>, <a class="el" href="classfoleys_1_1AudioClip.html#afae70eec0c45157458c0dae26b6434eb">AudioClip</a>, <a class="el" href="classfoleys_1_1ImageClip.html#afae70eec0c45157458c0dae26b6434eb">ImageClip</a>, and <a class="el" href="classfoleys_1_1ComposedClip.html#afae70eec0c45157458c0dae26b6434eb">ComposedClip</a>.</p>
 
 </div>
 </div>
-<a id="a89d2ec710d252a2c60fc1de3de7a15a6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a89d2ec710d252a2c60fc1de3de7a15a6">&#9670;&nbsp;</a></span>hasVideo()</h2>
+<a id="aac83a4ed84dd21947ade6e0288aa93e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac83a4ed84dd21947ade6e0288aa93e1">&#9670;&nbsp;</a></span>hasVideo()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -499,7 +499,7 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual bool foleys::AVClip::hasVideo </td>
+          <td class="memname">virtual bool hasVideo </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -514,12 +514,12 @@ Protected Member Functions</h2></td></tr>
 
 <p>Returns true, if this clip will produce visual frames. </p>
 
-<p>Implemented in <a class="el" href="classfoleys_1_1MovieClip.html#adc3483b145758b174a88fc5ffcbfa70a">foleys::MovieClip</a>, <a class="el" href="classfoleys_1_1AudioClip.html#a2171a3559bf0bf881a8624bf0a4878c5">foleys::AudioClip</a>, <a class="el" href="classfoleys_1_1ComposedClip.html#adab3056b24ea728444b08ea80424ff35">foleys::ComposedClip</a>, and <a class="el" href="classfoleys_1_1ImageClip.html#ab05668264706f1959d9181029413761b">foleys::ImageClip</a>.</p>
+<p>Implemented in <a class="el" href="classfoleys_1_1MovieClip.html#a80789a6994173966857abe0d3ad28ed2">MovieClip</a>, <a class="el" href="classfoleys_1_1AudioClip.html#a80789a6994173966857abe0d3ad28ed2">AudioClip</a>, <a class="el" href="classfoleys_1_1ComposedClip.html#a80789a6994173966857abe0d3ad28ed2">ComposedClip</a>, and <a class="el" href="classfoleys_1_1ImageClip.html#a80789a6994173966857abe0d3ad28ed2">ImageClip</a>.</p>
 
 </div>
 </div>
-<a id="ad6167c2e95afbd8a46c1510291bf60d6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad6167c2e95afbd8a46c1510291bf60d6">&#9670;&nbsp;</a></span>hasAudio()</h2>
+<a id="a5c0218cfedafc948ea9050a665578d6e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c0218cfedafc948ea9050a665578d6e">&#9670;&nbsp;</a></span>hasAudio()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -528,7 +528,7 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual bool foleys::AVClip::hasAudio </td>
+          <td class="memname">virtual bool hasAudio </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -543,12 +543,12 @@ Protected Member Functions</h2></td></tr>
 
 <p>Returns true, if this clip will produce audio. </p>
 
-<p>Implemented in <a class="el" href="classfoleys_1_1MovieClip.html#a950f5a79984bba086fbbb0f98c2a6077">foleys::MovieClip</a>, <a class="el" href="classfoleys_1_1AudioClip.html#a62d0ebebf7d68b30313df2588fa4f072">foleys::AudioClip</a>, <a class="el" href="classfoleys_1_1ComposedClip.html#a968b2baafeff8b746a5fc2b2198504ef">foleys::ComposedClip</a>, and <a class="el" href="classfoleys_1_1ImageClip.html#a25cf64e1068274c2f1d8241a4f4620d5">foleys::ImageClip</a>.</p>
+<p>Implemented in <a class="el" href="classfoleys_1_1MovieClip.html#adb9f016436729ec5ad2a99bc93d14b22">MovieClip</a>, <a class="el" href="classfoleys_1_1AudioClip.html#adb9f016436729ec5ad2a99bc93d14b22">AudioClip</a>, <a class="el" href="classfoleys_1_1ComposedClip.html#adb9f016436729ec5ad2a99bc93d14b22">ComposedClip</a>, and <a class="el" href="classfoleys_1_1ImageClip.html#adb9f016436729ec5ad2a99bc93d14b22">ImageClip</a>.</p>
 
 </div>
 </div>
-<a id="a61c5ac9702baa8fa60400be48b599333"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a61c5ac9702baa8fa60400be48b599333">&#9670;&nbsp;</a></span>getSampleRate()</h2>
+<a id="aedda4ffe30cc9e2d0dcd4a67e59f9460"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aedda4ffe30cc9e2d0dcd4a67e59f9460">&#9670;&nbsp;</a></span>getSampleRate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -557,7 +557,7 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual double foleys::AVClip::getSampleRate </td>
+          <td class="memname">virtual double getSampleRate </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -572,12 +572,12 @@ Protected Member Functions</h2></td></tr>
 
 <p>This is the samplerate supplied from prepareToPlay and the sample rate this clip will produce audio and use as clock source. </p>
 
-<p>Implemented in <a class="el" href="classfoleys_1_1MovieClip.html#aefda6f5b6def479334131cd1abfbbc65">foleys::MovieClip</a>, <a class="el" href="classfoleys_1_1AudioClip.html#a2e6105a3f1639328193385f973bc1bed">foleys::AudioClip</a>, <a class="el" href="classfoleys_1_1ComposedClip.html#a242508308cf26726b1a657d423f1fabe">foleys::ComposedClip</a>, and <a class="el" href="classfoleys_1_1ImageClip.html#a6a2b5017d9bb4a5ef9d3b7b5b3135a6f">foleys::ImageClip</a>.</p>
+<p>Implemented in <a class="el" href="classfoleys_1_1MovieClip.html#aaf7722c4396a44d31c6c844b15c44e6c">MovieClip</a>, <a class="el" href="classfoleys_1_1AudioClip.html#aaf7722c4396a44d31c6c844b15c44e6c">AudioClip</a>, <a class="el" href="classfoleys_1_1ComposedClip.html#aaf7722c4396a44d31c6c844b15c44e6c">ComposedClip</a>, and <a class="el" href="classfoleys_1_1ImageClip.html#aaf7722c4396a44d31c6c844b15c44e6c">ImageClip</a>.</p>
 
 </div>
 </div>
-<a id="a579586c25211a364c7c0fab5bd6f1f13"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a579586c25211a364c7c0fab5bd6f1f13">&#9670;&nbsp;</a></span>createCopy()</h2>
+<a id="a30f8e4f7949fbae2a94fcd4271abe594"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a30f8e4f7949fbae2a94fcd4271abe594">&#9670;&nbsp;</a></span>createCopy()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -586,7 +586,7 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual std::shared_ptr&lt;<a class="el" href="classfoleys_1_1AVClip.html">AVClip</a>&gt; foleys::AVClip::createCopy </td>
+          <td class="memname">virtual std::shared_ptr&lt;<a class="el" href="classfoleys_1_1AVClip.html">AVClip</a>&gt; createCopy </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -602,18 +602,18 @@ Protected Member Functions</h2></td></tr>
 <p>This returns a copy of the clip. </p>
 <p>Note that this will not work properly if the clip is not properly registered in the engine, because the copy will automatically be registered with the engine as well. </p>
 
-<p>Implemented in <a class="el" href="classfoleys_1_1MovieClip.html#a85f48f410ce64d4ba3f6678a4df5e860">foleys::MovieClip</a>, <a class="el" href="classfoleys_1_1AudioClip.html#abb2bf57375eb6a67b4e09ddd37fed459">foleys::AudioClip</a>, <a class="el" href="classfoleys_1_1ComposedClip.html#ae2edbf5c4874400163c183355292bd00">foleys::ComposedClip</a>, and <a class="el" href="classfoleys_1_1ImageClip.html#ad756d53948c305a97b82aeb71966da8e">foleys::ImageClip</a>.</p>
+<p>Implemented in <a class="el" href="classfoleys_1_1MovieClip.html#a9c1142c2f3e4579a77c183cd4f17c687">MovieClip</a>, <a class="el" href="classfoleys_1_1AudioClip.html#a9c1142c2f3e4579a77c183cd4f17c687">AudioClip</a>, <a class="el" href="classfoleys_1_1ComposedClip.html#a9c1142c2f3e4579a77c183cd4f17c687">ComposedClip</a>, and <a class="el" href="classfoleys_1_1ImageClip.html#a9c1142c2f3e4579a77c183cd4f17c687">ImageClip</a>.</p>
 
 </div>
 </div>
-<a id="ac8e169de33f4ad8dbc59205c2cc79de0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac8e169de33f4ad8dbc59205c2cc79de0">&#9670;&nbsp;</a></span>addTimecodeListener()</h2>
+<a id="a04c9b04b7b73196f2e661c09060918f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a04c9b04b7b73196f2e661c09060918f5">&#9670;&nbsp;</a></span>addTimecodeListener()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void foleys::AVClip::addTimecodeListener </td>
+          <td class="memname">void addTimecodeListener </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structfoleys_1_1AVClip_1_1TimecodeListener.html">TimecodeListener</a> *&#160;</td>
           <td class="paramname"><em>listener</em></td><td>)</td>
@@ -626,14 +626,14 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a569abcda738bd3760ddbd30d620c4c48"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a569abcda738bd3760ddbd30d620c4c48">&#9670;&nbsp;</a></span>removeTimecodeListener()</h2>
+<a id="ab4fb3ddf8007139394f233b60c675ba5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab4fb3ddf8007139394f233b60c675ba5">&#9670;&nbsp;</a></span>removeTimecodeListener()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void foleys::AVClip::removeTimecodeListener </td>
+          <td class="memname">void removeTimecodeListener </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structfoleys_1_1AVClip_1_1TimecodeListener.html">TimecodeListener</a> *&#160;</td>
           <td class="paramname"><em>listener</em></td><td>)</td>
@@ -646,8 +646,8 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a85f17a5a724c83589f4b7a661a055fd6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a85f17a5a724c83589f4b7a661a055fd6">&#9670;&nbsp;</a></span>getBackgroundJob()</h2>
+<a id="af5014c847acdcbb3ad197fed85583f3e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af5014c847acdcbb3ad197fed85583f3e">&#9670;&nbsp;</a></span>getBackgroundJob()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -656,7 +656,7 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">juce::TimeSliceClient * foleys::AVClip::getBackgroundJob </td>
+          <td class="memname">juce::TimeSliceClient * getBackgroundJob </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -671,18 +671,18 @@ Protected Member Functions</h2></td></tr>
 
 <p>@Internal </p>
 
-<p>Reimplemented in <a class="el" href="classfoleys_1_1ComposedClip.html#ad2db349a535d479a018ff76be919107a">foleys::ComposedClip</a>, and <a class="el" href="classfoleys_1_1MovieClip.html#a292d8e25d73802cbf839433d0ce5b944">foleys::MovieClip</a>.</p>
+<p>Reimplemented in <a class="el" href="classfoleys_1_1ComposedClip.html#a5fa7692f764447e153e8cbd28df7f1f3">ComposedClip</a>, and <a class="el" href="classfoleys_1_1MovieClip.html#a5fa7692f764447e153e8cbd28df7f1f3">MovieClip</a>.</p>
 
 </div>
 </div>
-<a id="a8bcde683b325deef24e99714951da555"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8bcde683b325deef24e99714951da555">&#9670;&nbsp;</a></span>getVideoEngine()</h2>
+<a id="aecb43a41a8d68dc9295356a4c737e41f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aecb43a41a8d68dc9295356a4c737e41f">&#9670;&nbsp;</a></span>getVideoEngine()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classfoleys_1_1VideoEngine.html">VideoEngine</a> * foleys::AVClip::getVideoEngine </td>
+          <td class="memname"><a class="el" href="classfoleys_1_1VideoEngine.html">VideoEngine</a> * getVideoEngine </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -692,12 +692,12 @@ Protected Member Functions</h2></td></tr>
 
 <p>@Internal </p>
 
-<p class="reference">Referenced by <a class="el" href="classfoleys_1_1ClipDescriptor.html#a7fc2a827351b7e615f95f7e2b9dd8fcd">foleys::ClipDescriptor::ClipDescriptor()</a>, <a class="el" href="classfoleys_1_1ImageClip.html#ad756d53948c305a97b82aeb71966da8e">foleys::ImageClip::createCopy()</a>, <a class="el" href="classfoleys_1_1ComposedClip.html#ae2edbf5c4874400163c183355292bd00">foleys::ComposedClip::createCopy()</a>, <a class="el" href="classfoleys_1_1AudioClip.html#abb2bf57375eb6a67b4e09ddd37fed459">foleys::AudioClip::createCopy()</a>, <a class="el" href="classfoleys_1_1MovieClip.html#a85f48f410ce64d4ba3f6678a4df5e860">foleys::MovieClip::createCopy()</a>, <a class="el" href="classfoleys_1_1ComposedClip.html#a90358397472eeba557662f24065bdd2b">foleys::ComposedClip::getUndoManager()</a>, <a class="el" href="classfoleys_1_1MovieClip.html#a064d21a0be95b66445ff536c18062001">foleys::MovieClip::openFromFile()</a>, and <a class="el" href="classfoleys_1_1AudioClip.html#a137a9605c705cafd06ffc969ae363137">foleys::AudioClip::setAudioFormatReader()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classfoleys_1_1ClipDescriptor.html#ac20b5d50c964bd34a421d8a7342685af">ClipDescriptor::ClipDescriptor()</a>, <a class="el" href="classfoleys_1_1ImageClip.html#a9c1142c2f3e4579a77c183cd4f17c687">ImageClip::createCopy()</a>, <a class="el" href="classfoleys_1_1ComposedClip.html#a9c1142c2f3e4579a77c183cd4f17c687">ComposedClip::createCopy()</a>, <a class="el" href="classfoleys_1_1AudioClip.html#a9c1142c2f3e4579a77c183cd4f17c687">AudioClip::createCopy()</a>, <a class="el" href="classfoleys_1_1MovieClip.html#a9c1142c2f3e4579a77c183cd4f17c687">MovieClip::createCopy()</a>, <a class="el" href="classfoleys_1_1ComposedClip.html#abd0e3ded0f4b6340fbed147cce590319">ComposedClip::getUndoManager()</a>, <a class="el" href="classfoleys_1_1MovieClip.html#ab200b46d686c7f7a79b805ac4b91a919">MovieClip::openFromFile()</a>, and <a class="el" href="classfoleys_1_1AudioClip.html#a148f80b1a2afc2829f0d0e8dcde45be4">AudioClip::setAudioFormatReader()</a>.</p>
 
 </div>
 </div>
-<a id="a552ce6b4803b4dae356dcbff5d95e1c9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a552ce6b4803b4dae356dcbff5d95e1c9">&#9670;&nbsp;</a></span>sendTimecode()</h2>
+<a id="aff4df7964e6ef08abb899a29475c49d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aff4df7964e6ef08abb899a29475c49d0">&#9670;&nbsp;</a></span>sendTimecode()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -706,7 +706,7 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void foleys::AVClip::sendTimecode </td>
+          <td class="memname">void sendTimecode </td>
           <td>(</td>
           <td class="paramtype">int64_t&#160;</td>
           <td class="paramname"><em>count</em>, </td>
@@ -739,7 +739,7 @@ Protected Member Functions</h2></td></tr>
 <p>Subclasses can call this to notify displays, that the time code has changed, e.g. </p>
 <p>to display a new frame </p>
 
-<p class="reference">References <a class="el" href="structfoleys_1_1AVClip_1_1TimecodeListener.html#a7f0fb3179974bb79eaabf1239c0163c5">foleys::AVClip::TimecodeListener::timecodeChanged()</a>.</p>
+<p class="reference">References <a class="el" href="structfoleys_1_1AVClip_1_1TimecodeListener.html#aae470a1963834efc4484558a3534a013">AVClip::TimecodeListener::timecodeChanged()</a>.</p>
 
 </div>
 </div>
@@ -750,7 +750,7 @@ Protected Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat May 25 2019 10:21:09 for foleys_video_engine by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat May 25 2019 11:14:26 for foleys_video_engine by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.15
 </small></address>

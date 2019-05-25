@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>foleys_video_engine: foleys::AVReader Class Reference</title>
+<title>foleys_video_engine: AVReader Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -72,7 +72,7 @@ $(function() {
 <a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classfoleys_1_1AVReader-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">foleys::AVReader Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
+<div class="title">AVReader Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -81,59 +81,59 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a5c3e84272b0e613ac11621c0110ec369"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVReader.html#a5c3e84272b0e613ac11621c0110ec369">AVReader</a> ()=default</td></tr>
-<tr class="separator:a5c3e84272b0e613ac11621c0110ec369"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a84708bb1063cbf68c57d900dae9e2b65"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVReader.html#a84708bb1063cbf68c57d900dae9e2b65">~AVReader</a> ()=default</td></tr>
-<tr class="separator:a84708bb1063cbf68c57d900dae9e2b65"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac74de87abd09831a7f00f0e44cc22bda"><td class="memItemLeft" align="right" valign="top">virtual juce::File&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVReader.html#ac74de87abd09831a7f00f0e44cc22bda">getMediaFile</a> () const =0</td></tr>
-<tr class="separator:ac74de87abd09831a7f00f0e44cc22bda"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7d20c063477e693f26bd5cf20c0bd246"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVReader.html#a7d20c063477e693f26bd5cf20c0bd246">isOpenedOk</a> () const</td></tr>
-<tr class="separator:a7d20c063477e693f26bd5cf20c0bd246"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3e22c64345bce9c590d17bf07e722a83"><td class="memItemLeft" align="right" valign="top">virtual juce::int64&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVReader.html#a3e22c64345bce9c590d17bf07e722a83">getTotalLength</a> () const =0</td></tr>
-<tr class="separator:a3e22c64345bce9c590d17bf07e722a83"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab4e82695e421d8ba45abb2774e0d8b65"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVReader.html#ab4e82695e421d8ba45abb2774e0d8b65">setPosition</a> (const int64_t position)=0</td></tr>
-<tr class="memdesc:ab4e82695e421d8ba45abb2774e0d8b65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Seek the reader to a certain position.  <a href="#ab4e82695e421d8ba45abb2774e0d8b65">More...</a><br /></td></tr>
-<tr class="separator:ab4e82695e421d8ba45abb2774e0d8b65"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae772dc318f7cb8d08031b72a4346dee2"><td class="memItemLeft" align="right" valign="top">virtual juce::Image&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVReader.html#ae772dc318f7cb8d08031b72a4346dee2">getStillImage</a> (double seconds, <a class="el" href="structfoleys_1_1Size.html">Size</a> size)=0</td></tr>
-<tr class="memdesc:ae772dc318f7cb8d08031b72a4346dee2"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method allows direct access to a specific time to render thumbnails.  <a href="#ae772dc318f7cb8d08031b72a4346dee2">More...</a><br /></td></tr>
-<tr class="separator:ae772dc318f7cb8d08031b72a4346dee2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a70515564d4bd81977efdaba477f60fdb"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVReader.html#a70515564d4bd81977efdaba477f60fdb">readNewData</a> (<a class="el" href="classfoleys_1_1VideoFifo.html">VideoFifo</a> &amp;, <a class="el" href="classfoleys_1_1AudioFifo.html">AudioFifo</a> &amp;)=0</td></tr>
-<tr class="separator:a70515564d4bd81977efdaba477f60fdb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a127a658b2bc1fbb8f1c43ff630695729"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVReader.html#a127a658b2bc1fbb8f1c43ff630695729">hasVideo</a> () const =0</td></tr>
-<tr class="separator:a127a658b2bc1fbb8f1c43ff630695729"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3c4d514a48ad1eb28bed1506a1846875"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVReader.html#a3c4d514a48ad1eb28bed1506a1846875">hasAudio</a> () const =0</td></tr>
-<tr class="separator:a3c4d514a48ad1eb28bed1506a1846875"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a36cddec05bc82da2044aed5d93f0e0c2"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVReader.html#a36cddec05bc82da2044aed5d93f0e0c2">hasSubtitle</a> () const =0</td></tr>
-<tr class="separator:a36cddec05bc82da2044aed5d93f0e0c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1d139726699932aba24e1fb630de44a8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVReader.html#a1d139726699932aba24e1fb630de44a8">setOutputSampleRate</a> (double <a class="el" href="classfoleys_1_1AVReader.html#a8c2ede47a900cb68600e818204ac262f">sampleRate</a>)=0</td></tr>
-<tr class="separator:a1d139726699932aba24e1fb630de44a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa13002f8c49fef924e1ce73722b0e80"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVReader.html#afa13002f8c49fef924e1ce73722b0e80">AVReader</a> ()=default</td></tr>
+<tr class="separator:afa13002f8c49fef924e1ce73722b0e80"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d0a5df6d2992da90ad7293bc629e04e"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVReader.html#a1d0a5df6d2992da90ad7293bc629e04e">~AVReader</a> ()=default</td></tr>
+<tr class="separator:a1d0a5df6d2992da90ad7293bc629e04e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa95549269e859cb30b9373b9c8c7dee"><td class="memItemLeft" align="right" valign="top">virtual juce::File&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVReader.html#aaa95549269e859cb30b9373b9c8c7dee">getMediaFile</a> () const =0</td></tr>
+<tr class="separator:aaa95549269e859cb30b9373b9c8c7dee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40812a9db6012274565bb1d5359122e1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVReader.html#a40812a9db6012274565bb1d5359122e1">isOpenedOk</a> () const</td></tr>
+<tr class="separator:a40812a9db6012274565bb1d5359122e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a937b7fbf7ef5fa7f0798260ee343e024"><td class="memItemLeft" align="right" valign="top">virtual juce::int64&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVReader.html#a937b7fbf7ef5fa7f0798260ee343e024">getTotalLength</a> () const =0</td></tr>
+<tr class="separator:a937b7fbf7ef5fa7f0798260ee343e024"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a8a5592edf485a68403dda0af384f3e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVReader.html#a0a8a5592edf485a68403dda0af384f3e">setPosition</a> (const int64_t position)=0</td></tr>
+<tr class="memdesc:a0a8a5592edf485a68403dda0af384f3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Seek the reader to a certain position.  <a href="#a0a8a5592edf485a68403dda0af384f3e">More...</a><br /></td></tr>
+<tr class="separator:a0a8a5592edf485a68403dda0af384f3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a655dd2e37e784257a7636fda9603f9dc"><td class="memItemLeft" align="right" valign="top">virtual juce::Image&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVReader.html#a655dd2e37e784257a7636fda9603f9dc">getStillImage</a> (double seconds, <a class="el" href="structfoleys_1_1Size.html">Size</a> size)=0</td></tr>
+<tr class="memdesc:a655dd2e37e784257a7636fda9603f9dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method allows direct access to a specific time to render thumbnails.  <a href="#a655dd2e37e784257a7636fda9603f9dc">More...</a><br /></td></tr>
+<tr class="separator:a655dd2e37e784257a7636fda9603f9dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f41f86ecf2e052bba870c10da544620"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVReader.html#a5f41f86ecf2e052bba870c10da544620">readNewData</a> (<a class="el" href="classfoleys_1_1VideoFifo.html">VideoFifo</a> &amp;, <a class="el" href="classfoleys_1_1AudioFifo.html">AudioFifo</a> &amp;)=0</td></tr>
+<tr class="separator:a5f41f86ecf2e052bba870c10da544620"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac83a4ed84dd21947ade6e0288aa93e1"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVReader.html#aac83a4ed84dd21947ade6e0288aa93e1">hasVideo</a> () const =0</td></tr>
+<tr class="separator:aac83a4ed84dd21947ade6e0288aa93e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c0218cfedafc948ea9050a665578d6e"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVReader.html#a5c0218cfedafc948ea9050a665578d6e">hasAudio</a> () const =0</td></tr>
+<tr class="separator:a5c0218cfedafc948ea9050a665578d6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2520b685a650cc62969729e426c855ae"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVReader.html#a2520b685a650cc62969729e426c855ae">hasSubtitle</a> () const =0</td></tr>
+<tr class="separator:a2520b685a650cc62969729e426c855ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a998b1e38f8af9ed4d14f5e121f65b4a7"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVReader.html#a998b1e38f8af9ed4d14f5e121f65b4a7">setOutputSampleRate</a> (double <a class="el" href="classfoleys_1_1AVReader.html#a2bd79d2ab2dfb6aeaf75c2878ad30e1f">sampleRate</a>)=0</td></tr>
+<tr class="separator:a998b1e38f8af9ed4d14f5e121f65b4a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:aa8cf4afc5f4278fcea44c6b2afd8e71b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structfoleys_1_1Size.html">Size</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVReader.html#aa8cf4afc5f4278fcea44c6b2afd8e71b">originalSize</a></td></tr>
-<tr class="separator:aa8cf4afc5f4278fcea44c6b2afd8e71b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa63e97c43598bcebc853c73f493c8069"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVReader.html#aa63e97c43598bcebc853c73f493c8069">pixelFormat</a></td></tr>
-<tr class="separator:aa63e97c43598bcebc853c73f493c8069"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a43a6b5ddc469eab2275439a5525d5f2c"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVReader.html#a43a6b5ddc469eab2275439a5525d5f2c">timebase</a> = {}</td></tr>
-<tr class="separator:a43a6b5ddc469eab2275439a5525d5f2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8c2ede47a900cb68600e818204ac262f"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVReader.html#a8c2ede47a900cb68600e818204ac262f">sampleRate</a> = {}</td></tr>
-<tr class="separator:a8c2ede47a900cb68600e818204ac262f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ad24ea092f9da4310f00a539384c2d0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVReader.html#a4ad24ea092f9da4310f00a539384c2d0">numChannels</a> = 0</td></tr>
-<tr class="separator:a4ad24ea092f9da4310f00a539384c2d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad4a51eed46982acdf6c392a6acc02e0c"><td class="memItemLeft" align="right" valign="top">juce::int64&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVReader.html#ad4a51eed46982acdf6c392a6acc02e0c">numSamples</a> = 0</td></tr>
-<tr class="separator:ad4a51eed46982acdf6c392a6acc02e0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad90f3307bbc29c2ffd4a50a51bf9b951"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structfoleys_1_1Size.html">Size</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVReader.html#ad90f3307bbc29c2ffd4a50a51bf9b951">originalSize</a></td></tr>
+<tr class="separator:ad90f3307bbc29c2ffd4a50a51bf9b951"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7cb12aafc0fa9a0c11fb8953db8d0b58"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVReader.html#a7cb12aafc0fa9a0c11fb8953db8d0b58">pixelFormat</a></td></tr>
+<tr class="separator:a7cb12aafc0fa9a0c11fb8953db8d0b58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55e7e8c18dd354d62a445c15b0b5609f"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVReader.html#a55e7e8c18dd354d62a445c15b0b5609f">timebase</a> = {}</td></tr>
+<tr class="separator:a55e7e8c18dd354d62a445c15b0b5609f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2bd79d2ab2dfb6aeaf75c2878ad30e1f"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVReader.html#a2bd79d2ab2dfb6aeaf75c2878ad30e1f">sampleRate</a> = {}</td></tr>
+<tr class="separator:a2bd79d2ab2dfb6aeaf75c2878ad30e1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a833642af16b83f234a41e9038ac89aaf"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVReader.html#a833642af16b83f234a41e9038ac89aaf">numChannels</a> = 0</td></tr>
+<tr class="separator:a833642af16b83f234a41e9038ac89aaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d6f1ce794c2b3ab63209225b1acc8a4"><td class="memItemLeft" align="right" valign="top">juce::int64&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVReader.html#a1d6f1ce794c2b3ab63209225b1acc8a4">numSamples</a> = 0</td></tr>
+<tr class="separator:a1d6f1ce794c2b3ab63209225b1acc8a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
-<tr class="memitem:a489002c39d2e782ff1d906c94229156c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVReader.html#a489002c39d2e782ff1d906c94229156c">opened</a> = false</td></tr>
-<tr class="separator:a489002c39d2e782ff1d906c94229156c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4fc1742a358d497af869e3a39eb55d3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVReader.html#ae4fc1742a358d497af869e3a39eb55d3">opened</a> = false</td></tr>
+<tr class="separator:ae4fc1742a358d497af869e3a39eb55d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The <a class="el" href="classfoleys_1_1AVReader.html" title="The AVReader allows reading of AVClip classes.">AVReader</a> allows reading of <a class="el" href="classfoleys_1_1AVClip.html" title="AVClip is the abstract base class of displayable/playable clips.">AVClip</a> classes. </p>
 <p>This class is pure virtual to allow different implementations for various backends. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a5c3e84272b0e613ac11621c0110ec369"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5c3e84272b0e613ac11621c0110ec369">&#9670;&nbsp;</a></span>AVReader()</h2>
+<a id="afa13002f8c49fef924e1ce73722b0e80"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afa13002f8c49fef924e1ce73722b0e80">&#9670;&nbsp;</a></span>AVReader()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -142,7 +142,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">foleys::AVReader::AVReader </td>
+          <td class="memname"><a class="el" href="classfoleys_1_1AVReader.html">AVReader</a> </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -157,8 +157,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a84708bb1063cbf68c57d900dae9e2b65"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a84708bb1063cbf68c57d900dae9e2b65">&#9670;&nbsp;</a></span>~AVReader()</h2>
+<a id="a1d0a5df6d2992da90ad7293bc629e04e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d0a5df6d2992da90ad7293bc629e04e">&#9670;&nbsp;</a></span>~AVReader()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -167,7 +167,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual foleys::AVReader::~AVReader </td>
+          <td class="memname">virtual ~<a class="el" href="classfoleys_1_1AVReader.html">AVReader</a> </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -183,8 +183,8 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ac74de87abd09831a7f00f0e44cc22bda"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac74de87abd09831a7f00f0e44cc22bda">&#9670;&nbsp;</a></span>getMediaFile()</h2>
+<a id="aaa95549269e859cb30b9373b9c8c7dee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa95549269e859cb30b9373b9c8c7dee">&#9670;&nbsp;</a></span>getMediaFile()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -193,7 +193,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual juce::File foleys::AVReader::getMediaFile </td>
+          <td class="memname">virtual juce::File getMediaFile </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -208,14 +208,14 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a7d20c063477e693f26bd5cf20c0bd246"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7d20c063477e693f26bd5cf20c0bd246">&#9670;&nbsp;</a></span>isOpenedOk()</h2>
+<a id="a40812a9db6012274565bb1d5359122e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40812a9db6012274565bb1d5359122e1">&#9670;&nbsp;</a></span>isOpenedOk()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool foleys::AVReader::isOpenedOk </td>
+          <td class="memname">bool isOpenedOk </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -223,12 +223,12 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">References <a class="el" href="classfoleys_1_1AVReader.html#a489002c39d2e782ff1d906c94229156c">opened</a>.</p>
+<p class="reference">References <a class="el" href="classfoleys_1_1AVReader.html#ae4fc1742a358d497af869e3a39eb55d3">AVReader::opened</a>.</p>
 
 </div>
 </div>
-<a id="a3e22c64345bce9c590d17bf07e722a83"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3e22c64345bce9c590d17bf07e722a83">&#9670;&nbsp;</a></span>getTotalLength()</h2>
+<a id="a937b7fbf7ef5fa7f0798260ee343e024"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a937b7fbf7ef5fa7f0798260ee343e024">&#9670;&nbsp;</a></span>getTotalLength()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -237,7 +237,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual juce::int64 foleys::AVReader::getTotalLength </td>
+          <td class="memname">virtual juce::int64 getTotalLength </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -252,8 +252,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ab4e82695e421d8ba45abb2774e0d8b65"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab4e82695e421d8ba45abb2774e0d8b65">&#9670;&nbsp;</a></span>setPosition()</h2>
+<a id="a0a8a5592edf485a68403dda0af384f3e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a8a5592edf485a68403dda0af384f3e">&#9670;&nbsp;</a></span>setPosition()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -262,7 +262,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void foleys::AVReader::setPosition </td>
+          <td class="memname">virtual void setPosition </td>
           <td>(</td>
           <td class="paramtype">const int64_t&#160;</td>
           <td class="paramname"><em>position</em></td><td>)</td>
@@ -281,8 +281,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ae772dc318f7cb8d08031b72a4346dee2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae772dc318f7cb8d08031b72a4346dee2">&#9670;&nbsp;</a></span>getStillImage()</h2>
+<a id="a655dd2e37e784257a7636fda9603f9dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a655dd2e37e784257a7636fda9603f9dc">&#9670;&nbsp;</a></span>getStillImage()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -291,7 +291,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual juce::Image foleys::AVReader::getStillImage </td>
+          <td class="memname">virtual juce::Image getStillImage </td>
           <td>(</td>
           <td class="paramtype">double&#160;</td>
           <td class="paramname"><em>seconds</em>, </td>
@@ -320,8 +320,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a70515564d4bd81977efdaba477f60fdb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a70515564d4bd81977efdaba477f60fdb">&#9670;&nbsp;</a></span>readNewData()</h2>
+<a id="a5f41f86ecf2e052bba870c10da544620"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f41f86ecf2e052bba870c10da544620">&#9670;&nbsp;</a></span>readNewData()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -330,7 +330,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void foleys::AVReader::readNewData </td>
+          <td class="memname">virtual void readNewData </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classfoleys_1_1VideoFifo.html">VideoFifo</a> &amp;&#160;</td>
           <td class="paramname">, </td>
@@ -356,8 +356,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a127a658b2bc1fbb8f1c43ff630695729"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a127a658b2bc1fbb8f1c43ff630695729">&#9670;&nbsp;</a></span>hasVideo()</h2>
+<a id="aac83a4ed84dd21947ade6e0288aa93e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac83a4ed84dd21947ade6e0288aa93e1">&#9670;&nbsp;</a></span>hasVideo()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -366,7 +366,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual bool foleys::AVReader::hasVideo </td>
+          <td class="memname">virtual bool hasVideo </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -381,8 +381,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a3c4d514a48ad1eb28bed1506a1846875"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3c4d514a48ad1eb28bed1506a1846875">&#9670;&nbsp;</a></span>hasAudio()</h2>
+<a id="a5c0218cfedafc948ea9050a665578d6e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c0218cfedafc948ea9050a665578d6e">&#9670;&nbsp;</a></span>hasAudio()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -391,7 +391,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual bool foleys::AVReader::hasAudio </td>
+          <td class="memname">virtual bool hasAudio </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -406,8 +406,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a36cddec05bc82da2044aed5d93f0e0c2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a36cddec05bc82da2044aed5d93f0e0c2">&#9670;&nbsp;</a></span>hasSubtitle()</h2>
+<a id="a2520b685a650cc62969729e426c855ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2520b685a650cc62969729e426c855ae">&#9670;&nbsp;</a></span>hasSubtitle()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -416,7 +416,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual bool foleys::AVReader::hasSubtitle </td>
+          <td class="memname">virtual bool hasSubtitle </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -431,8 +431,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a1d139726699932aba24e1fb630de44a8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1d139726699932aba24e1fb630de44a8">&#9670;&nbsp;</a></span>setOutputSampleRate()</h2>
+<a id="a998b1e38f8af9ed4d14f5e121f65b4a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a998b1e38f8af9ed4d14f5e121f65b4a7">&#9670;&nbsp;</a></span>setOutputSampleRate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -441,7 +441,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void foleys::AVReader::setOutputSampleRate </td>
+          <td class="memname">virtual void setOutputSampleRate </td>
           <td>(</td>
           <td class="paramtype">double&#160;</td>
           <td class="paramname"><em>sampleRate</em></td><td>)</td>
@@ -458,92 +458,92 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="aa8cf4afc5f4278fcea44c6b2afd8e71b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa8cf4afc5f4278fcea44c6b2afd8e71b">&#9670;&nbsp;</a></span>originalSize</h2>
+<a id="ad90f3307bbc29c2ffd4a50a51bf9b951"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad90f3307bbc29c2ffd4a50a51bf9b951">&#9670;&nbsp;</a></span>originalSize</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structfoleys_1_1Size.html">Size</a> foleys::AVReader::originalSize</td>
+          <td class="memname"><a class="el" href="structfoleys_1_1Size.html">Size</a> originalSize</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="aa63e97c43598bcebc853c73f493c8069"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa63e97c43598bcebc853c73f493c8069">&#9670;&nbsp;</a></span>pixelFormat</h2>
+<a id="a7cb12aafc0fa9a0c11fb8953db8d0b58"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7cb12aafc0fa9a0c11fb8953db8d0b58">&#9670;&nbsp;</a></span>pixelFormat</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int foleys::AVReader::pixelFormat</td>
+          <td class="memname">int pixelFormat</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a43a6b5ddc469eab2275439a5525d5f2c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a43a6b5ddc469eab2275439a5525d5f2c">&#9670;&nbsp;</a></span>timebase</h2>
+<a id="a55e7e8c18dd354d62a445c15b0b5609f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a55e7e8c18dd354d62a445c15b0b5609f">&#9670;&nbsp;</a></span>timebase</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">double foleys::AVReader::timebase = {}</td>
+          <td class="memname">double timebase = {}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a8c2ede47a900cb68600e818204ac262f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8c2ede47a900cb68600e818204ac262f">&#9670;&nbsp;</a></span>sampleRate</h2>
+<a id="a2bd79d2ab2dfb6aeaf75c2878ad30e1f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2bd79d2ab2dfb6aeaf75c2878ad30e1f">&#9670;&nbsp;</a></span>sampleRate</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">double foleys::AVReader::sampleRate = {}</td>
+          <td class="memname">double sampleRate = {}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a4ad24ea092f9da4310f00a539384c2d0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4ad24ea092f9da4310f00a539384c2d0">&#9670;&nbsp;</a></span>numChannels</h2>
+<a id="a833642af16b83f234a41e9038ac89aaf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a833642af16b83f234a41e9038ac89aaf">&#9670;&nbsp;</a></span>numChannels</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int foleys::AVReader::numChannels = 0</td>
+          <td class="memname">int numChannels = 0</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="ad4a51eed46982acdf6c392a6acc02e0c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad4a51eed46982acdf6c392a6acc02e0c">&#9670;&nbsp;</a></span>numSamples</h2>
+<a id="a1d6f1ce794c2b3ab63209225b1acc8a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d6f1ce794c2b3ab63209225b1acc8a4">&#9670;&nbsp;</a></span>numSamples</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">juce::int64 foleys::AVReader::numSamples = 0</td>
+          <td class="memname">juce::int64 numSamples = 0</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a489002c39d2e782ff1d906c94229156c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a489002c39d2e782ff1d906c94229156c">&#9670;&nbsp;</a></span>opened</h2>
+<a id="ae4fc1742a358d497af869e3a39eb55d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae4fc1742a358d497af869e3a39eb55d3">&#9670;&nbsp;</a></span>opened</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -552,7 +552,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool foleys::AVReader::opened = false</td>
+          <td class="memname">bool opened = false</td>
         </tr>
       </table>
   </td>
@@ -562,7 +562,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="reference">Referenced by <a class="el" href="classfoleys_1_1AVReader.html#a7d20c063477e693f26bd5cf20c0bd246">isOpenedOk()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classfoleys_1_1AVReader.html#a40812a9db6012274565bb1d5359122e1">AVReader::isOpenedOk()</a>.</p>
 
 </div>
 </div>
@@ -572,7 +572,7 @@ Protected Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat May 25 2019 10:21:09 for foleys_video_engine by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat May 25 2019 11:14:26 for foleys_video_engine by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.15
 </small></address>

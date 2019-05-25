@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>foleys_video_engine: foleys::AVWriter Class Reference</title>
+<title>foleys_video_engine: AVWriter Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -71,7 +71,7 @@ $(function() {
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="classfoleys_1_1AVWriter-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">foleys::AVWriter Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
+<div class="title">AVWriter Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -80,40 +80,40 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ac297999d6a77978b9958e30dc1d6c942"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVWriter.html#ac297999d6a77978b9958e30dc1d6c942">AVWriter</a> ()=default</td></tr>
-<tr class="separator:ac297999d6a77978b9958e30dc1d6c942"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0a11a1da086c622d7b80c37aa975e8df"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVWriter.html#a0a11a1da086c622d7b80c37aa975e8df">~AVWriter</a> ()=default</td></tr>
-<tr class="separator:a0a11a1da086c622d7b80c37aa975e8df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae74acc23ad1fa8632a4141926b46c987"><td class="memItemLeft" align="right" valign="top">virtual juce::File&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVWriter.html#ae74acc23ad1fa8632a4141926b46c987">getMediaFile</a> () const =0</td></tr>
-<tr class="separator:ae74acc23ad1fa8632a4141926b46c987"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a30cc3cbfd769784b30ee691cc1e549c0"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVWriter.html#a30cc3cbfd769784b30ee691cc1e549c0">isOpenedOk</a> () const =0</td></tr>
-<tr class="separator:a30cc3cbfd769784b30ee691cc1e549c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac7752c115266641020e5a28d8e80f1b3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVWriter.html#ac7752c115266641020e5a28d8e80f1b3">pushSamples</a> (const juce::AudioBuffer&lt; float &gt; &amp;buffer, int stream=0)=0</td></tr>
-<tr class="separator:ac7752c115266641020e5a28d8e80f1b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f3b8bf80f45f52479981a686c4d984f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVWriter.html#a8f3b8bf80f45f52479981a686c4d984f">pushImage</a> (int64_t pos, juce::Image image, int stream=0)=0</td></tr>
-<tr class="separator:a8f3b8bf80f45f52479981a686c4d984f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a696a0fea30069d14650461cad650ba5b"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVWriter.html#a696a0fea30069d14650461cad650ba5b">addVideoStream</a> (const <a class="el" href="structfoleys_1_1VideoStreamSettings.html">VideoStreamSettings</a> &amp;settings)=0</td></tr>
-<tr class="separator:a696a0fea30069d14650461cad650ba5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a46b3a001dba140e5c839b1c5272d1597"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVWriter.html#a46b3a001dba140e5c839b1c5272d1597">addAudioStream</a> (const <a class="el" href="structfoleys_1_1AudioStreamSettings.html">AudioStreamSettings</a> &amp;settings)=0</td></tr>
-<tr class="separator:a46b3a001dba140e5c839b1c5272d1597"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adaa17f546cc6ce5bc39e10866097e94f"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVWriter.html#adaa17f546cc6ce5bc39e10866097e94f">startWriting</a> ()=0</td></tr>
-<tr class="separator:adaa17f546cc6ce5bc39e10866097e94f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af2f44e1dabfcc7418599d8889c91cd23"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVWriter.html#af2f44e1dabfcc7418599d8889c91cd23">finishWriting</a> ()=0</td></tr>
-<tr class="separator:af2f44e1dabfcc7418599d8889c91cd23"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aace746096519258a6ee44214e9378f80"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVWriter.html#aace746096519258a6ee44214e9378f80">AVWriter</a> ()=default</td></tr>
+<tr class="separator:aace746096519258a6ee44214e9378f80"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9053915592c4a9f2fbdf80e1af1d2c59"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVWriter.html#a9053915592c4a9f2fbdf80e1af1d2c59">~AVWriter</a> ()=default</td></tr>
+<tr class="separator:a9053915592c4a9f2fbdf80e1af1d2c59"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa95549269e859cb30b9373b9c8c7dee"><td class="memItemLeft" align="right" valign="top">virtual juce::File&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVWriter.html#aaa95549269e859cb30b9373b9c8c7dee">getMediaFile</a> () const =0</td></tr>
+<tr class="separator:aaa95549269e859cb30b9373b9c8c7dee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54dd0a68ec0a5621ac410b674c209683"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVWriter.html#a54dd0a68ec0a5621ac410b674c209683">isOpenedOk</a> () const =0</td></tr>
+<tr class="separator:a54dd0a68ec0a5621ac410b674c209683"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4dfb79aafe19478ced3811125942e0c6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVWriter.html#a4dfb79aafe19478ced3811125942e0c6">pushSamples</a> (const juce::AudioBuffer&lt; float &gt; &amp;buffer, int stream=0)=0</td></tr>
+<tr class="separator:a4dfb79aafe19478ced3811125942e0c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa753c267bc73c1a5405f16f8b03a630e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVWriter.html#aa753c267bc73c1a5405f16f8b03a630e">pushImage</a> (int64_t pos, juce::Image image, int stream=0)=0</td></tr>
+<tr class="separator:aa753c267bc73c1a5405f16f8b03a630e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abee686cda7bc6b8b4dc633d4c8d60a50"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVWriter.html#abee686cda7bc6b8b4dc633d4c8d60a50">addVideoStream</a> (const <a class="el" href="structfoleys_1_1VideoStreamSettings.html">VideoStreamSettings</a> &amp;settings)=0</td></tr>
+<tr class="separator:abee686cda7bc6b8b4dc633d4c8d60a50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a205fdad2d58f8b6a4b2d13f001cba1e5"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVWriter.html#a205fdad2d58f8b6a4b2d13f001cba1e5">addAudioStream</a> (const <a class="el" href="structfoleys_1_1AudioStreamSettings.html">AudioStreamSettings</a> &amp;settings)=0</td></tr>
+<tr class="separator:a205fdad2d58f8b6a4b2d13f001cba1e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c15777ce6304bff7b0c4a690b1417fe"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVWriter.html#a1c15777ce6304bff7b0c4a690b1417fe">startWriting</a> ()=0</td></tr>
+<tr class="separator:a1c15777ce6304bff7b0c4a690b1417fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac305b573acf5706758a59696fbeda0ff"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVWriter.html#ac305b573acf5706758a59696fbeda0ff">finishWriting</a> ()=0</td></tr>
+<tr class="separator:ac305b573acf5706758a59696fbeda0ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:ab163f65b3ae8b34b2884b59feeaa97b4"><td class="memItemLeft" align="right" valign="top">static juce::StringArray&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVWriter.html#ab163f65b3ae8b34b2884b59feeaa97b4">getMuxers</a> ()</td></tr>
-<tr class="separator:ab163f65b3ae8b34b2884b59feeaa97b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade69251b0a35f8500ac2b48a4d6b65ff"><td class="memItemLeft" align="right" valign="top">static juce::StringArray&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVWriter.html#ade69251b0a35f8500ac2b48a4d6b65ff">getPixelFormats</a> ()</td></tr>
-<tr class="separator:ade69251b0a35f8500ac2b48a4d6b65ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ae2f92429528a3c1e28d4ad5e15ccf7"><td class="memItemLeft" align="right" valign="top">static juce::StringArray&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVWriter.html#a6ae2f92429528a3c1e28d4ad5e15ccf7">getMuxers</a> ()</td></tr>
+<tr class="separator:a6ae2f92429528a3c1e28d4ad5e15ccf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5cea80624cafd755a42ffa9fbae4063"><td class="memItemLeft" align="right" valign="top">static juce::StringArray&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AVWriter.html#af5cea80624cafd755a42ffa9fbae4063">getPixelFormats</a> ()</td></tr>
+<tr class="separator:af5cea80624cafd755a42ffa9fbae4063"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The <a class="el" href="classfoleys_1_1AVWriter.html" title="The AVWriter allows exporting of AVClip classes.">AVWriter</a> allows exporting of <a class="el" href="classfoleys_1_1AVClip.html" title="AVClip is the abstract base class of displayable/playable clips.">AVClip</a> classes. </p>
 <p>This class is pure virtual to allow different implementations for various backends. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ac297999d6a77978b9958e30dc1d6c942"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac297999d6a77978b9958e30dc1d6c942">&#9670;&nbsp;</a></span>AVWriter()</h2>
+<a id="aace746096519258a6ee44214e9378f80"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aace746096519258a6ee44214e9378f80">&#9670;&nbsp;</a></span>AVWriter()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -122,7 +122,7 @@ Static Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">foleys::AVWriter::AVWriter </td>
+          <td class="memname"><a class="el" href="classfoleys_1_1AVWriter.html">AVWriter</a> </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -137,8 +137,8 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a0a11a1da086c622d7b80c37aa975e8df"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0a11a1da086c622d7b80c37aa975e8df">&#9670;&nbsp;</a></span>~AVWriter()</h2>
+<a id="a9053915592c4a9f2fbdf80e1af1d2c59"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9053915592c4a9f2fbdf80e1af1d2c59">&#9670;&nbsp;</a></span>~AVWriter()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -147,7 +147,7 @@ Static Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual foleys::AVWriter::~AVWriter </td>
+          <td class="memname">virtual ~<a class="el" href="classfoleys_1_1AVWriter.html">AVWriter</a> </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -163,8 +163,8 @@ Static Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ae74acc23ad1fa8632a4141926b46c987"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae74acc23ad1fa8632a4141926b46c987">&#9670;&nbsp;</a></span>getMediaFile()</h2>
+<a id="aaa95549269e859cb30b9373b9c8c7dee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa95549269e859cb30b9373b9c8c7dee">&#9670;&nbsp;</a></span>getMediaFile()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -173,7 +173,7 @@ Static Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual juce::File foleys::AVWriter::getMediaFile </td>
+          <td class="memname">virtual juce::File getMediaFile </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -188,8 +188,8 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a30cc3cbfd769784b30ee691cc1e549c0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a30cc3cbfd769784b30ee691cc1e549c0">&#9670;&nbsp;</a></span>isOpenedOk()</h2>
+<a id="a54dd0a68ec0a5621ac410b674c209683"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a54dd0a68ec0a5621ac410b674c209683">&#9670;&nbsp;</a></span>isOpenedOk()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -198,7 +198,7 @@ Static Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual bool foleys::AVWriter::isOpenedOk </td>
+          <td class="memname">virtual bool isOpenedOk </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -213,8 +213,8 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ac7752c115266641020e5a28d8e80f1b3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac7752c115266641020e5a28d8e80f1b3">&#9670;&nbsp;</a></span>pushSamples()</h2>
+<a id="a4dfb79aafe19478ced3811125942e0c6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4dfb79aafe19478ced3811125942e0c6">&#9670;&nbsp;</a></span>pushSamples()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -223,7 +223,7 @@ Static Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void foleys::AVWriter::pushSamples </td>
+          <td class="memname">virtual void pushSamples </td>
           <td>(</td>
           <td class="paramtype">const juce::AudioBuffer&lt; float &gt; &amp;&#160;</td>
           <td class="paramname"><em>buffer</em>, </td>
@@ -249,8 +249,8 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a8f3b8bf80f45f52479981a686c4d984f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8f3b8bf80f45f52479981a686c4d984f">&#9670;&nbsp;</a></span>pushImage()</h2>
+<a id="aa753c267bc73c1a5405f16f8b03a630e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa753c267bc73c1a5405f16f8b03a630e">&#9670;&nbsp;</a></span>pushImage()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -259,7 +259,7 @@ Static Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void foleys::AVWriter::pushImage </td>
+          <td class="memname">virtual void pushImage </td>
           <td>(</td>
           <td class="paramtype">int64_t&#160;</td>
           <td class="paramname"><em>pos</em>, </td>
@@ -291,8 +291,8 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a696a0fea30069d14650461cad650ba5b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a696a0fea30069d14650461cad650ba5b">&#9670;&nbsp;</a></span>addVideoStream()</h2>
+<a id="abee686cda7bc6b8b4dc633d4c8d60a50"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abee686cda7bc6b8b4dc633d4c8d60a50">&#9670;&nbsp;</a></span>addVideoStream()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -301,7 +301,7 @@ Static Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual int foleys::AVWriter::addVideoStream </td>
+          <td class="memname">virtual int addVideoStream </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structfoleys_1_1VideoStreamSettings.html">VideoStreamSettings</a> &amp;&#160;</td>
           <td class="paramname"><em>settings</em></td><td>)</td>
@@ -317,8 +317,8 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a46b3a001dba140e5c839b1c5272d1597"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a46b3a001dba140e5c839b1c5272d1597">&#9670;&nbsp;</a></span>addAudioStream()</h2>
+<a id="a205fdad2d58f8b6a4b2d13f001cba1e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a205fdad2d58f8b6a4b2d13f001cba1e5">&#9670;&nbsp;</a></span>addAudioStream()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -327,7 +327,7 @@ Static Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual int foleys::AVWriter::addAudioStream </td>
+          <td class="memname">virtual int addAudioStream </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structfoleys_1_1AudioStreamSettings.html">AudioStreamSettings</a> &amp;&#160;</td>
           <td class="paramname"><em>settings</em></td><td>)</td>
@@ -343,8 +343,8 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="adaa17f546cc6ce5bc39e10866097e94f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adaa17f546cc6ce5bc39e10866097e94f">&#9670;&nbsp;</a></span>startWriting()</h2>
+<a id="a1c15777ce6304bff7b0c4a690b1417fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c15777ce6304bff7b0c4a690b1417fe">&#9670;&nbsp;</a></span>startWriting()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -353,7 +353,7 @@ Static Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual bool foleys::AVWriter::startWriting </td>
+          <td class="memname">virtual bool startWriting </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -368,8 +368,8 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="af2f44e1dabfcc7418599d8889c91cd23"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af2f44e1dabfcc7418599d8889c91cd23">&#9670;&nbsp;</a></span>finishWriting()</h2>
+<a id="ac305b573acf5706758a59696fbeda0ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac305b573acf5706758a59696fbeda0ff">&#9670;&nbsp;</a></span>finishWriting()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -378,7 +378,7 @@ Static Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void foleys::AVWriter::finishWriting </td>
+          <td class="memname">virtual void finishWriting </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -393,8 +393,8 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ab163f65b3ae8b34b2884b59feeaa97b4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab163f65b3ae8b34b2884b59feeaa97b4">&#9670;&nbsp;</a></span>getMuxers()</h2>
+<a id="a6ae2f92429528a3c1e28d4ad5e15ccf7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ae2f92429528a3c1e28d4ad5e15ccf7">&#9670;&nbsp;</a></span>getMuxers()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -403,7 +403,7 @@ Static Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static juce::StringArray foleys::AVWriter::getMuxers </td>
+          <td class="memname">static juce::StringArray getMuxers </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -418,8 +418,8 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ade69251b0a35f8500ac2b48a4d6b65ff"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ade69251b0a35f8500ac2b48a4d6b65ff">&#9670;&nbsp;</a></span>getPixelFormats()</h2>
+<a id="af5cea80624cafd755a42ffa9fbae4063"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af5cea80624cafd755a42ffa9fbae4063">&#9670;&nbsp;</a></span>getPixelFormats()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -428,7 +428,7 @@ Static Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static juce::StringArray foleys::AVWriter::getPixelFormats </td>
+          <td class="memname">static juce::StringArray getPixelFormats </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -449,7 +449,7 @@ Static Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat May 25 2019 10:21:09 for foleys_video_engine by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat May 25 2019 11:14:26 for foleys_video_engine by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.15
 </small></address>

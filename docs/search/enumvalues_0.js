@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['audio',['Audio',['../classfoleys_1_1StreamTypes.html#a2a251dba8235a84e0808b6ea70e73ac9a70644323e862cf072d343af9fd781efe',1,'foleys::StreamTypes']]]
+  ['audio',['Audio',['../classfoleys_1_1StreamTypes.html#a8a65141d9ea4bf9d2e2377ed6b888a1dad3c111fe8a0e835609a6187d6e9d2e57',1,'foleys::StreamTypes']]]
 ];

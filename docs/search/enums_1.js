@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['streamtype',['StreamType',['../classfoleys_1_1StreamTypes.html#a2a251dba8235a84e0808b6ea70e73ac9',1,'foleys::StreamTypes']]]
+  ['streamtype',['StreamType',['../classfoleys_1_1StreamTypes.html#a8a65141d9ea4bf9d2e2377ed6b888a1d',1,'foleys::StreamTypes']]]
 ];

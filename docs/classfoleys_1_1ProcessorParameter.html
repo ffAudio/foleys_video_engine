@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>foleys_video_engine: foleys::ProcessorParameter Class Reference</title>
+<title>foleys_video_engine: ProcessorParameter Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -67,79 +67,73 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classfoleys_1_1ProcessorParameter-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">foleys::ProcessorParameter Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
+<div class="title">ProcessorParameter Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for foleys::ProcessorParameter:</div>
+  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for ProcessorParameter:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
  <div class="center">
-  <img src="classfoleys_1_1ProcessorParameter.png" usemap="#foleys::ProcessorParameter_map" alt=""/>
-  <map id="foleys::ProcessorParameter_map" name="foleys::ProcessorParameter_map">
-<area href="classfoleys_1_1ProcessorParameterFloat.html" alt="foleys::ProcessorParameterFloat" shape="rect" coords="0,56,196,80"/>
+  <img src="classfoleys_1_1ProcessorParameter.png" usemap="#ProcessorParameter_map" alt=""/>
+  <map id="ProcessorParameter_map" name="ProcessorParameter_map">
+<area href="classfoleys_1_1ProcessorParameterFloat.html" alt="ProcessorParameterFloat" shape="rect" coords="0,56,156,80"/>
   </map>
 </div></div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ProcessorParameter_1_1Listener.html">Listener</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ab558ba33d6d74c755519b5d2f8c8ee9b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ProcessorParameter.html#ab558ba33d6d74c755519b5d2f8c8ee9b">ProcessorParameter</a> (const juce::String &amp;paramID, const juce::String &amp;name)</td></tr>
-<tr class="memdesc:ab558ba33d6d74c755519b5d2f8c8ee9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">This defines a parameter to be used in Processors like the <a class="el" href="classfoleys_1_1VideoProcessor.html">VideoProcessor</a>.  <a href="#ab558ba33d6d74c755519b5d2f8c8ee9b">More...</a><br /></td></tr>
-<tr class="separator:ab558ba33d6d74c755519b5d2f8c8ee9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a53cdbf2a2f35bf347ffe074594a50789"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ProcessorParameter.html#a53cdbf2a2f35bf347ffe074594a50789">~ProcessorParameter</a> ()=default</td></tr>
-<tr class="separator:a53cdbf2a2f35bf347ffe074594a50789"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a846580b4f320b73fc96da665d1397373"><td class="memItemLeft" align="right" valign="top">const juce::String &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ProcessorParameter.html#a846580b4f320b73fc96da665d1397373">getParameterID</a> () const</td></tr>
-<tr class="separator:a846580b4f320b73fc96da665d1397373"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0239e229ede45548002f89d5d603687a"><td class="memItemLeft" align="right" valign="top">const juce::String &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ProcessorParameter.html#a0239e229ede45548002f89d5d603687a">getName</a> () const</td></tr>
-<tr class="separator:a0239e229ede45548002f89d5d603687a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a95e9ad4f88a5b1bc2c45b355a6124fbf"><td class="memItemLeft" align="right" valign="top">virtual double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ProcessorParameter.html#a95e9ad4f88a5b1bc2c45b355a6124fbf">getRawParameterValue</a> ()=0</td></tr>
-<tr class="separator:a95e9ad4f88a5b1bc2c45b355a6124fbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4e2e40cd2480a67af4e9d3ba039016cd"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ProcessorParameter.html#a4e2e40cd2480a67af4e9d3ba039016cd">getNormalisedValue</a> () const =0</td></tr>
-<tr class="separator:a4e2e40cd2480a67af4e9d3ba039016cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a43a1548ffaf10c7c6a542639a1530f8d"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ProcessorParameter.html#a43a1548ffaf10c7c6a542639a1530f8d">getRealValue</a> () const =0</td></tr>
-<tr class="separator:a43a1548ffaf10c7c6a542639a1530f8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8783a8810b5703c0a29b88444e89bebb"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ProcessorParameter.html#a8783a8810b5703c0a29b88444e89bebb">getDefaultValue</a> () const =0</td></tr>
-<tr class="separator:a8783a8810b5703c0a29b88444e89bebb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa531f82c859d55604d17d9c8ee8fa852"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ProcessorParameter.html#aa531f82c859d55604d17d9c8ee8fa852">setNormalisedValue</a> (double value)=0</td></tr>
-<tr class="separator:aa531f82c859d55604d17d9c8ee8fa852"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af504505e5d6883c666ff27afc5d8a320"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ProcessorParameter.html#af504505e5d6883c666ff27afc5d8a320">setRealValue</a> (double value)=0</td></tr>
-<tr class="separator:af504505e5d6883c666ff27afc5d8a320"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a69ecb7d76693fa6bb5833dbd7e5f3a18"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ProcessorParameter.html#a69ecb7d76693fa6bb5833dbd7e5f3a18">normaliseValue</a> (double realValue)=0</td></tr>
-<tr class="separator:a69ecb7d76693fa6bb5833dbd7e5f3a18"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5ccd634ca50e9ba064b486e79a34d99f"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ProcessorParameter.html#a5ccd634ca50e9ba064b486e79a34d99f">unnormalisedValue</a> (double normalValue)=0</td></tr>
-<tr class="separator:a5ccd634ca50e9ba064b486e79a34d99f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8eb0f461681b16fd8c79f28c5cc0cbb1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ProcessorParameter.html#a8eb0f461681b16fd8c79f28c5cc0cbb1">beginGesture</a> ()</td></tr>
-<tr class="separator:a8eb0f461681b16fd8c79f28c5cc0cbb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa9ec1840f95b47f1e69da60e0eafe568"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ProcessorParameter.html#aa9ec1840f95b47f1e69da60e0eafe568">endGesture</a> ()</td></tr>
-<tr class="separator:aa9ec1840f95b47f1e69da60e0eafe568"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a91aa173f60ed5cfd84fbbae2b857a052"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ProcessorParameter.html#a91aa173f60ed5cfd84fbbae2b857a052">isGestureInProgress</a> () const</td></tr>
-<tr class="separator:a91aa173f60ed5cfd84fbbae2b857a052"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5639da99a6775f87b30335936f7974c5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ProcessorParameter.html#a5639da99a6775f87b30335936f7974c5">addListener</a> (<a class="el" href="classfoleys_1_1ProcessorParameter_1_1Listener.html">Listener</a> *listener)</td></tr>
-<tr class="separator:a5639da99a6775f87b30335936f7974c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeb172860917e06231982ae087d46e9af"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ProcessorParameter.html#aeb172860917e06231982ae087d46e9af">removeListener</a> (<a class="el" href="classfoleys_1_1ProcessorParameter_1_1Listener.html">Listener</a> *listener)</td></tr>
-<tr class="separator:aeb172860917e06231982ae087d46e9af"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a30268f2376303ab58bf4803b6c5d4ad4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ProcessorParameter.html#a30268f2376303ab58bf4803b6c5d4ad4">sendUpdateNotification</a> ()</td></tr>
-<tr class="separator:a30268f2376303ab58bf4803b6c5d4ad4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a163adc2f5cdb6f880cd75a86ad1699ff"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ProcessorParameter.html#a163adc2f5cdb6f880cd75a86ad1699ff">ProcessorParameter</a> (const juce::String &amp;paramID, const juce::String &amp;name)</td></tr>
+<tr class="memdesc:a163adc2f5cdb6f880cd75a86ad1699ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">This defines a parameter to be used in Processors like the <a class="el" href="classfoleys_1_1VideoProcessor.html">VideoProcessor</a>.  <a href="#a163adc2f5cdb6f880cd75a86ad1699ff">More...</a><br /></td></tr>
+<tr class="separator:a163adc2f5cdb6f880cd75a86ad1699ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab051188bedd2d50439b90cd3d9d70e3d"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ProcessorParameter.html#ab051188bedd2d50439b90cd3d9d70e3d">~ProcessorParameter</a> ()=default</td></tr>
+<tr class="separator:ab051188bedd2d50439b90cd3d9d70e3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad07e8477c18d0e42db55503b6243227"><td class="memItemLeft" align="right" valign="top">const juce::String &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ProcessorParameter.html#aad07e8477c18d0e42db55503b6243227">getParameterID</a> () const</td></tr>
+<tr class="separator:aad07e8477c18d0e42db55503b6243227"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac63c065cdc9b0208421b67eb3d9cc2b3"><td class="memItemLeft" align="right" valign="top">const juce::String &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ProcessorParameter.html#ac63c065cdc9b0208421b67eb3d9cc2b3">getName</a> () const</td></tr>
+<tr class="separator:ac63c065cdc9b0208421b67eb3d9cc2b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96f42c1b5ed311e1a2f0ef459331b4aa"><td class="memItemLeft" align="right" valign="top">virtual double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ProcessorParameter.html#a96f42c1b5ed311e1a2f0ef459331b4aa">getRawParameterValue</a> ()=0</td></tr>
+<tr class="separator:a96f42c1b5ed311e1a2f0ef459331b4aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a160afb3fd1045008dbbcc36006200f7f"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ProcessorParameter.html#a160afb3fd1045008dbbcc36006200f7f">getNormalisedValue</a> () const =0</td></tr>
+<tr class="separator:a160afb3fd1045008dbbcc36006200f7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac551deb501fefa12e50776cdf22a6ecb"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ProcessorParameter.html#ac551deb501fefa12e50776cdf22a6ecb">getRealValue</a> () const =0</td></tr>
+<tr class="separator:ac551deb501fefa12e50776cdf22a6ecb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9753788f11d7bf9a71aac58aec62a61e"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ProcessorParameter.html#a9753788f11d7bf9a71aac58aec62a61e">getDefaultValue</a> () const =0</td></tr>
+<tr class="separator:a9753788f11d7bf9a71aac58aec62a61e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90928f59cc4da92d4df5e0f3e963bc53"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ProcessorParameter.html#a90928f59cc4da92d4df5e0f3e963bc53">setNormalisedValue</a> (double value)=0</td></tr>
+<tr class="separator:a90928f59cc4da92d4df5e0f3e963bc53"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e28f4a163cad0ce7461cfbbbe3bb4ef"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ProcessorParameter.html#a2e28f4a163cad0ce7461cfbbbe3bb4ef">setRealValue</a> (double value)=0</td></tr>
+<tr class="separator:a2e28f4a163cad0ce7461cfbbbe3bb4ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c53b43fc43df9f6532642b8445a1565"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ProcessorParameter.html#a1c53b43fc43df9f6532642b8445a1565">normaliseValue</a> (double realValue)=0</td></tr>
+<tr class="separator:a1c53b43fc43df9f6532642b8445a1565"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa972c4c0b852ae6483db7dd844bd4b15"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ProcessorParameter.html#aa972c4c0b852ae6483db7dd844bd4b15">unnormalisedValue</a> (double normalValue)=0</td></tr>
+<tr class="separator:aa972c4c0b852ae6483db7dd844bd4b15"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7de3d2942dc7551647d212b588a8502a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ProcessorParameter.html#a7de3d2942dc7551647d212b588a8502a">beginGesture</a> ()</td></tr>
+<tr class="separator:a7de3d2942dc7551647d212b588a8502a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6cd18e2e783c4e85417f8d01e5ef523"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ProcessorParameter.html#aa6cd18e2e783c4e85417f8d01e5ef523">endGesture</a> ()</td></tr>
+<tr class="separator:aa6cd18e2e783c4e85417f8d01e5ef523"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3adaeebb8390d05121b39c9d58ee4e43"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ProcessorParameter.html#a3adaeebb8390d05121b39c9d58ee4e43">isGestureInProgress</a> () const</td></tr>
+<tr class="separator:a3adaeebb8390d05121b39c9d58ee4e43"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf312004846c89cae4c3a05315494840"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ProcessorParameter.html#abf312004846c89cae4c3a05315494840">addListener</a> (Listener *listener)</td></tr>
+<tr class="separator:abf312004846c89cae4c3a05315494840"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa45c27354c4333759444d23ec9248b66"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ProcessorParameter.html#aa45c27354c4333759444d23ec9248b66">removeListener</a> (Listener *listener)</td></tr>
+<tr class="separator:aa45c27354c4333759444d23ec9248b66"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf3144e14bf8a8a3174c9f279b72dffc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ProcessorParameter.html#adf3144e14bf8a8a3174c9f279b72dffc">sendUpdateNotification</a> ()</td></tr>
+<tr class="separator:adf3144e14bf8a8a3174c9f279b72dffc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ab558ba33d6d74c755519b5d2f8c8ee9b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab558ba33d6d74c755519b5d2f8c8ee9b">&#9670;&nbsp;</a></span>ProcessorParameter()</h2>
+<a id="a163adc2f5cdb6f880cd75a86ad1699ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a163adc2f5cdb6f880cd75a86ad1699ff">&#9670;&nbsp;</a></span>ProcessorParameter()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">foleys::ProcessorParameter::ProcessorParameter </td>
+          <td class="memname"><a class="el" href="classfoleys_1_1ProcessorParameter.html">ProcessorParameter</a> </td>
           <td>(</td>
           <td class="paramtype">const juce::String &amp;&#160;</td>
           <td class="paramname"><em>paramID</em>, </td>
@@ -169,8 +163,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a53cdbf2a2f35bf347ffe074594a50789"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a53cdbf2a2f35bf347ffe074594a50789">&#9670;&nbsp;</a></span>~ProcessorParameter()</h2>
+<a id="ab051188bedd2d50439b90cd3d9d70e3d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab051188bedd2d50439b90cd3d9d70e3d">&#9670;&nbsp;</a></span>~ProcessorParameter()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -179,7 +173,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual foleys::ProcessorParameter::~ProcessorParameter </td>
+          <td class="memname">virtual ~<a class="el" href="classfoleys_1_1ProcessorParameter.html">ProcessorParameter</a> </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -195,14 +189,14 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a846580b4f320b73fc96da665d1397373"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a846580b4f320b73fc96da665d1397373">&#9670;&nbsp;</a></span>getParameterID()</h2>
+<a id="aad07e8477c18d0e42db55503b6243227"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad07e8477c18d0e42db55503b6243227">&#9670;&nbsp;</a></span>getParameterID()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const juce::String &amp; foleys::ProcessorParameter::getParameterID </td>
+          <td class="memname">const juce::String &amp; getParameterID </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -212,14 +206,14 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a0239e229ede45548002f89d5d603687a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0239e229ede45548002f89d5d603687a">&#9670;&nbsp;</a></span>getName()</h2>
+<a id="ac63c065cdc9b0208421b67eb3d9cc2b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac63c065cdc9b0208421b67eb3d9cc2b3">&#9670;&nbsp;</a></span>getName()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const juce::String &amp; foleys::ProcessorParameter::getName </td>
+          <td class="memname">const juce::String &amp; getName </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -227,12 +221,12 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">Referenced by <a class="el" href="classfoleys_1_1VideoParameterAutomation.html#a1d70f2c1517ce693c8c8360e8117fa6e">foleys::VideoParameterAutomation::getName()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classfoleys_1_1VideoParameterAutomation.html#ae0387d9be15cb723f7df45e93df8d3ee">VideoParameterAutomation::getName()</a>.</p>
 
 </div>
 </div>
-<a id="a95e9ad4f88a5b1bc2c45b355a6124fbf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a95e9ad4f88a5b1bc2c45b355a6124fbf">&#9670;&nbsp;</a></span>getRawParameterValue()</h2>
+<a id="a96f42c1b5ed311e1a2f0ef459331b4aa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96f42c1b5ed311e1a2f0ef459331b4aa">&#9670;&nbsp;</a></span>getRawParameterValue()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -241,7 +235,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual double* foleys::ProcessorParameter::getRawParameterValue </td>
+          <td class="memname">virtual double* getRawParameterValue </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -254,12 +248,12 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="classfoleys_1_1ProcessorParameterFloat.html#a8eb67db1f7fbda7f36ce36575829e005">foleys::ProcessorParameterFloat</a>.</p>
+<p>Implemented in <a class="el" href="classfoleys_1_1ProcessorParameterFloat.html#ae24efc4fcd58c122b888020068c4dae6">ProcessorParameterFloat</a>.</p>
 
 </div>
 </div>
-<a id="a4e2e40cd2480a67af4e9d3ba039016cd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4e2e40cd2480a67af4e9d3ba039016cd">&#9670;&nbsp;</a></span>getNormalisedValue()</h2>
+<a id="a160afb3fd1045008dbbcc36006200f7f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a160afb3fd1045008dbbcc36006200f7f">&#9670;&nbsp;</a></span>getNormalisedValue()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -268,7 +262,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual double foleys::ProcessorParameter::getNormalisedValue </td>
+          <td class="memname">virtual double getNormalisedValue </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -281,12 +275,12 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="classfoleys_1_1ProcessorParameterFloat.html#adb7ffd859f836272230237983c20f278">foleys::ProcessorParameterFloat</a>.</p>
+<p>Implemented in <a class="el" href="classfoleys_1_1ProcessorParameterFloat.html#a91b4e428df88c62e290f8d8175f6b104">ProcessorParameterFloat</a>.</p>
 
 </div>
 </div>
-<a id="a43a1548ffaf10c7c6a542639a1530f8d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a43a1548ffaf10c7c6a542639a1530f8d">&#9670;&nbsp;</a></span>getRealValue()</h2>
+<a id="ac551deb501fefa12e50776cdf22a6ecb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac551deb501fefa12e50776cdf22a6ecb">&#9670;&nbsp;</a></span>getRealValue()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -295,7 +289,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual double foleys::ProcessorParameter::getRealValue </td>
+          <td class="memname">virtual double getRealValue </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -308,14 +302,14 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="classfoleys_1_1ProcessorParameterFloat.html#a1e37711cacefa9c8e940230fc19335ff">foleys::ProcessorParameterFloat</a>.</p>
+<p>Implemented in <a class="el" href="classfoleys_1_1ProcessorParameterFloat.html#a5d4ae5572946a9effc00d0237aff41e2">ProcessorParameterFloat</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="classfoleys_1_1ProcessorParameter.html#a30268f2376303ab58bf4803b6c5d4ad4">sendUpdateNotification()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classfoleys_1_1ProcessorParameter.html#adf3144e14bf8a8a3174c9f279b72dffc">ProcessorParameter::sendUpdateNotification()</a>.</p>
 
 </div>
 </div>
-<a id="a8783a8810b5703c0a29b88444e89bebb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8783a8810b5703c0a29b88444e89bebb">&#9670;&nbsp;</a></span>getDefaultValue()</h2>
+<a id="a9753788f11d7bf9a71aac58aec62a61e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9753788f11d7bf9a71aac58aec62a61e">&#9670;&nbsp;</a></span>getDefaultValue()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -324,7 +318,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual double foleys::ProcessorParameter::getDefaultValue </td>
+          <td class="memname">virtual double getDefaultValue </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -337,12 +331,12 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="classfoleys_1_1ProcessorParameterFloat.html#aefcc126eab8693ef420572cf2a3cd553">foleys::ProcessorParameterFloat</a>.</p>
+<p>Implemented in <a class="el" href="classfoleys_1_1ProcessorParameterFloat.html#af7b31471d12ed99ca3f2ba71186398a0">ProcessorParameterFloat</a>.</p>
 
 </div>
 </div>
-<a id="aa531f82c859d55604d17d9c8ee8fa852"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa531f82c859d55604d17d9c8ee8fa852">&#9670;&nbsp;</a></span>setNormalisedValue()</h2>
+<a id="a90928f59cc4da92d4df5e0f3e963bc53"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a90928f59cc4da92d4df5e0f3e963bc53">&#9670;&nbsp;</a></span>setNormalisedValue()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -351,7 +345,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void foleys::ProcessorParameter::setNormalisedValue </td>
+          <td class="memname">virtual void setNormalisedValue </td>
           <td>(</td>
           <td class="paramtype">double&#160;</td>
           <td class="paramname"><em>value</em></td><td>)</td>
@@ -365,14 +359,14 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="classfoleys_1_1ProcessorParameterFloat.html#a0c42df7441e4d54874a67c1d28f4b84d">foleys::ProcessorParameterFloat</a>.</p>
+<p>Implemented in <a class="el" href="classfoleys_1_1ProcessorParameterFloat.html#af49332db32c7235e978bf215dbc726c7">ProcessorParameterFloat</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="classfoleys_1_1VideoParameterAutomation.html#aef4238b1c1e1ab2a55ab4c8fcc803a20">foleys::VideoParameterAutomation::updateProcessor()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classfoleys_1_1VideoParameterAutomation.html#a45db9cbfd8819702f6cf745b5323e47e">VideoParameterAutomation::updateProcessor()</a>.</p>
 
 </div>
 </div>
-<a id="af504505e5d6883c666ff27afc5d8a320"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af504505e5d6883c666ff27afc5d8a320">&#9670;&nbsp;</a></span>setRealValue()</h2>
+<a id="a2e28f4a163cad0ce7461cfbbbe3bb4ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e28f4a163cad0ce7461cfbbbe3bb4ef">&#9670;&nbsp;</a></span>setRealValue()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -381,7 +375,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void foleys::ProcessorParameter::setRealValue </td>
+          <td class="memname">virtual void setRealValue </td>
           <td>(</td>
           <td class="paramtype">double&#160;</td>
           <td class="paramname"><em>value</em></td><td>)</td>
@@ -395,12 +389,12 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="classfoleys_1_1ProcessorParameterFloat.html#a5bb1b2172bad0b7219861caa3b267e83">foleys::ProcessorParameterFloat</a>.</p>
+<p>Implemented in <a class="el" href="classfoleys_1_1ProcessorParameterFloat.html#a1685d80589e8dcbcc1cfc2c55375a988">ProcessorParameterFloat</a>.</p>
 
 </div>
 </div>
-<a id="a69ecb7d76693fa6bb5833dbd7e5f3a18"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a69ecb7d76693fa6bb5833dbd7e5f3a18">&#9670;&nbsp;</a></span>normaliseValue()</h2>
+<a id="a1c53b43fc43df9f6532642b8445a1565"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c53b43fc43df9f6532642b8445a1565">&#9670;&nbsp;</a></span>normaliseValue()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -409,7 +403,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual double foleys::ProcessorParameter::normaliseValue </td>
+          <td class="memname">virtual double normaliseValue </td>
           <td>(</td>
           <td class="paramtype">double&#160;</td>
           <td class="paramname"><em>realValue</em></td><td>)</td>
@@ -423,12 +417,12 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="classfoleys_1_1ProcessorParameterFloat.html#a3866a0165eb1217c391997c49730c9ec">foleys::ProcessorParameterFloat</a>.</p>
+<p>Implemented in <a class="el" href="classfoleys_1_1ProcessorParameterFloat.html#a70b3c93be859cda05a0f8866b2c0a1ac">ProcessorParameterFloat</a>.</p>
 
 </div>
 </div>
-<a id="a5ccd634ca50e9ba064b486e79a34d99f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5ccd634ca50e9ba064b486e79a34d99f">&#9670;&nbsp;</a></span>unnormalisedValue()</h2>
+<a id="aa972c4c0b852ae6483db7dd844bd4b15"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa972c4c0b852ae6483db7dd844bd4b15">&#9670;&nbsp;</a></span>unnormalisedValue()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -437,7 +431,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual double foleys::ProcessorParameter::unnormalisedValue </td>
+          <td class="memname">virtual double unnormalisedValue </td>
           <td>(</td>
           <td class="paramtype">double&#160;</td>
           <td class="paramname"><em>normalValue</em></td><td>)</td>
@@ -451,18 +445,18 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="classfoleys_1_1ProcessorParameterFloat.html#a1b61dfc5bfa515ffe604723fec83d8c3">foleys::ProcessorParameterFloat</a>.</p>
+<p>Implemented in <a class="el" href="classfoleys_1_1ProcessorParameterFloat.html#ae5a3d9aaab8afc0b256e6c1e9aac0d2d">ProcessorParameterFloat</a>.</p>
 
 </div>
 </div>
-<a id="a8eb0f461681b16fd8c79f28c5cc0cbb1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8eb0f461681b16fd8c79f28c5cc0cbb1">&#9670;&nbsp;</a></span>beginGesture()</h2>
+<a id="a7de3d2942dc7551647d212b588a8502a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7de3d2942dc7551647d212b588a8502a">&#9670;&nbsp;</a></span>beginGesture()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void foleys::ProcessorParameter::beginGesture </td>
+          <td class="memname">void beginGesture </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -470,18 +464,16 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">References <a class="el" href="classfoleys_1_1ProcessorParameter_1_1Listener.html#a5a048b93bc3231c1ff3a3015e0482512">foleys::ProcessorParameter::Listener::gestureStarted()</a>.</p>
-
 </div>
 </div>
-<a id="aa9ec1840f95b47f1e69da60e0eafe568"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa9ec1840f95b47f1e69da60e0eafe568">&#9670;&nbsp;</a></span>endGesture()</h2>
+<a id="aa6cd18e2e783c4e85417f8d01e5ef523"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa6cd18e2e783c4e85417f8d01e5ef523">&#9670;&nbsp;</a></span>endGesture()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void foleys::ProcessorParameter::endGesture </td>
+          <td class="memname">void endGesture </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -489,18 +481,16 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">References <a class="el" href="classfoleys_1_1ProcessorParameter_1_1Listener.html#afe19dd3a24a2c069f5e65b52035e8234">foleys::ProcessorParameter::Listener::gestureFinished()</a>.</p>
-
 </div>
 </div>
-<a id="a91aa173f60ed5cfd84fbbae2b857a052"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a91aa173f60ed5cfd84fbbae2b857a052">&#9670;&nbsp;</a></span>isGestureInProgress()</h2>
+<a id="a3adaeebb8390d05121b39c9d58ee4e43"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3adaeebb8390d05121b39c9d58ee4e43">&#9670;&nbsp;</a></span>isGestureInProgress()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool foleys::ProcessorParameter::isGestureInProgress </td>
+          <td class="memname">bool isGestureInProgress </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -510,16 +500,16 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a5639da99a6775f87b30335936f7974c5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5639da99a6775f87b30335936f7974c5">&#9670;&nbsp;</a></span>addListener()</h2>
+<a id="abf312004846c89cae4c3a05315494840"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf312004846c89cae4c3a05315494840">&#9670;&nbsp;</a></span>addListener()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void foleys::ProcessorParameter::addListener </td>
+          <td class="memname">void addListener </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classfoleys_1_1ProcessorParameter_1_1Listener.html">Listener</a> *&#160;</td>
+          <td class="paramtype">Listener *&#160;</td>
           <td class="paramname"><em>listener</em></td><td>)</td>
           <td></td>
         </tr>
@@ -528,34 +518,34 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="aeb172860917e06231982ae087d46e9af"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeb172860917e06231982ae087d46e9af">&#9670;&nbsp;</a></span>removeListener()</h2>
+<a id="aa45c27354c4333759444d23ec9248b66"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa45c27354c4333759444d23ec9248b66">&#9670;&nbsp;</a></span>removeListener()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void foleys::ProcessorParameter::removeListener </td>
+          <td class="memname">void removeListener </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classfoleys_1_1ProcessorParameter_1_1Listener.html">Listener</a> *&#160;</td>
+          <td class="paramtype">Listener *&#160;</td>
           <td class="paramname"><em>listener</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">Referenced by <a class="el" href="classfoleys_1_1VideoParameterAutomation.html#ae4e6e11d033a721506f6fe95b13d43f4">foleys::VideoParameterAutomation::~VideoParameterAutomation()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classfoleys_1_1VideoParameterAutomation.html#ac68e8e27a94c04d35891f6855fb4b99c">VideoParameterAutomation::~VideoParameterAutomation()</a>.</p>
 
 </div>
 </div>
-<a id="a30268f2376303ab58bf4803b6c5d4ad4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a30268f2376303ab58bf4803b6c5d4ad4">&#9670;&nbsp;</a></span>sendUpdateNotification()</h2>
+<a id="adf3144e14bf8a8a3174c9f279b72dffc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf3144e14bf8a8a3174c9f279b72dffc">&#9670;&nbsp;</a></span>sendUpdateNotification()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void foleys::ProcessorParameter::sendUpdateNotification </td>
+          <td class="memname">void sendUpdateNotification </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -563,9 +553,9 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">References <a class="el" href="classfoleys_1_1ProcessorParameter.html#a43a1548ffaf10c7c6a542639a1530f8d">getRealValue()</a>, and <a class="el" href="classfoleys_1_1ProcessorParameter_1_1Listener.html#a844f9d5a5e25b2ffaf9145345dd5f58e">foleys::ProcessorParameter::Listener::valueChanged()</a>.</p>
+<p class="reference">References <a class="el" href="classfoleys_1_1ProcessorParameter.html#ac551deb501fefa12e50776cdf22a6ecb">ProcessorParameter::getRealValue()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="classfoleys_1_1ProcessorParameterFloat.html#a0c42df7441e4d54874a67c1d28f4b84d">foleys::ProcessorParameterFloat::setNormalisedValue()</a>, and <a class="el" href="classfoleys_1_1ProcessorParameterFloat.html#a5bb1b2172bad0b7219861caa3b267e83">foleys::ProcessorParameterFloat::setRealValue()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classfoleys_1_1ProcessorParameterFloat.html#af49332db32c7235e978bf215dbc726c7">ProcessorParameterFloat::setNormalisedValue()</a>, and <a class="el" href="classfoleys_1_1ProcessorParameterFloat.html#a1685d80589e8dcbcc1cfc2c55375a988">ProcessorParameterFloat::setRealValue()</a>.</p>
 
 </div>
 </div>
@@ -576,7 +566,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat May 25 2019 10:21:09 for foleys_video_engine by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat May 25 2019 11:14:26 for foleys_video_engine by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.15
 </small></address>
