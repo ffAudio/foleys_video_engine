@@ -59,6 +59,18 @@ juce::String ComposedClip::getDescription() const
     return "Edit";
 }
 
+void ComposedClip::invalidateVideo()
+{
+    const auto wasSuspended = videoRenderJob.isSuspended();
+    videoRenderJob.setSuspended (true);
+
+    videoFifo.clear();
+    lastShownFrame = 0;
+    triggerAsyncUpdate();
+
+    videoRenderJob.setSuspended (wasSuspended);
+}
+
 std::shared_ptr<ClipDescriptor> ComposedClip::addClip (std::shared_ptr<AVClip> clip, double start, double length, double offset)
 {
     auto clipDescriptor = std::make_shared<ClipDescriptor> (*this, clip);

@@ -40,6 +40,9 @@ public:
     ComposedClip (VideoEngine& videoEngine);
     virtual ~ComposedClip() = default;
 
+    /** Forces the video to re-render, e.g. if a parameter was changed */
+    void invalidateVideo();
+
     juce::String getDescription() const override;
 
     std::pair<int64_t, juce::Image> getFrame (double pts) const override;

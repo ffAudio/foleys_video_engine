@@ -107,6 +107,16 @@ double ParameterAutomation::getValue() const
     return value;
 }
 
+void ParameterAutomation::startAutomationGesture()
+{
+    gestureInProgress = true;
+}
+
+void ParameterAutomation::finishAutomationGesture()
+{
+    gestureInProgress = false;
+}
+
 const std::map<double, double>& ParameterAutomation::getKeyframes() const
 {
     return keyframes;
@@ -201,7 +211,10 @@ void AudioParameterAutomation::parameterValueChanged (int parameterIndex, float 
 
 void AudioParameterAutomation::parameterGestureChanged (int parameterIndex, bool gestureIsStarting)
 {
-    gestureInProgress = gestureIsStarting;
+    if (gestureIsStarting)
+        startAutomationGesture();
+    else
+        finishAutomationGesture();
 }
 
 //==============================================================================
@@ -253,12 +266,12 @@ void VideoParameterAutomation::valueChanged (ProcessorParameter&, double newValu
 
 void VideoParameterAutomation::gestureStarted (ProcessorParameter&)
 {
-    gestureInProgress = true;
+    startAutomationGesture();
 }
 
 void VideoParameterAutomation::gestureFinished (ProcessorParameter&)
 {
-    gestureInProgress = false;
+    finishAutomationGesture();
 }
 
 

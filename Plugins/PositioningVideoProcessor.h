@@ -45,11 +45,11 @@ public:
                                                                         [](const juce::String& text) { return text.getDoubleValue(); }) );
         params.emplace_back (std::make_unique<ProcessorParameterFloat> (IDs::aspect, "Aspect Ratio", juce::NormalisableRange<double> (0.001, 1.999, 0.001), 1.0,
                                                                         [](double value, int) {
-                                                                            if (value < 1.0) return "1 : " + juce::String (1.0 / value, 2);
-                                                                            return juce::String (1.0 / (2.0 - value), 2) + " : 1"; },
+                                                                            if (value < 1.0) return "1:" + juce::String (1.0 / value, 2);
+                                                                            return juce::String (1.0 / (2.0 - value), 2) + ":1"; },
                                                                         [](const juce::String& text) {
                                                                             auto num = juce::StringArray::fromTokens (text, true);
-                                                                            auto a = num.size() > 0 ? num [0].getDoubleValue() : 0.0;
+                                                                            auto a = num.size() > 0 ? num [0].getDoubleValue() : 1.0;
                                                                             auto b = num.size() > 1 ? num[1].getDoubleValue() : 1.0;
                                                                             return a > b ? a / b : b / (2.0 - a); }) );
         params.emplace_back (std::make_unique<ProcessorParameterFloat> (IDs::rotation, "Rotation", juce::NormalisableRange<double> (-360.0, 360.0), 0.0,

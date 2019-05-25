@@ -55,6 +55,9 @@ public:
 
     double getValue() const;
 
+    void startAutomationGesture();
+    void finishAutomationGesture();
+
     const std::map<double, double>& getKeyframes() const;
 
     void loadFromValueTree (const juce::ValueTree& state);
@@ -67,7 +70,6 @@ public:
 protected:
 
     ProcessorController& controller;
-
     bool gestureInProgress = false;
 
 private:
