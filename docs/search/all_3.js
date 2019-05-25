@@ -1,15 +1,9 @@
 var searchData=
 [
-  ['ffmpeg',['FFmpeg',['../classfoleys_1_1AVFormatManager.html#aa79995343ddb524dcfca047f53400ba8ac6822fecd09163125469db27944e993b',1,'foleys::AVFormatManager']]],
-  ['filmstrip',['FilmStrip',['../classfoleys_1_1FilmStrip.html',1,'foleys::FilmStrip'],['../classfoleys_1_1FilmStrip.html#a5475497fdc6b724e2ac9a8cf2a60fcd7',1,'foleys::FilmStrip::FilmStrip()']]],
-  ['filmstrip_2ecpp',['FilmStrip.cpp',['../FilmStrip_8cpp.html',1,'']]],
-  ['filmstrip_2eh',['FilmStrip.h',['../FilmStrip_8h.html',1,'']]],
-  ['finishwriting',['finishWriting',['../classfoleys_1_1AVWriter.html#af2f44e1dabfcc7418599d8889c91cd23',1,'foleys::AVWriter']]],
-  ['foleys',['foleys',['../namespacefoleys.html',1,'']]],
-  ['foleys_5fdebug_5flogging',['FOLEYS_DEBUG_LOGGING',['../foleys__video__engine_8h.html#a87c1678dfda276b70b1f7129446d72b8',1,'foleys_video_engine.h']]],
-  ['foleys_5fvideo_5fengine_2ecpp',['foleys_video_engine.cpp',['../foleys__video__engine_8cpp.html',1,'']]],
-  ['foleys_5fvideo_5fengine_2eh',['foleys_video_engine.h',['../foleys__video__engine_8h.html',1,'']]],
-  ['formats',['Formats',['../classfoleys_1_1AVFormatManager.html#aa79995343ddb524dcfca047f53400ba8',1,'foleys::AVFormatManager']]],
-  ['framesize',['frameSize',['../structfoleys_1_1VideoStreamSettings.html#a7f0ed65473f890e43f9be49884324b84',1,'foleys::VideoStreamSettings']]],
-  ['ids',['IDs',['../namespacefoleys_1_1IDs.html',1,'foleys']]]
+  ['data',['data',['../classfoleys_1_1StreamTypes.html#aba3e270b78a6d857728f571418c48203',1,'foleys::StreamTypes::data()'],['../classfoleys_1_1StreamTypes.html#a2a251dba8235a84e0808b6ea70e73ac9ae250c94ab774ebdb001628b64d561f3b',1,'foleys::StreamTypes::Data()']]],
+  ['defaultaudiomixer',['DefaultAudioMixer',['../classfoleys_1_1DefaultAudioMixer.html',1,'foleys::DefaultAudioMixer'],['../classfoleys_1_1DefaultAudioMixer.html#add9b673daa851e65a1329a6a8794279d',1,'foleys::DefaultAudioMixer::DefaultAudioMixer()']]],
+  ['defaultaudiomixer_2ecpp',['DefaultAudioMixer.cpp',['../DefaultAudioMixer_8cpp.html',1,'']]],
+  ['defaultaudiomixer_2eh',['DefaultAudioMixer.h',['../DefaultAudioMixer_8h.html',1,'']]],
+  ['defaultduration',['defaultDuration',['../structfoleys_1_1VideoStreamSettings.html#ac49f41dfa3da77b25c060d628cf8b1d7',1,'foleys::VideoStreamSettings']]],
+  ['defaultnumsamples',['defaultNumSamples',['../structfoleys_1_1AudioStreamSettings.html#ac9075bad6a66068ee6fcd08d5713e496',1,'foleys::AudioStreamSettings']]]
 ];

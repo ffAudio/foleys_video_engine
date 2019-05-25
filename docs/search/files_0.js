@@ -9,8 +9,6 @@ var searchData=
   ['audiopluginmanager_2eh',['AudioPluginManager.h',['../AudioPluginManager_8h.html',1,'']]],
   ['audiostrip_2ecpp',['AudioStrip.cpp',['../AudioStrip_8cpp.html',1,'']]],
   ['audiostrip_2eh',['AudioStrip.h',['../AudioStrip_8h.html',1,'']]],
-  ['automation_2ecpp',['Automation.cpp',['../Automation_8cpp.html',1,'']]],
-  ['automation_2eh',['Automation.h',['../Automation_8h.html',1,'']]],
   ['avclip_2ecpp',['AVClip.cpp',['../AVClip_8cpp.html',1,'']]],
   ['avclip_2eh',['AVClip.h',['../AVClip_8h.html',1,'']]],
   ['avformatmanager_2ecpp',['AVFormatManager.cpp',['../AVFormatManager_8cpp.html',1,'']]],

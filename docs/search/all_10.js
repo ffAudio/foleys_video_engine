@@ -1,25 +1,8 @@
 var searchData=
 [
-  ['valuetreechildadded',['valueTreeChildAdded',['../classfoleys_1_1ComposedClip.html#a99aa4c74618b75affacc4df576b4f3a0',1,'foleys::ComposedClip']]],
-  ['valuetreechildorderchanged',['valueTreeChildOrderChanged',['../classfoleys_1_1ComposedClip.html#af7f6074ce258fbfc42fddf9be17545a5',1,'foleys::ComposedClip']]],
-  ['valuetreechildremoved',['valueTreeChildRemoved',['../classfoleys_1_1ComposedClip.html#a6dcd3862b3fe1626ac275353bf046b5e',1,'foleys::ComposedClip']]],
-  ['valuetreeparentchanged',['valueTreeParentChanged',['../classfoleys_1_1ComposedClip.html#adac4ed3512ea6943205064757ece9b4e',1,'foleys::ComposedClip']]],
-  ['valuetreepropertychanged',['valueTreePropertyChanged',['../classfoleys_1_1ComposedClip.html#af399dff02e62459eef3cbc0c5d982355',1,'foleys::ComposedClip']]],
-  ['video',['Video',['../classfoleys_1_1StreamTypes.html#a2a251dba8235a84e0808b6ea70e73ac9aaa7def51bd14571b1a73754ec192b842',1,'foleys::StreamTypes::Video()'],['../classfoleys_1_1StreamTypes.html#afe44a65432d45707afe62159f6bb1ec9',1,'foleys::StreamTypes::video()']]],
-  ['videoengine',['VideoEngine',['../classfoleys_1_1VideoEngine.html',1,'foleys::VideoEngine'],['../classfoleys_1_1VideoEngine.html#aeee3903486a4ab00a3837cf155486c38',1,'foleys::VideoEngine::VideoEngine()']]],
-  ['videoengine_2ecpp',['VideoEngine.cpp',['../VideoEngine_8cpp.html',1,'']]],
-  ['videoengine_2eh',['VideoEngine.h',['../VideoEngine_8h.html',1,'']]],
-  ['videofifo',['VideoFifo',['../classfoleys_1_1VideoFifo.html',1,'foleys::VideoFifo'],['../classfoleys_1_1VideoFifo.html#a450010ca8b2fc621b4530e64d5b65675',1,'foleys::VideoFifo::VideoFifo()']]],
-  ['videofifo_2ecpp',['VideoFifo.cpp',['../VideoFifo_8cpp.html',1,'']]],
-  ['videofifo_2eh',['VideoFifo.h',['../VideoFifo_8h.html',1,'']]],
-  ['videomixer',['VideoMixer',['../classfoleys_1_1VideoMixer.html',1,'foleys::VideoMixer'],['../classfoleys_1_1VideoMixer.html#aa743228539ebcfdf62db4e19b3bbeca4',1,'foleys::VideoMixer::VideoMixer()']]],
-  ['videomixer_2eh',['VideoMixer.h',['../VideoMixer_8h.html',1,'']]],
-  ['videopluginmanager',['VideoPluginManager',['../classfoleys_1_1VideoPluginManager.html',1,'foleys::VideoPluginManager'],['../classfoleys_1_1VideoPluginManager.html#ab3cccb2306807b7200f4c3f4172b83f1',1,'foleys::VideoPluginManager::VideoPluginManager()']]],
-  ['videopluginmanager_2eh',['VideoPluginManager.h',['../VideoPluginManager_8h.html',1,'']]],
-  ['videopreview',['VideoPreview',['../classfoleys_1_1VideoPreview.html',1,'foleys::VideoPreview'],['../classfoleys_1_1VideoPreview.html#aea6a6b9a9f55678ec73c4775afbf93cc',1,'foleys::VideoPreview::VideoPreview()']]],
-  ['videopreview_2ecpp',['VideoPreview.cpp',['../VideoPreview_8cpp.html',1,'']]],
-  ['videopreview_2eh',['VideoPreview.h',['../VideoPreview_8h.html',1,'']]],
-  ['videoprocessor',['VideoProcessor',['../classfoleys_1_1VideoProcessor.html',1,'foleys::VideoProcessor'],['../classfoleys_1_1VideoProcessor.html#ab087184c878f1034154a7c9a5dc9957a',1,'foleys::VideoProcessor::VideoProcessor()']]],
-  ['videoprocessor_2eh',['VideoProcessor.h',['../VideoProcessor_8h.html',1,'']]],
-  ['videostreamsettings',['VideoStreamSettings',['../structfoleys_1_1VideoStreamSettings.html',1,'foleys']]]
+  ['test',['test',['../classfoleys_1_1StreamTypes.html#afb3f06d4ba86dea00450475dea77c11c',1,'foleys::StreamTypes']]],
+  ['thumbnailjob',['ThumbnailJob',['../classfoleys_1_1FilmStrip_1_1ThumbnailJob.html',1,'foleys::FilmStrip::ThumbnailJob'],['../classfoleys_1_1AudioStrip_1_1ThumbnailJob.html',1,'foleys::AudioStrip::ThumbnailJob'],['../classfoleys_1_1AudioStrip_1_1ThumbnailJob.html#aef97ff7b9ec2ea7929bca02c76864522',1,'foleys::AudioStrip::ThumbnailJob::ThumbnailJob()'],['../classfoleys_1_1FilmStrip_1_1ThumbnailJob.html#a33736d88f8613427eac7f36188756d09',1,'foleys::FilmStrip::ThumbnailJob::ThumbnailJob()']]],
+  ['timebase',['timebase',['../structfoleys_1_1VideoStreamSettings.html#afbd65a9b36cbd43bfd068154a782a45d',1,'foleys::VideoStreamSettings::timebase()'],['../structfoleys_1_1AudioStreamSettings.html#a25dba82c0ca31dd5ef5c829db0de18ad',1,'foleys::AudioStreamSettings::timebase()'],['../classfoleys_1_1AVReader.html#a43a6b5ddc469eab2275439a5525d5f2c',1,'foleys::AVReader::timebase()']]],
+  ['timecodechanged',['timecodeChanged',['../structfoleys_1_1AVClip_1_1TimecodeListener.html#a7f0fb3179974bb79eaabf1239c0163c5',1,'foleys::AVClip::TimecodeListener::timecodeChanged()'],['../classfoleys_1_1VideoPreview.html#a4a0c7655f0ebcc683619edd452ee97b4',1,'foleys::VideoPreview::timecodeChanged()']]],
+  ['timecodelistener',['TimecodeListener',['../structfoleys_1_1AVClip_1_1TimecodeListener.html',1,'foleys::AVClip']]]
 ];

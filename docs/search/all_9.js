@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['numchannels',['numChannels',['../structfoleys_1_1AudioStreamSettings.html#a63bc62bd227d5cdec5954dcff6c0a62f',1,'foleys::AudioStreamSettings::numChannels()'],['../classfoleys_1_1AVReader.html#a4ad24ea092f9da4310f00a539384c2d0',1,'foleys::AVReader::numChannels()']]],
-  ['numsamples',['numSamples',['../classfoleys_1_1AVReader.html#ad4a51eed46982acdf6c392a6acc02e0c',1,'foleys::AVReader']]]
+  ['license_2emd',['LICENSE.md',['../LICENSE_8md.html',1,'']]],
+  ['listener',['Listener',['../classfoleys_1_1ProcessorParameter_1_1Listener.html',1,'foleys::ProcessorParameter::Listener'],['../classfoleys_1_1ProcessorParameter_1_1Listener.html#a26c4001489cdb129fbfab9c0df3317d7',1,'foleys::ProcessorParameter::Listener::Listener()']]],
+  ['loadfromvaluetree',['loadFromValueTree',['../classfoleys_1_1ParameterAutomation.html#ad89a651466dd61dc75b429ee988259bc',1,'foleys::ParameterAutomation']]],
+  ['license_20_2d_20foleys_20video_20engine',['LICENSE - Foleys Video Engine',['../md__Users_daniel_Developer_Video_VideoExamples_modules_foleys_video_engine_LICENSE.html',1,'']]]
 ];

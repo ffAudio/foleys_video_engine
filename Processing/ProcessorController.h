@@ -26,20 +26,54 @@ namespace foleys
 class ClipDescriptor;
 class ParameterAutomation;
 
+
+/**
+ The ProcessorController acts as container foe one AudioProcessor or VideoProcessor
+ inside the ClipDescriptor. It also holds the automation data to update the
+ ProcessorParameters according to the currently rendered position.
+ */
 class ProcessorController  : private juce::ValueTree::Listener
 {
 public:
+    /**
+     This ProcessorController constructor creates an instance using a given AudioProcessor.
+     It will create all necessary ProcessorAutomation to wrap the AudioProcessorParameters.
+     The generated state to represent the controller is added to the state of it's owner.
+     */
     ProcessorController (ClipDescriptor& owner, std::unique_ptr<juce::AudioProcessor> processor);
+
+    /**
+     This ProcessorController constructor creates an instance using a given VideoProcessor.
+     It will create all necessary ProcessorAutomation to wrap the ProcessorParameters.
+     The generated state to represent the controller is added to the state of it's owner.
+     */
     ProcessorController (ClipDescriptor& owner, std::unique_ptr<VideoProcessor> processor);
+
+    /**
+     This ProcessorController constructor creates either an AudioProcessor or VideoProcessor
+     from a saved state in a ValueTree.
+     */
     ProcessorController (ClipDescriptor& owner, const juce::ValueTree& state, int index=-1);
 
     ~ProcessorController();
 
+    /**
+     This sets all parameters in the contained processor according to the current
+     time point in seconds.
+     */
     void updateAutomation (double pts);
 
+    /**
+     Calling this method will save the automation of one parameter by discarding
+     the ValueTree and recreating it. It has a flag to avoid infinite loops.
+     */
     void synchroniseState (ParameterAutomation& parameter);
+
+    /** Calling this method will load the keyframes for an automated parameter. */
     void synchroniseParameter (const juce::ValueTree& tree);
 
+    /** Grants access to the underlying state. Your GUI may use this to add private data.
+        It is your responsibility to avoid property or child collissions. */
     juce::ValueTree& getProcessorState();
 
     ClipDescriptor& getOwningClipDescriptor();
@@ -60,7 +94,12 @@ public:
                                                 juce::ValueTree& parameterNode) = 0;
     };
 
+    /** Returns the controlled AudioProcessor. Can be nullptr, if it controlls a
+        VideoProcessor or if loading of the plugin failed. */
     juce::AudioProcessor* getAudioProcessor();
+
+    /** Returns the controlled VideoProcessor. Can be nullptr, if it controlls a
+        AudioProcessor or if loading of the plugin failed. */
     VideoProcessor* getVideoProcessor();
 
 private:

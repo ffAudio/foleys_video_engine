@@ -29,7 +29,8 @@ class ComposedClip;
  @class ClipDescriptor
 
  The ClipDescriptor configures the placement of each clip to be used
- in compositing the ComposedClip.
+ in compositing the ComposedClip. It also holds a list of VideoProcessors
+ and AudioProcessors including their automation data relative to the clip.
  */
 class ClipDescriptor : private juce::ValueTree::Listener
 {
@@ -56,10 +57,14 @@ public:
     int64_t getOffsetInSamples() const;
     void setOffset (double offset);
 
+    /** returns the current timestamp in seconds, deduced from audio clock master and
+        relative to this clip. */
     double getCurrentPTS() const;
 
     std::shared_ptr<AVClip> clip;
 
+    /** Grants access to the underlying state. Your GUI may use this to add private data.
+        It is your responsibility to avoid property or child collissions. */
     juce::ValueTree& getStatusTree();
 
     void updateSampleCounts();
