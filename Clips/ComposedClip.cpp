@@ -67,6 +67,7 @@ void ComposedClip::invalidateVideo()
     videoFifo.clear();
     lastShownFrame = 0;
     triggerAsyncUpdate();
+    handleUpdateNowIfNeeded();
 
     videoRenderJob.setSuspended (wasSuspended);
 }
@@ -297,7 +298,7 @@ void ComposedClip::valueTreeChildAdded (juce::ValueTree& parentTree,
         descriptor->updateSampleCounts();
 
         juce::ScopedLock sl (clipDescriptorLock);
-        clips.push_back (descriptor);
+        clips.push_back (std::move (descriptor));
     }
 }
 

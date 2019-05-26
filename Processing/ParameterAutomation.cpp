@@ -49,9 +49,7 @@ void ParameterAutomation::setValue (double pts, double newValue)
     }
     else
     {
-        auto diff = newValue - getValueForTime (pts);
-        for (auto& k : keyframes)
-            k.second = juce::jlimit (0.0, 1.0, k.second + diff);
+        keyframes [pts] = juce::jlimit (0.0, 1.0, newValue);
     }
 
     if (! manualUpdate)
