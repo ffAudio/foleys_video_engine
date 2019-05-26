@@ -26,6 +26,7 @@ namespace foleys
 VideoPluginManager::VideoPluginManager()
 {
     factories ["BUILTIN: " + PositioningVideoProcessor::getPluginName()] = [] { return std::make_unique<PositioningVideoProcessor>(); };
+    factories ["BUILTIN: " + ColourCurveVideoProcessor::getPluginName()] = [] { return std::make_unique<ColourCurveVideoProcessor>(); };
 }
 
 std::unique_ptr<VideoProcessor> VideoPluginManager::createVideoPluginInstance (const juce::String& identifierString,

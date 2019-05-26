@@ -41,7 +41,7 @@ public:
     {
         std::vector<std::unique_ptr<ProcessorParameter>> params;
         params.emplace_back (std::make_unique<ProcessorParameterFloat> (IDs::zoom, "Zoom", juce::NormalisableRange<double> (0.0, 1000.0), 100.0,
-                                                                        [](double value, int) { return juce::String (value, 1) + " %"; },
+                                                                        [](double value, int) { return juce::String (value, 1) + "%"; },
                                                                         [](const juce::String& text) { return text.getDoubleValue(); }) );
         params.emplace_back (std::make_unique<ProcessorParameterFloat> (IDs::aspect, "Aspect Ratio", juce::NormalisableRange<double> (0.001, 1.999, 0.001), 1.0,
                                                                         [](double value, int) {
@@ -56,10 +56,10 @@ public:
                                                                         [](double value, int) { return juce::String (value, 1) + "º"; },
                                                                         [](const juce::String& text) { return text.getDoubleValue(); }) );
         params.emplace_back (std::make_unique<ProcessorParameterFloat> (IDs::transX, "Horiz. Translation", juce::NormalisableRange<double> (-1.0, 1.0), 0.0,
-                                                                        [](double value, int) { return juce::String (value * 100.0, 1) + " %"; },
+                                                                        [](double value, int) { return juce::String (value * 100.0, 1) + "%"; },
                                                                         [](const juce::String& text) { return text.getDoubleValue() / 100.0; }) );
         params.emplace_back (std::make_unique<ProcessorParameterFloat> (IDs::transY, "Vert. Translation", juce::NormalisableRange<double> (-1.0, 1.0), 0.0,
-                                                                        [](double value, int) { return juce::String (value * 100.0, 1) + " %"; },
+                                                                        [](double value, int) { return juce::String (value * 100.0, 1) + "%"; },
                                                                         [](const juce::String& text) { return text.getDoubleValue() / 100.0; }) );
         return params;
     }

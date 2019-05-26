@@ -95,3 +95,4 @@
 
 #include "Plugins/PanningAudioProcessor.h"
 #include "Plugins/PositioningVideoProcessor.h"
+#include "Plugins/ColourCurveVideoProcessor.h"
