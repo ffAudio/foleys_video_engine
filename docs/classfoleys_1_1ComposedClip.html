@@ -1,3 +1,4 @@
+<!-- HTML header for doxygen 1.8.15-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -20,6 +21,7 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  <td id="projectlogo"><a href="https://foleysfinest.com"><img alt="Logo" src="Logo-FF.png"/></a></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">foleys_video_engine
    </div>
@@ -94,6 +96,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:af440bd8385c1d39f0a238ed309f39e53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab194eed27b25460f6996ec0011b5d01b"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ComposedClip.html#ab194eed27b25460f6996ec0011b5d01b">~ComposedClip</a> ()=default</td></tr>
 <tr class="separator:ab194eed27b25460f6996ec0011b5d01b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1002ddd65b1f3b2c74584bd533eaae9d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ComposedClip.html#a1002ddd65b1f3b2c74584bd533eaae9d">invalidateVideo</a> ()</td></tr>
+<tr class="memdesc:a1002ddd65b1f3b2c74584bd533eaae9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forces the video to re-render, e.g.  <a href="#a1002ddd65b1f3b2c74584bd533eaae9d">More...</a><br /></td></tr>
+<tr class="separator:a1002ddd65b1f3b2c74584bd533eaae9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a014639146d6a5d1b103d8b8af9240634"><td class="memItemLeft" align="right" valign="top">juce::String&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ComposedClip.html#a014639146d6a5d1b103d8b8af9240634">getDescription</a> () const override</td></tr>
 <tr class="memdesc:a014639146d6a5d1b103d8b8af9240634"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns a string describing the clip.  <a href="#a014639146d6a5d1b103d8b8af9240634">More...</a><br /></td></tr>
 <tr class="separator:a014639146d6a5d1b103d8b8af9240634"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -250,6 +255,28 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a1002ddd65b1f3b2c74584bd533eaae9d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1002ddd65b1f3b2c74584bd533eaae9d">&#9670;&nbsp;</a></span>invalidateVideo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void invalidateVideo </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Forces the video to re-render, e.g. </p>
+<p>if a parameter was changed </p>
+
+<p class="reference">References <a class="el" href="classfoleys_1_1VideoFifo.html#ac8bb3912a3ce86b15842e79d0b421204">VideoFifo::clear()</a>.</p>
+
+</div>
+</div>
 <a id="a014639146d6a5d1b103d8b8af9240634"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a014639146d6a5d1b103d8b8af9240634">&#9670;&nbsp;</a></span>getDescription()</h2>
 
@@ -432,7 +459,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classfoleys_1_1AVClip.html#ada50c87cccbfc61cd2498003490f932f">AVClip</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="classfoleys_1_1ComposedClip.html#a43da797ba1d0be8b977b680e30a4bc4e">ComposedClip::getCurrentFrame()</a>, <a class="el" href="classfoleys_1_1ClipDescriptor.html#a7381ed214782785a26a0532516191d32">ClipDescriptor::getCurrentPTS()</a>, and <a class="el" href="classfoleys_1_1ComposedClip.html#a96e093dc999f52718517bf3b2bb3478a">ComposedClip::getNextAudioBlock()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classfoleys_1_1ComposedClip.html#a43da797ba1d0be8b977b680e30a4bc4e">ComposedClip::getCurrentFrame()</a>, and <a class="el" href="classfoleys_1_1ComposedClip.html#a96e093dc999f52718517bf3b2bb3478a">ComposedClip::getNextAudioBlock()</a>.</p>
 
 </div>
 </div>
@@ -1234,7 +1261,7 @@ Additional Inherited Members</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat May 25 2019 11:14:26 for foleys_video_engine by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun May 26 2019 15:49:48 for foleys_video_engine by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.15
 </small></address>

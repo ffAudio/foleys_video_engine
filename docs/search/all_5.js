@@ -4,6 +4,7 @@ var searchData=
   ['filmstrip',['FilmStrip',['../classfoleys_1_1FilmStrip.html',1,'FilmStrip'],['../classfoleys_1_1FilmStrip.html#a55af8b94257a459a81bc3d8633f42530',1,'foleys::FilmStrip::FilmStrip()']]],
   ['filmstrip_2ecpp',['FilmStrip.cpp',['../FilmStrip_8cpp.html',1,'']]],
   ['filmstrip_2eh',['FilmStrip.h',['../FilmStrip_8h.html',1,'']]],
+  ['finishautomationgesture',['finishAutomationGesture',['../classfoleys_1_1ParameterAutomation.html#a3427cfb908c87f39653000b51b053382',1,'foleys::ParameterAutomation']]],
   ['finishwriting',['finishWriting',['../classfoleys_1_1AVWriter.html#ac305b573acf5706758a59696fbeda0ff',1,'foleys::AVWriter']]],
   ['foleys',['foleys',['../namespacefoleys.html',1,'']]],
   ['foleys_5fdebug_5flogging',['FOLEYS_DEBUG_LOGGING',['../foleys__video__engine_8h.html#a87c1678dfda276b70b1f7129446d72b8',1,'foleys_video_engine.h']]],

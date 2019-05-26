@@ -8,6 +8,21 @@ Foleys Finest Audio Ltd.
 With the module foleys_video_engine we offer a simple way to implement reading,
 writing, displaying and editing of videos using the audio framework JUCE (https://juce.com)
 
+Features
+--------
+
+- Reading of video files, video and audio synchronous
+- Normalise different sample rates and frame rates
+- Compositing of multiple videos or still images in layers (paint on top)
+- Writing of video clips
+- Audio plugins for clips
+- Automatable parameters for video composition
+- Video plugins for image processing / colour adjustments etc.
+- _Multiple audio stems per ComposedClip (avadilable soon)_
+- _Video generator plugins for titles, backgrounds etc. (coming later)_
+- _Alternative video file backend (coming much later)_
+- _Hardware rendering backend (coming even later)_
+
 To read and write video files it uses FFmpeg (https://ffmpeg.org). Alternative backends
 like AVFoundation (OSX) or DirectShow (Windows) might follow in the future, but no
 promises.
@@ -20,21 +35,6 @@ refer to the included document LICENSE.md
 
 The paid licenses are currently developed and will be announced soon. You are welcome to 
 get in touch to register your interest and tell us about your use case.
-
-Features
---------
-
-- Reading of video files, video and audio synchronous
-- Normalise different sample rates and frame rates
-- Compositing of multiple videos or still images in layers (paint on top)
-- Writing of video clips
-- Audio plugins for clips
-- Automatable parameters for video composition
-- _Video plugins for image processing / colour adjustments etc. (coming later)_
-- _Multiple audio stems per ComposedClip (avadilable soon)_
-- _Video generator plugins for titles, backgrounds etc. (coming later)_
-- _Alternative video file backend (coming much later)_
-- _Hardware rendering backend (coming even later)_
 
 API-Documentation
 -----------------

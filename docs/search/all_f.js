@@ -39,6 +39,7 @@ var searchData=
   ['softwarevideomixer',['SoftwareVideoMixer',['../classfoleys_1_1SoftwareVideoMixer.html',1,'SoftwareVideoMixer'],['../classfoleys_1_1SoftwareVideoMixer.html#abba90d1a77c794ceabb481ea964aabb5',1,'foleys::SoftwareVideoMixer::SoftwareVideoMixer()']]],
   ['softwarevideomixer_2ecpp',['SoftwareVideoMixer.cpp',['../SoftwareVideoMixer_8cpp.html',1,'']]],
   ['softwarevideomixer_2eh',['SoftwareVideoMixer.h',['../SoftwareVideoMixer_8h.html',1,'']]],
+  ['startautomationgesture',['startAutomationGesture',['../classfoleys_1_1ParameterAutomation.html#a6ee2306930db6db187b88f91750ffd30',1,'foleys::ParameterAutomation']]],
   ['startrendering',['startRendering',['../classfoleys_1_1ClipBouncer.html#a84b32ae03e0b20f34d6db6f32a974144',1,'foleys::ClipBouncer']]],
   ['startwriting',['startWriting',['../classfoleys_1_1AVWriter.html#a1c15777ce6304bff7b0c4a690b1417fe',1,'foleys::AVWriter']]],
   ['state',['state',['../classfoleys_1_1ProcessorState.html#a232b24bd596606112fe024a316f208ea',1,'foleys::ProcessorState']]],

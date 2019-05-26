@@ -11,7 +11,7 @@ var searchData=
   ['addvideoprocessor',['addVideoProcessor',['../classfoleys_1_1ClipDescriptor.html#af8cf1e7ec2e8f858763f8359396a7953',1,'foleys::ClipDescriptor::addVideoProcessor(std::unique_ptr&lt; ProcessorController &gt; controller, int index=-1)'],['../classfoleys_1_1ClipDescriptor.html#a963ab30b2145bea41c3d4c3b4655b6bd',1,'foleys::ClipDescriptor::addVideoProcessor(std::unique_ptr&lt; VideoProcessor &gt; processor, int index=-1)']]],
   ['addvideostream',['addVideoStream',['../classfoleys_1_1AVWriter.html#abee686cda7bc6b8b4dc633d4c8d60a50',1,'foleys::AVWriter']]],
   ['all',['all',['../classfoleys_1_1StreamTypes.html#a71f5cc477590cfbcc016833175ad82c1',1,'foleys::StreamTypes']]],
-  ['audio',['Audio',['../classfoleys_1_1StreamTypes.html#a8a65141d9ea4bf9d2e2377ed6b888a1dad3c111fe8a0e835609a6187d6e9d2e57',1,'foleys::StreamTypes::Audio()'],['../classfoleys_1_1StreamTypes.html#a1fc0429827d685bbe8435add933c997d',1,'foleys::StreamTypes::audio()']]],
+  ['audio',['audio',['../classfoleys_1_1StreamTypes.html#a1fc0429827d685bbe8435add933c997d',1,'foleys::StreamTypes::audio()'],['../classfoleys_1_1StreamTypes.html#a8a65141d9ea4bf9d2e2377ed6b888a1dad3c111fe8a0e835609a6187d6e9d2e57',1,'foleys::StreamTypes::Audio()']]],
   ['audioclip',['AudioClip',['../classfoleys_1_1AudioClip.html',1,'AudioClip'],['../classfoleys_1_1AudioClip.html#afd582c8f928fdaa75383854295e2c728',1,'foleys::AudioClip::AudioClip()']]],
   ['audioclip_2ecpp',['AudioClip.cpp',['../AudioClip_8cpp.html',1,'']]],
   ['audioclip_2eh',['AudioClip.h',['../AudioClip_8h.html',1,'']]],

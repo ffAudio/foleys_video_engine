@@ -36,6 +36,7 @@ var searchData=
   ['size',['size',['../classfoleys_1_1VideoFifo.html#a259cb5a711406a8c3e5d937eb9350cca',1,'foleys::VideoFifo']]],
   ['skipsamples',['skipSamples',['../classfoleys_1_1AudioFifo.html#a232259806f554218f90497150684cc33',1,'foleys::AudioFifo']]],
   ['softwarevideomixer',['SoftwareVideoMixer',['../classfoleys_1_1SoftwareVideoMixer.html#abba90d1a77c794ceabb481ea964aabb5',1,'foleys::SoftwareVideoMixer']]],
+  ['startautomationgesture',['startAutomationGesture',['../classfoleys_1_1ParameterAutomation.html#a6ee2306930db6db187b88f91750ffd30',1,'foleys::ParameterAutomation']]],
   ['startrendering',['startRendering',['../classfoleys_1_1ClipBouncer.html#a84b32ae03e0b20f34d6db6f32a974144',1,'foleys::ClipBouncer']]],
   ['startwriting',['startWriting',['../classfoleys_1_1AVWriter.html#a1c15777ce6304bff7b0c4a690b1417fe',1,'foleys::AVWriter']]],
   ['streamtypes',['StreamTypes',['../classfoleys_1_1StreamTypes.html#a6098a6fd8f523fae182a7e53c701401e',1,'foleys::StreamTypes']]],
