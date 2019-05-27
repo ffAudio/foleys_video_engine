@@ -25,7 +25,8 @@
 namespace foleys
 {
 
-struct Size
+/** A 2-dimensional size for images and video streams */
+struct Size final
 {
     int width = 0;
     int height = 0;
@@ -36,14 +37,16 @@ struct Size
     }
 };
 
-struct VideoStreamSettings
+/** Defines the size and time settings for a VideoStream */
+struct VideoStreamSettings final
 {
     Size frameSize;
     int  defaultDuration = 1001;
     int  timebase        = 24000;
 };
 
-struct AudioStreamSettings
+/** Defines the number of channels and time settings for an AudioStream */
+struct AudioStreamSettings final
 {
     int numChannels       = 2;
     int defaultNumSamples = 1024;
@@ -85,7 +88,8 @@ static inline juce::String timecodeToString (double pts)
     + juce::String (milliSeconds).paddedLeft ('0', 3);
 }
 
-class StreamTypes
+/** Used to select, which streams to read and which to ignore in AVReader instances */
+class StreamTypes final
 {
 public:
     enum StreamType

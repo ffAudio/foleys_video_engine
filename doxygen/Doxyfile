@@ -873,7 +873,7 @@ EXCLUDE_PATTERNS       =
 
 EXCLUDE_SYMBOLS        = AsyncUpdater \
                          ChangeListener \
-                         Listener \
+                         *::Listener \
                          ThreadPoolJob \
                          Timer
 

@@ -7,6 +7,7 @@ var searchData=
   ['_7eavclip',['~AVClip',['../classfoleys_1_1AVClip.html#abad90ffd5f40b14674da4b0d40130550',1,'foleys::AVClip']]],
   ['_7eavreader',['~AVReader',['../classfoleys_1_1AVReader.html#a1d0a5df6d2992da90ad7293bc629e04e',1,'foleys::AVReader']]],
   ['_7eavwriter',['~AVWriter',['../classfoleys_1_1AVWriter.html#a9053915592c4a9f2fbdf80e1af1d2c59',1,'foleys::AVWriter']]],
+  ['_7eclipdescriptor',['~ClipDescriptor',['../classfoleys_1_1ClipDescriptor.html#a07ad0acd497ab840c65f78305633cc8b',1,'foleys::ClipDescriptor']]],
   ['_7ecomposedclip',['~ComposedClip',['../classfoleys_1_1ComposedClip.html#ab194eed27b25460f6996ec0011b5d01b',1,'foleys::ComposedClip']]],
   ['_7efilmstrip',['~FilmStrip',['../classfoleys_1_1FilmStrip.html#a75dfea51da1c83d2e24964b1248d623f',1,'foleys::FilmStrip']]],
   ['_7eimageclip',['~ImageClip',['../classfoleys_1_1ImageClip.html#a25b7dd7b2d051d71908d1a6dc4da3563',1,'foleys::ImageClip']]],

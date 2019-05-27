@@ -23,10 +23,10 @@
 namespace foleys
 {
 
-class ClipBouncer
+class ClipRenderer
 {
 public:
-    ClipBouncer (VideoEngine& engine);
+    ClipRenderer (VideoEngine& engine);
 
     void setOutputFile (juce::File file);
     juce::File getOutputFile() const;
@@ -48,11 +48,11 @@ private:
     class RenderJob : public juce::ThreadPoolJob
     {
     public:
-        RenderJob (ClipBouncer& owner);
+        RenderJob (ClipRenderer& owner);
         juce::ThreadPoolJob::JobStatus runJob() override;
 
     private:
-        ClipBouncer& bouncer;
+        ClipRenderer& bouncer;
         juce::AudioBuffer<float> buffer;
 
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (RenderJob)
@@ -69,7 +69,7 @@ private:
 
     RenderJob renderJob;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ClipBouncer)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ClipRenderer)
 };
 
 }

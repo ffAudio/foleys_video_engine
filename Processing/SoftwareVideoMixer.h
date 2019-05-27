@@ -23,6 +23,10 @@
 namespace foleys
 {
 
+    /**
+     This class mixes the individual clips in ComposedClip. It uses the software
+     backend of JUCE.
+     */
 class SoftwareVideoMixer : public VideoMixer
 {
 public:

@@ -23,6 +23,11 @@
 namespace foleys
 {
 
+/**
+ The VideoMixer is used by the ComposedClip to sum the audio of the individual clips.
+ If you need alternative mixing algorithms, e.g. a hardware accellerated compositing,
+ you can override this interface and supply an instance to ComposedClip.
+ */
 class VideoMixer
 {
 public:

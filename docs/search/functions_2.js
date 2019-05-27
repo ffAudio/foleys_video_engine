@@ -1,12 +1,12 @@
 var searchData=
 [
   ['canceljob',['cancelJob',['../classfoleys_1_1VideoEngine.html#a6e651f0c30a72451713aa41cfd6abf8f',1,'foleys::VideoEngine']]],
-  ['cancelrendering',['cancelRendering',['../classfoleys_1_1ClipBouncer.html#ab96196f70fe8525d145584b6011198b1',1,'foleys::ClipBouncer']]],
+  ['cancelrendering',['cancelRendering',['../classfoleys_1_1ClipRenderer.html#ab96196f70fe8525d145584b6011198b1',1,'foleys::ClipRenderer']]],
   ['changeprogramname',['changeProgramName',['../classfoleys_1_1PanningAudioProcessor.html#a74e081d2a29ae960e0b75e7f8fc340ac',1,'foleys::PanningAudioProcessor']]],
   ['clear',['clear',['../classfoleys_1_1VideoFifo.html#ac8bb3912a3ce86b15842e79d0b421204',1,'foleys::VideoFifo']]],
   ['clearframesolderthan',['clearFramesOlderThan',['../classfoleys_1_1VideoFifo.html#aeef476d6a4f2689ef541ef2f7a2a6346',1,'foleys::VideoFifo']]],
-  ['clipbouncer',['ClipBouncer',['../classfoleys_1_1ClipBouncer.html#a5ce0ebb5c486ef8600f848c089bf6bd8',1,'foleys::ClipBouncer']]],
   ['clipdescriptor',['ClipDescriptor',['../classfoleys_1_1ClipDescriptor.html#ad8f29b8dcb2e209b47d0ba0034c74897',1,'foleys::ClipDescriptor::ClipDescriptor(ComposedClip &amp;owner, std::shared_ptr&lt; AVClip &gt; clip)'],['../classfoleys_1_1ClipDescriptor.html#ac20b5d50c964bd34a421d8a7342685af',1,'foleys::ClipDescriptor::ClipDescriptor(ComposedClip &amp;owner, juce::ValueTree state)']]],
+  ['cliprenderer',['ClipRenderer',['../classfoleys_1_1ClipRenderer.html#a983f82a2787487d91c97346b98f598c0',1,'foleys::ClipRenderer']]],
   ['colourcurvevideoprocessor',['ColourCurveVideoProcessor',['../classfoleys_1_1ColourCurveVideoProcessor.html#a1899f38b34c79d7904560fb0698b9f38',1,'foleys::ColourCurveVideoProcessor']]],
   ['compose',['compose',['../classfoleys_1_1SoftwareVideoMixer.html#a55ded0508da8982ee6b412291e55e3b5',1,'foleys::SoftwareVideoMixer::compose()'],['../classfoleys_1_1VideoMixer.html#aa70028d63b213ff0671cb9f3332b9a77',1,'foleys::VideoMixer::compose()']]],
   ['composedclip',['ComposedClip',['../classfoleys_1_1ComposedClip.html#af440bd8385c1d39f0a238ed309f39e53',1,'foleys::ComposedClip']]],

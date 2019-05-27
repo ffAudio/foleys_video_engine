@@ -25,6 +25,5 @@ var searchData=
   ['videoprocessor',['VideoProcessor',['../classfoleys_1_1VideoProcessor.html',1,'VideoProcessor'],['../classfoleys_1_1VideoProcessor.html#ad0aa740ab23b7ef211870077f4365935',1,'foleys::VideoProcessor::VideoProcessor()']]],
   ['videoprocessor_2eh',['VideoProcessor.h',['../VideoProcessor_8h.html',1,'']]],
   ['videoprocessoradapter',['VideoProcessorAdapter',['../structfoleys_1_1VideoProcessorAdapter.html',1,'VideoProcessorAdapter'],['../structfoleys_1_1VideoProcessorAdapter.html#a50624ae4aad44b57d6cd44d036ab6511',1,'foleys::VideoProcessorAdapter::VideoProcessorAdapter()']]],
-  ['videoprocessors',['videoProcessors',['../classfoleys_1_1ClipDescriptor.html#a0d9251cbc83e512407e9f48b8c2acd5e',1,'foleys::ClipDescriptor']]],
   ['videostreamsettings',['VideoStreamSettings',['../structfoleys_1_1VideoStreamSettings.html',1,'foleys']]]
 ];

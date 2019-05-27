@@ -22,37 +22,37 @@
 namespace foleys
 {
 
-ClipBouncer::ClipBouncer (VideoEngine& engine)
+ClipRenderer::ClipRenderer (VideoEngine& engine)
   : videoEngine (engine),
     renderJob (*this)
 {}
 
-void ClipBouncer::setOutputFile (juce::File file)
+void ClipRenderer::setOutputFile (juce::File file)
 {
     mediaFile = file;
 }
 
-juce::File ClipBouncer::getOutputFile() const
+juce::File ClipRenderer::getOutputFile() const
 {
     return mediaFile;
 }
 
-void ClipBouncer::setClipToRender (std::shared_ptr<AVClip> clipToRender)
+void ClipRenderer::setClipToRender (std::shared_ptr<AVClip> clipToRender)
 {
     clip = clipToRender;
 }
 
-void ClipBouncer::setVideoSettings (const VideoStreamSettings& settings)
+void ClipRenderer::setVideoSettings (const VideoStreamSettings& settings)
 {
     videoSettings = settings;
 }
 
-void ClipBouncer::setAudioSettings (const AudioStreamSettings& settings)
+void ClipRenderer::setAudioSettings (const AudioStreamSettings& settings)
 {
     audioSettings = settings;
 }
 
-void ClipBouncer::startRendering (bool cancelRunningJob)
+void ClipRenderer::startRendering (bool cancelRunningJob)
 {
     if (clip == nullptr || mediaFile.getFileName().isEmpty())
         return;
@@ -80,7 +80,7 @@ void ClipBouncer::startRendering (bool cancelRunningJob)
         videoEngine.getThreadPool().addJob (&renderJob, false);
 }
 
-void ClipBouncer::cancelRendering()
+void ClipRenderer::cancelRendering()
 {
     videoEngine.getThreadPool().removeJob (&renderJob, true, 1000);
 
@@ -88,19 +88,19 @@ void ClipBouncer::cancelRendering()
         onRenderingFinished (false);
 }
 
-bool ClipBouncer::isRendering() const
+bool ClipRenderer::isRendering() const
 {
     return renderJob.isRunning();
 }
 
 //==============================================================================
 
-ClipBouncer::RenderJob::RenderJob (ClipBouncer& owner)
+ClipRenderer::RenderJob::RenderJob (ClipRenderer& owner)
   : juce::ThreadPoolJob ("Bounce Job"),
     bouncer (owner)
 {}
 
-juce::ThreadPoolJob::JobStatus ClipBouncer::RenderJob::runJob()
+juce::ThreadPoolJob::JobStatus ClipRenderer::RenderJob::runJob()
 {
     if (bouncer.writer == nullptr || bouncer.clip == nullptr)
         return juce::ThreadPoolJob::jobHasFinished;

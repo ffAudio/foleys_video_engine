@@ -41,7 +41,7 @@
 #include "Processing/DefaultAudioMixer.cpp"
 
 #include "ReadWrite/AVFormatManager.cpp"
-#include "ReadWrite/ClipBouncer.cpp"
+#include "ReadWrite/ClipRenderer.cpp"
 
 #if FOLEYS_USE_FFMPEG
 #include "ReadWrite/FFmpeg/FFmpegReader.cpp"

@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['height',['height',['../structfoleys_1_1Size.html#ad12fc34ce789bce6c8a05d8a17138534',1,'foleys::Size']]]
+  ['numchannels',['numChannels',['../structfoleys_1_1AudioStreamSettings.html#a833642af16b83f234a41e9038ac89aaf',1,'foleys::AudioStreamSettings::numChannels()'],['../classfoleys_1_1AVReader.html#a833642af16b83f234a41e9038ac89aaf',1,'foleys::AVReader::numChannels()']]],
+  ['numsamples',['numSamples',['../classfoleys_1_1AVReader.html#a1d6f1ce794c2b3ab63209225b1acc8a4',1,'foleys::AVReader']]]
 ];

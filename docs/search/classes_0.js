@@ -8,7 +8,6 @@ var searchData=
   ['audioprocessoradapter',['AudioProcessorAdapter',['../structfoleys_1_1AudioProcessorAdapter.html',1,'foleys']]],
   ['audiostreamsettings',['AudioStreamSettings',['../structfoleys_1_1AudioStreamSettings.html',1,'foleys']]],
   ['audiostrip',['AudioStrip',['../classfoleys_1_1AudioStrip.html',1,'foleys']]],
-  ['automationparameter',['AutomationParameter',['../classAutomationParameter.html',1,'']]],
   ['avclip',['AVClip',['../classfoleys_1_1AVClip.html',1,'foleys']]],
   ['avformatmanager',['AVFormatManager',['../classfoleys_1_1AVFormatManager.html',1,'foleys']]],
   ['avreader',['AVReader',['../classfoleys_1_1AVReader.html',1,'foleys']]],

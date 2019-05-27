@@ -76,6 +76,9 @@ $(function() {
 <div class="title">VideoMixer Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>The <a class="el" href="classfoleys_1_1VideoMixer.html" title="The VideoMixer is used by the ComposedClip to sum the audio of the individual clips.">VideoMixer</a> is used by the <a class="el" href="classfoleys_1_1ComposedClip.html" title="This clip does the actual work of composing images into a video.">ComposedClip</a> to sum the audio of the individual clips.  
+ <a href="classfoleys_1_1VideoMixer.html#details">More...</a></p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for VideoMixer:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
@@ -84,7 +87,7 @@ $(function() {
  <div class="center">
   <img src="classfoleys_1_1VideoMixer.png" usemap="#VideoMixer_map" alt=""/>
   <map id="VideoMixer_map" name="VideoMixer_map">
-<area href="classfoleys_1_1SoftwareVideoMixer.html" alt="SoftwareVideoMixer" shape="rect" coords="0,56,127,80"/>
+<area href="classfoleys_1_1SoftwareVideoMixer.html" title="This class mixes the individual clips in ComposedClip." alt="SoftwareVideoMixer" shape="rect" coords="0,56,127,80"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -97,7 +100,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa70028d63b213ff0671cb9f3332b9a77"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1VideoMixer.html#aa70028d63b213ff0671cb9f3332b9a77">compose</a> (juce::Image &amp;target, <a class="el" href="structfoleys_1_1VideoStreamSettings.html">VideoStreamSettings</a> settings, int64_t count, double timeInSeconds, const std::vector&lt; std::shared_ptr&lt; <a class="el" href="classfoleys_1_1ClipDescriptor.html">ClipDescriptor</a> &gt;&gt; &amp;clips)=0</td></tr>
 <tr class="separator:aa70028d63b213ff0671cb9f3332b9a77"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The <a class="el" href="classfoleys_1_1VideoMixer.html" title="The VideoMixer is used by the ComposedClip to sum the audio of the individual clips.">VideoMixer</a> is used by the <a class="el" href="classfoleys_1_1ComposedClip.html" title="This clip does the actual work of composing images into a video.">ComposedClip</a> to sum the audio of the individual clips. </p>
+<p>If you need alternative mixing algorithms, e.g. a hardware accellerated compositing, you can override this interface and supply an instance to <a class="el" href="classfoleys_1_1ComposedClip.html" title="This clip does the actual work of composing images into a video.">ComposedClip</a>. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a0c4e92781507d16411677a78336d478b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0c4e92781507d16411677a78336d478b">&#9670;&nbsp;</a></span>VideoMixer()</h2>
 
@@ -211,7 +217,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun May 26 2019 17:33:49 for foleys_video_engine by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon May 27 2019 15:45:09 for foleys_video_engine by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.15
 </small></address>

@@ -76,6 +76,9 @@ $(function() {
 <div class="title">AudioMixer Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>The <a class="el" href="classfoleys_1_1AudioMixer.html" title="The AudioMixer is used by the ComposedClip to sum the audio of the individual clips.">AudioMixer</a> is used by the <a class="el" href="classfoleys_1_1ComposedClip.html" title="This clip does the actual work of composing images into a video.">ComposedClip</a> to sum the audio of the individual clips.  
+ <a href="classfoleys_1_1AudioMixer.html#details">More...</a></p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for AudioMixer:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
@@ -99,7 +102,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aae4360bf6524362ff7ff47166f742d6a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AudioMixer.html#aae4360bf6524362ff7ff47166f742d6a">mixAudio</a> (const juce::AudioSourceChannelInfo &amp;info, const int64_t position, const double timeInSeconds, const std::vector&lt; std::shared_ptr&lt; <a class="el" href="classfoleys_1_1ClipDescriptor.html">ClipDescriptor</a> &gt;&gt; &amp;clips)=0</td></tr>
 <tr class="separator:aae4360bf6524362ff7ff47166f742d6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The <a class="el" href="classfoleys_1_1AudioMixer.html" title="The AudioMixer is used by the ComposedClip to sum the audio of the individual clips.">AudioMixer</a> is used by the <a class="el" href="classfoleys_1_1ComposedClip.html" title="This clip does the actual work of composing images into a video.">ComposedClip</a> to sum the audio of the individual clips. </p>
+<p>If you need alternative mixing algorithms, i.e. for advanced routing etc. you can override this interface and supply an instance to your <a class="el" href="classfoleys_1_1ComposedClip.html" title="This clip does the actual work of composing images into a video.">ComposedClip</a>. A default implementation for summing stereo tracks is available as <a class="el" href="classfoleys_1_1DefaultAudioMixer.html">DefaultAudioMixer</a>. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aee7c2e583f66f1897ea2aa1223aebd5d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aee7c2e583f66f1897ea2aa1223aebd5d">&#9670;&nbsp;</a></span>AudioMixer()</h2>
 
@@ -251,7 +257,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun May 26 2019 17:33:48 for foleys_video_engine by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon May 27 2019 15:45:09 for foleys_video_engine by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.15
 </small></address>

@@ -23,6 +23,12 @@
 namespace foleys
 {
 
+/**
+ The AudioMixer is used by the ComposedClip to sum the audio of the individual clips.
+ If you need alternative mixing algorithms, i.e. for advanced routing etc. you can
+ override this interface and supply an instance to your ComposedClip. A default
+ implementation for summing stereo tracks is available as DefaultAudioMixer.
+ */
 class AudioMixer
 {
 public:

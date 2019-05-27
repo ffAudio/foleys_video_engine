@@ -72,7 +72,7 @@
 #include "ReadWrite/AVReader.h"
 #include "ReadWrite/AVWriter.h"
 #include "ReadWrite/AVFormatManager.h"
-#include "ReadWrite/ClipBouncer.h"
+#include "ReadWrite/ClipRenderer.h"
 #include "Processing/AudioMixer.h"
 #include "Processing/VideoMixer.h"
 #include "Processing/SoftwareVideoMixer.h"

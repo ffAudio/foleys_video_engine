@@ -28,7 +28,7 @@ var searchData=
   ['processorparameterfloat',['ProcessorParameterFloat',['../classfoleys_1_1ProcessorParameterFloat.html',1,'ProcessorParameterFloat'],['../classfoleys_1_1ProcessorParameterFloat.html#a1b513034a559010953bed0938c67d95d',1,'foleys::ProcessorParameterFloat::ProcessorParameterFloat()']]],
   ['processorstate',['ProcessorState',['../classfoleys_1_1ProcessorState.html',1,'ProcessorState'],['../classfoleys_1_1ProcessorState.html#aeb099b9d55ce06dec3c311e6311b936c',1,'foleys::ProcessorState::ProcessorState()']]],
   ['producesmidi',['producesMidi',['../classfoleys_1_1PanningAudioProcessor.html#a98c7c57619e08b04594d70cfe6466bac',1,'foleys::PanningAudioProcessor']]],
-  ['progress',['progress',['../classfoleys_1_1ClipBouncer.html#aec2dba88a0847343423e875eeda10c6b',1,'foleys::ClipBouncer']]],
+  ['progress',['progress',['../classfoleys_1_1ClipRenderer.html#aec2dba88a0847343423e875eeda10c6b',1,'foleys::ClipRenderer']]],
   ['pullsamples',['pullSamples',['../classfoleys_1_1AudioFifo.html#a8cf855e7e9c40ac8ab1b6de19701f813',1,'foleys::AudioFifo']]],
   ['pushimage',['pushImage',['../classfoleys_1_1AVWriter.html#aa753c267bc73c1a5405f16f8b03a630e',1,'foleys::AVWriter']]],
   ['pushsamples',['pushSamples',['../classfoleys_1_1AudioFifo.html#ac45eae9ba43e8fa2df23e37ade7bb199',1,'foleys::AudioFifo::pushSamples()'],['../classfoleys_1_1AVWriter.html#a4dfb79aafe19478ced3811125942e0c6',1,'foleys::AVWriter::pushSamples()']]],

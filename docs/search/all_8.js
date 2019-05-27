@@ -9,5 +9,5 @@ var searchData=
   ['isgestureinprogress',['isGestureInProgress',['../classfoleys_1_1ProcessorParameter.html#a3adaeebb8390d05121b39c9d58ee4e43',1,'foleys::ProcessorParameter']]],
   ['islooping',['isLooping',['../classfoleys_1_1AudioClip.html#a74719a8b0b679ff7345d6fdaa46b8dad',1,'foleys::AudioClip::isLooping()'],['../classfoleys_1_1ComposedClip.html#a74719a8b0b679ff7345d6fdaa46b8dad',1,'foleys::ComposedClip::isLooping()'],['../classfoleys_1_1ImageClip.html#a74719a8b0b679ff7345d6fdaa46b8dad',1,'foleys::ImageClip::isLooping()'],['../classfoleys_1_1MovieClip.html#a74719a8b0b679ff7345d6fdaa46b8dad',1,'foleys::MovieClip::isLooping()']]],
   ['isopenedok',['isOpenedOk',['../classfoleys_1_1AVReader.html#a40812a9db6012274565bb1d5359122e1',1,'foleys::AVReader::isOpenedOk()'],['../classfoleys_1_1AVWriter.html#a54dd0a68ec0a5621ac410b674c209683',1,'foleys::AVWriter::isOpenedOk()']]],
-  ['isrendering',['isRendering',['../classfoleys_1_1ClipBouncer.html#a8509eca8fd9f83b1bfa6e66c868160d1',1,'foleys::ClipBouncer']]]
+  ['isrendering',['isRendering',['../classfoleys_1_1ClipRenderer.html#a8509eca8fd9f83b1bfa6e66c868160d1',1,'foleys::ClipRenderer']]]
 ];

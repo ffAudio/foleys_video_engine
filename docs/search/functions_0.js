@@ -6,7 +6,7 @@ var searchData=
   ['addclip',['addClip',['../classfoleys_1_1ComposedClip.html#ab89734620611ea6efa8e8c10b55c93d1',1,'foleys::ComposedClip']]],
   ['addjob',['addJob',['../classfoleys_1_1VideoEngine.html#ac21caff9c9c252de9ec456b9d89133fe',1,'foleys::VideoEngine::addJob(std::function&lt; void()&gt; job)'],['../classfoleys_1_1VideoEngine.html#ae13050714dce9c65276b4d54624bf6a6',1,'foleys::VideoEngine::addJob(juce::ThreadPoolJob *job, bool deleteJobWhenFinished)']]],
   ['addkeyframe',['addKeyframe',['../classfoleys_1_1ParameterAutomation.html#abda9fbd5f4d6f29b441e85bcda466599',1,'foleys::ParameterAutomation']]],
-  ['addlistener',['addListener',['../classfoleys_1_1ProcessorParameter.html#abf312004846c89cae4c3a05315494840',1,'foleys::ProcessorParameter']]],
+  ['addlistener',['addListener',['../classfoleys_1_1ClipDescriptor.html#abf312004846c89cae4c3a05315494840',1,'foleys::ClipDescriptor::addListener()'],['../classfoleys_1_1ProcessorParameter.html#abf312004846c89cae4c3a05315494840',1,'foleys::ProcessorParameter::addListener()']]],
   ['addtimecodelistener',['addTimecodeListener',['../classfoleys_1_1AVClip.html#a04c9b04b7b73196f2e661c09060918f5',1,'foleys::AVClip']]],
   ['addvideoprocessor',['addVideoProcessor',['../classfoleys_1_1ClipDescriptor.html#af8cf1e7ec2e8f858763f8359396a7953',1,'foleys::ClipDescriptor::addVideoProcessor(std::unique_ptr&lt; ProcessorController &gt; controller, int index=-1)'],['../classfoleys_1_1ClipDescriptor.html#a963ab30b2145bea41c3d4c3b4655b6bd',1,'foleys::ClipDescriptor::addVideoProcessor(std::unique_ptr&lt; VideoProcessor &gt; processor, int index=-1)']]],
   ['addvideostream',['addVideoStream',['../classfoleys_1_1AVWriter.html#abee686cda7bc6b8b4dc633d4c8d60a50',1,'foleys::AVWriter']]],

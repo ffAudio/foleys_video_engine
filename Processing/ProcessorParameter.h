@@ -23,6 +23,9 @@
 namespace foleys
 {
 
+/**
+ This is the base class for parameters to configure and automate your VideoProcessors.
+ */
 class ProcessorParameter
 {
 public:
@@ -87,6 +90,9 @@ private:
 
 //==============================================================================
 
+/**
+ This is a floating point (double) parameter to configure and automate your VideoProcessors.
+ */
 class ProcessorParameterFloat : public ProcessorParameter
 {
 public:
@@ -127,6 +133,10 @@ private:
 
 //==============================================================================
 
+/**
+ The ProcessorState is a convenient class to manage your ProcessorParameters in
+ a VideoProcessor.
+ */
 class ProcessorState
 {
 public:

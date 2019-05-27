@@ -24,11 +24,9 @@ namespace foleys
 {
 
 /**
- @class AutomationParameter
-
- This class references a RangedAudioParameter in an AudioProcessor, allowing
- to store and playback automation values. It is used in the ClipDescriptor's
- ProcessorController.
+ This class allows storing and playing back automation values. It is used in
+ the ClipDescriptor's ProcessorController.
+ Using an Adapter it can handle VideoProcessors as well as AudioProcessors.
  */
 class ParameterAutomation
 {
