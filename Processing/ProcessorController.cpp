@@ -292,6 +292,11 @@ std::vector<std::unique_ptr<ParameterAutomation>>& ProcessorController::getParam
     return parameters;
 }
 
+int ProcessorController::getNumParameters() const
+{
+    return int (parameters.size());
+}
+
 ClipDescriptor& ProcessorController::getOwningClipDescriptor()
 {
     return owner;

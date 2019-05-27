@@ -35,11 +35,36 @@ class ComposedClip;
 class ClipDescriptor : private juce::ValueTree::Listener
 {
 public:
+    /**
+     Create a ClipDescriptor from an AVClip, that will be included in the ComposedClip.
+     Every ClipDescriptor can only live in one ComposedClip.
+
+     @param owner is the ComposedClip, where the Clipdescriptor will live in.
+     @param clip the AVClip, that will be wrapped and described by this ClipDescriptor.
+     */
     ClipDescriptor (ComposedClip& owner, std::shared_ptr<AVClip> clip);
 
+    /**
+     Create a ClipDescriptor from an AVClip, that will be included in the ComposedClip.
+     This will use the owners VideoEngine to resolve and load the clip and all processors.
+     Every ClipDescriptor can only live in one ComposedClip.
+
+     @param owner is the ComposedClip, where the Clipdescriptor will live in.
+     @param state is the ValueTree coded state to describe this ClipDescriptor.
+     */
     ClipDescriptor (ComposedClip& owner, juce::ValueTree state);
 
+    ~ClipDescriptor();
+
+    /**
+     Returns a human readable description of this clip. This is initially set to the
+     file name of wrapped clip.
+     */
     juce::String getDescription() const;
+
+    /**
+     Set the description of this clip.
+     */
     void setDescription (const juce::String& name);
 
     /** start of the clip in seconds */
@@ -76,16 +101,32 @@ public:
     void addAudioProcessor (std::unique_ptr<juce::AudioProcessor> processor, int index=-1);
     void removeAudioProcessor (int index);
 
-    std::vector<std::unique_ptr<ProcessorController>> audioProcessors;
+    const std::vector<std::unique_ptr<ProcessorController>>& getAudioProcessors() const;
 
     void addVideoProcessor (std::unique_ptr<ProcessorController> controller, int index=-1);
     void addVideoProcessor (std::unique_ptr<VideoProcessor> processor, int index=-1);
     void removeVideoProcessor (int index);
 
-    std::vector<std::unique_ptr<ProcessorController>> videoProcessors;
+    const std::vector<std::unique_ptr<ProcessorController>>& getVideoProcessors() const;
 
     ComposedClip& getOwningClip();
     const ComposedClip& getOwningClip() const;
+
+    /**
+     Listener to be notified of changes in this ClipDescriptor, especially the removal of
+     a ProcessorController.
+     */
+    class Listener
+    {
+    public:
+        virtual ~Listener() = default;
+        virtual void processorControllerToBeDeleted (const ProcessorController*) = 0;
+    };
+
+    /** Add a listener to the ClipDescriptor */
+    void addListener (Listener* listener);
+    /** Add a listener from the ClipDescriptor */
+    void removeListener (Listener* listener);
 
 private:
     std::atomic<int64_t> start {0};
@@ -111,6 +152,11 @@ private:
     bool manualStateChange = false;
 
     ComposedClip& owner;
+
+    juce::ListenerList<Listener> listeners;
+
+    std::vector<std::unique_ptr<ProcessorController>> videoProcessors;
+    std::vector<std::unique_ptr<ProcessorController>> audioProcessors;
 
     friend ComposedClip;
 

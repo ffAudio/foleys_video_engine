@@ -70,6 +70,15 @@ ClipDescriptor::ClipDescriptor (ComposedClip& ownerToUse, juce::ValueTree stateT
     state.addListener (this);
 }
 
+ClipDescriptor::~ClipDescriptor()
+{
+    for (const auto& vp : videoProcessors)
+        listeners.call ([&](ClipDescriptor::Listener& l) { l.processorControllerToBeDeleted (vp.get()); } );
+
+    for (const auto& ap : audioProcessors)
+        listeners.call ([&](ClipDescriptor::Listener& l) { l.processorControllerToBeDeleted (ap.get()); } );
+}
+
 juce::String ClipDescriptor::getDescription() const
 {
     return state.getProperty (IDs::description, "unnamed");
@@ -118,6 +127,26 @@ double ClipDescriptor::getCurrentPTS() const
 double ClipDescriptor::getClipTimeInDescriptorTime (double time) const
 {
     return time + getOffset() - getStart();
+}
+
+const std::vector<std::unique_ptr<ProcessorController>>& ClipDescriptor::getVideoProcessors() const
+{
+    return videoProcessors;
+}
+
+const std::vector<std::unique_ptr<ProcessorController>>& ClipDescriptor::getAudioProcessors() const
+{
+    return audioProcessors;
+}
+
+void ClipDescriptor::addListener (Listener* listener)
+{
+    listeners.add (listener);
+}
+
+void ClipDescriptor::removeListener (Listener* listener)
+{
+    listeners.remove (listener);
 }
 
 void ClipDescriptor::valueTreePropertyChanged (juce::ValueTree& treeWhosePropertyHasChanged,
@@ -204,8 +233,14 @@ void ClipDescriptor::addAudioProcessor (std::unique_ptr<juce::AudioProcessor> pr
 
 void ClipDescriptor::removeAudioProcessor (int index)
 {
+    const auto& toBeRemoved = std::next (audioProcessors.begin(), index);
+    if (toBeRemoved == audioProcessors.end())
+        return;
+
+    listeners.call ([&](ClipDescriptor::Listener& l) { l.processorControllerToBeDeleted (toBeRemoved->get()); } );
+
     juce::ScopedLock sl (owner.getCallbackLock());
-    audioProcessors.erase (std::next (audioProcessors.begin(), index));
+    audioProcessors.erase (toBeRemoved);
 }
 
 void ClipDescriptor::addVideoProcessor (std::unique_ptr<ProcessorController> controller, int index)
@@ -234,8 +269,14 @@ void ClipDescriptor::addVideoProcessor (std::unique_ptr<VideoProcessor> processo
 
 void ClipDescriptor::removeVideoProcessor (int index)
 {
+    const auto& toBeRemoved = std::next (videoProcessors.begin(), index);
+    if (toBeRemoved == videoProcessors.end())
+        return;
+
+    listeners.call ([&](ClipDescriptor::Listener& l) { l.processorControllerToBeDeleted (toBeRemoved->get()); } );
+
     juce::ScopedLock sl (owner.getCallbackLock());
-    videoProcessors.erase (std::next (videoProcessors.begin(), index));
+    videoProcessors.erase (toBeRemoved);
 }
 
 ComposedClip& ClipDescriptor::getOwningClip()

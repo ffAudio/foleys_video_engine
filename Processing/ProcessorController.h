@@ -107,6 +107,8 @@ public:
 
     std::vector<std::unique_ptr<ParameterAutomation>>& getParameters();
 
+    int getNumParameters() const;
+
 private:
 
     void valueTreePropertyChanged (juce::ValueTree& treeWhosePropertyHasChanged,

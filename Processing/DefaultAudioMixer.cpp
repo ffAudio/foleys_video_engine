@@ -42,7 +42,7 @@ void DefaultAudioMixer::mixAudio (const juce::AudioSourceChannelInfo& info,
 
             juce::AudioBuffer<float> procBuffer (mixBuffer.getArrayOfWritePointers(), mixBuffer.getNumChannels(), 0, info.numSamples - offset);
             juce::MidiBuffer midiDummy;
-            for (auto& controller : clip->audioProcessors)
+            for (const auto& controller : clip->getAudioProcessors())
             {
                 controller->updateAutomation ((timeInSeconds - clip->getStart()) + clip->getOffset());
                 if (auto* audioProcessor = controller->getAudioProcessor())
