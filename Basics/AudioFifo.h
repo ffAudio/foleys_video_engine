@@ -23,12 +23,14 @@
 namespace foleys
 {
 
-class AudioFifo
+/**
+ The AudioFifo is a storage, where the AVReader classes will store the stream of
+ audio samples for pre buffering.
+ */
+class AudioFifo final
 {
 public:
     AudioFifo (int size = 48000);
-
-    ~AudioFifo() = default;
 
     void pushSamples (const juce::AudioBuffer<float>& samples);
 

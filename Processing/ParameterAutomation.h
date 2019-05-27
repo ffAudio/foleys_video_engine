@@ -80,6 +80,7 @@ private:
 
 //==============================================================================
 
+/** Controls the AudioProcessorParameters of an AudioProcessor */
 class AudioParameterAutomation  : public ParameterAutomation,
                                   private juce::AudioProcessorParameter::Listener
 {
@@ -109,6 +110,7 @@ private:
 
 //==============================================================================
 
+/** Controls the ProcessorParameters of a VideoProcessor */
 class VideoParameterAutomation  : public ParameterAutomation,
                                   private ProcessorParameter::Listener
 {

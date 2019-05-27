@@ -23,6 +23,10 @@
 namespace foleys
 {
 
+/**
+ The AudioPluginManager is used to create AudioProcessor instances to be placed into
+ the audio processing pipeline. You can add support for 3rd party plugins here.
+ */
 class AudioPluginManager
 {
 public:

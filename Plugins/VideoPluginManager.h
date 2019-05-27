@@ -23,6 +23,10 @@
 namespace foleys
 {
 
+/**
+ The VideoPluginManager is used to create VideoProcessor instances to be placed into
+ the image processing pipeline.
+ */
 class VideoPluginManager
 {
 public:

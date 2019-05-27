@@ -23,11 +23,13 @@
 namespace foleys
 {
 
-class VideoFifo
+/**
+ The VideoFifo is a container, where the AVReader classes put the frames from reading to be displayed.
+ */
+class VideoFifo final
 {
 public:
     VideoFifo() = default;
-    ~VideoFifo() = default;
 
     void pushVideoFrame (juce::Image& image, int64_t timestamp);
     std::pair<int64_t, juce::Image> popVideoFrame();

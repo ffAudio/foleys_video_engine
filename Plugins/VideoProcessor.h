@@ -23,6 +23,12 @@
 namespace foleys
 {
 
+/**
+ The VideoProcessor is the base class to implement any video processor.
+ It offers an interface, how the VideoMixer will call supplying Images.
+ Similar to the AudioProcessor, you can add ProcessorParameters to control
+ the behaviour of the VideoProcessor.
+ */
 class VideoProcessor
 {
 public:

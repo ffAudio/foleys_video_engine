@@ -1,7 +1,6 @@
 var searchData=
 [
   ['_7eaudioclip',['~AudioClip',['../classfoleys_1_1AudioClip.html#af3b25609d84390596e825b8db0d34325',1,'foleys::AudioClip']]],
-  ['_7eaudiofifo',['~AudioFifo',['../classfoleys_1_1AudioFifo.html#a443d85ba44606b24ce9390e7d05a0d20',1,'foleys::AudioFifo']]],
   ['_7eaudiomixer',['~AudioMixer',['../classfoleys_1_1AudioMixer.html#ac95b71b780c1457aec5819b553a55e8c',1,'foleys::AudioMixer']]],
   ['_7eaudioparameterautomation',['~AudioParameterAutomation',['../classfoleys_1_1AudioParameterAutomation.html#aa2c42aabede497e7ad3041e4be5db090',1,'foleys::AudioParameterAutomation']]],
   ['_7eavclip',['~AVClip',['../classfoleys_1_1AVClip.html#abad90ffd5f40b14674da4b0d40130550',1,'foleys::AVClip']]],
@@ -18,7 +17,6 @@ var searchData=
   ['_7eprocessorparameter',['~ProcessorParameter',['../classfoleys_1_1ProcessorParameter.html#ab051188bedd2d50439b90cd3d9d70e3d',1,'foleys::ProcessorParameter']]],
   ['_7etimecodelistener',['~TimecodeListener',['../structfoleys_1_1AVClip_1_1TimecodeListener.html#a1637f4f5bbc9231bff530327d44e9bab',1,'foleys::AVClip::TimecodeListener']]],
   ['_7evideoengine',['~VideoEngine',['../classfoleys_1_1VideoEngine.html#a771bd2e7af9a306e88345a327b3bf946',1,'foleys::VideoEngine']]],
-  ['_7evideofifo',['~VideoFifo',['../classfoleys_1_1VideoFifo.html#a334cce704d3ccb6c7520d4a3dbda63ac',1,'foleys::VideoFifo']]],
   ['_7evideomixer',['~VideoMixer',['../classfoleys_1_1VideoMixer.html#a39be5b47b757e6100f2bd2cc97c469e5',1,'foleys::VideoMixer']]],
   ['_7evideoparameterautomation',['~VideoParameterAutomation',['../classfoleys_1_1VideoParameterAutomation.html#ac68e8e27a94c04d35891f6855fb4b99c',1,'foleys::VideoParameterAutomation']]],
   ['_7evideopreview',['~VideoPreview',['../classfoleys_1_1VideoPreview.html#a69e6a52f097c959178ef3f1a65e1674d',1,'foleys::VideoPreview']]],
