@@ -221,6 +221,17 @@ public:
 
     bool setOutputSampleRate (double sr)
     {
+        outputSampleRate = sr;
+
+        if (audioContext == nullptr)
+        {
+            if (juce::isPositiveAndBelow (videoStreamIdx, formatContext->nb_streams))
+                reader.numSamples  = formatContext->streams [videoStreamIdx]->duration * sr
+                * av_q2d (formatContext->streams [videoStreamIdx]->time_base);
+
+            return false;
+        }
+
         audioConverterContext = swr_alloc_set_opts (audioConverterContext,
                                                     channelLayout,              // out_ch_layout
                                                     AV_SAMPLE_FMT_FLTP,         // out_sample_fmt
@@ -231,7 +242,6 @@ public:
                                                     0,                          // log_offset
                                                     nullptr);                   // log_ctx
 
-        outputSampleRate = sr;
         return swr_init (audioConverterContext) >= 0;
     }
 
