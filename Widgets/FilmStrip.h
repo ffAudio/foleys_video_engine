@@ -27,8 +27,11 @@ namespace foleys
  @class FilmStrip
 
  The FilmStrip allows to display a line of thumbnails of a video clip.
+ Because it already uses the paint() and resized() hooks, you cannot inherit that.
+ Instead put it into your Component, that you can decorate. The Filmstrip itself
+ will not catch any mouse events, so you have still all flexibility by doing so.
  */
-class FilmStrip : public juce::Component
+class FilmStrip final : public juce::Component
 {
 public:
     FilmStrip();
@@ -37,16 +40,16 @@ public:
     /** Set the clip to be shown as thimbnails */
     void setClip (std::shared_ptr<AVClip> clip);
 
-    /** @Internal */
+    /** Paints the thumbnails */
     void paint (juce::Graphics&) override;
-    /** @Internal */
+    /** Triggers update of thumbnails */
     void resized() override;
 
     /** Set the start time and the end time of the clip in seconds. This
         is used to allow only a subset of thumbnails to be shown. */
     void setStartAndLength (double start, double length);
 
-    /** @Internal */
+    /** @internal */
     class ThumbnailJob : public juce::ThreadPoolJob
     {
     public:
@@ -57,13 +60,10 @@ public:
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ThumbnailJob)
     };
 private:
-    /** @Internal */
     void update();
 
-    /** @Internal */
     void setThumbnail (int index, juce::Image image);
 
-    /** @Internal */
     juce::ThreadPool* getThreadPool();
 
     std::shared_ptr<AVClip> clip;

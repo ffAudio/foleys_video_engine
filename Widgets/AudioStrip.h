@@ -37,19 +37,19 @@ public:
     /** Set the clip to be shown as thimbnail */
     void setClip (std::shared_ptr<AVClip> clip);
 
-    /** @Internal */
+    /** @internal */
     void paint (juce::Graphics&) override;
 
     /** Set the start time and the end time of the clip in seconds. This
         is used to allow only a subset of thumbnails to be shown. */
     void setStartAndLength (double start, double length);
 
-    /** @Internal */
+    /** @internal */
     class ThumbnailJob : public juce::ThreadPoolJob
     {
     public:
         ThumbnailJob (AudioStrip& owner);
-        /** @Internal */
+
         juce::ThreadPoolJob::JobStatus runJob() override;
     private:
         AudioStrip& owner;
@@ -58,12 +58,12 @@ public:
 
 private:
 
-    /** @Internal */
+    /** @internal */
     void update();
-    /** @Internal */
+    /** @internal */
     void changeListenerCallback (juce::ChangeBroadcaster* sender) override;
 
-    /** @Internal */
+    /** @internal */
     juce::ThreadPool* getThreadPool();
 
     std::shared_ptr<AVClip> clip;

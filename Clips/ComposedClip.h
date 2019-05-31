@@ -116,6 +116,7 @@ private:
 
     std::vector<std::shared_ptr<ClipDescriptor>> getActiveClips (std::function<bool(ClipDescriptor&)> selector) const;
 
+    /** @internal */
     class ComposingThread : public juce::TimeSliceClient
     {
     public:

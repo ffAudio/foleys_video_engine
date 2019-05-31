@@ -83,6 +83,7 @@ private:
 
     void handleAsyncUpdate() override;
 
+    /** @internal */
     class BackgroundReaderJob : public juce::TimeSliceClient
     {
     public:

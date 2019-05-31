@@ -91,7 +91,8 @@ public:
     /** Use a TimecodeListener to be notified, when the visual frame changes */
     struct TimecodeListener
     {
-        /** @Internal */
+        /** Destructor:w
+         */
         virtual ~TimecodeListener() = default;
 
         /** Listen to this callback to get notified, when the time code changes.
@@ -104,10 +105,10 @@ public:
     /** Unregister a TimecodeListener */
     void removeTimecodeListener (TimecodeListener* listener);
 
-    /** @Internal */
+    /** @internal */
     virtual juce::TimeSliceClient* getBackgroundJob();
 
-    /** @Internal */
+    /** @internal */
     VideoEngine* getVideoEngine() const;
 
 protected:
