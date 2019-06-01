@@ -20,5 +20,6 @@ var searchData=
   ['createparameterlayout',['createParameterLayout',['../classfoleys_1_1PanningAudioProcessor.html#a7bde6264d2434cb29027016cd41f1e70',1,'foleys::PanningAudioProcessor']]],
   ['createparameters',['createParameters',['../classfoleys_1_1ColourCurveVideoProcessor.html#a505a9bb455205ce1f3c0c622cd6613ed',1,'foleys::ColourCurveVideoProcessor::createParameters()'],['../classfoleys_1_1PositioningVideoProcessor.html#a505a9bb455205ce1f3c0c622cd6613ed',1,'foleys::PositioningVideoProcessor::createParameters()']]],
   ['createreaderfor',['createReaderFor',['../classfoleys_1_1VideoEngine.html#aa4f8b26720f68bc5bdbe20c223bfda17',1,'foleys::VideoEngine::createReaderFor()'],['../classfoleys_1_1AVFormatManager.html#aa4f8b26720f68bc5bdbe20c223bfda17',1,'foleys::AVFormatManager::createReaderFor()']]],
+  ['createusagedata',['createUsageData',['../classfoleys_1_1UsageReporter.html#a480f0e17fd045a183b4c7768e5a7df7f',1,'foleys::UsageReporter']]],
   ['createvideoplugininstance',['createVideoPluginInstance',['../classfoleys_1_1VideoEngine.html#a1170a2775212a23592b9cd592246fd20',1,'foleys::VideoEngine::createVideoPluginInstance()'],['../classfoleys_1_1VideoPluginManager.html#a1170a2775212a23592b9cd592246fd20',1,'foleys::VideoPluginManager::createVideoPluginInstance()']]]
 ];

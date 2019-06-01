@@ -8,5 +8,5 @@ var searchData=
   ['removetimecodelistener',['removeTimecodeListener',['../classfoleys_1_1AVClip.html#ab4fb3ddf8007139394f233b60c675ba5',1,'foleys::AVClip']]],
   ['removevideoprocessor',['removeVideoProcessor',['../classfoleys_1_1ClipDescriptor.html#ab9e31da095929c404626be269abf2773',1,'foleys::ClipDescriptor']]],
   ['resized',['resized',['../classfoleys_1_1FilmStrip.html#a31cc081b3c77bc8855de79094fc1da42',1,'foleys::FilmStrip']]],
-  ['runjob',['runJob',['../classfoleys_1_1AudioStrip_1_1ThumbnailJob.html#a4d9be2dfd37b3bc037da7b48bddbbcd1',1,'foleys::AudioStrip::ThumbnailJob::runJob()'],['../classfoleys_1_1FilmStrip_1_1ThumbnailJob.html#a4d9be2dfd37b3bc037da7b48bddbbcd1',1,'foleys::FilmStrip::ThumbnailJob::runJob()']]]
+  ['runjob',['runJob',['../classfoleys_1_1UsageReporter.html#a4d9be2dfd37b3bc037da7b48bddbbcd1',1,'foleys::UsageReporter::runJob()'],['../classfoleys_1_1AudioStrip_1_1ThumbnailJob.html#a4d9be2dfd37b3bc037da7b48bddbbcd1',1,'foleys::AudioStrip::ThumbnailJob::runJob()'],['../classfoleys_1_1FilmStrip_1_1ThumbnailJob.html#a4d9be2dfd37b3bc037da7b48bddbbcd1',1,'foleys::FilmStrip::ThumbnailJob::runJob()']]]
 ];

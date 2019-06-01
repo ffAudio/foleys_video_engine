@@ -1,6 +1,6 @@
 /*
  ==============================================================================
- 
+
     Copyright (c) 2019, Foleys Finest Audio - Daniel Walz
     All rights reserved.
 
@@ -14,7 +14,7 @@
     LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
     OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
     OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  ==============================================================================
  */
 
@@ -27,7 +27,7 @@ namespace foleys
  This class sends a single, anonymous ping to our analytics collection.
  To use foleys_video_engine using the free "Personal License", you must keep this
  in your code and avoid anything, that might render this data collection ineffective.
- 
+
  If you want to opt-out, you will have to buy one of the paid licenses.
  */
 class UsageReporter : public juce::ThreadPoolJob

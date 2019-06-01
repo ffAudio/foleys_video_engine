@@ -1,6 +1,6 @@
 /*
  ==============================================================================
- 
+
     Copyright (c) 2019, Foleys Finest Audio - Daniel Walz
     All rights reserved.
 
@@ -14,7 +14,7 @@
     LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
     OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
     OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  ==============================================================================
  */
 
@@ -32,14 +32,14 @@ juce::StringPairArray UsageReporter::createUsageData()
     data.set ("t",   "event");
     data.set ("ec",  "info");
     data.set ("ea",  "appStarted");
-    
+
     data.set ("cd1", juce::SystemStats::getJUCEVersion());
     data.set ("cd2", juce::SystemStats::getOperatingSystemName());
     data.set ("cd3", juce::SystemStats::getDeviceDescription());
     data.set ("cd4", anon_id);
-    
+
     juce::String appType, appName, appVersion, appManufacturer;
-    
+
 #if defined(JucePlugin_Name)
     appType         = "Plugin";
     appName         = JucePlugin_Name;
@@ -61,15 +61,15 @@ juce::StringPairArray UsageReporter::createUsageData()
         appType = "Library";
     }
 #endif
-    
+
     data.set ("cd5", appType);
     data.set ("cd6", appName);
     data.set ("cd7", appVersion);
     data.set ("cd8", appManufacturer);
-    
+
     data.set ("an", appName);
     data.set ("av", appVersion);
-    
+
     return data;
 }
 
@@ -77,16 +77,16 @@ UsageReporter::UsageReporter() : juce::ThreadPoolJob ("Engine Usage Report")
 {
     const auto address = "https://www.google-analytics.com/collect";
     auto agentCPUVendor = juce::SystemStats::getCpuVendor();
-    
+
     if (agentCPUVendor.isEmpty())
         agentCPUVendor = "CPU";
-    
+
     auto agentOSName = juce::SystemStats::getOperatingSystemName().replaceCharacter ('.', '_')
     .replace ("iOS", "iPhone OS");
 #if JUCE_IOS
     agentOSName << " like Mac OS X";
 #endif
-    
+
     userAgent << "Mozilla/5.0 ("
     << juce::SystemStats::getDeviceDescription() << ";"
     << agentCPUVendor << " " << agentOSName << ";"
@@ -100,8 +100,6 @@ UsageReporter::UsageReporter() : juce::ThreadPoolJob ("Engine Usage Report")
             postData.add (key + "=" + juce::URL::addEscapeChars (parameters[key], true));
 
     url = juce::URL (address).withPOSTData (postData.joinIntoString ("&"));
-
-    DBG ("Payload:\n" << postData.joinIntoString ("\n"));
 }
 
 juce::ThreadPoolJob::JobStatus UsageReporter::runJob()

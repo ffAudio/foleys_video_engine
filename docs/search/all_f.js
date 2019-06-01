@@ -46,7 +46,7 @@ var searchData=
   ['streamtype',['StreamType',['../classfoleys_1_1StreamTypes.html#a8a65141d9ea4bf9d2e2377ed6b888a1d',1,'foleys::StreamTypes']]],
   ['streamtypes',['StreamTypes',['../classfoleys_1_1StreamTypes.html',1,'StreamTypes'],['../classfoleys_1_1StreamTypes.html#a6098a6fd8f523fae182a7e53c701401e',1,'foleys::StreamTypes::StreamTypes()']]],
   ['structures_2eh',['Structures.h',['../Structures_8h.html',1,'']]],
-  ['subtitles',['Subtitles',['../classfoleys_1_1StreamTypes.html#a8a65141d9ea4bf9d2e2377ed6b888a1da2e450aab5b8b71a21c3ad97b9ae19358',1,'foleys::StreamTypes::Subtitles()'],['../classfoleys_1_1StreamTypes.html#a4e66d1e10d98c61bc63b8e5894c3867b',1,'foleys::StreamTypes::subtitles()']]],
+  ['subtitles',['subtitles',['../classfoleys_1_1StreamTypes.html#a4e66d1e10d98c61bc63b8e5894c3867b',1,'foleys::StreamTypes::subtitles()'],['../classfoleys_1_1StreamTypes.html#a8a65141d9ea4bf9d2e2377ed6b888a1da2e450aab5b8b71a21c3ad97b9ae19358',1,'foleys::StreamTypes::Subtitles()']]],
   ['synchroniseparameter',['synchroniseParameter',['../classfoleys_1_1ProcessorController.html#a1e942c38914349c78b2ee0945f3dfbfe',1,'foleys::ProcessorController']]],
   ['synchronisestate',['synchroniseState',['../classfoleys_1_1ProcessorController.html#a55a9e6c41f44850e5da2fd952d013e78',1,'foleys::ProcessorController']]]
 ];
