@@ -31,6 +31,9 @@ VideoEngine::VideoEngine()
         reader->startThread();
 
     startTimer (1000);
+#if FOLEYS_REPORT_USAGE
+    jobThreads.addJob (new UsageReporter(), true);
+#endif
 }
 
 VideoEngine::~VideoEngine()

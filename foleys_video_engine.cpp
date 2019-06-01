@@ -20,6 +20,7 @@
 
 #include "foleys_video_engine.h"
 
+#include "Basics/Usage.cpp"
 #include "Basics/VideoFifo.cpp"
 #include "Basics/AudioFifo.cpp"
 #include "Basics/VideoEngine.cpp"

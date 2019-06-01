@@ -36,14 +36,24 @@
   ==============================================================================
  */
 
+/** Config: FOLEYS_REPORT_USAGE
+    Set this flag to send a single ping each time the engine starts.
+    This is mandatory, if you use the Personal License (free)
+ */
+#ifndef FOLEYS_REPORT_USAGE
+#define FOLEYS_REPORT_USAGE 1
+#endif
+
 /** Config: FOLEYS_USE_FFMPEG
-    Set this flag to use FFmpeg as reading/writing library */
+    Set this flag to use FFmpeg as reading/writing library
+ */
 #ifndef FOLEYS_USE_FFMPEG
 #define FOLEYS_USE_FFMPEG 1
 #endif
 
 /** Config: FOLEYS_DEBUG_LOGGING
-    Set this flag to enable logging */
+    Set this flag to enable logging
+ */
 #ifndef FOLEYS_DEBUG_LOGGING
 #define FOLEYS_DEBUG_LOGGING 0
 #endif
@@ -59,6 +69,7 @@
 #include <juce_audio_utils/juce_audio_utils.h>
 
 #include "Basics/Structures.h"
+#include "Basics/Usage.h"
 #include "Processing/ProcessorParameter.h"
 #include "Plugins/AudioPluginManager.h"
 #include "Plugins/VideoProcessor.h"
