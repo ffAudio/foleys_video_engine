@@ -1,0 +1,7 @@
+<map id="AVClip" name="AVClip">
+<area shape="rect" id="node1" title="AVClip is the abstract base class of displayable/playable clips." alt="" coords="190,5,251,31"/>
+<area shape="rect" id="node2" href="$classfoleys_1_1AudioClip.html" title="The AudioClip plays back an audio file inside the video engine." alt="" coords="5,79,84,104"/>
+<area shape="rect" id="node3" href="$classfoleys_1_1ComposedClip.html" title="This clip does the actual work of composing images into a video." alt="" coords="107,79,216,104"/>
+<area shape="rect" id="node4" href="$classfoleys_1_1ImageClip.html" title="This class delivers a still image as video." alt="" coords="240,79,321,104"/>
+<area shape="rect" id="node5" href="$classfoleys_1_1MovieClip.html" title="The MovieClip plays back a video file." alt="" coords="345,79,424,104"/>
+</map>

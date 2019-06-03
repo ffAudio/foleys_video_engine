@@ -1,0 +1,4 @@
+<map id="VideoMixer" name="VideoMixer">
+<area shape="rect" id="node1" title="The VideoMixer is used by the ComposedClip to sum the audio of the individual clips." alt="" coords="32,5,119,31"/>
+<area shape="rect" id="node2" href="$classfoleys_1_1SoftwareVideoMixer.html" title="This class mixes the individual clips in ComposedClip." alt="" coords="5,79,146,104"/>
+</map>

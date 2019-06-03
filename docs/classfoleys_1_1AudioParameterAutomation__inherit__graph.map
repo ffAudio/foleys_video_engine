@@ -1,0 +1,4 @@
+<map id="AudioParameterAutomation" name="AudioParameterAutomation">
+<area shape="rect" id="node1" title="Controls the AudioProcessorParameters of an AudioProcessor." alt="" coords="5,79,190,104"/>
+<area shape="rect" id="node2" href="$classfoleys_1_1ParameterAutomation.html" title="This class allows storing and playing back automation values." alt="" coords="22,5,173,31"/>
+</map>

@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['defaultaudiomixer_2ecpp',['DefaultAudioMixer.cpp',['../DefaultAudioMixer_8cpp.html',1,'']]],
-  ['defaultaudiomixer_2eh',['DefaultAudioMixer.h',['../DefaultAudioMixer_8h.html',1,'']]]
+  ['license_2emd',['LICENSE.md',['../LICENSE_8md.html',1,'']]]
 ];

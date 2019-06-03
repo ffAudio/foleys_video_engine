@@ -1,0 +1,4 @@
+<map id="MovieClip" name="MovieClip">
+<area shape="rect" id="node1" title="The MovieClip plays back a video file." alt="" coords="5,79,85,104"/>
+<area shape="rect" id="node2" href="$classfoleys_1_1AVClip.html" title="AVClip is the abstract base class of displayable/playable clips." alt="" coords="15,5,76,31"/>
+</map>

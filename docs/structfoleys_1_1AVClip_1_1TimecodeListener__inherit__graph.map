@@ -1,0 +1,4 @@
+<map id="AVClip::TimecodeListener" name="AVClip::TimecodeListener">
+<area shape="rect" id="node1" title="Use a TimecodeListener to be notified, when the visual frame changes." alt="" coords="5,5,179,31"/>
+<area shape="rect" id="node2" href="$classfoleys_1_1VideoPreview.html" title="The VideoPreview is a juce Component, that will display the connected AVClip in real time." alt="" coords="41,79,144,104"/>
+</map>

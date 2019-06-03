@@ -1,0 +1,4 @@
+<map id="VideoPreview" name="VideoPreview">
+<area shape="rect" id="node1" title="The VideoPreview is a juce Component, that will display the connected AVClip in real time." alt="" coords="17,79,120,104"/>
+<area shape="rect" id="node2" href="$structfoleys_1_1AVClip_1_1TimecodeListener.html" title="Use a TimecodeListener to be notified, when the visual frame changes." alt="" coords="5,5,132,31"/>
+</map>
