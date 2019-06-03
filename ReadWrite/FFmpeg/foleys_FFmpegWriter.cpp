@@ -20,7 +20,7 @@
 
 #pragma once
 
-#include "FFmpegHelpers.h"
+#include "foleys_FFmpegHelpers.h"
 
 namespace foleys
 {

@@ -20,7 +20,7 @@
 
 #if FOLEYS_USE_FFMPEG
 
-#include "FFmpegHelpers.h"
+#include "foleys_FFmpegHelpers.h"
 
 
 namespace foleys
