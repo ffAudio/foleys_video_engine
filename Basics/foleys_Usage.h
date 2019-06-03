@@ -33,11 +33,11 @@ namespace foleys
 class UsageReporter : public juce::ThreadPoolJob
 {
 public:
-    UsageReporter();
+    UsageReporter (const juce::String& event = "appStarted");
 
     juce::ThreadPoolJob::JobStatus runJob() override;
 
-    static juce::StringPairArray createUsageData();
+    static juce::StringPairArray createUsageData (const juce::String& event);
 
 private:
     juce::String userAgent;

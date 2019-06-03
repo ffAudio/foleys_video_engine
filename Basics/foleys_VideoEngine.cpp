@@ -31,6 +31,7 @@ VideoEngine::VideoEngine()
         reader->startThread();
 
     startTimer (1000);
+
 #if FOLEYS_REPORT_USAGE
     jobThreads.addJob (new UsageReporter(), true);
 #endif
@@ -38,6 +39,11 @@ VideoEngine::VideoEngine()
 
 VideoEngine::~VideoEngine()
 {
+#if FOLEYS_REPORT_USAGE
+    jobThreads.addJob (new UsageReporter ("appFinished"), true);
+    juce::Thread::sleep (1000);
+#endif
+
     for (auto& reader : readingThreads)
         reader->stopThread (500);
 

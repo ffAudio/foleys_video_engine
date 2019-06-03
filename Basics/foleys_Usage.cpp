@@ -21,7 +21,7 @@
 namespace foleys
 {
 
-juce::StringPairArray UsageReporter::createUsageData()
+    juce::StringPairArray UsageReporter::createUsageData (const juce::String& event)
 {
     const auto anon_id = juce::String (juce::SystemStats::getDeviceIdentifiers().joinIntoString (":").hashCode64());
 
@@ -31,12 +31,13 @@ juce::StringPairArray UsageReporter::createUsageData()
     data.set ("cid", anon_id);
     data.set ("t",   "event");
     data.set ("ec",  "info");
-    data.set ("ea",  "appStarted");
+    data.set ("ea",  event);
 
-    data.set ("cd1", juce::SystemStats::getJUCEVersion());
-    data.set ("cd2", juce::SystemStats::getOperatingSystemName());
-    data.set ("cd3", juce::SystemStats::getDeviceDescription());
-    data.set ("cd4", anon_id);
+    data.set ("cd1", FOLEYS_ENGINE_VERSION);
+    data.set ("cd2", juce::SystemStats::getJUCEVersion());
+    data.set ("cd3", juce::SystemStats::getOperatingSystemName());
+    data.set ("cd4", juce::SystemStats::getDeviceDescription());
+    data.set ("cd5", anon_id);
 
     juce::String appType, appName, appVersion, appManufacturer;
 
@@ -73,7 +74,7 @@ juce::StringPairArray UsageReporter::createUsageData()
     return data;
 }
 
-UsageReporter::UsageReporter() : juce::ThreadPoolJob ("Engine Usage Report")
+UsageReporter::UsageReporter (const juce::String& event) : juce::ThreadPoolJob ("Engine Usage Report")
 {
     const auto address = "https://www.google-analytics.com/collect";
     auto agentCPUVendor = juce::SystemStats::getCpuVendor();
@@ -94,7 +95,7 @@ UsageReporter::UsageReporter() : juce::ThreadPoolJob ("Engine Usage Report")
 
     juce::StringArray postData;
 
-    auto parameters = createUsageData();
+    auto parameters = createUsageData (event);
     for (auto& key : parameters.getAllKeys())
         if (parameters[key].isNotEmpty())
             postData.add (key + "=" + juce::URL::addEscapeChars (parameters[key], true));
