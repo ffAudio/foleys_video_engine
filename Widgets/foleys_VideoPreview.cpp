@@ -25,6 +25,10 @@ VideoPreview::VideoPreview()
 {
     setOpaque (true);
     setInterceptsMouseClicks (false, true);
+
+#if FOLEYS_SHOW_SPLASHSCREEN
+    addAndMakeVisible (splashscreen);
+#endif
 }
 
 VideoPreview::~VideoPreview()

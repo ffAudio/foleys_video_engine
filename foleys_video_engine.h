@@ -44,6 +44,15 @@
 #define FOLEYS_REPORT_USAGE 1
 #endif
 
+/** Config: FOLEYS_SHOW_SPLASHSCREEN
+    Set this flag to show 6 seconds a splash screen in your
+    VideoPreview component.
+    This is mandatory, if you use the Personal License (free)
+ */
+#ifndef FOLEYS_SHOW_SPLASHSCREEN
+#define FOLEYS_SHOW_SPLASHSCREEN 1
+#endif
+
 /** Config: FOLEYS_USE_FFMPEG
     Set this flag to use FFmpeg as reading/writing library
  */

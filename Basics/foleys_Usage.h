@@ -47,4 +47,17 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (UsageReporter)
 };
 
+class FoleysSplashScreen  : public juce::Component
+{
+public:
+    FoleysSplashScreen();
+    void paint (juce::Graphics&) override;
+    void mouseDown (const juce::MouseEvent&) override;
+
+private:
+    std::unique_ptr<juce::Drawable> foleys;
+    juce::Image logo;
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FoleysSplashScreen)
+};
+
 }

@@ -49,6 +49,16 @@ private:
     std::shared_ptr<AVClip> clip;
     juce::RectanglePlacement placement { juce::RectanglePlacement::centred };
 
+#if FOLEYS_SHOW_SPLASHSCREEN
+public:
+    void resized() override
+    {
+        splashscreen.setBounds (getWidth() - 210, getHeight() - 90, 200, 80);
+    }
+private:
+    FoleysSplashScreen splashscreen;
+#endif
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (VideoPreview)
 };
 
