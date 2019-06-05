@@ -240,7 +240,9 @@ std::shared_ptr<AVClip> ComposedClip::createCopy()
     if (engine == nullptr)
         return {};
 
-    auto clipCopy = engine->createComposedClip();
+    auto clipCopy = std::make_shared<ComposedClip>(*engine);
+    engine->manageLifeTime (clipCopy);
+
     for (auto clip : getStatusTree())
         clipCopy->getStatusTree().appendChild (clip.createCopy(), nullptr);
 

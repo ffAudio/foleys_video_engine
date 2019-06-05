@@ -47,6 +47,12 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (UsageReporter)
 };
 
+/**
+ A splash screen that is mandatory, if you use the sponsored Personal license.
+ It will automatically be shown in the VideoPreview component and vanishes
+ after 6 seconds.
+ On click it will open the foleysfinest.com homepage.
+ */
 class FoleysSplashScreen  : public juce::Component
 {
 public:

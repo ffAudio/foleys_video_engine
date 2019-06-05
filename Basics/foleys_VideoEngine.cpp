@@ -59,13 +59,6 @@ std::shared_ptr<AVClip> VideoEngine::createClipFromFile (juce::File file)
     return clip;
 }
 
-std::shared_ptr<ComposedClip> VideoEngine::createComposedClip()
-{
-    auto clip = std::make_shared<ComposedClip> (*this);
-    manageLifeTime (clip);
-    return clip;
-}
-
 std::unique_ptr<AVReader> VideoEngine::createReaderFor (juce::File file, StreamTypes type)
 {
     return formatManager.createReaderFor (file, type);
@@ -158,6 +151,16 @@ void VideoEngine::setUndoManager (juce::UndoManager* undoManagerToUse)
 AVFormatManager& VideoEngine::getFormatManager()
 {
     return formatManager;
+}
+
+AudioPluginManager& VideoEngine::getAudioPluginManager()
+{
+    return audioPluginManager;
+}
+
+VideoPluginManager& VideoEngine::getVideoPluginManager()
+{
+    return videoPluginManager;
 }
 
 std::unique_ptr<VideoProcessor> VideoEngine::createVideoPluginInstance (const juce::String& identifierString,

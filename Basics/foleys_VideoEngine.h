@@ -40,8 +40,14 @@ public:
     VideoEngine();
     ~VideoEngine();
 
+    /**
+     Use the source file to figure the most appropriate AVClip descendant.
+     */
     std::shared_ptr<AVClip> createClipFromFile (juce::File file);
-    std::shared_ptr<ComposedClip> createComposedClip();
+
+    /**
+     Find an appropriate AVReader to be used to read a video file.
+     */
     std::unique_ptr<AVReader> createReaderFor (juce::File file, StreamTypes type = StreamTypes::all());
 
     void addJob (std::function<void()> job);
@@ -52,27 +58,56 @@ public:
 
     /**
      This method will add the clip to the background threads and hold an auto
-     release pool to make sure, it won't be deleted in any realtime critical thread */
+     release pool to make sure, it won't be deleted in any realtime critical thread.
+
+     When using the engine's factory methods, this is already done for you, if you
+     create a clip manually, calling make_shared, you will have to call this function
+     for the clip to function.
+     */
     void manageLifeTime (std::shared_ptr<AVClip> clip);
 
     /**
      You can set an external undomanager. In this case you are responsible for detetion.
      If you use the undomanager provided by the engine, you don't have to do anything
-     for it's lifetime. */
+     for it's lifetime.
+     */
     void setUndoManager (juce::UndoManager* undoManager);
 
     juce::UndoManager* getUndoManager();
 
+    /**
+     Grant access to the AVFormatManager. The AVFormatManager is responsible to load
+     the different kinds of AVClips from files.
+     */
     AVFormatManager& getFormatManager();
 
+    /**
+     Grants access to the AudioPluginManager, e.g. to register AudioProcessor factories
+     */
+    AudioPluginManager& getAudioPluginManager();
+
+    /**
+     Grants access to the VideoPluginManager, e.g. to register VideoProcessor factories
+     */
+    VideoPluginManager& getVideoPluginManager();
+
+    /**
+     Use the VideoPluginManager to create a VideoProcessor instance.
+     */
     std::unique_ptr<VideoProcessor> createVideoPluginInstance (const juce::String& identifierString,
                                                                juce::String& error) const;
 
+    /**
+     Use the AudioPluginManager to create a AudioProcessor instance.
+     */
     std::unique_ptr<juce::AudioProcessor> createAudioPluginInstance (const juce::String& identifierString,
                                                                      double sampleRate,
                                                                      int blockSize,
                                                                      juce::String& error) const;
 
+    /**
+     This method will find the TimeSliceThread with the least number of clients to balance the load.
+     */
     juce::TimeSliceThread& getNextTimeSliceThread();
 
 private:

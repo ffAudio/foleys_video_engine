@@ -25,7 +25,12 @@ AudioPluginManager::AudioPluginManager()
 {
     pluginManager.addDefaultFormats();
 
-    factories ["BUILTIN: " + PanningAudioProcessor::getPluginName()] = [] { return std::make_unique<PanningAudioProcessor>(); };
+    registerAudioProcessor ("BUILTIN: " + PanningAudioProcessor::getPluginName(), [] { return std::make_unique<PanningAudioProcessor>(); });
+}
+
+void AudioPluginManager::registerAudioProcessor (const juce::String& identifierString, std::function<std::unique_ptr<juce::AudioProcessor>()> factory)
+{
+    factories [identifierString] = std::move (factory);
 }
 
 std::unique_ptr<juce::AudioProcessor> AudioPluginManager::createAudioPluginInstance (const juce::String& identifierString,

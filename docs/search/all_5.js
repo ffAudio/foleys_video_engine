@@ -30,6 +30,7 @@ var searchData=
   ['foleys_5fdebug_5flogging',['FOLEYS_DEBUG_LOGGING',['../foleys__video__engine_8h.html#a87c1678dfda276b70b1f7129446d72b8',1,'foleys_video_engine.h']]],
   ['foleys_5fdefaultaudiomixer_2ecpp',['foleys_DefaultAudioMixer.cpp',['../foleys__DefaultAudioMixer_8cpp.html',1,'']]],
   ['foleys_5fdefaultaudiomixer_2eh',['foleys_DefaultAudioMixer.h',['../foleys__DefaultAudioMixer_8h.html',1,'']]],
+  ['foleys_5fengine_5fversion',['FOLEYS_ENGINE_VERSION',['../foleys__video__engine_8h.html#a80633aee8edd6bca9a74af69a1107db2',1,'foleys_video_engine.h']]],
   ['foleys_5ffilmstrip_2ecpp',['foleys_FilmStrip.cpp',['../foleys__FilmStrip_8cpp.html',1,'']]],
   ['foleys_5ffilmstrip_2eh',['foleys_FilmStrip.h',['../foleys__FilmStrip_8h.html',1,'']]],
   ['foleys_5fimageclip_2ecpp',['foleys_ImageClip.cpp',['../foleys__ImageClip_8cpp.html',1,'']]],
@@ -44,6 +45,7 @@ var searchData=
   ['foleys_5fprocessorcontroller_2eh',['foleys_ProcessorController.h',['../foleys__ProcessorController_8h.html',1,'']]],
   ['foleys_5fprocessorparameter_2ecpp',['foleys_ProcessorParameter.cpp',['../foleys__ProcessorParameter_8cpp.html',1,'']]],
   ['foleys_5fprocessorparameter_2eh',['foleys_ProcessorParameter.h',['../foleys__ProcessorParameter_8h.html',1,'']]],
+  ['foleys_5fshow_5fsplashscreen',['FOLEYS_SHOW_SPLASHSCREEN',['../foleys__video__engine_8h.html#a13c18545c934690dd8a2f10ce67bdede',1,'foleys_video_engine.h']]],
   ['foleys_5fsoftwarevideomixer_2ecpp',['foleys_SoftwareVideoMixer.cpp',['../foleys__SoftwareVideoMixer_8cpp.html',1,'']]],
   ['foleys_5fsoftwarevideomixer_2eh',['foleys_SoftwareVideoMixer.h',['../foleys__SoftwareVideoMixer_8h.html',1,'']]],
   ['foleys_5fstructures_2eh',['foleys_Structures.h',['../foleys__Structures_8h.html',1,'']]],
@@ -62,6 +64,7 @@ var searchData=
   ['foleys_5fvideopreview_2ecpp',['foleys_VideoPreview.cpp',['../foleys__VideoPreview_8cpp.html',1,'']]],
   ['foleys_5fvideopreview_2eh',['foleys_VideoPreview.h',['../foleys__VideoPreview_8h.html',1,'']]],
   ['foleys_5fvideoprocessor_2eh',['foleys_VideoProcessor.h',['../foleys__VideoProcessor_8h.html',1,'']]],
+  ['foleyssplashscreen',['FoleysSplashScreen',['../classfoleys_1_1FoleysSplashScreen.html',1,'FoleysSplashScreen'],['../classfoleys_1_1FoleysSplashScreen.html#a27eeb01f25f40b21c3a0e84bc0ddd72f',1,'foleys::FoleysSplashScreen::FoleysSplashScreen()']]],
   ['formats',['Formats',['../classfoleys_1_1AVFormatManager.html#a20f606f0ef9377a0de98c641cc7375d4',1,'foleys::AVFormatManager']]],
   ['framesize',['frameSize',['../structfoleys_1_1VideoStreamSettings.html#a2b90aa7a2170c2df0934a574707ea33d',1,'foleys::VideoStreamSettings']]],
   ['ids',['IDs',['../namespacefoleys_1_1IDs.html',1,'foleys']]]

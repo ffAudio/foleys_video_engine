@@ -32,6 +32,16 @@ class AudioPluginManager
 public:
     AudioPluginManager();
 
+    /**
+     Register a factory to return an AudioProcessor instance from an identifierString. This is used for built in
+     AudioProcessors.
+     */
+    void registerAudioProcessor (const juce::String& identifierString, std::function<std::unique_ptr<juce::AudioProcessor>()>);
+
+    /**
+     Creates an actual instance of an AudioPlugin. It will try the first the built in factories, and then the
+     AudioPlugins that were found on the system.
+     */
     std::unique_ptr<juce::AudioProcessor> createAudioPluginInstance (const juce::String& identifierString,
                                                                      double sampleRate,
                                                                      int blockSize,

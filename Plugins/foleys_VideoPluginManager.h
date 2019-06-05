@@ -32,6 +32,14 @@ class VideoPluginManager
 public:
     VideoPluginManager();
 
+    /**
+     Register a VideoProcessor factory to create a VideoProcessor instance from an identifying string.
+     */
+    void registerVideoProcessor (const juce::String& identifierString, std::function<std::unique_ptr<VideoProcessor>()>);
+
+    /**
+     Create an instance of a VideoProcessor from an identifying string.
+     */
     std::unique_ptr<VideoProcessor> createVideoPluginInstance (const juce::String& identifierString,
                                                                juce::String& error) const;
 

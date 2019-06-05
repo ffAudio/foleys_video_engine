@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>foleys_video_engine: AudioStrip::ThumbnailJob Class Reference</title>
+<title>foleys_video_engine: FoleysSplashScreen Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -74,39 +74,46 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="namespacefoleys.html">foleys</a></li><li class="navelem"><a class="el" href="classfoleys_1_1AudioStrip.html">AudioStrip</a></li><li class="navelem"><a class="el" href="classfoleys_1_1AudioStrip_1_1ThumbnailJob.html">ThumbnailJob</a></li>  </ul>
+<li class="navelem"><a class="el" href="namespacefoleys.html">foleys</a></li><li class="navelem"><a class="el" href="classfoleys_1_1FoleysSplashScreen.html">FoleysSplashScreen</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="classfoleys_1_1AudioStrip_1_1ThumbnailJob-members.html">List of all members</a>  </div>
+<a href="classfoleys_1_1FoleysSplashScreen-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">AudioStrip::ThumbnailJob Class Reference</div>  </div>
+<div class="title">FoleysSplashScreen Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Inherits ThreadPoolJob.</p>
+<p>A splash screen that is mandatory, if you use the sponsored Personal license.  
+ <a href="classfoleys_1_1FoleysSplashScreen.html#details">More...</a></p>
+
+<p>Inherits Component.</p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:af6fd9a7fa71504cd285573302fcd82b6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AudioStrip_1_1ThumbnailJob.html#af6fd9a7fa71504cd285573302fcd82b6">ThumbnailJob</a> (<a class="el" href="classfoleys_1_1AudioStrip.html">AudioStrip</a> &amp;owner)</td></tr>
-<tr class="separator:af6fd9a7fa71504cd285573302fcd82b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4d9be2dfd37b3bc037da7b48bddbbcd1"><td class="memItemLeft" align="right" valign="top">juce::ThreadPoolJob::JobStatus&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AudioStrip_1_1ThumbnailJob.html#a4d9be2dfd37b3bc037da7b48bddbbcd1">runJob</a> () override</td></tr>
-<tr class="separator:a4d9be2dfd37b3bc037da7b48bddbbcd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27eeb01f25f40b21c3a0e84bc0ddd72f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1FoleysSplashScreen.html#a27eeb01f25f40b21c3a0e84bc0ddd72f">FoleysSplashScreen</a> ()</td></tr>
+<tr class="separator:a27eeb01f25f40b21c3a0e84bc0ddd72f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaae6bb82eac6573cea15222efb6ac1ed"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1FoleysSplashScreen.html#aaae6bb82eac6573cea15222efb6ac1ed">paint</a> (juce::Graphics &amp;) override</td></tr>
+<tr class="separator:aaae6bb82eac6573cea15222efb6ac1ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86e6a10bf75587f36f2ecfa95ec6391e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1FoleysSplashScreen.html#a86e6a10bf75587f36f2ecfa95ec6391e">mouseDown</a> (const juce::MouseEvent &amp;) override</td></tr>
+<tr class="separator:a86e6a10bf75587f36f2ecfa95ec6391e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="af6fd9a7fa71504cd285573302fcd82b6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af6fd9a7fa71504cd285573302fcd82b6">&#9670;&nbsp;</a></span>ThumbnailJob()</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>A splash screen that is mandatory, if you use the sponsored Personal license. </p>
+<p>It will automatically be shown in the <a class="el" href="classfoleys_1_1VideoPreview.html" title="The VideoPreview is a juce Component, that will display the connected AVClip in real time.">VideoPreview</a> component and vanishes after 6 seconds. On click it will open the foleysfinest.com homepage. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a27eeb01f25f40b21c3a0e84bc0ddd72f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a27eeb01f25f40b21c3a0e84bc0ddd72f">&#9670;&nbsp;</a></span>FoleysSplashScreen()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classfoleys_1_1AudioStrip_1_1ThumbnailJob.html">ThumbnailJob</a> </td>
+          <td class="memname"><a class="el" href="classfoleys_1_1FoleysSplashScreen.html">FoleysSplashScreen</a> </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classfoleys_1_1AudioStrip.html">AudioStrip</a> &amp;&#160;</td>
-          <td class="paramname"><em>owner</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -115,8 +122,8 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a4d9be2dfd37b3bc037da7b48bddbbcd1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4d9be2dfd37b3bc037da7b48bddbbcd1">&#9670;&nbsp;</a></span>runJob()</h2>
+<a id="aaae6bb82eac6573cea15222efb6ac1ed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaae6bb82eac6573cea15222efb6ac1ed">&#9670;&nbsp;</a></span>paint()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -125,8 +132,35 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">juce::ThreadPoolJob::JobStatus runJob </td>
+          <td class="memname">void paint </td>
           <td>(</td>
+          <td class="paramtype">juce::Graphics &amp;&#160;</td>
+          <td class="paramname"><em>g</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a86e6a10bf75587f36f2ecfa95ec6391e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a86e6a10bf75587f36f2ecfa95ec6391e">&#9670;&nbsp;</a></span>mouseDown()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void mouseDown </td>
+          <td>(</td>
+          <td class="paramtype">const juce::MouseEvent &amp;&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
@@ -141,8 +175,8 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li><a class="el" href="foleys__AudioStrip_8h.html">foleys_AudioStrip.h</a></li>
-<li><a class="el" href="foleys__AudioStrip_8cpp.html">foleys_AudioStrip.cpp</a></li>
+<li><a class="el" href="foleys__Usage_8h.html">foleys_Usage.h</a></li>
+<li><a class="el" href="foleys__Usage_8cpp.html">foleys_Usage.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

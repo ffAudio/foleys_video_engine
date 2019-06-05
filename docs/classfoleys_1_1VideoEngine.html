@@ -98,10 +98,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a771bd2e7af9a306e88345a327b3bf946"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1VideoEngine.html#a771bd2e7af9a306e88345a327b3bf946">~VideoEngine</a> ()</td></tr>
 <tr class="separator:a771bd2e7af9a306e88345a327b3bf946"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a492c936c6269206d907819e80bafa0d6"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classfoleys_1_1AVClip.html">AVClip</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1VideoEngine.html#a492c936c6269206d907819e80bafa0d6">createClipFromFile</a> (juce::File file)</td></tr>
+<tr class="memdesc:a492c936c6269206d907819e80bafa0d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use the source file to figure the most appropriate <a class="el" href="classfoleys_1_1AVClip.html" title="AVClip is the abstract base class of displayable/playable clips.">AVClip</a> descendant.  <a href="#a492c936c6269206d907819e80bafa0d6">More...</a><br /></td></tr>
 <tr class="separator:a492c936c6269206d907819e80bafa0d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a19fb346b6335bea02b6ed8550637f249"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classfoleys_1_1ComposedClip.html">ComposedClip</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1VideoEngine.html#a19fb346b6335bea02b6ed8550637f249">createComposedClip</a> ()</td></tr>
-<tr class="separator:a19fb346b6335bea02b6ed8550637f249"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa4f8b26720f68bc5bdbe20c223bfda17"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classfoleys_1_1AVReader.html">AVReader</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1VideoEngine.html#aa4f8b26720f68bc5bdbe20c223bfda17">createReaderFor</a> (juce::File file, <a class="el" href="classfoleys_1_1StreamTypes.html">StreamTypes</a> type=<a class="el" href="classfoleys_1_1StreamTypes.html#a71f5cc477590cfbcc016833175ad82c1">StreamTypes::all</a>())</td></tr>
+<tr class="memdesc:aa4f8b26720f68bc5bdbe20c223bfda17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find an appropriate <a class="el" href="classfoleys_1_1AVReader.html" title="The AVReader allows reading of AVClip classes.">AVReader</a> to be used to read a video file.  <a href="#aa4f8b26720f68bc5bdbe20c223bfda17">More...</a><br /></td></tr>
 <tr class="separator:aa4f8b26720f68bc5bdbe20c223bfda17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac21caff9c9c252de9ec456b9d89133fe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1VideoEngine.html#ac21caff9c9c252de9ec456b9d89133fe">addJob</a> (std::function&lt; void()&gt; job)</td></tr>
 <tr class="separator:ac21caff9c9c252de9ec456b9d89133fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -120,12 +120,22 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:abd0e3ded0f4b6340fbed147cce590319"><td class="memItemLeft" align="right" valign="top">juce::UndoManager *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1VideoEngine.html#abd0e3ded0f4b6340fbed147cce590319">getUndoManager</a> ()</td></tr>
 <tr class="separator:abd0e3ded0f4b6340fbed147cce590319"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4436f316673c71955552dde71aafde52"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classfoleys_1_1AVFormatManager.html">AVFormatManager</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1VideoEngine.html#a4436f316673c71955552dde71aafde52">getFormatManager</a> ()</td></tr>
+<tr class="memdesc:a4436f316673c71955552dde71aafde52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Grant access to the <a class="el" href="classfoleys_1_1AVFormatManager.html" title="This class will create the appropriate type of AVClip depending on the supplied file type.">AVFormatManager</a>.  <a href="#a4436f316673c71955552dde71aafde52">More...</a><br /></td></tr>
 <tr class="separator:a4436f316673c71955552dde71aafde52"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb53ea304887559752a9d847285fd713"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classfoleys_1_1AudioPluginManager.html">AudioPluginManager</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1VideoEngine.html#afb53ea304887559752a9d847285fd713">getAudioPluginManager</a> ()</td></tr>
+<tr class="memdesc:afb53ea304887559752a9d847285fd713"><td class="mdescLeft">&#160;</td><td class="mdescRight">Grants access to the <a class="el" href="classfoleys_1_1AudioPluginManager.html" title="The AudioPluginManager is used to create AudioProcessor instances to be placed into the audio process...">AudioPluginManager</a>, e.g.  <a href="#afb53ea304887559752a9d847285fd713">More...</a><br /></td></tr>
+<tr class="separator:afb53ea304887559752a9d847285fd713"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3906f508020aec399c6fb4467de1ab94"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classfoleys_1_1VideoPluginManager.html">VideoPluginManager</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1VideoEngine.html#a3906f508020aec399c6fb4467de1ab94">getVideoPluginManager</a> ()</td></tr>
+<tr class="memdesc:a3906f508020aec399c6fb4467de1ab94"><td class="mdescLeft">&#160;</td><td class="mdescRight">Grants access to the <a class="el" href="classfoleys_1_1VideoPluginManager.html" title="The VideoPluginManager is used to create VideoProcessor instances to be placed into the image process...">VideoPluginManager</a>, e.g.  <a href="#a3906f508020aec399c6fb4467de1ab94">More...</a><br /></td></tr>
+<tr class="separator:a3906f508020aec399c6fb4467de1ab94"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1170a2775212a23592b9cd592246fd20"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classfoleys_1_1VideoProcessor.html">VideoProcessor</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1VideoEngine.html#a1170a2775212a23592b9cd592246fd20">createVideoPluginInstance</a> (const juce::String &amp;identifierString, juce::String &amp;error) const</td></tr>
+<tr class="memdesc:a1170a2775212a23592b9cd592246fd20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use the <a class="el" href="classfoleys_1_1VideoPluginManager.html" title="The VideoPluginManager is used to create VideoProcessor instances to be placed into the image process...">VideoPluginManager</a> to create a <a class="el" href="classfoleys_1_1VideoProcessor.html" title="The VideoProcessor is the base class to implement any video processor.">VideoProcessor</a> instance.  <a href="#a1170a2775212a23592b9cd592246fd20">More...</a><br /></td></tr>
 <tr class="separator:a1170a2775212a23592b9cd592246fd20"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a364b12a9bf807d75a1c3746d8cbc41c1"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; juce::AudioProcessor &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1VideoEngine.html#a364b12a9bf807d75a1c3746d8cbc41c1">createAudioPluginInstance</a> (const juce::String &amp;identifierString, double sampleRate, int blockSize, juce::String &amp;error) const</td></tr>
+<tr class="memdesc:a364b12a9bf807d75a1c3746d8cbc41c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use the <a class="el" href="classfoleys_1_1AudioPluginManager.html" title="The AudioPluginManager is used to create AudioProcessor instances to be placed into the audio process...">AudioPluginManager</a> to create a AudioProcessor instance.  <a href="#a364b12a9bf807d75a1c3746d8cbc41c1">More...</a><br /></td></tr>
 <tr class="separator:a364b12a9bf807d75a1c3746d8cbc41c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac781c1ad0ae9834a93f4da53ec6aedf7"><td class="memItemLeft" align="right" valign="top">juce::TimeSliceThread &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1VideoEngine.html#ac781c1ad0ae9834a93f4da53ec6aedf7">getNextTimeSliceThread</a> ()</td></tr>
+<tr class="memdesc:ac781c1ad0ae9834a93f4da53ec6aedf7"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method will find the TimeSliceThread with the least number of clients to balance the load.  <a href="#ac781c1ad0ae9834a93f4da53ec6aedf7">More...</a><br /></td></tr>
 <tr class="separator:ac781c1ad0ae9834a93f4da53ec6aedf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -184,22 +194,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-</div>
-</div>
-<a id="a19fb346b6335bea02b6ed8550637f249"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a19fb346b6335bea02b6ed8550637f249">&#9670;&nbsp;</a></span>createComposedClip()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::shared_ptr&lt; <a class="el" href="classfoleys_1_1ComposedClip.html">ComposedClip</a> &gt; createComposedClip </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
+<p>Use the source file to figure the most appropriate <a class="el" href="classfoleys_1_1AVClip.html" title="AVClip is the abstract base class of displayable/playable clips.">AVClip</a> descendant. </p>
 
 </div>
 </div>
@@ -228,6 +223,8 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Find an appropriate <a class="el" href="classfoleys_1_1AVReader.html" title="The AVReader allows reading of AVClip classes.">AVReader</a> to be used to read a video file. </p>
 
 <p class="reference">References <a class="el" href="classfoleys_1_1AVFormatManager.html#aa4f8b26720f68bc5bdbe20c223bfda17">AVFormatManager::createReaderFor()</a>.</p>
 
@@ -333,6 +330,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>This method will add the clip to the background threads and hold an auto release pool to make sure, it won't be deleted in any realtime critical thread. </p>
+<p>When using the engine's factory methods, this is already done for you, if you create a clip manually, calling make_shared, you will have to call this function for the clip to function. </p>
 
 </div>
 </div>
@@ -389,7 +387,50 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Grant access to the <a class="el" href="classfoleys_1_1AVFormatManager.html" title="This class will create the appropriate type of AVClip depending on the supplied file type.">AVFormatManager</a>. </p>
+<p>The <a class="el" href="classfoleys_1_1AVFormatManager.html" title="This class will create the appropriate type of AVClip depending on the supplied file type.">AVFormatManager</a> is responsible to load the different kinds of AVClips from files. </p>
+
 <p class="reference">Referenced by <a class="el" href="classfoleys_1_1ClipRenderer.html#a84b32ae03e0b20f34d6db6f32a974144">ClipRenderer::startRendering()</a>.</p>
+
+</div>
+</div>
+<a id="afb53ea304887559752a9d847285fd713"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb53ea304887559752a9d847285fd713">&#9670;&nbsp;</a></span>getAudioPluginManager()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classfoleys_1_1AudioPluginManager.html">AudioPluginManager</a> &amp; getAudioPluginManager </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Grants access to the <a class="el" href="classfoleys_1_1AudioPluginManager.html" title="The AudioPluginManager is used to create AudioProcessor instances to be placed into the audio process...">AudioPluginManager</a>, e.g. </p>
+<p>to register AudioProcessor factories </p>
+
+</div>
+</div>
+<a id="a3906f508020aec399c6fb4467de1ab94"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3906f508020aec399c6fb4467de1ab94">&#9670;&nbsp;</a></span>getVideoPluginManager()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classfoleys_1_1VideoPluginManager.html">VideoPluginManager</a> &amp; getVideoPluginManager </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Grants access to the <a class="el" href="classfoleys_1_1VideoPluginManager.html" title="The VideoPluginManager is used to create VideoProcessor instances to be placed into the image process...">VideoPluginManager</a>, e.g. </p>
+<p>to register <a class="el" href="classfoleys_1_1VideoProcessor.html" title="The VideoProcessor is the base class to implement any video processor.">VideoProcessor</a> factories </p>
 
 </div>
 </div>
@@ -418,6 +459,8 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Use the <a class="el" href="classfoleys_1_1VideoPluginManager.html" title="The VideoPluginManager is used to create VideoProcessor instances to be placed into the image process...">VideoPluginManager</a> to create a <a class="el" href="classfoleys_1_1VideoProcessor.html" title="The VideoProcessor is the base class to implement any video processor.">VideoProcessor</a> instance. </p>
 
 <p class="reference">References <a class="el" href="classfoleys_1_1VideoPluginManager.html#a1170a2775212a23592b9cd592246fd20">VideoPluginManager::createVideoPluginInstance()</a>.</p>
 
@@ -461,6 +504,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Use the <a class="el" href="classfoleys_1_1AudioPluginManager.html" title="The AudioPluginManager is used to create AudioProcessor instances to be placed into the audio process...">AudioPluginManager</a> to create a AudioProcessor instance. </p>
+
 <p class="reference">References <a class="el" href="classfoleys_1_1AudioPluginManager.html#a364b12a9bf807d75a1c3746d8cbc41c1">AudioPluginManager::createAudioPluginInstance()</a>.</p>
 
 </div>
@@ -480,6 +525,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>This method will find the TimeSliceThread with the least number of clients to balance the load. </p>
+
 <p class="reference">Referenced by <a class="el" href="classfoleys_1_1AudioClip.html#a148f80b1a2afc2829f0d0e8dcde45be4">AudioClip::setAudioFormatReader()</a>.</p>
 
 </div>
@@ -491,7 +538,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jun 3 2019 20:55:17 for foleys_video_engine by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Jun 5 2019 01:29:22 for foleys_video_engine by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.15
 </small></address>

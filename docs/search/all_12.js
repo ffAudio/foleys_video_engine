@@ -6,7 +6,7 @@ var searchData=
   ['valuetreechildremoved',['valueTreeChildRemoved',['../classfoleys_1_1ComposedClip.html#aa635ee3e7ff23c4e4241d62bb3822d4a',1,'foleys::ComposedClip']]],
   ['valuetreeparentchanged',['valueTreeParentChanged',['../classfoleys_1_1ComposedClip.html#a19073d1bf2d8bcb5901b76979dbcb24b',1,'foleys::ComposedClip']]],
   ['valuetreepropertychanged',['valueTreePropertyChanged',['../classfoleys_1_1ComposedClip.html#ac9747faf92c662896f1ad6405c720c72',1,'foleys::ComposedClip']]],
-  ['video',['video',['../classfoleys_1_1StreamTypes.html#a1c43f5617002450d1480329f628fb689',1,'foleys::StreamTypes::video()'],['../classfoleys_1_1StreamTypes.html#a8a65141d9ea4bf9d2e2377ed6b888a1daff13e87d7cbbe18fface435a5b84aaec',1,'foleys::StreamTypes::Video()']]],
+  ['video',['Video',['../classfoleys_1_1StreamTypes.html#a8a65141d9ea4bf9d2e2377ed6b888a1daff13e87d7cbbe18fface435a5b84aaec',1,'foleys::StreamTypes::Video()'],['../classfoleys_1_1StreamTypes.html#a1c43f5617002450d1480329f628fb689',1,'foleys::StreamTypes::video()']]],
   ['videoengine',['VideoEngine',['../classfoleys_1_1VideoEngine.html',1,'VideoEngine'],['../classfoleys_1_1VideoEngine.html#a77fac20c7045dfbf9d7304eab462accc',1,'foleys::VideoEngine::VideoEngine()']]],
   ['videofifo',['VideoFifo',['../classfoleys_1_1VideoFifo.html',1,'VideoFifo'],['../classfoleys_1_1VideoFifo.html#a5d15817d6d9909dac4fb01df6f89cf40',1,'foleys::VideoFifo::VideoFifo()']]],
   ['videomixer',['VideoMixer',['../classfoleys_1_1VideoMixer.html',1,'VideoMixer'],['../classfoleys_1_1VideoMixer.html#a0c4e92781507d16411677a78336d478b',1,'foleys::VideoMixer::VideoMixer()']]],

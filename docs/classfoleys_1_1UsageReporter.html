@@ -94,23 +94,23 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a9839535743ffc5fe832eec67a367e392"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1UsageReporter.html#a9839535743ffc5fe832eec67a367e392">UsageReporter</a> ()</td></tr>
-<tr class="separator:a9839535743ffc5fe832eec67a367e392"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd148fc19c43797afe151f1378d4b2fd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1UsageReporter.html#acd148fc19c43797afe151f1378d4b2fd">UsageReporter</a> (const juce::String &amp;event=&quot;appStarted&quot;)</td></tr>
+<tr class="separator:acd148fc19c43797afe151f1378d4b2fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d9be2dfd37b3bc037da7b48bddbbcd1"><td class="memItemLeft" align="right" valign="top">juce::ThreadPoolJob::JobStatus&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1UsageReporter.html#a4d9be2dfd37b3bc037da7b48bddbbcd1">runJob</a> () override</td></tr>
 <tr class="separator:a4d9be2dfd37b3bc037da7b48bddbbcd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a480f0e17fd045a183b4c7768e5a7df7f"><td class="memItemLeft" align="right" valign="top">static juce::StringPairArray&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1UsageReporter.html#a480f0e17fd045a183b4c7768e5a7df7f">createUsageData</a> ()</td></tr>
-<tr class="separator:a480f0e17fd045a183b4c7768e5a7df7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3fd445b2ed4fe120882abacf47861bd0"><td class="memItemLeft" align="right" valign="top">static juce::StringPairArray&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1UsageReporter.html#a3fd445b2ed4fe120882abacf47861bd0">createUsageData</a> (const juce::String &amp;event)</td></tr>
+<tr class="separator:a3fd445b2ed4fe120882abacf47861bd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This class sends a single, anonymous ping to our analytics collection. </p>
 <p>To use foleys_video_engine using the free "Personal License", you must keep this in your code and avoid anything, that might render this data collection ineffective.</p>
 <p>If you want to opt-out, you will have to buy one of the paid licenses. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a9839535743ffc5fe832eec67a367e392"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9839535743ffc5fe832eec67a367e392">&#9670;&nbsp;</a></span>UsageReporter()</h2>
+<a id="acd148fc19c43797afe151f1378d4b2fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acd148fc19c43797afe151f1378d4b2fd">&#9670;&nbsp;</a></span>UsageReporter()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -118,13 +118,14 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="classfoleys_1_1UsageReporter.html">UsageReporter</a> </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">const juce::String &amp;&#160;</td>
+          <td class="paramname"><em>event</em> = <code>&quot;appStarted&quot;</code></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">References <a class="el" href="classfoleys_1_1UsageReporter.html#a480f0e17fd045a183b4c7768e5a7df7f">UsageReporter::createUsageData()</a>.</p>
+<p class="reference">References <a class="el" href="classfoleys_1_1UsageReporter.html#a3fd445b2ed4fe120882abacf47861bd0">UsageReporter::createUsageData()</a>.</p>
 
 </div>
 </div>
@@ -154,8 +155,8 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a480f0e17fd045a183b4c7768e5a7df7f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a480f0e17fd045a183b4c7768e5a7df7f">&#9670;&nbsp;</a></span>createUsageData()</h2>
+<a id="a3fd445b2ed4fe120882abacf47861bd0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3fd445b2ed4fe120882abacf47861bd0">&#9670;&nbsp;</a></span>createUsageData()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -166,7 +167,8 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">juce::StringPairArray createUsageData </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">const juce::String &amp;&#160;</td>
+          <td class="paramname"><em>event</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -177,7 +179,9 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="reference">Referenced by <a class="el" href="classfoleys_1_1UsageReporter.html#a9839535743ffc5fe832eec67a367e392">UsageReporter::UsageReporter()</a>.</p>
+<p class="reference">References <a class="el" href="foleys__video__engine_8h.html#a80633aee8edd6bca9a74af69a1107db2">FOLEYS_ENGINE_VERSION</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="classfoleys_1_1UsageReporter.html#acd148fc19c43797afe151f1378d4b2fd">UsageReporter::UsageReporter()</a>.</p>
 
 </div>
 </div>
@@ -188,7 +192,7 @@ Static Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jun 3 2019 20:55:17 for foleys_video_engine by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Jun 5 2019 01:29:22 for foleys_video_engine by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.15
 </small></address>

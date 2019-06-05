@@ -93,7 +93,11 @@ $(function() {
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a67882ce2466e7592f426405469e1ce1e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1VideoPluginManager.html#a67882ce2466e7592f426405469e1ce1e">VideoPluginManager</a> ()</td></tr>
 <tr class="separator:a67882ce2466e7592f426405469e1ce1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1c4b01f73bdbdfc054d7949dcd26022"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1VideoPluginManager.html#ae1c4b01f73bdbdfc054d7949dcd26022">registerVideoProcessor</a> (const juce::String &amp;identifierString, std::function&lt; std::unique_ptr&lt; <a class="el" href="classfoleys_1_1VideoProcessor.html">VideoProcessor</a> &gt;()&gt;)</td></tr>
+<tr class="memdesc:ae1c4b01f73bdbdfc054d7949dcd26022"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register a <a class="el" href="classfoleys_1_1VideoProcessor.html" title="The VideoProcessor is the base class to implement any video processor.">VideoProcessor</a> factory to create a <a class="el" href="classfoleys_1_1VideoProcessor.html" title="The VideoProcessor is the base class to implement any video processor.">VideoProcessor</a> instance from an identifying string.  <a href="#ae1c4b01f73bdbdfc054d7949dcd26022">More...</a><br /></td></tr>
+<tr class="separator:ae1c4b01f73bdbdfc054d7949dcd26022"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1170a2775212a23592b9cd592246fd20"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classfoleys_1_1VideoProcessor.html">VideoProcessor</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1VideoPluginManager.html#a1170a2775212a23592b9cd592246fd20">createVideoPluginInstance</a> (const juce::String &amp;identifierString, juce::String &amp;error) const</td></tr>
+<tr class="memdesc:a1170a2775212a23592b9cd592246fd20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create an instance of a <a class="el" href="classfoleys_1_1VideoProcessor.html" title="The VideoProcessor is the base class to implement any video processor.">VideoProcessor</a> from an identifying string.  <a href="#a1170a2775212a23592b9cd592246fd20">More...</a><br /></td></tr>
 <tr class="separator:a1170a2775212a23592b9cd592246fd20"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -114,11 +118,43 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">References <a class="el" href="classfoleys_1_1PositioningVideoProcessor.html#a0aaa18e6fb8a99a7ba9f3c7c0a35c363">PositioningVideoProcessor::getPluginName()</a>, and <a class="el" href="classfoleys_1_1ColourCurveVideoProcessor.html#a0aaa18e6fb8a99a7ba9f3c7c0a35c363">ColourCurveVideoProcessor::getPluginName()</a>.</p>
+<p class="reference">References <a class="el" href="classfoleys_1_1PositioningVideoProcessor.html#a0aaa18e6fb8a99a7ba9f3c7c0a35c363">PositioningVideoProcessor::getPluginName()</a>, <a class="el" href="classfoleys_1_1ColourCurveVideoProcessor.html#a0aaa18e6fb8a99a7ba9f3c7c0a35c363">ColourCurveVideoProcessor::getPluginName()</a>, and <a class="el" href="classfoleys_1_1VideoPluginManager.html#ae1c4b01f73bdbdfc054d7949dcd26022">VideoPluginManager::registerVideoProcessor()</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="ae1c4b01f73bdbdfc054d7949dcd26022"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1c4b01f73bdbdfc054d7949dcd26022">&#9670;&nbsp;</a></span>registerVideoProcessor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void registerVideoProcessor </td>
+          <td>(</td>
+          <td class="paramtype">const juce::String &amp;&#160;</td>
+          <td class="paramname"><em>identifierString</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::function&lt; std::unique_ptr&lt; <a class="el" href="classfoleys_1_1VideoProcessor.html">VideoProcessor</a> &gt;()&gt;&#160;</td>
+          <td class="paramname"><em>factory</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Register a <a class="el" href="classfoleys_1_1VideoProcessor.html" title="The VideoProcessor is the base class to implement any video processor.">VideoProcessor</a> factory to create a <a class="el" href="classfoleys_1_1VideoProcessor.html" title="The VideoProcessor is the base class to implement any video processor.">VideoProcessor</a> instance from an identifying string. </p>
+
+<p class="reference">Referenced by <a class="el" href="classfoleys_1_1VideoPluginManager.html#a67882ce2466e7592f426405469e1ce1e">VideoPluginManager::VideoPluginManager()</a>.</p>
+
+</div>
+</div>
 <a id="a1170a2775212a23592b9cd592246fd20"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1170a2775212a23592b9cd592246fd20">&#9670;&nbsp;</a></span>createVideoPluginInstance()</h2>
 
@@ -145,6 +181,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Create an instance of a <a class="el" href="classfoleys_1_1VideoProcessor.html" title="The VideoProcessor is the base class to implement any video processor.">VideoProcessor</a> from an identifying string. </p>
+
 <p class="reference">Referenced by <a class="el" href="classfoleys_1_1VideoEngine.html#a1170a2775212a23592b9cd592246fd20">VideoEngine::createVideoPluginInstance()</a>.</p>
 
 </div>
@@ -156,7 +194,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jun 3 2019 20:55:17 for foleys_video_engine by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Jun 5 2019 01:29:22 for foleys_video_engine by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.15
 </small></address>

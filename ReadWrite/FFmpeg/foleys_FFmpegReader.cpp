@@ -433,8 +433,6 @@ private:
     SwrContext*       audioConverterContext = nullptr;
     FFmpegVideoScaler scaler;
 
-    int width, height;
-    enum AVPixelFormat pixelFormat  = AV_PIX_FMT_NONE;
     AVFrame  *frame             = nullptr;
 
     int       videoStreamIdx    = -1;

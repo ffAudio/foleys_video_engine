@@ -165,6 +165,8 @@ ProcessorState::ProcessorState (void*, juce::UndoManager* undo, const juce::Stri
   : state (rootType),
     undoManager (undo)
 {
+    juce::ignoreUnused (undoManager);
+
     for (auto& p : parametersToUse)
     {
         // you have a duplicate parameter with paramID!

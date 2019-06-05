@@ -92,7 +92,7 @@ AudioStrip::ThumbnailJob::ThumbnailJob (AudioStrip& ownerToUse)
   : juce::ThreadPoolJob ("Audio Thumbnail Job"),
     owner (ownerToUse)
 {
-
+    juce::ignoreUnused (owner);
 }
 
 juce::ThreadPoolJob::JobStatus AudioStrip::ThumbnailJob::runJob()

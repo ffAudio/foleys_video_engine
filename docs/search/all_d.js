@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['paint',['paint',['../classfoleys_1_1AudioStrip.html#aaae6bb82eac6573cea15222efb6ac1ed',1,'foleys::AudioStrip::paint()'],['../classfoleys_1_1FilmStrip.html#aaae6bb82eac6573cea15222efb6ac1ed',1,'foleys::FilmStrip::paint()'],['../classfoleys_1_1VideoPreview.html#a4f2c219a2cbbd6b61e7c41564dac6169',1,'foleys::VideoPreview::paint()']]],
+  ['paint',['paint',['../classfoleys_1_1FoleysSplashScreen.html#aaae6bb82eac6573cea15222efb6ac1ed',1,'foleys::FoleysSplashScreen::paint()'],['../classfoleys_1_1AudioStrip.html#aaae6bb82eac6573cea15222efb6ac1ed',1,'foleys::AudioStrip::paint()'],['../classfoleys_1_1FilmStrip.html#aaae6bb82eac6573cea15222efb6ac1ed',1,'foleys::FilmStrip::paint()'],['../classfoleys_1_1VideoPreview.html#a4f2c219a2cbbd6b61e7c41564dac6169',1,'foleys::VideoPreview::paint()']]],
   ['panningaudioprocessor',['PanningAudioProcessor',['../classfoleys_1_1PanningAudioProcessor.html',1,'PanningAudioProcessor'],['../classfoleys_1_1PanningAudioProcessor.html#aaa4bb0a8b02ce70f80561f8a99a66052',1,'foleys::PanningAudioProcessor::PanningAudioProcessor()']]],
   ['parameterautomation',['ParameterAutomation',['../classfoleys_1_1ParameterAutomation.html',1,'ParameterAutomation'],['../classfoleys_1_1ParameterAutomation.html#a63f9c41d64f5ab46c44f76d978acdd5d',1,'foleys::ParameterAutomation::ParameterAutomation()']]],
   ['parametergesturechanged',['parameterGestureChanged',['../classfoleys_1_1AudioParameterAutomation.html#a04352d0582486eb00f1abdb85283b11d',1,'foleys::AudioParameterAutomation']]],
