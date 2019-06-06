@@ -28,6 +28,10 @@ namespace foleys
 
  The AudioClip plays back an audio file inside the video engine. It wraps around
  a JUCE AudioFormatReaderSource.
+
+ When you created a shared_ptr of an AudioClip, call manageLifeTime() on the VideoEngine,
+ that will add it to the auto release pool and register possible background jobs
+ with the TimeSliceThreads.
  */
 
 class AudioClip : public AVClip

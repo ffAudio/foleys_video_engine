@@ -30,6 +30,10 @@ namespace foleys
  The MovieClip plays back a video file. It buffers an amount of audio and
  video frames ahead of time. To check, you can call isFrameAvailable(),
  in case you need to wait for the frame, e.g. for offline bouncing.
+
+ When you created a shared_ptr of an MovieClip, call manageLifeTime() on the VideoEngine,
+ that will add it to the auto release pool and register possible background jobs
+ with the TimeSliceThreads.
  */
 class MovieClip   : public AVClip,
                     private juce::AsyncUpdater

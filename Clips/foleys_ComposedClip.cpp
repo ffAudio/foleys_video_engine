@@ -43,9 +43,8 @@ ComposedClip::ComposedClip (VideoEngine& engine)
     state = juce::ValueTree (IDs::compoundClip);
 
     videoMixer = std::make_unique<SoftwareVideoMixer>();
-    videoSize = {800, 500};
     auto& settings = videoFifo.getVideoSettings();
-    settings.frameSize = videoSize;
+    settings.frameSize = {800, 600};
     settings.timebase = 24000;
     settings.defaultDuration = 1001;
 
@@ -120,7 +119,7 @@ juce::Image ComposedClip::getCurrentFrame() const
 
 Size ComposedClip::getVideoSize() const
 {
-    return videoSize;
+    return videoFifo.getVideoSettings().frameSize;
 }
 
 double ComposedClip::getCurrentTimeInSeconds() const

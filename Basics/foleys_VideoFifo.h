@@ -52,6 +52,7 @@ public:
     void clearFramesOlderThan (int64_t count);
 
     VideoStreamSettings& getVideoSettings();
+    const VideoStreamSettings& getVideoSettings() const;
 
 private:
     juce::CriticalSection lock;

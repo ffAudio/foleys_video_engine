@@ -27,6 +27,10 @@ namespace foleys
  @class ImageClip
 
  This class delivers a still image as video.
+
+ When you created a shared_ptr of an ImageClip, call manageLifeTime() on the VideoEngine,
+ that will add it to the auto release pool and register possible background jobs
+ with the TimeSliceThreads.
  */
 class ImageClip : public AVClip
 {

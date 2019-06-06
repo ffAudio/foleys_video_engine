@@ -31,6 +31,10 @@ namespace foleys
  ComposedClip does audio mixing as well as video compositing. While the video
  is done on a background thread ahead of time, the audio is pulled in realtime
  to allow low latency processing.
+
+ When you created a shared_ptr of an ComposedClip, call manageLifeTime() on the
+ VideoEngine, that will add it to the auto release pool and register possible
+ background jobs with the TimeSliceThreads.
  */
 class ComposedClip  : public AVClip,
                       private juce::AsyncUpdater,
@@ -148,7 +152,6 @@ private:
 
     std::vector<std::shared_ptr<ClipDescriptor>> clips;
     std::atomic<int64_t> position = {};
-    Size videoSize;
 
     int64_t lastShownFrame;
 

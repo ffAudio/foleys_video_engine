@@ -171,4 +171,9 @@ VideoStreamSettings& VideoFifo::getVideoSettings()
     return settings;
 }
 
+const VideoStreamSettings& VideoFifo::getVideoSettings() const
+{
+    return settings;
+}
+
 } // foleys

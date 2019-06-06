@@ -35,6 +35,10 @@ class VideoEngine;
  To be compatible with juce's playback engines, they inherit PositionableAudioSource.
  Each AVClip is responsible to resample the audio to the sampleRate that is set
  in prepareToPlay. The audio stream acts as clock master.
+
+ When you created a shared_ptr of an AVClip, call manageLifeTime() on the VideoEngine,
+ that will add it to the auto release pool and register possible background jobs
+ with the TimeSliceThreads.
  */
 class AVClip  : public juce::PositionableAudioSource
 {

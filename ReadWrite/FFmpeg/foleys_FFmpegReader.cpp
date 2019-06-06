@@ -370,10 +370,10 @@ private:
 
             if (frame->extended_data != nullptr  && reader.sampleRate > 0)
             {
-                const int  channels   = av_get_channel_layout_nb_channels (frame->channel_layout);
-                const auto numSamples = frame->nb_samples;
+                const int  channels     = av_get_channel_layout_nb_channels (frame->channel_layout);
+                const auto numSamples   = frame->nb_samples;
                 const auto outTimestamp = int64_t (frame->best_effort_timestamp * outputSampleRate / reader.sampleRate);
-                const int  numProduced = numSamples * outputSampleRate / reader.sampleRate;
+                const auto numProduced  = int (numSamples * outputSampleRate / reader.sampleRate);
 
                 jassert (std::abs (audioFifo.getWritePosition() - outTimestamp) < std::numeric_limits<int>::max());
                 auto offset = int (audioFifo.getWritePosition() - outTimestamp);
@@ -381,14 +381,16 @@ private:
                 FOLEYS_LOG ("Audio: " << audioFifo.getWritePosition() << " free: " << audioFifo.getFreeSpace());
 
                 if (audioConvertBuffer.getNumChannels() != channels || audioConvertBuffer.getNumSamples() < numProduced)
-                    audioConvertBuffer.setSize(channels, numProduced, false, false, true);
+                    audioConvertBuffer.setSize (channels, numProduced, false, false, true);
 
                 if (outTimestamp < 0)
                     return;
 
                 if (offset < 0 && offset >= -2048)
                 {
-                    audioFifo.pushSilence (-offset);
+                    // FIXME: ignores sub sample of resampler, loses one sample every other packet
+//                    if (offset < 0)
+//                        audioFifo.pushSilence (-offset);
                     offset = 0;
                 }
 
