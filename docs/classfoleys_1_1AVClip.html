@@ -176,7 +176,8 @@ Protected Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classfoleys_1_1AVClip.html" title="AVClip is the abstract base class of displayable/playable clips.">AVClip</a> is the abstract base class of displayable/playable clips. </p>
 <p>They can provide video frames an/or audio streams.</p>
-<p>To be compatible with juce's playback engines, they inherit PositionableAudioSource. Each <a class="el" href="classfoleys_1_1AVClip.html" title="AVClip is the abstract base class of displayable/playable clips.">AVClip</a> is responsible to resample the audio to the sampleRate that is set in prepareToPlay. The audio stream acts as clock master. </p>
+<p>To be compatible with juce's playback engines, they inherit PositionableAudioSource. Each <a class="el" href="classfoleys_1_1AVClip.html" title="AVClip is the abstract base class of displayable/playable clips.">AVClip</a> is responsible to resample the audio to the sampleRate that is set in prepareToPlay. The audio stream acts as clock master.</p>
+<p>When you created a shared_ptr of an <a class="el" href="classfoleys_1_1AVClip.html" title="AVClip is the abstract base class of displayable/playable clips.">AVClip</a>, call manageLifeTime() on the <a class="el" href="classfoleys_1_1VideoEngine.html" title="The VideoEngine is handling the background tasks of the video.">VideoEngine</a>, that will add it to the auto release pool and register possible background jobs with the TimeSliceThreads. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a48fa9431d26f6e26365d8e539bf4c493"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a48fa9431d26f6e26365d8e539bf4c493">&#9670;&nbsp;</a></span>AVClip()</h2>
@@ -756,7 +757,7 @@ Protected Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 5 2019 01:29:22 for foleys_video_engine by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Jun 6 2019 22:23:26 for foleys_video_engine by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.15
 </small></address>

@@ -192,7 +192,8 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The <a class="el" href="classfoleys_1_1MovieClip.html" title="The MovieClip plays back a video file.">MovieClip</a> plays back a video file. </p>
-<p>It buffers an amount of audio and video frames ahead of time. To check, you can call <a class="el" href="classfoleys_1_1MovieClip.html#ac3d3676f324d9c3a6a5ffcea1fa6fe1c" title="Checks, if a frame is available.">isFrameAvailable()</a>, in case you need to wait for the frame, e.g. for offline bouncing. </p>
+<p>It buffers an amount of audio and video frames ahead of time. To check, you can call <a class="el" href="classfoleys_1_1MovieClip.html#ac3d3676f324d9c3a6a5ffcea1fa6fe1c" title="Checks, if a frame is available.">isFrameAvailable()</a>, in case you need to wait for the frame, e.g. for offline bouncing.</p>
+<p>When you created a shared_ptr of an <a class="el" href="classfoleys_1_1MovieClip.html" title="The MovieClip plays back a video file.">MovieClip</a>, call manageLifeTime() on the <a class="el" href="classfoleys_1_1VideoEngine.html" title="The VideoEngine is handling the background tasks of the video.">VideoEngine</a>, that will add it to the auto release pool and register possible background jobs with the TimeSliceThreads. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="af25a0b8d7e841f29a65668f9034e5c27"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af25a0b8d7e841f29a65668f9034e5c27">&#9670;&nbsp;</a></span>MovieClip()</h2>
@@ -958,7 +959,7 @@ Additional Inherited Members</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 5 2019 01:29:22 for foleys_video_engine by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Jun 6 2019 22:23:26 for foleys_video_engine by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.15
 </small></address>
