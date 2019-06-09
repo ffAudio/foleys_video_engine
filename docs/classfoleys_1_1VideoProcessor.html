@@ -110,12 +110,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4ebfaf4e2dd8a2a4859959ec9bfa917f"><td class="memItemLeft" align="right" valign="top">virtual const juce::String&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1VideoProcessor.html#a4ebfaf4e2dd8a2a4859959ec9bfa917f">getName</a> () const =0</td></tr>
 <tr class="memdesc:a4ebfaf4e2dd8a2a4859959ec9bfa917f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Override this method to return a human readable name to identify the processor later.  <a href="#a4ebfaf4e2dd8a2a4859959ec9bfa917f">More...</a><br /></td></tr>
 <tr class="separator:a4ebfaf4e2dd8a2a4859959ec9bfa917f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a32c6f452e88b582f25659831dbe08d71"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1VideoProcessor.html#a32c6f452e88b582f25659831dbe08d71">processFrameReplacing</a> (juce::Image &amp;frame, int64_t count, const <a class="el" href="structfoleys_1_1VideoStreamSettings.html">VideoStreamSettings</a> &amp;settings, double clipDuration)=0</td></tr>
-<tr class="memdesc:a32c6f452e88b582f25659831dbe08d71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Override this method to implement the actual video processing.  <a href="#a32c6f452e88b582f25659831dbe08d71">More...</a><br /></td></tr>
-<tr class="separator:a32c6f452e88b582f25659831dbe08d71"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afb319e5e92fa5b6864f54e9abf4aaafe"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1VideoProcessor.html#afb319e5e92fa5b6864f54e9abf4aaafe">processFrame</a> (juce::Image &amp;output, const juce::Image &amp;input, int64_t count, const <a class="el" href="structfoleys_1_1VideoStreamSettings.html">VideoStreamSettings</a> &amp;settings, double clipDuration)</td></tr>
-<tr class="memdesc:afb319e5e92fa5b6864f54e9abf4aaafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Override this method to implement the actual video processing.  <a href="#afb319e5e92fa5b6864f54e9abf4aaafe">More...</a><br /></td></tr>
-<tr class="separator:afb319e5e92fa5b6864f54e9abf4aaafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb1857be5690db138d83010070a595a0"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1VideoProcessor.html#afb1857be5690db138d83010070a595a0">processFrame</a> (juce::Image &amp;frame, int64_t count, const <a class="el" href="structfoleys_1_1VideoStreamSettings.html">VideoStreamSettings</a> &amp;settings, double clipDuration)=0</td></tr>
+<tr class="memdesc:afb1857be5690db138d83010070a595a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Override this method to implement the actual video processing.  <a href="#afb1857be5690db138d83010070a595a0">More...</a><br /></td></tr>
+<tr class="separator:afb1857be5690db138d83010070a595a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1503ef296eca1180def5c6445cbbdff0"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; <a class="el" href="classfoleys_1_1ProcessorParameter.html">ProcessorParameter</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1VideoProcessor.html#a1503ef296eca1180def5c6445cbbdff0">getParameters</a> ()=0</td></tr>
 <tr class="separator:a1503ef296eca1180def5c6445cbbdff0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -203,8 +200,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a32c6f452e88b582f25659831dbe08d71"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a32c6f452e88b582f25659831dbe08d71">&#9670;&nbsp;</a></span>processFrameReplacing()</h2>
+<a id="afb1857be5690db138d83010070a595a0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb1857be5690db138d83010070a595a0">&#9670;&nbsp;</a></span>processFrame()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -213,7 +210,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void processFrameReplacing </td>
+          <td class="memname">virtual void processFrame </td>
           <td>(</td>
           <td class="paramtype">juce::Image &amp;&#160;</td>
           <td class="paramname"><em>frame</em>, </td>
@@ -250,76 +247,8 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Override this method to implement the actual video processing. </p>
+<p>The processing is done in place. If you need a copy of the frame, it's best to keep an empty frame as member, where you copy the original before processing and process from the copy into the original.</p>
 <dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">frame</td><td>this is the image of the frame </td></tr>
-    <tr><td class="paramname">count</td><td>this is the frame counter in settings.timebase counts </td></tr>
-    <tr><td class="paramname">settings</td><td>is the output settings that you will produce. You find the size and the timebase here </td></tr>
-    <tr><td class="paramname">clipDuration</td><td>is the duration of the clip. This is especially handy for creating transitions </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Implemented in <a class="el" href="classfoleys_1_1ColourCurveVideoProcessor.html#af20e0299c8c4b00fb930eb730136d970">ColourCurveVideoProcessor</a>, and <a class="el" href="classfoleys_1_1PositioningVideoProcessor.html#af20e0299c8c4b00fb930eb730136d970">PositioningVideoProcessor</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="classfoleys_1_1VideoProcessor.html#afb319e5e92fa5b6864f54e9abf4aaafe">VideoProcessor::processFrame()</a>.</p>
-
-</div>
-</div>
-<a id="afb319e5e92fa5b6864f54e9abf4aaafe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afb319e5e92fa5b6864f54e9abf4aaafe">&#9670;&nbsp;</a></span>processFrame()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void processFrame </td>
-          <td>(</td>
-          <td class="paramtype">juce::Image &amp;&#160;</td>
-          <td class="paramname"><em>output</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const juce::Image &amp;&#160;</td>
-          <td class="paramname"><em>input</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int64_t&#160;</td>
-          <td class="paramname"><em>count</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="structfoleys_1_1VideoStreamSettings.html">VideoStreamSettings</a> &amp;&#160;</td>
-          <td class="paramname"><em>settings</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>clipDuration</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Override this method to implement the actual video processing. </p>
-<p>The default implementation creates a copy and calls processFrameReplacing. But for some processors you might want to save the copy step for performance reasons. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">output</td><td>is the image to write into </td></tr>
     <tr><td class="paramname">input</td><td>is the original image to read from </td></tr>
@@ -330,9 +259,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Reimplemented in <a class="el" href="classfoleys_1_1ColourCurveVideoProcessor.html#a7a936944b46dc0e26f7102cc51e72601">ColourCurveVideoProcessor</a>, and <a class="el" href="classfoleys_1_1PositioningVideoProcessor.html#a7a936944b46dc0e26f7102cc51e72601">PositioningVideoProcessor</a>.</p>
-
-<p class="reference">References <a class="el" href="classfoleys_1_1VideoProcessor.html#a32c6f452e88b582f25659831dbe08d71">VideoProcessor::processFrameReplacing()</a>.</p>
+<p>Implemented in <a class="el" href="classfoleys_1_1ColourCurveVideoProcessor.html#aa6e6e96aacb58cb2835f3fe872818f84">ColourCurveVideoProcessor</a>, and <a class="el" href="classfoleys_1_1PositioningVideoProcessor.html#aa6e6e96aacb58cb2835f3fe872818f84">PositioningVideoProcessor</a>.</p>
 
 </div>
 </div>
@@ -369,7 +296,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Jun 6 2019 22:23:26 for foleys_video_engine by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Jun 9 2019 12:31:51 for foleys_video_engine by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.15
 </small></address>
