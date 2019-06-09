@@ -48,7 +48,7 @@ void SoftwareVideoMixer::compose (juce::Image&        target,
         {
             controller->updateAutomation ((timeInSeconds - clip->getStart()) + clip->getOffset());
             if (auto* videoProcessor = controller->getVideoProcessor())
-                videoProcessor->processFrameReplacing (frame, count, settings, clip->getLength());
+                videoProcessor->processFrame (frame, count, settings, clip->getLength());
         }
 
         g.drawImageAt (frame, 0, 0);

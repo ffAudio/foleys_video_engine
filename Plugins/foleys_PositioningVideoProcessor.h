@@ -75,17 +75,12 @@ public:
         transY   = state.getRawParameterValue (IDs::transY);
     }
 
-    void processFrameReplacing (juce::Image& frame, int64_t count, const VideoStreamSettings& settings, double clipDuration) override
+    void processFrame (juce::Image& frame, int64_t count, const VideoStreamSettings& settings, double clipDuration) override
     {
-        processFrame (frame, frame.createCopy(), count, settings, clipDuration);
-    }
+        auto dx = (frame.getWidth() - frame.getWidth()) * 0.5;
+        auto dy = (frame.getHeight() - frame.getHeight()) * 0.5;
 
-    void processFrame (juce::Image& output, const juce::Image& input, int64_t count, const VideoStreamSettings& settings, double clipDuration) override
-    {
-        output = juce::Image (juce::Image::ARGB, settings.frameSize.width, settings.frameSize.height, true);
-        auto dx = (output.getWidth() - input.getWidth()) * 0.5;
-        auto dy = (output.getHeight() - input.getHeight()) * 0.5;
-        juce::Graphics g (output);
+        juce::Graphics g (frame);
         auto scaleX = *zoom / 100.0;
         auto scaleY = *zoom / 100.0;
         if (*aspect < 1.0f)
@@ -93,9 +88,9 @@ public:
         else if (*aspect > 1.0f)
             scaleY *= 2.0f - *aspect;
 
-        g.drawImageTransformed (input, juce::AffineTransform::rotation (*rotation * juce::MathConstants<float>::pi / 180.0f, output.getWidth() * 0.5f, output.getHeight() * 0.5f)
-                                .scaled (scaleX, scaleY, output.getWidth() * 0.5f, output.getHeight() * 0.5f)
-                                .translated (dx + *transX * output.getWidth(), dy + *transY * output.getHeight()));
+        g.drawImageTransformed (frame, juce::AffineTransform::rotation (*rotation * juce::MathConstants<float>::pi / 180.0f, frame.getWidth() * 0.5f, frame.getHeight() * 0.5f)
+                                .scaled (scaleX, scaleY, frame.getWidth() * 0.5f, frame.getHeight() * 0.5f)
+                                .translated (dx + *transX * frame.getWidth(), dy + *transY * frame.getHeight()));
     }
 
     std::vector<ProcessorParameter*> getParameters() override

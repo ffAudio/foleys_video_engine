@@ -41,28 +41,17 @@ public:
     virtual const juce::String getName() const = 0;
 
     /**
-     Override this method to implement the actual video processing.
-     @param frame this is the image of the frame
-     @param count this is the frame counter in settings.timebase counts
-     @param settings is the output settings that you will produce. You find the size and the timebase here
-     @param clipDuration is the duration of the clip. This is especially handy for creating transitions
-     */
-    virtual void processFrameReplacing (juce::Image& frame, int64_t count, const VideoStreamSettings& settings, double clipDuration) = 0;
+     Override this method to implement the actual video processing. The processing is done in place. If you need a copy of the frame,
+     it's best to keep an empty frame as member, where you copy the original before processing and
+     process from the copy into the original.
 
-    /**
-     Override this method to implement the actual video processing. The default implementation creates a copy and calls processFrameReplacing.
-     But for some processors you might want to save the copy step for performance reasons.
      @param output is the image to write into
      @param input is the original image to read from
      @param count this is the frame counter in settings.timebase counts
      @param settings is the output settings that you will produce. You find the size and the timebase here
      @param clipDuration is the duration of the clip. This is especially handy for creating transitions
      */
-    virtual void processFrame (juce::Image& output, const juce::Image& input, int64_t count, const VideoStreamSettings& settings, double clipDuration)
-    {
-        output = input.createCopy();
-        processFrameReplacing (output, count, settings, clipDuration);
-    }
+    virtual void processFrame (juce::Image& frame, int64_t count, const VideoStreamSettings& settings, double clipDuration) = 0;
 
     virtual std::vector<ProcessorParameter*> getParameters() = 0;
 private:

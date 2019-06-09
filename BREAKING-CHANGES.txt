@@ -1,0 +1,8 @@
+BREAKING CHANGES
+================
+
+9. Jun 2019
+Removed alternative processBlockReplacing. from now on all video processing calls are replacing.
+If an algorithm needs a copy, it should do this into a preallocated (or lazily allocated)
+member, so memory allocations can be minimised.
+

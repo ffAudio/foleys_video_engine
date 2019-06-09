@@ -103,7 +103,7 @@ public:
         alphaGamma      = state.getRawParameterValue (IDs::alphaGamma);
     }
 
-    void processFrameReplacing (juce::Image& frame, int64_t count, const VideoStreamSettings& settings, double clipDuration) override
+    void processFrame (juce::Image& frame, int64_t count, const VideoStreamSettings& settings, double clipDuration) override
     {
         red.calculateColourMap   (*redBrightness,   *redContrast,   *redGamma);
         green.calculateColourMap (*greenBrightness, *greenContrast, *greenGamma);
@@ -127,41 +127,6 @@ public:
                 }
             }
         }
-    }
-
-    void processFrame (juce::Image& output, const juce::Image& input, int64_t count, const VideoStreamSettings& settings, double clipDuration) override
-    {
-        if (output.getBounds() != input.getBounds() || input.getFormat() != output.getFormat())
-            output = juce::Image (input.getFormat(), input.getWidth(), input.getHeight(), false);
-
-        red.calculateColourMap   (*redBrightness,   *redContrast,   *redGamma);
-        green.calculateColourMap (*greenBrightness, *greenContrast, *greenGamma);
-        blue.calculateColourMap  (*blueBrightness,  *blueContrast,  *blueGamma);
-        alpha.calculateColourMap (*alphaBrightness, *alphaContrast, *alphaGamma);
-
-        juce::Image::BitmapData pIn (input, 0, 0,
-                                     input.getWidth(),
-                                     input.getHeight());
-        juce::Image::BitmapData pOut (output, 0, 0,
-                                      output.getWidth(),
-                                      output.getHeight());
-        if (input.isARGB())
-        {
-            for (int y=0; y < input.getHeight(); ++y)
-            {
-                auto* p = pIn.getLinePointer (y);
-                auto* q = pOut.getLinePointer (y);
-
-                for (int x=0; x < input.getWidth(); ++x)
-                {
-                    *q++ = blue.map [*p++];
-                    *q++ = green.map [*p++];
-                    *q++ = red.map [*p++];
-                    *q++ = alpha.map [*p++];
-                }
-            }
-        }
-
     }
 
     std::vector<ProcessorParameter*> getParameters() override
