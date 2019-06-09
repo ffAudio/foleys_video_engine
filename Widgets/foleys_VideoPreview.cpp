@@ -23,6 +23,10 @@ namespace foleys
 
 VideoPreview::VideoPreview()
 {
+#if FOLEYS_USE_OPENGL
+    openGLcontext.attachTo (*this);
+#endif
+
     setOpaque (true);
     setInterceptsMouseClicks (false, true);
 
@@ -35,6 +39,11 @@ VideoPreview::~VideoPreview()
 {
     if (clip)
         clip->removeTimecodeListener (this);
+
+#if FOLEYS_USE_OPENGL
+    openGLcontext.detach();
+#endif
+
 }
 
 void VideoPreview::setClip (std::shared_ptr<AVClip> clipToUse)

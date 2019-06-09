@@ -36,6 +36,15 @@
   ==============================================================================
  */
 
+/** Config: FOLEYS_USE_OPENGL
+    Set this flag to attach an OpenGLContext to the VideoPreview
+    and use the juce OpenGL backend. Make sure to add the
+    optional module juce_opengl
+ */
+#ifndef FOLEYS_USE_OPENGL
+#define FOLEYS_USE_OPENGL 0
+#endif
+
 /** Config: FOLEYS_REPORT_USAGE
     Set this flag to send a single ping each time the engine starts.
     This is mandatory, if you use the Personal License (free)
@@ -77,6 +86,10 @@
 #include <juce_graphics/juce_graphics.h>
 #include <juce_gui_basics/juce_gui_basics.h>
 #include <juce_audio_utils/juce_audio_utils.h>
+
+#if FOLEYS_USE_OPENGL
+#include <juce_opengl/juce_opengl.h>
+#endif
 
 #include "Basics/foleys_Structures.h"
 #include "Basics/foleys_Usage.h"

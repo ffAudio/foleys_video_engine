@@ -49,6 +49,10 @@ private:
     std::shared_ptr<AVClip> clip;
     juce::RectanglePlacement placement { juce::RectanglePlacement::centred };
 
+#if FOLEYS_USE_OPENGL
+    juce::OpenGLContext openGLcontext;
+#endif
+
 #if FOLEYS_SHOW_SPLASHSCREEN
 public:
     void resized() override
