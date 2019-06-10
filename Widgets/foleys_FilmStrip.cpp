@@ -88,7 +88,7 @@ void FilmStrip::update()
 
 void FilmStrip::setThumbnail (int index, juce::Image image)
 {
-    if (index >= thumbnails.size())
+    if (index >= int (thumbnails.size()))
         thumbnails.resize (index + 1);
 
     thumbnails [index] = image;

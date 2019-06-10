@@ -281,7 +281,7 @@ struct FFmpegWriter::Pimpl
         if (formatContext == nullptr)
             return;
 
-        for (int idx=0; idx < formatContext->nb_streams; ++idx)
+        for (int idx=0; idx < int (formatContext->nb_streams); ++idx)
         {
             auto descriptor = std::find_if (videoStreams.begin(), videoStreams.end(), [idx](const auto& descriptor) { return descriptor->streamIndex == idx; });
             if (descriptor != videoStreams.end())
@@ -348,7 +348,7 @@ private:
         bool video = false;
         auto pts = std::numeric_limits<double>::max();
 
-        for (int s=0; s < audioStreams.size(); ++s)
+        for (int s=0; s < int (audioStreams.size()); ++s)
         {
             auto& descriptor = audioStreams [s];
             auto  streamPTS  = double (descriptor->sampleBuffer.getReadPosition()) / descriptor->settings.timebase;
@@ -360,7 +360,7 @@ private:
             }
         }
 
-        for (int s=0; s < videoStreams.size(); ++s)
+        for (int s=0; s < int (videoStreams.size()); ++s)
         {
             auto& descriptor = videoStreams [s];
             auto  streamPTS  = double (descriptor->videoBuffer.getLowestTimeCode()) / descriptor->settings.timebase;

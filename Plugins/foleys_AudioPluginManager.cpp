@@ -49,8 +49,7 @@ std::unique_ptr<juce::AudioProcessor> AudioPluginManager::createAudioPluginInsta
         return {};
     }
 
-    std::unique_ptr<juce::AudioPluginInstance> plugin;
-    plugin.reset (pluginManager.createPluginInstance (*description, sampleRate, blockSize, error));
+    std::unique_ptr<juce::AudioPluginInstance> plugin (pluginManager.createPluginInstance (*description, sampleRate, blockSize, error));
     return plugin;
 }
 
