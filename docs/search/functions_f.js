@@ -3,6 +3,7 @@ var searchData=
   ['savetovaluetree',['saveToValueTree',['../classfoleys_1_1ParameterAutomation.html#a66f9565e08903884af472fc55c80d13f',1,'foleys::ParameterAutomation']]],
   ['sendtimecode',['sendTimecode',['../classfoleys_1_1AVClip.html#aff4df7964e6ef08abb899a29475c49d0',1,'foleys::AVClip']]],
   ['sendupdatenotification',['sendUpdateNotification',['../classfoleys_1_1ProcessorParameter.html#adf3144e14bf8a8a3174c9f279b72dffc',1,'foleys::ProcessorParameter']]],
+  ['setactive',['setActive',['../classfoleys_1_1ProcessorController.html#abd58510a5d32e23cd26fd01828780a3a',1,'foleys::ProcessorController']]],
   ['setaudioformatreader',['setAudioFormatReader',['../classfoleys_1_1AudioClip.html#a148f80b1a2afc2829f0d0e8dcde45be4',1,'foleys::AudioClip']]],
   ['setaudiosettings',['setAudioSettings',['../classfoleys_1_1ClipRenderer.html#a55ef06927d92acc17925d6bcde5d53a3',1,'foleys::ClipRenderer']]],
   ['setclip',['setClip',['../classfoleys_1_1AudioStrip.html#aaf5e008dab91b279ee15dc47bcdf1b58',1,'foleys::AudioStrip::setClip()'],['../classfoleys_1_1FilmStrip.html#aaf5e008dab91b279ee15dc47bcdf1b58',1,'foleys::FilmStrip::setClip()'],['../classfoleys_1_1VideoPreview.html#aaf5e008dab91b279ee15dc47bcdf1b58',1,'foleys::VideoPreview::setClip()']]],
