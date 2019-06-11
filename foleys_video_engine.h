@@ -111,6 +111,7 @@
 #include "Processing/foleys_VideoMixer.h"
 #include "Processing/foleys_SoftwareVideoMixer.h"
 #include "Processing/foleys_DefaultAudioMixer.h"
+#include "Processing/foleys_ColourLookuptables.h"
 
 #include "Clips/foleys_AudioClip.h"
 #include "Clips/foleys_ImageClip.h"
