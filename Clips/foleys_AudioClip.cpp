@@ -179,4 +179,4 @@ std::shared_ptr<AVClip> AudioClip::createCopy()
     return engine->createClipFromFile (getMediaFile());
 }
 
-}
+} // foleys

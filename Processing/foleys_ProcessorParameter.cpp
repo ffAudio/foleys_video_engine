@@ -202,4 +202,4 @@ double* ProcessorState::getRawParameterValue (const juce::String& paramID)
     return nullptr;
 }
 
-}
+} // foleys

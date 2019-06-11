@@ -48,5 +48,4 @@ std::unique_ptr<VideoProcessor> VideoPluginManager::createVideoPluginInstance (c
     return {};
 }
 
-
-}
+} // foleys

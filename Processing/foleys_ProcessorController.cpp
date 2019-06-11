@@ -287,6 +287,16 @@ juce::ValueTree& ProcessorController::getProcessorState()
     return state;
 }
 
+void ProcessorController::setActive (bool shouldBeActive)
+{
+    state.setProperty (IDs::active, shouldBeActive, owner.getOwningClip().getUndoManager());
+}
+
+bool ProcessorController::isActive() const
+{
+    return state.getProperty (IDs::active, true);
+}
+
 std::vector<std::unique_ptr<ParameterAutomation>>& ProcessorController::getParameters()
 {
     return parameters;
@@ -341,5 +351,4 @@ void ProcessorController::valueTreeChildRemoved (juce::ValueTree& parentTree,
         synchroniseParameter (parentTree);
 }
 
-
-}
+} // foleys

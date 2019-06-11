@@ -46,6 +46,9 @@ void SoftwareVideoMixer::compose (juce::Image&        target,
 
         for (const auto& controller : clip->getVideoProcessors())
         {
+            if (controller->isActive() == false)
+                continue;
+
             controller->updateAutomation ((timeInSeconds - clip->getStart()) + clip->getOffset());
             if (auto* videoProcessor = controller->getVideoProcessor())
                 videoProcessor->processFrame (frame, count, settings, clip->getLength());

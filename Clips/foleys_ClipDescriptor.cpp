@@ -29,6 +29,7 @@ namespace IDs
     static juce::Identifier name            { "Name" };
     static juce::Identifier parameter       { "Parameter" };
     static juce::Identifier pluginStatus    { "PluginStatus" };
+    static juce::Identifier active          { "active" };
 };
 
 ClipDescriptor::ClipDescriptor (ComposedClip& ownerToUse, std::shared_ptr<AVClip> clipToUse)

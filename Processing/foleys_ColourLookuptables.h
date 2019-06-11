@@ -33,6 +33,12 @@ class ColourCurve
 public:
     ColourCurve() = default;
 
+    /**
+     calculateColourMap will set up the lookup table.
+     @param newBrightness will add or subtract a normalised value (-1..1)
+     @param newContrast multiplies the slope of the curve (-1..1)
+     @param newGamma the gamma value for the curve (0.1..4.0)
+     */
     void calculateColourMap (double newBrightness, double newContrast, double newGamma)
     {
         if (newBrightness == brightness && newContrast == contrast && newGamma == gamma)
@@ -198,4 +204,4 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ColourCurve)
 };
 
-} // namespace foleys
+} // foleys

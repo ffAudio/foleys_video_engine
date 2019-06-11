@@ -53,4 +53,4 @@ std::unique_ptr<juce::AudioProcessor> AudioPluginManager::createAudioPluginInsta
     return plugin;
 }
 
-}
+} // foleys

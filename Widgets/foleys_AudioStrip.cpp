@@ -100,6 +100,4 @@ juce::ThreadPoolJob::JobStatus AudioStrip::ThumbnailJob::runJob()
     return juce::ThreadPoolJob::jobHasFinished;
 }
 
-
-
-}
+} // foleys

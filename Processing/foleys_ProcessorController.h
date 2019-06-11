@@ -109,6 +109,9 @@ public:
 
     int getNumParameters() const;
 
+    void setActive (bool shouldBeActive);
+    bool isActive() const;
+
 private:
 
     void valueTreePropertyChanged (juce::ValueTree& treeWhosePropertyHasChanged,
@@ -129,6 +132,7 @@ private:
     ClipDescriptor& owner;
     juce::ValueTree state;
 
+    bool isAvtive = true;
     bool isUpdating = false;
 
     std::unique_ptr<ProcessorAdapter> adapter;
@@ -137,4 +141,4 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ProcessorController)
 };
 
-}
+} // foleys

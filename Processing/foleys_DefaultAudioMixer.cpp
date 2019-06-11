@@ -46,8 +46,15 @@ void DefaultAudioMixer::mixAudio (const juce::AudioSourceChannelInfo& info,
             {
                 controller->updateAutomation ((timeInSeconds - clip->getStart()) + clip->getOffset());
                 if (auto* audioProcessor = controller->getAudioProcessor())
-                    if (! audioProcessor->isSuspended())
-                        audioProcessor->processBlock (procBuffer, midiDummy);
+                {
+                    if (audioProcessor->isSuspended() == false)
+                    {
+                        if (controller->isActive())
+                            audioProcessor->processBlock (procBuffer, midiDummy);
+                        else
+                            audioProcessor->processBlockBypassed (procBuffer, midiDummy);
+                    }
+                }
             }
 
             for (int channel = 0; channel < mixBuffer.getNumChannels(); ++channel)
@@ -56,4 +63,4 @@ void DefaultAudioMixer::mixAudio (const juce::AudioSourceChannelInfo& info,
     }
 }
 
-};
+} // foleys
