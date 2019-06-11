@@ -33,7 +33,7 @@ License
 This module is offered under a dual license: GPL and a paid license. For details please
 refer to the included document LICENSE.md
 
-The paid licenses are currently developed and will be announced soon. You are welcome to 
+The paid licenses are currently developed and will be announced soon. You are welcome to
 get in touch to register your interest and tell us about your use case.
 
 API-Documentation
@@ -52,10 +52,10 @@ To use the engine, just start the Projucer and add foleys_video_engine to your p
 
 We hope this is useful and are looking forward to your feedback:
 
-Email:       developer@foleysfinest.com  
-github:      ffAudio / https://github.com/ffAudio  
-JUCE forum:  daniel  
-discord:     daniel (JUCE and theaudioprogrammer)  
+Email:       developer@foleysfinest.com\\
+github:      ffAudio / https://github.com/ffAudio\\
+JUCE forum:  daniel\\
+discord:     daniel (JUCE and theaudioprogrammer)\\
 facebook:    https://fb.com/FoleysFinest/
 
 Disclaimer

@@ -11,6 +11,8 @@ var searchData=
   ['addvideoprocessor',['addVideoProcessor',['../classfoleys_1_1ClipDescriptor.html#af8cf1e7ec2e8f858763f8359396a7953',1,'foleys::ClipDescriptor::addVideoProcessor(std::unique_ptr&lt; ProcessorController &gt; controller, int index=-1)'],['../classfoleys_1_1ClipDescriptor.html#a963ab30b2145bea41c3d4c3b4655b6bd',1,'foleys::ClipDescriptor::addVideoProcessor(std::unique_ptr&lt; VideoProcessor &gt; processor, int index=-1)']]],
   ['addvideostream',['addVideoStream',['../classfoleys_1_1AVWriter.html#abee686cda7bc6b8b4dc633d4c8d60a50',1,'foleys::AVWriter']]],
   ['all',['all',['../classfoleys_1_1StreamTypes.html#a71f5cc477590cfbcc016833175ad82c1',1,'foleys::StreamTypes']]],
+  ['applylut',['applyLUT',['../classfoleys_1_1ColourCurve.html#a5c3da8f58434169ccba9ee7498d5e695',1,'foleys::ColourCurve']]],
+  ['applyluts',['applyLUTs',['../classfoleys_1_1ColourCurve.html#a991cd76be957f9818c0c858e11fb479c',1,'foleys::ColourCurve::applyLUTs(juce::Image &amp;image, const ColourCurve &amp;red, const ColourCurve &amp;green, const ColourCurve &amp;blue)'],['../classfoleys_1_1ColourCurve.html#a6b081644a281346ce61afa12587dce18',1,'foleys::ColourCurve::applyLUTs(juce::Image &amp;image, const ColourCurve &amp;red, const ColourCurve &amp;green, const ColourCurve &amp;blue, const ColourCurve &amp;alpha)']]],
   ['audio',['audio',['../classfoleys_1_1StreamTypes.html#a1fc0429827d685bbe8435add933c997d',1,'foleys::StreamTypes']]],
   ['audioclip',['AudioClip',['../classfoleys_1_1AudioClip.html#afd582c8f928fdaa75383854295e2c728',1,'foleys::AudioClip']]],
   ['audiofifo',['AudioFifo',['../classfoleys_1_1AudioFifo.html#a24bd408de9653562c7e94de715a9b154',1,'foleys::AudioFifo']]],

@@ -25,15 +25,15 @@ namespace foleys
 
 namespace IDs
 {
-    static juce::String redContrast     { "redContrast" };
-    static juce::String redBrightness   { "redBrightness" };
-    static juce::String redGamma        { "redGamma" };
-    static juce::String greenContrast   { "greenContrast" };
-    static juce::String greenBrightness { "greenBrightness" };
-    static juce::String greenGamma      { "greenGamma" };
-    static juce::String blueContrast    { "blueContrast" };
-    static juce::String blueBrightness  { "blueBrightness" };
-    static juce::String blueGamma       { "blueGamma" };
+    static juce::String redBrightness   { "01redBrightness" };
+    static juce::String redContrast     { "02redContrast" };
+    static juce::String redGamma        { "03redGamma" };
+    static juce::String greenBrightness { "04greenBrightness" };
+    static juce::String greenContrast   { "05greenContrast" };
+    static juce::String greenGamma      { "06greenGamma" };
+    static juce::String blueBrightness  { "07blueBrightness" };
+    static juce::String blueContrast    { "08blueContrast" };
+    static juce::String blueGamma       { "09blueGamma" };
 }
 
 class ColourCurveVideoProcessor : public VideoProcessor
@@ -79,7 +79,17 @@ public:
         green.calculateColourMap (*greenBrightness, *greenContrast, *greenGamma);
         blue.calculateColourMap  (*blueBrightness,  *blueContrast,  *blueGamma);
 
-        ColourCurve::applyLUTs (frame, red, green, blue);
+        if (red.isLinear() && green.isLinear() && blue.isLinear())
+            return;
+
+        if (red.isLinear() == false && green.isLinear() && blue.isLinear())
+            red.applyLUT (frame, 2);
+        else if (red.isLinear() && green.isLinear() == false && blue.isLinear())
+            green.applyLUT (frame, 1);
+        else if (red.isLinear() && green.isLinear() && blue.isLinear() == false)
+            blue.applyLUT (frame, 0);
+        else
+            ColourCurve::applyLUTs (frame, red, green, blue);
     }
 
     std::vector<ProcessorParameter*> getParameters() override

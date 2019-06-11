@@ -1,6 +1,6 @@
 /*
  ==============================================================================
- 
+
     Copyright (c) 2019, Foleys Finest Audio - Daniel Walz
     All rights reserved.
 
@@ -14,7 +14,7 @@
     LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
     OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
     OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  ==============================================================================
  */
 
@@ -24,27 +24,25 @@
 namespace foleys
 {
 
-struct ColourCurve
+/**
+ The ColourCurve provides an 8-bit lookup table to manipulate brightness, contrast
+ and gamma correction per channel.
+ */
+class ColourCurve
 {
-    double brightness = -1.0;
-    double contrast   = -1.0;
-    double gamma      = -1.0;
-    bool   isLinear   = false;
-    
-    uint8_t map[256];
-    
+public:
+    ColourCurve() = default;
+
     void calculateColourMap (double newBrightness, double newContrast, double newGamma)
     {
         if (newBrightness == brightness && newContrast == contrast && newGamma == gamma)
             return;
-        
+
         brightness = newBrightness;
         contrast = newContrast;
         gamma = newGamma;
-        
-        isLinear = (brightness == 0.0 && contrast == 0.0 && gamma == 1.0);
-        
-        if (isLinear)
+
+        if (isLinear())
         {
             for (size_t i = 0; i < 256; ++i)
                 map [i] = i;
@@ -58,12 +56,26 @@ struct ColourCurve
         }
     }
 
+    /**
+     The method isLinear returns true, if the curve is the identity function.
+     */
+    bool isLinear() const
+    {
+        return (brightness == 0.0 && contrast == 0.0 && gamma == 1.0);
+    }
+
+    /**
+     Applies a ColourCurve to a channel of an image.
+
+     @param image the image to apply the ColourCurve
+     @param component is the index of the channel in the packed pixel
+     */
     void applyLUT (juce::Image& image, int component)
     {
         juce::Image::BitmapData data (image, 0, 0,
                                       image.getWidth(),
                                       image.getHeight());
-        
+
         for (int y=0; y < data.height; ++y)
         {
             auto* p = data.getLinePointer (y);
@@ -76,11 +88,25 @@ struct ColourCurve
         }
     }
 
+    /**
+     Applies a set of ColourCurves to an image.
+     This method assumes BGR or BGRA format.
+
+     @param image the image to apply the ColourCurve
+     @param red is the ColourCurve for the red channel
+     @param green is the ColourCurve for the green channel
+     @param blue is the ColourCurve for the blue channel
+     */
     static void applyLUTs (juce::Image& image, const ColourCurve& red, const ColourCurve& green, const ColourCurve& blue)
     {
         juce::Image::BitmapData data (image, 0, 0,
                                       image.getWidth(),
                                       image.getHeight());
+
+        const auto* redMap = red.getLookupTable();
+        const auto* greenMap = green.getLookupTable();
+        const auto* blueMap = blue.getLookupTable();
+
         if (data.pixelStride == 4)
         {
             for (int y=0; y < data.height; ++y)
@@ -88,9 +114,9 @@ struct ColourCurve
                 auto* p = data.getLinePointer (y);
                 for (int x=0; x < data.width; ++x)
                 {
-                    *p = blue.map [*p]; ++p;
-                    *p = green.map [*p]; ++p;
-                    *p = red.map [*p]; ++p;
+                    *p = blueMap [*p]; ++p;
+                    *p = greenMap [*p]; ++p;
+                    *p = redMap [*p]; ++p;
                     ++p;
                 }
             }
@@ -102,13 +128,74 @@ struct ColourCurve
                 auto* p = data.getLinePointer (y);
                 for (int x=0; x < data.width; ++x)
                 {
-                    *p = blue.map [*p]; ++p;
-                    *p = green.map [*p]; ++p;
-                    *p = red.map [*p]; ++p;
+                    *p = blueMap [*p]; ++p;
+                    *p = greenMap [*p]; ++p;
+                    *p = redMap [*p]; ++p;
                 }
             }
         }
     }
+
+    /**
+     Applies a set of ColourCurves to an image.
+     This method assumes BGRA format.
+
+     @param image the image to apply the ColourCurve
+     @param red is the ColourCurve for the red channel
+     @param green is the ColourCurve for the green channel
+     @param blue is the ColourCurve for the blue channel
+     @param alpha is the ColourCurve for the alpha channel
+     */
+    static void applyLUTs (juce::Image& image,
+                           const ColourCurve& red,
+                           const ColourCurve& green,
+                           const ColourCurve& blue,
+                           const ColourCurve& alpha)
+    {
+        juce::Image::BitmapData data (image, 0, 0,
+                                      image.getWidth(),
+                                      image.getHeight());
+
+        // You need pixels with 4 components to apply 4 LUTs
+        jassert (data.pixelStride == 4);
+
+        if (data.pixelStride != 4)
+            return;
+
+        const auto* redMap = red.getLookupTable();
+        const auto* greenMap = green.getLookupTable();
+        const auto* blueMap = blue.getLookupTable();
+        const auto* alphaMap = alpha.getLookupTable();
+
+        for (int y=0; y < data.height; ++y)
+        {
+            auto* p = data.getLinePointer (y);
+            for (int x=0; x < data.width; ++x)
+            {
+                *p = blueMap [*p]; ++p;
+                *p = greenMap [*p]; ++p;
+                *p = redMap [*p]; ++p;
+                *p = alphaMap [*p]; ++p;
+            }
+        }
+    }
+
+    /**
+     This methods gives you reading access to the lookup table.
+     */
+    const uint8_t* getLookupTable() const
+    {
+        return map;
+    }
+
+private:
+    double brightness = -1.0;
+    double contrast   = -1.0;
+    double gamma      = -1.0;
+
+    uint8_t map[256];
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ColourCurve)
 };
 
 } // namespace foleys
