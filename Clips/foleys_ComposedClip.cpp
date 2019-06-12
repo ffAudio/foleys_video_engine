@@ -44,7 +44,7 @@ ComposedClip::ComposedClip (VideoEngine& engine)
 
     videoMixer = std::make_unique<SoftwareVideoMixer>();
     auto& settings = videoFifo.getVideoSettings();
-    settings.frameSize = {800, 600};
+    settings.frameSize = {1280, 720};
     settings.timebase = 24000;
     settings.defaultDuration = 1001;
 
