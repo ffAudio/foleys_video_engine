@@ -280,6 +280,32 @@ void ClipDescriptor::removeVideoProcessor (int index)
     videoProcessors.erase (toBeRemoved);
 }
 
+void ClipDescriptor::removeProcessor (ProcessorController* controller)
+{
+    const auto& videoToBeRemoved = std::find_if (videoProcessors.begin(),
+                                                 videoProcessors.end(),
+                                                 [controller](const auto& p){ return p.get() == controller; });
+    if (videoToBeRemoved != videoProcessors.end())
+    {
+        listeners.call ([&](ClipDescriptor::Listener& l) { l.processorControllerToBeDeleted (videoToBeRemoved->get()); } );
+        juce::ScopedLock sl (owner.getCallbackLock());
+        videoProcessors.erase (videoToBeRemoved);
+        return;
+    }
+
+    const auto& audioToBeRemoved = std::find_if (audioProcessors.begin(),
+                                                 audioProcessors.end(),
+                                                 [controller](const auto& p){ return p.get() == controller; });
+    if (audioToBeRemoved != audioProcessors.end())
+    {
+        listeners.call ([&](ClipDescriptor::Listener& l) { l.processorControllerToBeDeleted (audioToBeRemoved->get()); } );
+        juce::ScopedLock sl (owner.getCallbackLock());
+        audioProcessors.erase (audioToBeRemoved);
+        return;
+    }
+
+}
+
 ComposedClip& ClipDescriptor::getOwningClip()
 {
     return owner;

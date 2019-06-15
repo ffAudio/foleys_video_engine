@@ -107,6 +107,8 @@ public:
     void addVideoProcessor (std::unique_ptr<VideoProcessor> processor, int index=-1);
     void removeVideoProcessor (int index);
 
+    void removeProcessor (ProcessorController* controller);
+
     const std::vector<std::unique_ptr<ProcessorController>>& getVideoProcessors() const;
 
     ComposedClip& getOwningClip();
