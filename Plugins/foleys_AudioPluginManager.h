@@ -23,6 +23,8 @@
 namespace foleys
 {
 
+class VideoEngine;
+
 /**
  The AudioPluginManager is used to create AudioProcessor instances to be placed into
  the audio processing pipeline. You can add support for 3rd party plugins here.
@@ -30,7 +32,7 @@ namespace foleys
 class AudioPluginManager
 {
 public:
-    AudioPluginManager();
+    AudioPluginManager (VideoEngine& videoEngine);
 
     /**
      Register a factory to return an AudioProcessor instance from an identifierString. This is used for built in
@@ -47,12 +49,38 @@ public:
                                                                      int blockSize,
                                                                      juce::String& error) const;
 
+    void populatePluginSelection (juce::PopupMenu& menu);
+    juce::PluginDescription getPluginDescriptionFromMenuID (int index);
+
+    /**
+     Set a file to save the results of plugin scanning to. It will read first, if the file exists.
+     On success, it writes the plugin database to the file.
+     */
+    void setPluginDataFile (const juce::File& file);
+
 private:
+
+    class PluginScanJob : public juce::ThreadPoolJob
+    {
+    public:
+        PluginScanJob (AudioPluginManager& owner);
+
+        juce::ThreadPoolJob::JobStatus runJob() override;
+
+    private:
+        AudioPluginManager& owner;
+        JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PluginScanJob)
+    };
+
+    friend PluginScanJob;
+
+    VideoEngine& videoEngine;
 
     std::map<juce::String, std::function<std::unique_ptr<juce::AudioProcessor>()>> factories;
 
     juce::KnownPluginList          knownPluginList;
     juce::AudioPluginFormatManager pluginManager;
+    juce::File                     pluginDataFile;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioPluginManager)
 };

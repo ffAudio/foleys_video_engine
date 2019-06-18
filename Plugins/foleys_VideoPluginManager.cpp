@@ -23,7 +23,8 @@
 namespace foleys
 {
 
-VideoPluginManager::VideoPluginManager()
+VideoPluginManager::VideoPluginManager (VideoEngine& videoEngineToUse)
+  : videoEngine (videoEngineToUse)
 {
     registerVideoProcessor ("BUILTIN: " + PositioningVideoProcessor::getPluginName(), [] { return std::make_unique<PositioningVideoProcessor>(); });
     registerVideoProcessor ("BUILTIN: " + ColourCurveVideoProcessor::getPluginName(), [] { return std::make_unique<ColourCurveVideoProcessor>(); });

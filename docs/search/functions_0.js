@@ -18,7 +18,7 @@ var searchData=
   ['audiofifo',['AudioFifo',['../classfoleys_1_1AudioFifo.html#a24bd408de9653562c7e94de715a9b154',1,'foleys::AudioFifo']]],
   ['audiomixer',['AudioMixer',['../classfoleys_1_1AudioMixer.html#aee7c2e583f66f1897ea2aa1223aebd5d',1,'foleys::AudioMixer']]],
   ['audioparameterautomation',['AudioParameterAutomation',['../classfoleys_1_1AudioParameterAutomation.html#a05ae9ac0cb6546e05b11ea0041fd735e',1,'foleys::AudioParameterAutomation']]],
-  ['audiopluginmanager',['AudioPluginManager',['../classfoleys_1_1AudioPluginManager.html#a23337fc2614e4fa33ba6ace39121e309',1,'foleys::AudioPluginManager']]],
+  ['audiopluginmanager',['AudioPluginManager',['../classfoleys_1_1AudioPluginManager.html#a4e85f0c40d2534a587e0b9ad9e1184a2',1,'foleys::AudioPluginManager']]],
   ['audioprocessoradapter',['AudioProcessorAdapter',['../structfoleys_1_1AudioProcessorAdapter.html#a66265898aba32501ae079604284e82e6',1,'foleys::AudioProcessorAdapter']]],
   ['audiostrip',['AudioStrip',['../classfoleys_1_1AudioStrip.html#aa07f99d73b9e854969aee3c3a70c9b59',1,'foleys::AudioStrip']]],
   ['avclip',['AVClip',['../classfoleys_1_1AVClip.html#a48fa9431d26f6e26365d8e539bf4c493',1,'foleys::AVClip']]],

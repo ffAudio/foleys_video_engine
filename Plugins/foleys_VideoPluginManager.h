@@ -30,7 +30,7 @@ namespace foleys
 class VideoPluginManager
 {
 public:
-    VideoPluginManager();
+    VideoPluginManager (VideoEngine& videoEngine);
 
     /**
      Register a VideoProcessor factory to create a VideoProcessor instance from an identifying string.
@@ -44,6 +44,8 @@ public:
                                                                juce::String& error) const;
 
 private:
+
+    VideoEngine& videoEngine;
 
     std::map<juce::String, std::function<std::unique_ptr<VideoProcessor>()>> factories;
 

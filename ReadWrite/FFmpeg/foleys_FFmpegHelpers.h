@@ -22,12 +22,6 @@
 
 #if FOLEYS_USE_FFMPEG
 
-#if FOLEYS_DEBUG_LOGGING
-#  define FOLEYS_LOG(textToWrite)          JUCE_BLOCK_WITH_FORCED_SEMICOLON(juce::String tempDbgBuf; tempDbgBuf << "FFmpeg: " << textToWrite; juce::Logger::outputDebugString (tempDbgBuf);)
-#else
-#  define FOLEYS_LOG(textToWrite)
-#endif
-
 #if JUCE_MSVC
 #pragma comment (lib, "avformat.lib")
 #pragma comment (lib, "avutil.lib")

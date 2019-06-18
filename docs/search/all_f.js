@@ -23,6 +23,7 @@ var searchData=
   ['setoffset',['setOffset',['../classfoleys_1_1ClipDescriptor.html#a0b470f15e518fefcb82f9459dae04067',1,'foleys::ClipDescriptor']]],
   ['setoutputfile',['setOutputFile',['../classfoleys_1_1ClipRenderer.html#a0b8b90c1681171e7d608aa130159eaae',1,'foleys::ClipRenderer']]],
   ['setoutputsamplerate',['setOutputSampleRate',['../classfoleys_1_1AVReader.html#a998b1e38f8af9ed4d14f5e121f65b4a7',1,'foleys::AVReader']]],
+  ['setplugindatafile',['setPluginDataFile',['../classfoleys_1_1AudioPluginManager.html#ac621ebf43700a9c791f0c34309f081f5',1,'foleys::AudioPluginManager']]],
   ['setposition',['setPosition',['../classfoleys_1_1AudioFifo.html#a11db0d8cdf838fc8ede2c0bb668e5c42',1,'foleys::AudioFifo::setPosition()'],['../classfoleys_1_1AVReader.html#a0a8a5592edf485a68403dda0af384f3e',1,'foleys::AVReader::setPosition()']]],
   ['setreader',['setReader',['../classfoleys_1_1MovieClip.html#a8ca8ec1679793a63306e3dd333be06aa',1,'foleys::MovieClip']]],
   ['setrealvalue',['setRealValue',['../classfoleys_1_1ProcessorParameter.html#a2e28f4a163cad0ce7461cfbbbe3bb4ef',1,'foleys::ProcessorParameter::setRealValue()'],['../classfoleys_1_1ProcessorParameterFloat.html#a1685d80589e8dcbcc1cfc2c55375a988',1,'foleys::ProcessorParameterFloat::setRealValue()']]],
@@ -44,7 +45,7 @@ var searchData=
   ['state',['state',['../classfoleys_1_1ProcessorState.html#a232b24bd596606112fe024a316f208ea',1,'foleys::ProcessorState']]],
   ['streamtype',['StreamType',['../classfoleys_1_1StreamTypes.html#a8a65141d9ea4bf9d2e2377ed6b888a1d',1,'foleys::StreamTypes']]],
   ['streamtypes',['StreamTypes',['../classfoleys_1_1StreamTypes.html',1,'StreamTypes'],['../classfoleys_1_1StreamTypes.html#a6098a6fd8f523fae182a7e53c701401e',1,'foleys::StreamTypes::StreamTypes()']]],
-  ['subtitles',['subtitles',['../classfoleys_1_1StreamTypes.html#a4e66d1e10d98c61bc63b8e5894c3867b',1,'foleys::StreamTypes::subtitles()'],['../classfoleys_1_1StreamTypes.html#a8a65141d9ea4bf9d2e2377ed6b888a1da2e450aab5b8b71a21c3ad97b9ae19358',1,'foleys::StreamTypes::Subtitles()']]],
+  ['subtitles',['Subtitles',['../classfoleys_1_1StreamTypes.html#a8a65141d9ea4bf9d2e2377ed6b888a1da2e450aab5b8b71a21c3ad97b9ae19358',1,'foleys::StreamTypes::Subtitles()'],['../classfoleys_1_1StreamTypes.html#a4e66d1e10d98c61bc63b8e5894c3867b',1,'foleys::StreamTypes::subtitles()']]],
   ['synchroniseparameter',['synchroniseParameter',['../classfoleys_1_1ProcessorController.html#a1e942c38914349c78b2ee0945f3dfbfe',1,'foleys::ProcessorController']]],
   ['synchronisestate',['synchroniseState',['../classfoleys_1_1ProcessorController.html#a55a9e6c41f44850e5da2fd952d013e78',1,'foleys::ProcessorController']]]
 ];

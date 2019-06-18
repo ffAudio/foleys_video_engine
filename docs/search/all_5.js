@@ -36,6 +36,7 @@ var searchData=
   ['foleys_5ffilmstrip_2eh',['foleys_FilmStrip.h',['../foleys__FilmStrip_8h.html',1,'']]],
   ['foleys_5fimageclip_2ecpp',['foleys_ImageClip.cpp',['../foleys__ImageClip_8cpp.html',1,'']]],
   ['foleys_5fimageclip_2eh',['foleys_ImageClip.h',['../foleys__ImageClip_8h.html',1,'']]],
+  ['foleys_5flog',['FOLEYS_LOG',['../foleys__video__engine_8h.html#ae462812d747ad22eb54cf621d2ea4985',1,'foleys_video_engine.h']]],
   ['foleys_5fmovieclip_2ecpp',['foleys_MovieClip.cpp',['../foleys__MovieClip_8cpp.html',1,'']]],
   ['foleys_5fmovieclip_2eh',['foleys_MovieClip.h',['../foleys__MovieClip_8h.html',1,'']]],
   ['foleys_5fpanningaudioprocessor_2eh',['foleys_PanningAudioProcessor.h',['../foleys__PanningAudioProcessor_8h.html',1,'']]],

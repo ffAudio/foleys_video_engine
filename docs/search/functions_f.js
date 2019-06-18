@@ -22,6 +22,7 @@ var searchData=
   ['setoffset',['setOffset',['../classfoleys_1_1ClipDescriptor.html#a0b470f15e518fefcb82f9459dae04067',1,'foleys::ClipDescriptor']]],
   ['setoutputfile',['setOutputFile',['../classfoleys_1_1ClipRenderer.html#a0b8b90c1681171e7d608aa130159eaae',1,'foleys::ClipRenderer']]],
   ['setoutputsamplerate',['setOutputSampleRate',['../classfoleys_1_1AVReader.html#a998b1e38f8af9ed4d14f5e121f65b4a7',1,'foleys::AVReader']]],
+  ['setplugindatafile',['setPluginDataFile',['../classfoleys_1_1AudioPluginManager.html#ac621ebf43700a9c791f0c34309f081f5',1,'foleys::AudioPluginManager']]],
   ['setposition',['setPosition',['../classfoleys_1_1AudioFifo.html#a11db0d8cdf838fc8ede2c0bb668e5c42',1,'foleys::AudioFifo::setPosition()'],['../classfoleys_1_1AVReader.html#a0a8a5592edf485a68403dda0af384f3e',1,'foleys::AVReader::setPosition()']]],
   ['setreader',['setReader',['../classfoleys_1_1MovieClip.html#a8ca8ec1679793a63306e3dd333be06aa',1,'foleys::MovieClip']]],
   ['setrealvalue',['setRealValue',['../classfoleys_1_1ProcessorParameter.html#a2e28f4a163cad0ce7461cfbbbe3bb4ef',1,'foleys::ProcessorParameter::setRealValue()'],['../classfoleys_1_1ProcessorParameterFloat.html#a1685d80589e8dcbcc1cfc2c55375a988',1,'foleys::ProcessorParameterFloat::setRealValue()']]],

@@ -21,7 +21,8 @@
 namespace foleys
 {
 
-AudioPluginManager::AudioPluginManager()
+AudioPluginManager::AudioPluginManager (VideoEngine& videoEngineToUse)
+  : videoEngine (videoEngineToUse)
 {
     pluginManager.addDefaultFormats();
 
@@ -52,5 +53,65 @@ std::unique_ptr<juce::AudioProcessor> AudioPluginManager::createAudioPluginInsta
     std::unique_ptr<juce::AudioPluginInstance> plugin (pluginManager.createPluginInstance (*description, sampleRate, blockSize, error));
     return plugin;
 }
+
+void AudioPluginManager::populatePluginSelection (juce::PopupMenu& menu)
+{
+    knownPluginList.addToMenu (menu, juce::KnownPluginList::sortByCategory);
+}
+
+juce::PluginDescription AudioPluginManager::getPluginDescriptionFromMenuID (int menuIndex)
+{
+    const auto types = knownPluginList.getTypes();
+    const auto index = knownPluginList.getIndexChosenByMenu (menuIndex);
+    if (juce::isPositiveAndBelow (index, types.size()))
+        return types.getUnchecked (index);
+
+    return {};
+}
+
+void AudioPluginManager::setPluginDataFile (const juce::File& file)
+{
+    pluginDataFile = file;
+
+    auto xml = juce::XmlDocument::parse (pluginDataFile);
+    if (xml.get() != nullptr)
+    {
+        knownPluginList.recreateFromXml (*xml);
+    }
+
+    videoEngine.addJob (new PluginScanJob (*this), true);
+}
+
+//==============================================================================
+
+AudioPluginManager::PluginScanJob::PluginScanJob (AudioPluginManager& ownerToUse)
+  : juce::ThreadPoolJob ("Plugin Scanner"),
+    owner (ownerToUse)
+{
+}
+
+juce::ThreadPoolJob::JobStatus AudioPluginManager::PluginScanJob::runJob()
+{
+    auto deadMansPedal = juce::File::getSpecialLocation (juce::File::tempDirectory).getChildFile ("ScanPlugins");
+    juce::AudioUnitPluginFormat format;
+    juce::PluginDirectoryScanner scanner (owner.knownPluginList,
+                                          format,
+                                          format.getDefaultLocationsToSearch(),
+                                          true,
+                                          deadMansPedal);
+
+    juce::String name;
+    while (scanner.scanNextFile (true, name))
+    {
+        FOLEYS_LOG ("Scanning: " + name);
+    }
+
+    auto xml = owner.knownPluginList.createXml();
+    if (xml.get() != nullptr)
+        xml->writeTo (owner.pluginDataFile);
+
+    return juce::ThreadPoolJob::jobHasFinished;
+}
+
 
 } // foleys

@@ -87,6 +87,12 @@
 #include <juce_gui_basics/juce_gui_basics.h>
 #include <juce_audio_utils/juce_audio_utils.h>
 
+#if FOLEYS_DEBUG_LOGGING
+#  define FOLEYS_LOG(textToWrite)          JUCE_BLOCK_WITH_FORCED_SEMICOLON(juce::String tempDbgBuf; tempDbgBuf << "foleys: " << textToWrite; juce::Logger::outputDebugString (tempDbgBuf);)
+#else
+#  define FOLEYS_LOG(textToWrite)
+#endif
+
 #if FOLEYS_USE_OPENGL
 #include <juce_opengl/juce_opengl.h>
 #endif

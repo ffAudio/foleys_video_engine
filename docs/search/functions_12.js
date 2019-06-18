@@ -11,7 +11,7 @@ var searchData=
   ['videofifo',['VideoFifo',['../classfoleys_1_1VideoFifo.html#a5d15817d6d9909dac4fb01df6f89cf40',1,'foleys::VideoFifo']]],
   ['videomixer',['VideoMixer',['../classfoleys_1_1VideoMixer.html#a0c4e92781507d16411677a78336d478b',1,'foleys::VideoMixer']]],
   ['videoparameterautomation',['VideoParameterAutomation',['../classfoleys_1_1VideoParameterAutomation.html#a604d5a8332822c9dcfa76fba07c989da',1,'foleys::VideoParameterAutomation']]],
-  ['videopluginmanager',['VideoPluginManager',['../classfoleys_1_1VideoPluginManager.html#a67882ce2466e7592f426405469e1ce1e',1,'foleys::VideoPluginManager']]],
+  ['videopluginmanager',['VideoPluginManager',['../classfoleys_1_1VideoPluginManager.html#aa3bb9febf464cd22c804a5fab83d6776',1,'foleys::VideoPluginManager']]],
   ['videopreview',['VideoPreview',['../classfoleys_1_1VideoPreview.html#ad6c0711089fb574a1636758421544a67',1,'foleys::VideoPreview']]],
   ['videoprocessor',['VideoProcessor',['../classfoleys_1_1VideoProcessor.html#ad0aa740ab23b7ef211870077f4365935',1,'foleys::VideoProcessor']]],
   ['videoprocessoradapter',['VideoProcessorAdapter',['../structfoleys_1_1VideoProcessorAdapter.html#a50624ae4aad44b57d6cd44d036ab6511',1,'foleys::VideoProcessorAdapter']]]

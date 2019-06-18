@@ -215,16 +215,16 @@ ProcessorController::~ProcessorController()
         audioProcessor->releaseResources();
 }
 
-    juce::String ProcessorController::getName() const
-    {
-        if (auto* p = adapter->getAudioProcessor())
-            return p->getName();
+juce::String ProcessorController::getName() const
+{
+    if (auto* p = adapter->getAudioProcessor())
+        return p->getName();
 
-        if (auto* p = adapter->getVideoProcessor())
-            return p->getName();
+    if (auto* p = adapter->getVideoProcessor())
+        return p->getName();
 
-        return NEEDS_TRANS ("Unknown Processor");
-    }
+    return NEEDS_TRANS ("Unknown Processor");
+}
 
 void ProcessorController::updateAutomation (double pts)
 {

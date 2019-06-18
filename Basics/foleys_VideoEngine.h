@@ -118,9 +118,9 @@ private:
 
     AVFormatManager formatManager;
 
-    AudioPluginManager audioPluginManager;
+    AudioPluginManager audioPluginManager { *this };
 
-    VideoPluginManager videoPluginManager;
+    VideoPluginManager videoPluginManager { *this };
 
     juce::OptionalScopedPointer<juce::UndoManager> undoManager { new juce::UndoManager(), true };
 
