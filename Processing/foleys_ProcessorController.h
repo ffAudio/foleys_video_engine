@@ -132,7 +132,6 @@ private:
     ClipDescriptor& owner;
     juce::ValueTree state;
 
-    bool isAvtive = true;
     bool isUpdating = false;
 
     std::unique_ptr<ProcessorAdapter> adapter;

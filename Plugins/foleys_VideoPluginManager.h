@@ -43,6 +43,9 @@ public:
     std::unique_ptr<VideoProcessor> createVideoPluginInstance (const juce::String& identifierString,
                                                                juce::String& error) const;
 
+    void populatePluginSelection (juce::PopupMenu& menu);
+    juce::String getPluginDescriptionFromMenuID (int index);
+
 private:
 
     VideoEngine& videoEngine;

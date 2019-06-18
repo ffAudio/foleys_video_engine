@@ -26,6 +26,7 @@ namespace foleys
 VideoPluginManager::VideoPluginManager (VideoEngine& videoEngineToUse)
   : videoEngine (videoEngineToUse)
 {
+    juce::ignoreUnused (videoEngine);
     registerVideoProcessor ("BUILTIN: " + PositioningVideoProcessor::getPluginName(), [] { return std::make_unique<PositioningVideoProcessor>(); });
     registerVideoProcessor ("BUILTIN: " + ColourCurveVideoProcessor::getPluginName(), [] { return std::make_unique<ColourCurveVideoProcessor>(); });
 }
@@ -48,5 +49,21 @@ std::unique_ptr<VideoProcessor> VideoPluginManager::createVideoPluginInstance (c
     error = NEEDS_TRANS ("Plugin not known");
     return {};
 }
+
+void VideoPluginManager::populatePluginSelection (juce::PopupMenu& menu)
+{
+    int i = 0;
+    for (auto it : factories)
+        menu.addItem (++i, it.first);
+}
+
+juce::String VideoPluginManager::getPluginDescriptionFromMenuID (int index)
+{
+    if (juce::isPositiveAndBelow (index - 1, factories.size()))
+        return std::next (factories.begin(), index - 1)->first;
+
+    return {};
+}
+
 
 } // foleys
