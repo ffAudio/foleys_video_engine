@@ -289,9 +289,11 @@ juce::ValueTree& ProcessorController::getProcessorState()
 
 void ProcessorController::setActive (bool shouldBeActive)
 {
-    state.setProperty (IDs::active, shouldBeActive, owner.getOwningClip().getUndoManager());
-
-    owner.getOwningClip().invalidateVideo();
+    if (bool (state.getProperty (IDs::active, true)) != shouldBeActive)
+    {
+        state.setProperty (IDs::active, shouldBeActive, owner.getOwningClip().getUndoManager());
+        owner.getOwningClip().invalidateVideo();
+    }
 }
 
 bool ProcessorController::isActive() const
