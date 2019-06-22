@@ -102,6 +102,14 @@ void ComposedClip::removeClip (std::shared_ptr<ClipDescriptor> descriptor)
     state.removeChild (descriptor->getStatusTree(), getUndoManager());
 }
 
+std::shared_ptr<ClipDescriptor> ComposedClip::getClip (int index)
+{
+    if (juce::isPositiveAndBelow (index, clips.size()))
+        return clips [index];
+
+    return {};
+}
+
 std::pair<int64_t, juce::Image> ComposedClip::getFrame (double pts) const
 {
     return videoFifo.getVideoFrame (pts);
@@ -283,39 +291,47 @@ double ComposedClip::convertToSamples (int64_t pos) const
 }
 
 void ComposedClip::valueTreePropertyChanged (juce::ValueTree& treeWhosePropertyHasChanged,
-                                               const juce::Identifier& property)
+                                             const juce::Identifier& property)
 {
 }
 
 void ComposedClip::valueTreeChildAdded (juce::ValueTree& parentTree,
-                                          juce::ValueTree& childWhichHasBeenAdded)
+                                        juce::ValueTree& childWhichHasBeenAdded)
 {
     if (manualStateChange)
         return;
 
-    auto descriptor = std::make_shared<ClipDescriptor>(*this, childWhichHasBeenAdded);
-    if (descriptor->clip != nullptr)
+    if (childWhichHasBeenAdded.getType() == IDs::clip)
     {
-        descriptor->updateSampleCounts();
+        auto descriptor = std::make_shared<ClipDescriptor>(*this, childWhichHasBeenAdded);
+        if (descriptor->clip != nullptr)
+        {
+            descriptor->clip->prepareToPlay (getDefaultBufferSize(), getSampleRate());
+            descriptor->updateSampleCounts();
 
-        juce::ScopedLock sl (clipDescriptorLock);
-        clips.push_back (std::move (descriptor));
+            juce::ScopedLock sl (clipDescriptorLock);
+            clips.push_back (descriptor);
+        }
     }
 }
 
 void ComposedClip::valueTreeChildRemoved (juce::ValueTree& parentTree,
-                                            juce::ValueTree& childWhichHasBeenRemoved,
-                                            int indexFromWhichChildWasRemoved)
+                                          juce::ValueTree& childWhichHasBeenRemoved,
+                                          int indexFromWhichChildWasRemoved)
 {
     if (manualStateChange)
         return;
 
-    for (auto it = clips.begin(); it != clips.end(); ++it)
+    if (childWhichHasBeenRemoved.getType() == IDs::clip)
     {
-        if ((*it)->getStatusTree() == childWhichHasBeenRemoved)
+        for (auto it = clips.begin(); it != clips.end(); ++it)
         {
-            clips.erase (it);
-            return;
+            if ((*it)->getStatusTree() == childWhichHasBeenRemoved)
+            {
+                juce::ScopedLock sl (clipDescriptorLock);
+                clips.erase (it);
+                return;
+            }
         }
     }
 }

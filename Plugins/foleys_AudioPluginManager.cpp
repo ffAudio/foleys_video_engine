@@ -54,19 +54,9 @@ std::unique_ptr<juce::AudioProcessor> AudioPluginManager::createAudioPluginInsta
     return plugin;
 }
 
-void AudioPluginManager::populatePluginSelection (juce::PopupMenu& menu)
+juce::Array<juce::PluginDescription> AudioPluginManager::getKnownPluginDescriptions() const
 {
-    knownPluginList.addToMenu (menu, juce::KnownPluginList::sortByCategory);
-}
-
-juce::PluginDescription AudioPluginManager::getPluginDescriptionFromMenuID (int menuIndex)
-{
-    const auto types = knownPluginList.getTypes();
-    const auto index = knownPluginList.getIndexChosenByMenu (menuIndex);
-    if (juce::isPositiveAndBelow (index, types.size()))
-        return types.getUnchecked (index);
-
-    return {};
+    return knownPluginList.getTypes();
 }
 
 void AudioPluginManager::setPluginDataFile (const juce::File& file)

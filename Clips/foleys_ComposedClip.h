@@ -90,6 +90,7 @@ public:
     void removeClip (std::shared_ptr<ClipDescriptor> descriptor);
 
     std::vector<std::shared_ptr<ClipDescriptor>> getClips() const;
+    std::shared_ptr<ClipDescriptor> getClip (int index);
 
     void valueTreePropertyChanged (juce::ValueTree& treeWhosePropertyHasChanged,
                                    const juce::Identifier& property) override;

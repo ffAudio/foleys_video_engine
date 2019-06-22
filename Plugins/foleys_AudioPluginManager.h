@@ -49,8 +49,7 @@ public:
                                                                      int blockSize,
                                                                      juce::String& error) const;
 
-    void populatePluginSelection (juce::PopupMenu& menu);
-    juce::PluginDescription getPluginDescriptionFromMenuID (int index);
+    juce::Array<juce::PluginDescription> getKnownPluginDescriptions() const;
 
     /**
      Set a file to save the results of plugin scanning to. It will read first, if the file exists.
