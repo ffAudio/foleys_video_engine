@@ -78,7 +78,7 @@ std::shared_ptr<ClipDescriptor> ComposedClip::addClip (std::shared_ptr<AVClip> c
     auto clipDescriptor = std::make_shared<ClipDescriptor> (*this, clip);
     clip->prepareToPlay (audioSettings.defaultNumSamples, audioSettings.timebase);
 
-    clipDescriptor->setDescription (clip->getDescription());
+    clipDescriptor->setDescription (makeUniqueDescription (clip->getDescription()));
     clipDescriptor->setStart (start);
     clipDescriptor->setOffset (offset);
     clipDescriptor->setLength (length > 0 ? length : clip->getLengthInSeconds());
@@ -371,6 +371,29 @@ std::vector<std::shared_ptr<ClipDescriptor>> ComposedClip::getActiveClips (std::
 
     std::sort (active.begin(), active.end(), [](auto& a, auto& b){ return a->start.load() < b->start.load(); });
     return active;
+}
+
+juce::String ComposedClip::makeUniqueDescription (const juce::String& description) const
+{
+    int suffix = 0;
+    bool needsSuffix = false;
+    auto length = description.lastIndexOfChar ('#');
+    auto withoutNumber = length > 0 ? description.substring (0, length - 1).trim() : description;
+
+    for (auto clip : getClips())
+    {
+        auto o = clip->getDescription();
+        if (o.startsWith (withoutNumber))
+        {
+            suffix = std::max (suffix, o.getTrailingIntValue());
+            needsSuffix = true;
+        }
+    }
+
+    if (needsSuffix)
+        return withoutNumber + " #" + juce::String (suffix + 1);
+
+    return description;
 }
 
 //==============================================================================

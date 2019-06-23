@@ -113,6 +113,9 @@ public:
         in a way, that it cannot render correctly, e.g. when adding or removing an audio plugin */
     juce::CriticalSection& getCallbackLock() { return clipDescriptorLock; }
 
+    /** Create a unique description by appending or incrementing a number */
+    juce::String makeUniqueDescription (const juce::String& description) const;
+
 private:
 
     void handleAsyncUpdate() override;
