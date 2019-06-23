@@ -37,7 +37,7 @@ void SoftwareVideoMixer::compose (juce::Image&        target,
         const auto clipTime = timeInSeconds + clip->getOffset() - clip->getStart();
         auto frame = clip->clip->getFrame (clipTime).second;
 
-        if (frame.isNull())
+        if (clip->getVideoVisible() == false || frame.isNull())
             continue;
 
         auto factor = std::min (double (target.getWidth()) / frame.getWidth(),

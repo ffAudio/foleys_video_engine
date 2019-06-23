@@ -40,6 +40,9 @@ void DefaultAudioMixer::mixAudio (const juce::AudioSourceChannelInfo& info,
             juce::AudioSourceChannelInfo reader (&mixBuffer, 0, info.numSamples - offset);
             clip->clip->getNextAudioBlock (reader);
 
+            if (clip->getAudioPlaying() == false)
+                continue;
+
             juce::AudioBuffer<float> procBuffer (mixBuffer.getArrayOfWritePointers(), mixBuffer.getNumChannels(), 0, info.numSamples - offset);
             juce::MidiBuffer midiDummy;
             for (const auto& controller : clip->getAudioProcessors())

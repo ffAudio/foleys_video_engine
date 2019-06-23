@@ -120,6 +120,26 @@ void ClipDescriptor::setOffset (double o)
     state.setProperty (IDs::offset, o, owner.getUndoManager());
 }
 
+void ClipDescriptor::setVideoVisible (bool shouldBeVisible)
+{
+    state.setProperty (IDs::visible, shouldBeVisible, owner.getUndoManager());
+}
+
+bool ClipDescriptor::getVideoVisible() const
+{
+    return state.getProperty (IDs::visible, true);
+}
+
+void ClipDescriptor::setAudioPlaying (bool shouldPlay)
+{
+    state.setProperty (IDs::audio, shouldPlay, owner.getUndoManager());
+}
+
+bool ClipDescriptor::getAudioPlaying() const
+{
+    return state.getProperty (IDs::audio, true);
+}
+
 double ClipDescriptor::getCurrentPTS() const
 {
     return getClipTimeInDescriptorTime (getOwningClip().getCurrentTimeInSeconds());

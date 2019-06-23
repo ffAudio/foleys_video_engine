@@ -82,6 +82,14 @@ public:
     int64_t getOffsetInSamples() const;
     void setOffset (double offset);
 
+    /** switch video invisible */
+    void setVideoVisible (bool shouldBeVisible);
+    bool getVideoVisible() const;
+
+    /** switch audio muted */
+    void setAudioPlaying (bool shouldPlay);
+    bool getAudioPlaying() const;
+
     /** returns the current timestamp in seconds, deduced from audio clock master and
         relative to this clip. */
     double getCurrentPTS() const;
