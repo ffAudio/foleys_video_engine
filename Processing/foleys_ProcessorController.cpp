@@ -26,7 +26,11 @@ namespace foleys
 
 struct AudioProcessorAdapter : public ProcessorController::ProcessorAdapter
 {
-    AudioProcessorAdapter (std::unique_ptr<juce::AudioProcessor> p) : processor (std::move (p)) {}
+    AudioProcessorAdapter (std::unique_ptr<juce::AudioProcessor> p) : processor (std::move (p))
+    {
+        if (processor.get() != nullptr)
+            processor->setPlayHead (&playhead);
+    }
 
     const juce::String getName() const override
     {
@@ -42,7 +46,30 @@ struct AudioProcessorAdapter : public ProcessorController::ProcessorAdapter
     }
 
     juce::AudioProcessor* getAudioProcessor() override { return processor.get(); }
-    std::unique_ptr<juce::AudioProcessor> processor;
+
+    class PlayHead : public juce::AudioPlayHead
+    {
+    public:
+        PlayHead() = default;
+
+        bool getCurrentPosition (juce::AudioPlayHead::CurrentPositionInfo &result) override
+        {
+            result.timeInSamples = timeInSamples;
+            result.timeInSeconds = timeInSeconds;
+            return true;
+        }
+
+        bool canControlTransport() override
+        {
+            return false;
+        }
+
+        juce::int64 timeInSamples = 0;
+        double      timeInSeconds = 0.0;
+
+    private:
+        JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PlayHead)
+    };
 
     void createAutomatedParameters (ProcessorController& controller,
                                     std::vector<std::unique_ptr<ParameterAutomation>>& parameters,
@@ -76,9 +103,19 @@ struct AudioProcessorAdapter : public ProcessorController::ProcessorAdapter
                 parameterNode.appendChild (automation, nullptr);
             }
         }
-
     }
 
+    void setPosition (juce::int64 samples, double seconds) override
+    {
+        playhead.timeInSamples = samples;
+        playhead.timeInSeconds = seconds;
+    }
+
+private:
+    PlayHead playhead;
+    std::unique_ptr<juce::AudioProcessor> processor;
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioProcessorAdapter)
 };
 
 struct VideoProcessorAdapter : public ProcessorController::ProcessorAdapter
@@ -129,9 +166,10 @@ struct VideoProcessorAdapter : public ProcessorController::ProcessorAdapter
                 parameterNode.appendChild (automation, nullptr);
             }
         }
-
     }
 
+private:
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (VideoProcessorAdapter)
 };
 
 //==============================================================================
@@ -299,6 +337,11 @@ void ProcessorController::setActive (bool shouldBeActive)
 bool ProcessorController::isActive() const
 {
     return state.getProperty (IDs::active, true);
+}
+
+void ProcessorController::setPosition (juce::int64 timeInSamples, double timeInSeconds)
+{
+    adapter->setPosition (timeInSamples, timeInSeconds);
 }
 
 std::vector<std::unique_ptr<ParameterAutomation>>& ProcessorController::getParameters()

@@ -95,6 +95,12 @@ public:
         virtual void createAutomatedParameters (ProcessorController& controller,
                                                 std::vector<std::unique_ptr<ParameterAutomation>>& parameters,
                                                 juce::ValueTree& parameterNode) = 0;
+
+        virtual void setPosition (juce::int64 timeInSamples, double timeInSeconds)
+        {
+            juce::ignoreUnused (timeInSamples);
+            juce::ignoreUnused (timeInSeconds);
+        }
     };
 
     /** Returns the controlled AudioProcessor. Can be nullptr, if it controlls a
@@ -111,6 +117,8 @@ public:
 
     void setActive (bool shouldBeActive);
     bool isActive() const;
+
+    void setPosition (juce::int64 timeInSamples, double timeInSeconds);
 
 private:
 

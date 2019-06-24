@@ -52,6 +52,7 @@ void DefaultAudioMixer::mixAudio (const juce::AudioSourceChannelInfo& info,
                 {
                     if (audioProcessor->isSuspended() == false)
                     {
+                        controller->setPosition (position - start, timeInSeconds);
                         if (controller->isActive())
                             audioProcessor->processBlock (procBuffer, midiDummy);
                         else
