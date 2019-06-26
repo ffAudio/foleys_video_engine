@@ -38,6 +38,7 @@ public:
     virtual juce::String getName() const = 0;
 
     virtual int getNumSteps() const = 0;
+    virtual juce::StringArray getAllValueStrings() const = 0;
 
     virtual void updateProcessor (double pts) = 0;
 
@@ -52,6 +53,9 @@ public:
     double getValueForTime (double pts) const;
 
     double getValue() const;
+
+    double getPreviousKeyframeTime (double time) const;
+    double getNextKeyframeTime (double time) const;
 
     void startAutomationGesture();
     void finishAutomationGesture();
@@ -91,6 +95,7 @@ public:
     juce::String getName() const override;
 
     int getNumSteps() const override;
+    juce::StringArray getAllValueStrings() const override;
 
     void updateProcessor (double pts) override;
 
@@ -121,6 +126,7 @@ public:
     juce::String getName() const override;
 
     int getNumSteps() const override;
+    juce::StringArray getAllValueStrings() const override;
 
     void updateProcessor (double pts) override;
 

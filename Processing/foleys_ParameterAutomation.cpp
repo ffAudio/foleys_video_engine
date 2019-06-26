@@ -105,6 +105,40 @@ double ParameterAutomation::getValue() const
     return value;
 }
 
+double ParameterAutomation::getPreviousKeyframeTime (double time) const
+{
+    if (keyframes.empty())
+        return time;
+
+    if (time <= keyframes.begin()->first)
+        return time;
+
+    const auto& next = keyframes.upper_bound (time);
+    if (next == keyframes.begin())
+        return time;
+
+    const auto& prev = std::next (next, -1);
+    if (prev->first == time && prev != keyframes.begin())
+        return std::next (prev, -1)->first;
+
+    return time;
+}
+
+double ParameterAutomation::getNextKeyframeTime (double time) const
+{
+    const auto& next = keyframes.upper_bound (time);
+    if (next == keyframes.end())
+        return time;
+
+    if (next->first == time)
+        std::next (next);
+
+    if (next == keyframes.end())
+        return time;
+
+    return next->first;
+}
+
 void ParameterAutomation::startAutomationGesture()
 {
     gestureInProgress = true;
@@ -185,6 +219,11 @@ int AudioParameterAutomation::getNumSteps() const
     return parameter.getNumSteps();
 }
 
+juce::StringArray AudioParameterAutomation::getAllValueStrings() const
+{
+    return parameter.getAllValueStrings();
+}
+
 juce::String AudioParameterAutomation::getText (float normalisedValue, int numDigits) const
 {
     return parameter.getText (normalisedValue, numDigits);
@@ -238,6 +277,11 @@ juce::String VideoParameterAutomation::getName() const
 int VideoParameterAutomation::getNumSteps() const
 {
     return parameter.getNumSteps();
+}
+
+juce::StringArray VideoParameterAutomation::getAllValueStrings() const
+{
+    return {};
 }
 
 juce::String VideoParameterAutomation::getText (float normalisedValue, int numDigits) const
