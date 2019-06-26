@@ -62,16 +62,16 @@ void FilmStrip::resized()
     update();
 }
 
-void FilmStrip::setStartAndLength (double startToUse, double lengthToUse)
+void FilmStrip::setStartAndEnd (double startToUse, double endTimeToUse)
 {
     startTime = startToUse;
-    timeLength = lengthToUse;
+    endTime = endTimeToUse;
     update();
 }
 
 void FilmStrip::update()
 {
-    if (clip == nullptr || timeLength == 0)
+    if (clip == nullptr || endTime <= startTime)
         return;
 
     auto* threadPool = getThreadPool();
@@ -125,8 +125,8 @@ juce::ThreadPoolJob::JobStatus FilmStrip::ThumbnailJob::runJob()
 
     Size thumbSize { int (height * owner.aspectRatio), height };
     double time = owner.startTime;
-    double end  = owner.startTime + owner.timeLength;
-    double step = thumbSize.width * owner.timeLength / width;
+    double end  = owner.endTime;
+    double step = thumbSize.width * (end - time) / width;
 
     int index = 0;
     while (! shouldExit() && time < end)

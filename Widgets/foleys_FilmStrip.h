@@ -47,7 +47,7 @@ public:
 
     /** Set the start time and the end time of the clip in seconds. This
         is used to allow only a subset of thumbnails to be shown. */
-    void setStartAndLength (double start, double length);
+    void setStartAndEnd (double start, double end);
 
     /** @internal */
     class ThumbnailJob : public juce::ThreadPoolJob
@@ -68,7 +68,7 @@ private:
 
     std::shared_ptr<AVClip> clip;
     double startTime = {};
-    double timeLength = {};
+    double endTime   = {};
     double aspectRatio = 1.33;
 
     std::unique_ptr<ThumbnailJob> thumbnailJob;

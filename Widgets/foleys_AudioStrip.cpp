@@ -42,7 +42,7 @@ void AudioStrip::setClip (std::shared_ptr<AVClip> clipToUse)
 
 void AudioStrip::paint (juce::Graphics& g)
 {
-    thumbnail.drawChannels (g, getLocalBounds(), startTime, timeLength, 1.0);
+    thumbnail.drawChannels (g, getLocalBounds(), startTime, endTime, 1.0);
 }
 
 void AudioStrip::changeListenerCallback (juce::ChangeBroadcaster*)
@@ -50,17 +50,17 @@ void AudioStrip::changeListenerCallback (juce::ChangeBroadcaster*)
     repaint();
 }
 
-void AudioStrip::setStartAndLength (double start, double length)
+void AudioStrip::setStartAndEnd (double start, double end)
 {
     startTime = start;
-    timeLength = length;
+    endTime = end;
 
     update();
 }
 
 void AudioStrip::update()
 {
-    if (clip == nullptr || timeLength == 0)
+    if (clip == nullptr || endTime <= startTime)
         return;
 
     auto* threadPool = getThreadPool();
