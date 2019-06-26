@@ -28,8 +28,8 @@ namespace IDs
     static juce::Identifier time            { "Time" };
 }
 
-ParameterAutomation::ParameterAutomation (ProcessorController&                   controllerToUse)
-  : controller (controllerToUse)
+ParameterAutomation::ParameterAutomation (ControllableBase& controllerToUse)
+  : controllable (controllerToUse)
 {
 }
 
@@ -53,7 +53,7 @@ void ParameterAutomation::setValue (double pts, double newValue)
     }
 
     if (! manualUpdate)
-        controller.synchroniseState (*this);
+        controllable.synchroniseState (*this);
 }
 
 void ParameterAutomation::addKeyframe (double pts, double newValue)
@@ -61,7 +61,7 @@ void ParameterAutomation::addKeyframe (double pts, double newValue)
     keyframes [pts] = juce::jlimit (0.0, 1.0, newValue);
 
     if (! manualUpdate)
-        controller.synchroniseState (*this);
+        controllable.synchroniseState (*this);
 }
 
 void ParameterAutomation::setKeyframe (size_t index, double pts, double newValue)
@@ -75,7 +75,7 @@ void ParameterAutomation::setKeyframe (size_t index, double pts, double newValue
     }
 
     if (! manualUpdate)
-        controller.synchroniseState (*this);
+        controllable.synchroniseState (*this);
 }
 
 double ParameterAutomation::getValueForTime (double pts) const
@@ -203,7 +203,7 @@ void AudioParameterAutomation::updateProcessor (double pts)
 
 void AudioParameterAutomation::parameterValueChanged (int parameterIndex, float newValue)
 {
-    auto pts = controller.getOwningClipDescriptor().getCurrentPTS();
+    auto pts = controllable.getCurrentPTS();
     setValue (pts, newValue);
 }
 
@@ -258,7 +258,7 @@ void VideoParameterAutomation::updateProcessor (double pts)
 
 void VideoParameterAutomation::valueChanged (ProcessorParameter&, double newValue)
 {
-    auto pts = controller.getOwningClipDescriptor().getCurrentPTS();
+    auto pts = controllable.getCurrentPTS();
     setValue (pts, newValue);
 }
 

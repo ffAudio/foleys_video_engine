@@ -264,6 +264,11 @@ juce::String ProcessorController::getName() const
     return NEEDS_TRANS ("Unknown Processor");
 }
 
+double ProcessorController::getCurrentPTS() const
+{
+    return owner.getCurrentPTS();
+}
+
 void ProcessorController::updateAutomation (double pts)
 {
     for (auto& parameter : parameters)

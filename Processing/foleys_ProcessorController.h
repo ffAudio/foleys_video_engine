@@ -27,12 +27,29 @@ class ClipDescriptor;
 class ParameterAutomation;
 
 
+class ControllableBase
+{
+public:
+    ControllableBase() = default;
+    virtual ~ControllableBase() = default;
+
+    virtual double getCurrentPTS() const = 0;
+    virtual void   synchroniseState (ParameterAutomation& parameter) = 0;
+
+    virtual std::vector<std::unique_ptr<ParameterAutomation>>& getParameters() = 0;
+    virtual int getNumParameters() const = 0;
+
+private:
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ControllableBase)
+};
+
 /**
  The ProcessorController acts as container foe one AudioProcessor or VideoProcessor
  inside the ClipDescriptor. It also holds the automation data to update the
  ProcessorParameters according to the currently rendered position.
  */
-class ProcessorController  : private juce::ValueTree::Listener
+class ProcessorController  : public ControllableBase,
+                             private juce::ValueTree::Listener
 {
 public:
     /**
@@ -60,6 +77,9 @@ public:
     /** Returns the name of the controlled processor */
     juce::String getName() const;
 
+    /** Return the current timestamp in seconds of the owning clip */
+    double getCurrentPTS() const override;
+
     /**
      This sets all parameters in the contained processor according to the current
      time point in seconds.
@@ -70,7 +90,7 @@ public:
      Calling this method will save the automation of one parameter by discarding
      the ValueTree and recreating it. It has a flag to avoid infinite loops.
      */
-    void synchroniseState (ParameterAutomation& parameter);
+    void synchroniseState (ParameterAutomation& parameter) override;
 
     /** Calling this method will load the keyframes for an automated parameter. */
     void synchroniseParameter (const juce::ValueTree& tree);
@@ -111,9 +131,8 @@ public:
         AudioProcessor or if loading of the plugin failed. */
     VideoProcessor* getVideoProcessor();
 
-    std::vector<std::unique_ptr<ParameterAutomation>>& getParameters();
-
-    int getNumParameters() const;
+    std::vector<std::unique_ptr<ParameterAutomation>>& getParameters() override;
+    int getNumParameters() const override;
 
     void setActive (bool shouldBeActive);
     bool isActive() const;

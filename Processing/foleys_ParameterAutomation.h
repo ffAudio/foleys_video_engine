@@ -31,7 +31,7 @@ namespace foleys
 class ParameterAutomation
 {
 public:
-    ParameterAutomation (ProcessorController&);
+    ParameterAutomation (ControllableBase&);
 
     virtual ~ParameterAutomation() = default;
 
@@ -67,7 +67,7 @@ public:
 
 protected:
 
-    ProcessorController& controller;
+    ControllableBase& controllable;
     bool gestureInProgress = false;
 
 private:
