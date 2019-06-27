@@ -130,13 +130,17 @@ public:
     {
     public:
         virtual ~Listener() = default;
+        virtual void processorControllerAdded() = 0;
         virtual void processorControllerToBeDeleted (const ProcessorController*) = 0;
+        virtual void parameterAutomationChanged (const ParameterAutomation*) {}
     };
 
     /** Add a listener to the ClipDescriptor */
     void addListener (Listener* listener);
     /** Add a listener from the ClipDescriptor */
     void removeListener (Listener* listener);
+
+    void notifyParameterAutomationChange (const ParameterAutomation*);
 
 private:
     std::atomic<int64_t> start {0};

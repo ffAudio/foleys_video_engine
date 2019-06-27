@@ -170,6 +170,11 @@ void ClipDescriptor::removeListener (Listener* listener)
     listeners.remove (listener);
 }
 
+void ClipDescriptor::notifyParameterAutomationChange (const ParameterAutomation* p)
+{
+    listeners.call ([p](auto& l) { l.parameterAutomationChanged (p); });
+}
+
 void ClipDescriptor::valueTreePropertyChanged (juce::ValueTree& treeWhosePropertyHasChanged,
                                                              const juce::Identifier& property)
 {
@@ -240,11 +245,15 @@ void ClipDescriptor::addAudioProcessor (std::unique_ptr<ProcessorController> con
         processorsNode.addChild (controller->getProcessorState(), index, undo);
     }
 
-    juce::ScopedLock sl (owner.getCallbackLock());
-    if (juce::isPositiveAndBelow (index, audioProcessors.size()))
-        audioProcessors.insert (std::next (audioProcessors.begin(), index), std::move (controller));
-    else
-        audioProcessors.push_back (std::move (controller));
+    {
+        juce::ScopedLock sl (owner.getCallbackLock());
+        if (juce::isPositiveAndBelow (index, audioProcessors.size()))
+            audioProcessors.insert (std::next (audioProcessors.begin(), index), std::move (controller));
+        else
+            audioProcessors.push_back (std::move (controller));
+    }
+
+    listeners.call ([&](ClipDescriptor::Listener& l) { l.processorControllerAdded(); } );
 }
 
 void ClipDescriptor::addAudioProcessor (std::unique_ptr<juce::AudioProcessor> processor, int index)
@@ -275,12 +284,15 @@ void ClipDescriptor::addVideoProcessor (std::unique_ptr<ProcessorController> con
         processorsNode.addChild (controller->getProcessorState(), index, undo);
     }
 
-    juce::ScopedLock sl (owner.getCallbackLock());
-    if (juce::isPositiveAndBelow (index, videoProcessors.size()))
-        videoProcessors.insert (std::next (videoProcessors.begin(), index), std::move (controller));
-    else
-        videoProcessors.push_back (std::move (controller));
+    {
+        juce::ScopedLock sl (owner.getCallbackLock());
+        if (juce::isPositiveAndBelow (index, videoProcessors.size()))
+            videoProcessors.insert (std::next (videoProcessors.begin(), index), std::move (controller));
+        else
+            videoProcessors.push_back (std::move (controller));
+    }
 
+    listeners.call ([&](ClipDescriptor::Listener& l) { l.processorControllerAdded(); } );
 }
 
 void ClipDescriptor::addVideoProcessor (std::unique_ptr<VideoProcessor> processor, int index)

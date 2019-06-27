@@ -292,6 +292,8 @@ void ProcessorController::synchroniseState (ParameterAutomation& parameter)
         state.appendChild (node, undo);
     }
     parameter.saveToValueTree (node, undo);
+
+    owner.notifyParameterAutomationChange (&parameter);
 }
 
 void ProcessorController::synchroniseParameter (const juce::ValueTree& tree)
@@ -303,8 +305,13 @@ void ProcessorController::synchroniseParameter (const juce::ValueTree& tree)
 
     const auto& name = tree.getProperty (IDs::name).toString();
     for (auto& parameter : parameters)
+    {
         if (parameter->getName() == name)
+        {
             parameter->loadFromValueTree (tree);
+            owner.notifyParameterAutomationChange (parameter.get());
+        }
+    }
 }
 
 juce::ValueTree& ProcessorController::getProcessorState()

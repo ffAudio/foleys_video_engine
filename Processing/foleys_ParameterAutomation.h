@@ -69,6 +69,9 @@ public:
     virtual juce::String getText (float normalisedValue, int numDigits = 0) const = 0;
     virtual double getValueForText (const juce::String& text) const = 0;
 
+    virtual bool isVideoParameter() { return false; }
+    virtual bool isAudioParameter() { return false; }
+
 protected:
 
     ControllableBase& controllable;
@@ -106,6 +109,8 @@ public:
     juce::String getText (float normalisedValue, int numDigits = 0) const override;
     double getValueForText (const juce::String& text) const override;
 
+    bool isAudioParameter() override { return true; }
+
 private:
 
     juce::AudioProcessorParameter& parameter;
@@ -136,6 +141,8 @@ public:
 
     juce::String getText (float normalisedValue, int numDigits = 0) const override;
     double getValueForText (const juce::String& text) const override;
+
+    bool isVideoParameter() override { return true; }
 
 private:
 
