@@ -48,7 +48,8 @@ public:
 
     void addKeyframe (double pts, double value);
 
-    void setKeyframe (size_t index, double pts, double value);
+    void setKeyframe (int index, double pts, double value);
+    void deleteKeyframe (int index);
 
     double getValueForTime (double pts) const;
 

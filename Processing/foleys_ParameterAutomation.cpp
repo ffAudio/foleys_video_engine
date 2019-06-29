@@ -64,18 +64,26 @@ void ParameterAutomation::addKeyframe (double pts, double newValue)
         controllable.synchroniseState (*this);
 }
 
-void ParameterAutomation::setKeyframe (size_t index, double pts, double newValue)
+void ParameterAutomation::setKeyframe (int index, double pts, double newValue)
 {
     if (juce::isPositiveAndBelow (index, keyframes.size()))
     {
         auto it = std::next (keyframes.begin(), index);
 
         keyframes.erase (it);
-        keyframes [pts] = newValue;
+        keyframes [pts] = juce::jlimit (0.0, 1.0, newValue);
     }
 
     if (! manualUpdate)
         controllable.synchroniseState (*this);
+}
+
+void ParameterAutomation::deleteKeyframe (int index)
+{
+    if (juce::isPositiveAndBelow (index, keyframes.size()))
+    {
+        keyframes.erase (std::next (keyframes.begin(), index));
+    }
 }
 
 double ParameterAutomation::getValueForTime (double pts) const
