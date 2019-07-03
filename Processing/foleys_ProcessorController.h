@@ -34,10 +34,11 @@ public:
     virtual ~ControllableBase() = default;
 
     virtual double getCurrentPTS() const = 0;
-    virtual void   synchroniseState (ParameterAutomation& parameter) = 0;
 
     virtual std::vector<std::unique_ptr<ParameterAutomation>>& getParameters() = 0;
     virtual int getNumParameters() const = 0;
+
+    virtual void notifyParameterAutomationChange (const ParameterAutomation*) = 0;
 
 private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ControllableBase)
@@ -48,8 +49,7 @@ private:
  inside the ClipDescriptor. It also holds the automation data to update the
  ProcessorParameters according to the currently rendered position.
  */
-class ProcessorController  : public ControllableBase,
-                             private juce::ValueTree::Listener
+class ProcessorController  : public ControllableBase
 {
 public:
     /**
@@ -86,14 +86,7 @@ public:
      */
     void updateAutomation (double pts);
 
-    /**
-     Calling this method will save the automation of one parameter by discarding
-     the ValueTree and recreating it. It has a flag to avoid infinite loops.
-     */
-    void synchroniseState (ParameterAutomation& parameter) override;
-
-    /** Calling this method will load the keyframes for an automated parameter. */
-    void synchroniseParameter (const juce::ValueTree& tree);
+    void notifyParameterAutomationChange (const ParameterAutomation*) override;
 
     /** Grants access to the underlying state. Your GUI may use this to add private data.
         It is your responsibility to avoid property or child collissions. */
@@ -114,7 +107,8 @@ public:
 
         virtual void createAutomatedParameters (ProcessorController& controller,
                                                 std::vector<std::unique_ptr<ParameterAutomation>>& parameters,
-                                                juce::ValueTree& parameterNode) = 0;
+                                                juce::ValueTree& parameterNode,
+                                                juce::UndoManager* undoManager) = 0;
 
         virtual void setPosition (juce::int64 timeInSamples, double timeInSeconds)
         {
@@ -140,21 +134,6 @@ public:
     void setPosition (juce::int64 timeInSamples, double timeInSeconds);
 
 private:
-
-    void valueTreePropertyChanged (juce::ValueTree& treeWhosePropertyHasChanged,
-                                   const juce::Identifier& property) override;
-
-    void valueTreeChildAdded (juce::ValueTree& parentTree,
-                              juce::ValueTree& childWhichHasBeenAdded) override;
-
-    void valueTreeChildRemoved (juce::ValueTree& parentTree,
-                                juce::ValueTree& childWhichHasBeenRemoved,
-                                int indexFromWhichChildWasRemoved) override;
-
-    void valueTreeChildOrderChanged (juce::ValueTree& parentTreeWhoseChildrenHaveMoved,
-                                     int oldIndex, int newIndex) override {}
-
-    void valueTreeParentChanged (juce::ValueTree& treeWhoseParentHasChanged) override {}
 
     ClipDescriptor& owner;
     juce::ValueTree state;

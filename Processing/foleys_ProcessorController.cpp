@@ -73,34 +73,26 @@ struct AudioProcessorAdapter : public ProcessorController::ProcessorAdapter
 
     void createAutomatedParameters (ProcessorController& controller,
                                     std::vector<std::unique_ptr<ParameterAutomation>>& parameters,
-                                    juce::ValueTree& parameterNode) override
+                                    juce::ValueTree& parameterNode,
+                                    juce::UndoManager* undoManager) override
     {
         if (processor.get() == nullptr)
             return;
 
         for (auto parameter : processor->getParameters())
-            if (parameter->isAutomatable())
-                parameters.push_back (std::make_unique<AudioParameterAutomation> (controller, *parameter));
-
-        for (auto& parameter : parameters)
         {
-            auto node = parameterNode.getChildWithProperty (IDs::name, parameter->getName());
-            if (node.isValid())
-                parameter->loadFromValueTree (node);
-            else
+            if (parameter->isAutomatable())
             {
-                juce::ValueTree automation { IDs::parameter };
-                automation.setProperty (IDs::name, parameter->getName(), nullptr);
-                automation.setProperty (IDs::value, parameter->getValue(), nullptr);
-
-                for (const auto& key : parameter->getKeyframes())
+                auto node = parameterNode.getChildWithProperty (IDs::name, parameter->getName(128));
+                if (!node.isValid())
                 {
-                    juce::ValueTree keyframeNode { IDs::keyframe };
-                    keyframeNode.setProperty (IDs::time, key.first, nullptr);
-                    keyframeNode.setProperty (IDs::value, key.second, nullptr);
-                    automation.appendChild ( keyframeNode, nullptr);
+                    node = juce::ValueTree { IDs::parameter };
+                    node.setProperty (IDs::name, parameter->getName(128), nullptr);
+                    node.setProperty (IDs::value, parameter->getValue(), nullptr);
+                    parameterNode.appendChild (node, undoManager);
                 }
-                parameterNode.appendChild (automation, nullptr);
+
+                parameters.push_back (std::make_unique<AudioParameterAutomation> (controller, *parameter, node, undoManager));
             }
         }
     }
@@ -137,34 +129,23 @@ struct VideoProcessorAdapter : public ProcessorController::ProcessorAdapter
 
     void createAutomatedParameters (ProcessorController& controller,
                                     std::vector<std::unique_ptr<ParameterAutomation>>& parameters,
-                                    juce::ValueTree& parameterNode) override
+                                    juce::ValueTree& parameterNode,
+                                    juce::UndoManager* undoManager) override
     {
         if (processor.get() == nullptr)
             return;
 
         for (auto parameter : processor->getParameters())
-            parameters.push_back (std::make_unique<VideoParameterAutomation> (controller, *parameter));
-
-        for (auto& parameter : parameters)
         {
             auto node = parameterNode.getChildWithProperty (IDs::name, parameter->getName());
-            if (node.isValid())
-                parameter->loadFromValueTree (node);
-            else
+            if (!node.isValid())
             {
-                juce::ValueTree automation { IDs::parameter };
-                automation.setProperty (IDs::name, parameter->getName(), nullptr);
-                automation.setProperty (IDs::value, parameter->getValue(), nullptr);
-
-                for (const auto& key : parameter->getKeyframes())
-                {
-                    juce::ValueTree keyframeNode { IDs::keyframe };
-                    keyframeNode.setProperty (IDs::time, key.first, nullptr);
-                    keyframeNode.setProperty (IDs::value, key.second, nullptr);
-                    automation.appendChild ( keyframeNode, nullptr);
-                }
-                parameterNode.appendChild (automation, nullptr);
+                node = juce::ValueTree { IDs::parameter };
+                node.setProperty (IDs::name, parameter->getName(), nullptr);
+                node.setProperty (IDs::value, parameter->getDefaultValue(), nullptr);
+                parameterNode.appendChild (node, undoManager);
             }
+            parameters.push_back (std::make_unique<VideoParameterAutomation> (controller, *parameter, node, undoManager));
         }
     }
 
@@ -183,7 +164,7 @@ ProcessorController::ProcessorController (ClipDescriptor& ownerToUse,
     state.setProperty (IDs::name, adapter->getName(), nullptr);
     state.setProperty (IDs::identifier, adapter->getIdentifierString(), nullptr);
 
-    adapter->createAutomatedParameters (*this, parameters, state);
+    adapter->createAutomatedParameters (*this, parameters, state, owner.getOwningClip().getUndoManager());
 }
 
 ProcessorController::ProcessorController (ClipDescriptor& ownerToUse,
@@ -195,7 +176,7 @@ ProcessorController::ProcessorController (ClipDescriptor& ownerToUse,
     state.setProperty (IDs::name, adapter->getName(), nullptr);
     state.setProperty (IDs::identifier, adapter->getIdentifierString(), nullptr);
 
-    adapter->createAutomatedParameters (*this, parameters, state);
+    adapter->createAutomatedParameters (*this, parameters, state, owner.getOwningClip().getUndoManager());
 }
 
 ProcessorController::ProcessorController (ClipDescriptor& ownerToUse,
@@ -221,7 +202,7 @@ ProcessorController::ProcessorController (ClipDescriptor& ownerToUse,
         if (processor.get() != nullptr)
         {
             adapter = std::make_unique<AudioProcessorAdapter> (std::move (processor));
-            adapter->createAutomatedParameters (*this, parameters, state);
+            adapter->createAutomatedParameters (*this, parameters, state, owner.getOwningClip().getUndoManager());
         }
     }
     else if (state.getType() == IDs::videoProcessor)
@@ -230,7 +211,7 @@ ProcessorController::ProcessorController (ClipDescriptor& ownerToUse,
         if (processor.get() != nullptr)
         {
             adapter = std::make_unique<VideoProcessorAdapter> (std::move (processor));
-            adapter->createAutomatedParameters (*this, parameters, state);
+            adapter->createAutomatedParameters (*this, parameters, state, owner.getOwningClip().getUndoManager());
         }
     }
     else
@@ -241,14 +222,10 @@ ProcessorController::ProcessorController (ClipDescriptor& ownerToUse,
     }
 
     state.setProperty (IDs::pluginStatus, error, nullptr);
-
-    state.addListener (this);
 }
 
 ProcessorController::~ProcessorController()
 {
-    state.removeListener (this);
-
     if (auto* audioProcessor = adapter->getAudioProcessor())
         audioProcessor->releaseResources();
 }
@@ -275,65 +252,13 @@ void ProcessorController::updateAutomation (double pts)
         parameter->updateProcessor (pts);
 }
 
-void ProcessorController::synchroniseState (ParameterAutomation& parameter)
+void ProcessorController::notifyParameterAutomationChange (const ParameterAutomation* parameter)
 {
-    if (isUpdating)
-        return;
-
-    juce::ScopedValueSetter<bool> updating (isUpdating, true);
-
-    auto* undo = getOwningClipDescriptor().getOwningClip().getUndoManager();
-
-    auto node = state.getChildWithProperty (IDs::name, parameter.getName());
-    if (!node.isValid())
-    {
-        node = juce::ValueTree { IDs::parameter };
-        node.setProperty (IDs::name, parameter.getName(), undo);
-        state.appendChild (node, undo);
-    }
-    parameter.saveToValueTree (node, undo);
-
-    owner.notifyParameterAutomationChange (&parameter);
-}
-
-void ProcessorController::synchroniseParameter (const juce::ValueTree& tree)
-{
-    if (isUpdating || tree.hasProperty (IDs::name) == false)
-        return;
-
-    juce::ScopedValueSetter<bool> updating (isUpdating, true);
-
-    const auto& name = tree.getProperty (IDs::name).toString();
-    for (auto& parameter : parameters)
-    {
-        if (parameter->getName() == name)
-        {
-            parameter->loadFromValueTree (tree);
-            owner.notifyParameterAutomationChange (parameter.get());
-        }
-    }
+    owner.notifyParameterAutomationChange (parameter);
 }
 
 juce::ValueTree& ProcessorController::getProcessorState()
 {
-    auto* undo = owner.getOwningClip().getUndoManager();
-
-    for (auto& parameter : parameters)
-    {
-        auto node = state.getChildWithProperty (IDs::name, parameter->getName());
-        if (node.isValid())
-        {
-            parameter->saveToValueTree (node, undo);
-        }
-        else
-        {
-            juce::ValueTree child { IDs::parameter };
-            child.setProperty (IDs::name, parameter->getName(), undo);
-            state.appendChild (child, undo);
-            parameter->saveToValueTree (child, undo);
-        }
-    }
-
     return state;
 }
 
@@ -379,35 +304,6 @@ juce::AudioProcessor* ProcessorController::getAudioProcessor()
 VideoProcessor* ProcessorController::getVideoProcessor()
 {
     return adapter->getVideoProcessor();
-}
-
-void ProcessorController::valueTreePropertyChanged (juce::ValueTree& treeWhosePropertyHasChanged,
-                                                    const juce::Identifier& property)
-{
-    if (treeWhosePropertyHasChanged.getType() == IDs::parameter)
-        synchroniseParameter (treeWhosePropertyHasChanged);
-    else if (treeWhosePropertyHasChanged.getType() == IDs::keyframe)
-        synchroniseParameter (treeWhosePropertyHasChanged.getParent());
-}
-
-void ProcessorController::valueTreeChildAdded (juce::ValueTree& parentTree,
-                                               juce::ValueTree& childWhichHasBeenAdded)
-{
-    juce::ignoreUnused (childWhichHasBeenAdded);
-
-    if (parentTree.getType() == IDs::parameter)
-        synchroniseParameter (parentTree);
-}
-
-void ProcessorController::valueTreeChildRemoved (juce::ValueTree& parentTree,
-                                                 juce::ValueTree& childWhichHasBeenRemoved,
-                                                 int indexFromWhichChildWasRemoved)
-{
-    juce::ignoreUnused (childWhichHasBeenRemoved);
-    juce::ignoreUnused (indexFromWhichChildWasRemoved);
-
-    if (parentTree.getType() == IDs::parameter)
-        synchroniseParameter (parentTree);
 }
 
 } // foleys

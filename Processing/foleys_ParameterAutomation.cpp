@@ -28,14 +28,22 @@ namespace IDs
     static juce::Identifier time            { "Time" };
 }
 
-ParameterAutomation::ParameterAutomation (ControllableBase& controllerToUse)
-  : controllable (controllerToUse)
+ParameterAutomation::ParameterAutomation (ControllableBase& controllerToUse,
+                                          const juce::ValueTree& stateToUse,
+                                          juce::UndoManager* undo)
+  : controllable (controllerToUse),
+    state (stateToUse),
+    undoManager (undo)
 {
+    value.referTo (state, IDs::value, undoManager);
+    loadFromValueTree();
+    state.addListener (this);
 }
 
 void ParameterAutomation::setValue (double valueToUse)
 {
-    value = valueToUse;
+    value = juce::jlimit (0.0, 1.0, valueToUse);
+    controllable.notifyParameterAutomationChange (this);
 }
 
 void ParameterAutomation::setValue (double pts, double newValue)
@@ -44,52 +52,58 @@ void ParameterAutomation::setValue (double pts, double newValue)
         return;
 
     if (keyframes.empty())
-    {
-        value = newValue;
-    }
+        setValue (newValue);
     else
-    {
-        keyframes [pts] = juce::jlimit (0.0, 1.0, newValue);
-    }
-
-    if (! manualUpdate)
-        controllable.synchroniseState (*this);
+        addKeyframe (pts, newValue);
 }
 
 void ParameterAutomation::addKeyframe (double pts, double newValue)
 {
-    keyframes [pts] = juce::jlimit (0.0, 1.0, newValue);
+    if (pts < 0.0)
+        return;
 
-    if (! manualUpdate)
-        controllable.synchroniseState (*this);
+    auto child = state.getChildWithProperty (IDs::time, pts);
+    if (child.isValid())
+    {
+        child.setProperty (IDs::value, juce::jlimit (0.0, 1.0, newValue), nullptr);
+    }
+    else
+    {
+        juce::ValueTree keyframe (IDs::keyframe);
+        keyframe.setProperty (IDs::time, pts, nullptr);
+        keyframe.setProperty (IDs::value, juce::jlimit (0.0, 1.0, newValue), nullptr);
+        state.addChild (keyframe, -1, undoManager);
+    }
+
+    sortKeyframesInValueTree();
+    loadFromValueTree();
 }
 
 void ParameterAutomation::setKeyframe (int index, double pts, double newValue)
 {
-    if (juce::isPositiveAndBelow (index, keyframes.size()))
+    if (pts < 0.0)
+        return;
+
+    auto key = state.getChild (index);
+    if (key.isValid())
     {
-        auto it = std::next (keyframes.begin(), index);
-
-        keyframes.erase (it);
-        keyframes [pts] = juce::jlimit (0.0, 1.0, newValue);
+        key.setProperty (IDs::time, pts, undoManager);
+        key.setProperty (IDs::value, juce::jlimit (0.0, 1.0, newValue), undoManager);
+        sortKeyframesInValueTree();
+        loadFromValueTree();
     }
-
-    if (! manualUpdate)
-        controllable.synchroniseState (*this);
 }
 
 void ParameterAutomation::deleteKeyframe (int index)
 {
-    if (juce::isPositiveAndBelow (index, keyframes.size()))
-    {
-        keyframes.erase (std::next (keyframes.begin(), index));
-    }
+    state.removeChild (index, undoManager);
+    loadFromValueTree();
 }
 
 double ParameterAutomation::getValueForTime (double pts) const
 {
     if (keyframes.empty())
-        return value;
+        return getValue();
 
     const auto& next = keyframes.upper_bound (pts);
     if (next == keyframes.begin())
@@ -110,7 +124,7 @@ double ParameterAutomation::getValueForTime (double pts) const
 
 double ParameterAutomation::getValue() const
 {
-    return value;
+    return value.get();
 }
 
 double ParameterAutomation::getPreviousKeyframeTime (double time) const
@@ -162,12 +176,9 @@ const std::map<double, double>& ParameterAutomation::getKeyframes() const
     return keyframes;
 }
 
-void ParameterAutomation::loadFromValueTree (const juce::ValueTree& state)
+void ParameterAutomation::loadFromValueTree()
 {
     juce::ScopedValueSetter<bool>(manualUpdate, true);
-
-    if (state.hasProperty (IDs::value))
-        value = double (state.getProperty (IDs::value));
 
     std::map<double, double> newKeyframes;
     for (const auto& child : state)
@@ -181,32 +192,56 @@ void ParameterAutomation::loadFromValueTree (const juce::ValueTree& state)
     }
 
     keyframes = newKeyframes;
+    controllable.notifyParameterAutomationChange (this);
 }
 
-void ParameterAutomation::saveToValueTree (juce::ValueTree& state, juce::UndoManager* undo)
+struct KeyframeComparator
 {
-    if (manualUpdate)
-        return;
-
-    juce::ScopedValueSetter<bool>(manualUpdate, true);
-
-    state.setProperty (IDs::value, value, undo);
-
-    state.removeAllChildren (undo);
-    for (const auto& k : keyframes)
+    int compareElements (const juce::ValueTree& first, const juce::ValueTree& second)
     {
-        juce::ValueTree node { IDs::keyframe };
-        node.setProperty (IDs::time, k.first, undo);
-        node.setProperty (IDs::value, k.second, undo);
-        state.appendChild (node, undo);
+        if (first.hasProperty (IDs::time) == false)
+            return 0;
+
+        if (second.hasProperty (IDs::time) == false)
+            return 0;
+
+        auto t1 = double (first.getProperty (IDs::time));
+        auto t2 = double (second.getProperty (IDs::time));
+
+        if (t1 < t2) return -1;
+        if (t1 > t2) return 1;
+        return 0;
     }
+};
+
+void ParameterAutomation::sortKeyframesInValueTree()
+{
+    KeyframeComparator comp;
+    state.sort (comp, undoManager, true);
+}
+
+void ParameterAutomation::valueTreePropertyChanged (juce::ValueTree&, const juce::Identifier&)
+{
+    loadFromValueTree();
+}
+
+void ParameterAutomation::valueTreeChildAdded (juce::ValueTree&, juce::ValueTree&)
+{
+    loadFromValueTree();
+}
+
+void ParameterAutomation::valueTreeChildRemoved (juce::ValueTree&, juce::ValueTree&, int)
+{
+    loadFromValueTree();
 }
 
 //==============================================================================
 
 AudioParameterAutomation::AudioParameterAutomation (ProcessorController& controllerToUse,
-                                                    juce::AudioProcessorParameter& parameterToUse)
-  : ParameterAutomation (controllerToUse),
+                                                    juce::AudioProcessorParameter& parameterToUse,
+                                                    const juce::ValueTree& stateToUse,
+                                                    juce::UndoManager* undo)
+  : ParameterAutomation (controllerToUse, stateToUse, undo),
     parameter (parameterToUse)
 {
     setValue (parameter.getDefaultValue());
@@ -265,8 +300,10 @@ void AudioParameterAutomation::parameterGestureChanged (int parameterIndex, bool
 //==============================================================================
 
 VideoParameterAutomation::VideoParameterAutomation (ProcessorController& controllerToUse,
-                                                    ProcessorParameter& parameterToUse)
-  : ParameterAutomation (controllerToUse),
+                                                    ProcessorParameter& parameterToUse,
+                                                    const juce::ValueTree& stateToUse,
+                                                    juce::UndoManager* undo)
+  : ParameterAutomation (controllerToUse, stateToUse, undo),
     parameter (parameterToUse)
 {
     setValue (parameter.normaliseValue (parameter.getDefaultValue()));

@@ -28,10 +28,14 @@ namespace foleys
  the ClipDescriptor's ProcessorController.
  Using an Adapter it can handle VideoProcessors as well as AudioProcessors.
  */
-class ParameterAutomation
+class ParameterAutomation  : private juce::ValueTree::Listener
 {
 public:
-    ParameterAutomation (ControllableBase&);
+    /**
+     The ParameterAutomation holds the information about keyframes / automation
+     points and takes care of updating the processor values.
+     */
+    ParameterAutomation (ControllableBase&, const juce::ValueTree& state, juce::UndoManager*);
 
     virtual ~ParameterAutomation() = default;
 
@@ -63,10 +67,6 @@ public:
 
     const std::map<double, double>& getKeyframes() const;
 
-    void loadFromValueTree (const juce::ValueTree& state);
-
-    void saveToValueTree (juce::ValueTree& state, juce::UndoManager* undo);
-
     virtual juce::String getText (float normalisedValue, int numDigits = 0) const = 0;
     virtual double getValueForText (const juce::String& text) const = 0;
 
@@ -79,7 +79,29 @@ protected:
     bool gestureInProgress = false;
 
 private:
-    double value = 0.0;
+
+    void loadFromValueTree();
+    void sortKeyframesInValueTree();
+
+    void valueTreePropertyChanged (juce::ValueTree& treeWhosePropertyHasChanged,
+                                   const juce::Identifier& property) override;
+
+    void valueTreeChildAdded (juce::ValueTree& parentTree,
+                              juce::ValueTree& childWhichHasBeenAdded) override;
+
+    void valueTreeChildRemoved (juce::ValueTree& parentTree,
+                                juce::ValueTree& childWhichHasBeenRemoved,
+                                int indexFromWhichChildWasRemoved) override;
+
+    void valueTreeChildOrderChanged (juce::ValueTree& parentTreeWhoseChildrenHaveMoved,
+                                     int oldIndex, int newIndex) override {}
+
+    void valueTreeParentChanged (juce::ValueTree& treeWhoseParentHasChanged) override {}
+
+    juce::ValueTree state;
+    juce::UndoManager* undoManager = nullptr;
+
+    juce::CachedValue<double> value;
     std::map<double, double> keyframes;
     bool manualUpdate = false;
 
@@ -93,7 +115,11 @@ class AudioParameterAutomation  : public ParameterAutomation,
                                   private juce::AudioProcessorParameter::Listener
 {
 public:
-    AudioParameterAutomation (ProcessorController& controller, juce::AudioProcessorParameter& parameter);
+    AudioParameterAutomation (ProcessorController& controller,
+                              juce::AudioProcessorParameter& parameter,
+                              const juce::ValueTree& state,
+                              juce::UndoManager*);
+
     ~AudioParameterAutomation() override;
 
     juce::String getName() const override;
@@ -126,7 +152,11 @@ class VideoParameterAutomation  : public ParameterAutomation,
                                   private ProcessorParameter::Listener
 {
 public:
-    VideoParameterAutomation (ProcessorController& controller, ProcessorParameter& parameter);
+    VideoParameterAutomation (ProcessorController& controller,
+                              ProcessorParameter& parameter,
+                              const juce::ValueTree& state,
+                              juce::UndoManager*);
+
     ~VideoParameterAutomation() override;
 
     juce::String getName() const override;
