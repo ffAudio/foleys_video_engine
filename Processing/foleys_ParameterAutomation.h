@@ -35,7 +35,10 @@ public:
      The ParameterAutomation holds the information about keyframes / automation
      points and takes care of updating the processor values.
      */
-    ParameterAutomation (ControllableBase&, const juce::ValueTree& state, juce::UndoManager*);
+    ParameterAutomation (ControllableBase&,
+                         double defaultValue,
+                         const juce::ValueTree& state,
+                         juce::UndoManager*);
 
     virtual ~ParameterAutomation() = default;
 
@@ -62,12 +65,21 @@ public:
     double getPreviousKeyframeTime (double time) const;
     double getNextKeyframeTime (double time) const;
 
+    /**
+     Call this before calling setValue commands (e.g. from the processor editor)
+     to avoid conflicting information from the currently playing automation
+     */
     void startAutomationGesture();
+
+    /**
+     Call this to finish user interaction to give back controll to the
+     playing automation.
+     */
     void finishAutomationGesture();
 
     const std::map<double, double>& getKeyframes() const;
 
-    virtual juce::String getText (float normalisedValue, int numDigits = 0) const = 0;
+    virtual juce::String getText (float normalisedValue, int numDigits = 2) const = 0;
     virtual double getValueForText (const juce::String& text) const = 0;
 
     virtual bool isVideoParameter() { return false; }
@@ -83,19 +95,24 @@ private:
     void loadFromValueTree();
     void sortKeyframesInValueTree();
 
+    /** @internal */
     void valueTreePropertyChanged (juce::ValueTree& treeWhosePropertyHasChanged,
                                    const juce::Identifier& property) override;
 
+    /** @internal */
     void valueTreeChildAdded (juce::ValueTree& parentTree,
                               juce::ValueTree& childWhichHasBeenAdded) override;
 
+    /** @internal */
     void valueTreeChildRemoved (juce::ValueTree& parentTree,
                                 juce::ValueTree& childWhichHasBeenRemoved,
                                 int indexFromWhichChildWasRemoved) override;
 
+    /** @internal */
     void valueTreeChildOrderChanged (juce::ValueTree& parentTreeWhoseChildrenHaveMoved,
                                      int oldIndex, int newIndex) override {}
 
+    /** @internal */
     void valueTreeParentChanged (juce::ValueTree& treeWhoseParentHasChanged) override {}
 
     juce::ValueTree state;

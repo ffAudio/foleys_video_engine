@@ -106,7 +106,7 @@ double ProcessorParameterFloat::getRealValue() const
 
 double ProcessorParameterFloat::getDefaultValue() const
 {
-    return defaultValue;
+    return range.convertTo0to1 (defaultValue);
 }
 
 void ProcessorParameterFloat::setNormalisedValue (double newValue)
@@ -132,16 +132,6 @@ void ProcessorParameterFloat::setRealValue (double newValue)
 double* ProcessorParameterFloat::getRawParameterValue()
 {
     return &value;
-}
-
-double ProcessorParameterFloat::normaliseValue (double realValue)
-{
-    return range.convertTo0to1 (realValue);
-}
-
-double ProcessorParameterFloat::unnormalisedValue (double normalValue)
-{
-    return range.convertFrom0to1 (normalValue);
 }
 
 juce::String ProcessorParameterFloat::getText (float normalisedValue, int numDigits) const

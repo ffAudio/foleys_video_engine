@@ -303,10 +303,16 @@ void ClipDescriptor::addVideoProcessor (std::unique_ptr<VideoProcessor> processo
 void ClipDescriptor::removeVideoProcessor (int index)
 {
     const auto& toBeRemoved = std::next (videoProcessors.begin(), index);
-    if (toBeRemoved == videoProcessors.end())
+    if (toBeRemoved == videoProcessors.end() || manualStateChange)
         return;
 
+    juce::ScopedValueSetter<bool> manual (manualStateChange, true);
+
     listeners.call ([&](ClipDescriptor::Listener& l) { l.processorControllerToBeDeleted (toBeRemoved->get()); } );
+
+    auto* undo = owner.getUndoManager();
+    auto processorsNode = state.getOrCreateChildWithName (IDs::videoProcessors, undo);
+    processorsNode.removeChild (index, undo);
 
     juce::ScopedLock sl (owner.getCallbackLock());
     videoProcessors.erase (toBeRemoved);
@@ -320,8 +326,19 @@ void ClipDescriptor::removeProcessor (ProcessorController* controller)
     if (videoToBeRemoved != videoProcessors.end())
     {
         listeners.call ([&](ClipDescriptor::Listener& l) { l.processorControllerToBeDeleted (videoToBeRemoved->get()); } );
+
+        auto index = std::distance (videoProcessors.begin(), videoToBeRemoved);
+        if (!manualStateChange)
+        {
+            juce::ScopedValueSetter<bool> manual (manualStateChange, true);
+            auto* undo = owner.getUndoManager();
+            auto processorsNode = state.getOrCreateChildWithName (IDs::videoProcessors, undo);
+            processorsNode.removeChild (int (index), undo);
+        }
+
         juce::ScopedLock sl (owner.getCallbackLock());
         videoProcessors.erase (videoToBeRemoved);
+
         return;
     }
 
@@ -331,6 +348,16 @@ void ClipDescriptor::removeProcessor (ProcessorController* controller)
     if (audioToBeRemoved != audioProcessors.end())
     {
         listeners.call ([&](ClipDescriptor::Listener& l) { l.processorControllerToBeDeleted (audioToBeRemoved->get()); } );
+
+        auto index = std::distance (audioProcessors.begin(), audioToBeRemoved);
+        if (!manualStateChange)
+        {
+            juce::ScopedValueSetter<bool> manual (manualStateChange, true);
+            auto* undo = owner.getUndoManager();
+            auto processorsNode = state.getOrCreateChildWithName (IDs::audioProcessors, undo);
+            processorsNode.removeChild (int (index), undo);
+        }
+
         juce::ScopedLock sl (owner.getCallbackLock());
         audioProcessors.erase (audioToBeRemoved);
         return;

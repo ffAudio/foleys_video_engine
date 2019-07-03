@@ -59,13 +59,14 @@ public:
 
     virtual double getNormalisedValue() const = 0;
     virtual double getRealValue() const = 0;
+
+    /**
+     Returns the default value in normalised for the automation to initialise.
+     */
     virtual double getDefaultValue() const = 0;
 
     virtual void setNormalisedValue (double value) = 0;
     virtual void setRealValue (double value) = 0;
-
-    virtual double normaliseValue (double realValue) = 0;
-    virtual double unnormalisedValue (double normalValue) = 0;
 
     virtual juce::String getText (float normalisedValue, int numDigits = 0) const = 0;
     virtual double getValueForText (const juce::String& text) const = 0;
@@ -113,9 +114,6 @@ public:
 
     void setNormalisedValue (double value) override;
     void setRealValue (double value) override;
-
-    double normaliseValue (double realValue) override;
-    double unnormalisedValue (double normalValue) override;
 
     juce::String getText (float normalisedValue, int numDigits = 0) const override;
     double getValueForText (const juce::String& text) const override;

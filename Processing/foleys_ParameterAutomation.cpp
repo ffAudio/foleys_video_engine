@@ -29,13 +29,14 @@ namespace IDs
 }
 
 ParameterAutomation::ParameterAutomation (ControllableBase& controllerToUse,
+                                          double defaultValue,
                                           const juce::ValueTree& stateToUse,
                                           juce::UndoManager* undo)
   : controllable (controllerToUse),
     state (stateToUse),
     undoManager (undo)
 {
-    value.referTo (state, IDs::value, undoManager);
+    value.referTo (state, IDs::value, undoManager, defaultValue);
     loadFromValueTree();
     state.addListener (this);
 }
@@ -241,10 +242,12 @@ AudioParameterAutomation::AudioParameterAutomation (ProcessorController& control
                                                     juce::AudioProcessorParameter& parameterToUse,
                                                     const juce::ValueTree& stateToUse,
                                                     juce::UndoManager* undo)
-  : ParameterAutomation (controllerToUse, stateToUse, undo),
+  : ParameterAutomation (controllerToUse,
+                         parameterToUse.getDefaultValue(),
+                         stateToUse,
+                         undo),
     parameter (parameterToUse)
 {
-    setValue (parameter.getDefaultValue());
     parameter.addListener (this);
 }
 AudioParameterAutomation::~AudioParameterAutomation()
@@ -303,10 +306,12 @@ VideoParameterAutomation::VideoParameterAutomation (ProcessorController& control
                                                     ProcessorParameter& parameterToUse,
                                                     const juce::ValueTree& stateToUse,
                                                     juce::UndoManager* undo)
-  : ParameterAutomation (controllerToUse, stateToUse, undo),
+  : ParameterAutomation (controllerToUse,
+                         parameterToUse.getDefaultValue(),
+                         stateToUse,
+                         undo),
     parameter (parameterToUse)
 {
-    setValue (parameter.normaliseValue (parameter.getDefaultValue()));
     parameter.addListener (this);
 }
 VideoParameterAutomation::~VideoParameterAutomation()
