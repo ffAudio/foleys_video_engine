@@ -231,6 +231,22 @@ juce::ValueTree& ClipDescriptor::getStatusTree()
     return state;
 }
 
+void ClipDescriptor::addProcessor (juce::ValueTree tree, int index)
+{
+    auto* undo = owner.getUndoManager();
+
+    if (tree.getType() == IDs::videoProcessor)
+    {
+        auto node = state.getOrCreateChildWithName (IDs::videoProcessors, undo);
+        node.addChild (tree, index, undo);
+    }
+    else if (tree.getType() == IDs::audioProcessor)
+    {
+        auto node = state.getOrCreateChildWithName (IDs::audioProcessors, undo);
+        node.addChild (tree, index, undo);
+    }
+}
+
 void ClipDescriptor::addAudioProcessor (std::unique_ptr<ProcessorController> controller, int index)
 {
     auto* undo = owner.getUndoManager();

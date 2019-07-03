@@ -62,7 +62,7 @@ private:
     class PluginScanJob : public juce::ThreadPoolJob
     {
     public:
-        PluginScanJob (AudioPluginManager& owner, std::unique_ptr<juce::AudioPluginFormat> format);
+        PluginScanJob (AudioPluginManager& owner, std::unique_ptr<juce::AudioPluginFormat>&& format);
 
         juce::ThreadPoolJob::JobStatus runJob() override;
 

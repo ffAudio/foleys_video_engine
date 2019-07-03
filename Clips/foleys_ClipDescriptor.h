@@ -105,6 +105,8 @@ public:
 
     void updateSampleCounts();
 
+    void addProcessor (juce::ValueTree tree, int index = -1);
+
     void addAudioProcessor (std::unique_ptr<ProcessorController> controller, int index=-1);
     void addAudioProcessor (std::unique_ptr<juce::AudioProcessor> processor, int index=-1);
     void removeAudioProcessor (int index);

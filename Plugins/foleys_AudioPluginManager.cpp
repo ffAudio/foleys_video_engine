@@ -83,7 +83,7 @@ void AudioPluginManager::setPluginDataFile (const juce::File& file)
 //==============================================================================
 
 AudioPluginManager::PluginScanJob::PluginScanJob (AudioPluginManager& ownerToUse,
-                                                  std::unique_ptr<juce::AudioPluginFormat> formatToUse)
+                                                  std::unique_ptr<juce::AudioPluginFormat>&& formatToUse)
   : juce::ThreadPoolJob ("Plugin Scanner"),
     owner (ownerToUse),
     format (std::move (formatToUse))
