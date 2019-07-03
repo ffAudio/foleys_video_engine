@@ -56,6 +56,7 @@ struct AudioProcessorAdapter : public ProcessorController::ProcessorAdapter
         {
             result.timeInSamples = timeInSamples;
             result.timeInSeconds = timeInSeconds;
+            result.frameRate = frameRate;
             return true;
         }
 
@@ -66,6 +67,8 @@ struct AudioProcessorAdapter : public ProcessorController::ProcessorAdapter
 
         juce::int64 timeInSamples = 0;
         double      timeInSeconds = 0.0;
+        juce::AudioPlayHead::FrameRateType frameRate = juce::AudioPlayHead::fpsUnknown;
+
 
     private:
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PlayHead)
