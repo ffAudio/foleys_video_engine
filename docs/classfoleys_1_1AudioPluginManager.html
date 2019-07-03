@@ -99,10 +99,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a364b12a9bf807d75a1c3746d8cbc41c1"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; juce::AudioProcessor &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AudioPluginManager.html#a364b12a9bf807d75a1c3746d8cbc41c1">createAudioPluginInstance</a> (const juce::String &amp;identifierString, double sampleRate, int blockSize, juce::String &amp;error) const</td></tr>
 <tr class="memdesc:a364b12a9bf807d75a1c3746d8cbc41c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an actual instance of an AudioPlugin.  <a href="#a364b12a9bf807d75a1c3746d8cbc41c1">More...</a><br /></td></tr>
 <tr class="separator:a364b12a9bf807d75a1c3746d8cbc41c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:add4011c17d7b50c07f2684d175107b9e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AudioPluginManager.html#add4011c17d7b50c07f2684d175107b9e">populatePluginSelection</a> (juce::PopupMenu &amp;menu)</td></tr>
-<tr class="separator:add4011c17d7b50c07f2684d175107b9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a66693fb57db92b735073e60785789dcd"><td class="memItemLeft" align="right" valign="top">juce::PluginDescription&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AudioPluginManager.html#a66693fb57db92b735073e60785789dcd">getPluginDescriptionFromMenuID</a> (int index)</td></tr>
-<tr class="separator:a66693fb57db92b735073e60785789dcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd32c6c019a8450b9fbcc4eab578d4e7"><td class="memItemLeft" align="right" valign="top">juce::Array&lt; juce::PluginDescription &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AudioPluginManager.html#acd32c6c019a8450b9fbcc4eab578d4e7">getKnownPluginDescriptions</a> () const</td></tr>
+<tr class="separator:acd32c6c019a8450b9fbcc4eab578d4e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac621ebf43700a9c791f0c34309f081f5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AudioPluginManager.html#ac621ebf43700a9c791f0c34309f081f5">setPluginDataFile</a> (const juce::File &amp;file)</td></tr>
 <tr class="memdesc:ac621ebf43700a9c791f0c34309f081f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a file to save the results of plugin scanning to.  <a href="#ac621ebf43700a9c791f0c34309f081f5">More...</a><br /></td></tr>
 <tr class="separator:ac621ebf43700a9c791f0c34309f081f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -210,36 +208,17 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="add4011c17d7b50c07f2684d175107b9e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#add4011c17d7b50c07f2684d175107b9e">&#9670;&nbsp;</a></span>populatePluginSelection()</h2>
+<a id="acd32c6c019a8450b9fbcc4eab578d4e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acd32c6c019a8450b9fbcc4eab578d4e7">&#9670;&nbsp;</a></span>getKnownPluginDescriptions()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void populatePluginSelection </td>
+          <td class="memname">juce::Array&lt; juce::PluginDescription &gt; getKnownPluginDescriptions </td>
           <td>(</td>
-          <td class="paramtype">juce::PopupMenu &amp;&#160;</td>
-          <td class="paramname"><em>menu</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a66693fb57db92b735073e60785789dcd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a66693fb57db92b735073e60785789dcd">&#9670;&nbsp;</a></span>getPluginDescriptionFromMenuID()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">juce::PluginDescription getPluginDescriptionFromMenuID </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>index</em></td><td>)</td>
-          <td></td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -276,7 +255,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jun 18 2019 00:59:11 for foleys_video_engine by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Jul 3 2019 15:41:30 for foleys_video_engine by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.15
 </small></address>

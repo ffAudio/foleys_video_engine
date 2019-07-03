@@ -1,6 +1,12 @@
 var searchData=
 [
-  ['size',['Size',['../structfoleys_1_1Size.html',1,'foleys']]],
-  ['softwarevideomixer',['SoftwareVideoMixer',['../classfoleys_1_1SoftwareVideoMixer.html',1,'foleys']]],
-  ['streamtypes',['StreamTypes',['../classfoleys_1_1StreamTypes.html',1,'foleys']]]
+  ['panningaudioprocessor',['PanningAudioProcessor',['../classfoleys_1_1PanningAudioProcessor.html',1,'foleys']]],
+  ['parameterautomation',['ParameterAutomation',['../classfoleys_1_1ParameterAutomation.html',1,'foleys']]],
+  ['playhead',['PlayHead',['../classfoleys_1_1AudioProcessorAdapter_1_1PlayHead.html',1,'foleys::AudioProcessorAdapter']]],
+  ['positioningvideoprocessor',['PositioningVideoProcessor',['../classfoleys_1_1PositioningVideoProcessor.html',1,'foleys']]],
+  ['processoradapter',['ProcessorAdapter',['../structfoleys_1_1ProcessorController_1_1ProcessorAdapter.html',1,'foleys::ProcessorController']]],
+  ['processorcontroller',['ProcessorController',['../classfoleys_1_1ProcessorController.html',1,'foleys']]],
+  ['processorparameter',['ProcessorParameter',['../classfoleys_1_1ProcessorParameter.html',1,'foleys']]],
+  ['processorparameterfloat',['ProcessorParameterFloat',['../classfoleys_1_1ProcessorParameterFloat.html',1,'foleys']]],
+  ['processorstate',['ProcessorState',['../classfoleys_1_1ProcessorState.html',1,'foleys']]]
 ];

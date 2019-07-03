@@ -1,6 +1,8 @@
 var searchData=
 [
-  ['normalisevalue',['normaliseValue',['../classfoleys_1_1ProcessorParameter.html#a1c53b43fc43df9f6532642b8445a1565',1,'foleys::ProcessorParameter::normaliseValue()'],['../classfoleys_1_1ProcessorParameterFloat.html#a70b3c93be859cda05a0f8866b2c0a1ac',1,'foleys::ProcessorParameterFloat::normaliseValue()']]],
-  ['numchannels',['numChannels',['../structfoleys_1_1AudioStreamSettings.html#a833642af16b83f234a41e9038ac89aaf',1,'foleys::AudioStreamSettings::numChannels()'],['../classfoleys_1_1AVReader.html#a833642af16b83f234a41e9038ac89aaf',1,'foleys::AVReader::numChannels()']]],
-  ['numsamples',['numSamples',['../classfoleys_1_1AVReader.html#a1d6f1ce794c2b3ab63209225b1acc8a4',1,'foleys::AVReader']]]
+  ['makeuniquedescription',['makeUniqueDescription',['../classfoleys_1_1ComposedClip.html#af89d12fd2099dcc6c5ac4a6818d0ccea',1,'foleys::ComposedClip']]],
+  ['managelifetime',['manageLifeTime',['../classfoleys_1_1VideoEngine.html#a876e5a2b213476d0a2d9705aeb60a7bc',1,'foleys::VideoEngine']]],
+  ['mixaudio',['mixAudio',['../classfoleys_1_1AudioMixer.html#aae4360bf6524362ff7ff47166f742d6a',1,'foleys::AudioMixer::mixAudio()'],['../classfoleys_1_1DefaultAudioMixer.html#aeedadbe3533266bae2458e523c976428',1,'foleys::DefaultAudioMixer::mixAudio()']]],
+  ['mousedown',['mouseDown',['../classfoleys_1_1FoleysSplashScreen.html#a86e6a10bf75587f36f2ecfa95ec6391e',1,'foleys::FoleysSplashScreen']]],
+  ['movieclip',['MovieClip',['../classfoleys_1_1MovieClip.html',1,'MovieClip'],['../classfoleys_1_1MovieClip.html#af25a0b8d7e841f29a65668f9034e5c27',1,'foleys::MovieClip::MovieClip()']]]
 ];

@@ -112,8 +112,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a7a5f8c727cbfadd4dc70976558cbbc72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a05cef10564f04e4a66a51b5ceb2cd22c"><td class="memItemLeft" align="right" valign="top">virtual juce::AudioProcessor *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfoleys_1_1ProcessorController_1_1ProcessorAdapter.html#a05cef10564f04e4a66a51b5ceb2cd22c">getAudioProcessor</a> ()</td></tr>
 <tr class="separator:a05cef10564f04e4a66a51b5ceb2cd22c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a90bb7176679e4df087ffe7343f4e3449"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfoleys_1_1ProcessorController_1_1ProcessorAdapter.html#a90bb7176679e4df087ffe7343f4e3449">createAutomatedParameters</a> (<a class="el" href="classfoleys_1_1ProcessorController.html">ProcessorController</a> &amp;controller, std::vector&lt; std::unique_ptr&lt; <a class="el" href="classfoleys_1_1ParameterAutomation.html">ParameterAutomation</a> &gt;&gt; &amp;parameters, juce::ValueTree &amp;parameterNode)=0</td></tr>
-<tr class="separator:a90bb7176679e4df087ffe7343f4e3449"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad607185940598c379c690a7fb6909e32"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfoleys_1_1ProcessorController_1_1ProcessorAdapter.html#ad607185940598c379c690a7fb6909e32">createAutomatedParameters</a> (<a class="el" href="classfoleys_1_1ProcessorController.html">ProcessorController</a> &amp;controller, std::vector&lt; std::unique_ptr&lt; <a class="el" href="classfoleys_1_1ParameterAutomation.html">ParameterAutomation</a> &gt;&gt; &amp;parameters, juce::ValueTree &amp;parameterNode, juce::UndoManager *undoManager)=0</td></tr>
+<tr class="separator:ad607185940598c379c690a7fb6909e32"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f785dd6421ca7d08cbda35309bffa7a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfoleys_1_1ProcessorController_1_1ProcessorAdapter.html#a6f785dd6421ca7d08cbda35309bffa7a">setPosition</a> (juce::int64 timeInSamples, double timeInSeconds)</td></tr>
+<tr class="separator:a6f785dd6421ca7d08cbda35309bffa7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a6286d561de4e7d8046b6612c526bc57b"></a>
@@ -275,8 +277,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a90bb7176679e4df087ffe7343f4e3449"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a90bb7176679e4df087ffe7343f4e3449">&#9670;&nbsp;</a></span>createAutomatedParameters()</h2>
+<a id="ad607185940598c379c690a7fb6909e32"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad607185940598c379c690a7fb6909e32">&#9670;&nbsp;</a></span>createAutomatedParameters()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -300,7 +302,13 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">juce::ValueTree &amp;&#160;</td>
-          <td class="paramname"><em>parameterNode</em>&#160;</td>
+          <td class="paramname"><em>parameterNode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">juce::UndoManager *&#160;</td>
+          <td class="paramname"><em>undoManager</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -315,7 +323,45 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="structfoleys_1_1VideoProcessorAdapter.html#a44303411c7fd1b2165e198c839236e35">VideoProcessorAdapter</a>, and <a class="el" href="structfoleys_1_1AudioProcessorAdapter.html#a44303411c7fd1b2165e198c839236e35">AudioProcessorAdapter</a>.</p>
+<p>Implemented in <a class="el" href="structfoleys_1_1VideoProcessorAdapter.html#a3a298bb855da09b9578ceefc4543b206">VideoProcessorAdapter</a>, and <a class="el" href="structfoleys_1_1AudioProcessorAdapter.html#a3a298bb855da09b9578ceefc4543b206">AudioProcessorAdapter</a>.</p>
+
+</div>
+</div>
+<a id="a6f785dd6421ca7d08cbda35309bffa7a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f785dd6421ca7d08cbda35309bffa7a">&#9670;&nbsp;</a></span>setPosition()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void setPosition </td>
+          <td>(</td>
+          <td class="paramtype">juce::int64&#160;</td>
+          <td class="paramname"><em>timeInSamples</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>timeInSeconds</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reimplemented in <a class="el" href="structfoleys_1_1AudioProcessorAdapter.html#af00ec46c800b0baaf2269230837e0d6a">AudioProcessorAdapter</a>.</p>
 
 </div>
 </div>
@@ -325,7 +371,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jun 18 2019 00:59:11 for foleys_video_engine by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Jul 3 2019 15:41:30 for foleys_video_engine by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.15
 </small></address>

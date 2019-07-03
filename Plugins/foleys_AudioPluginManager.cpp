@@ -69,31 +69,40 @@ void AudioPluginManager::setPluginDataFile (const juce::File& file)
         knownPluginList.recreateFromXml (*xml);
     }
 
-    videoEngine.addJob (new PluginScanJob (*this), true);
+#if JUCE_MAC
+    videoEngine.addJob (new PluginScanJob (*this, std::make_unique<juce::AudioUnitPluginFormat>()), true);
+#endif
+
+#if JUCE_LINUX
+    videoEngine.addJob (new PluginScanJob (*this, std::make_unique<juce::LADSPAPluginFormat>()), true);
+#endif
+
+    videoEngine.addJob (new PluginScanJob (*this, std::make_unique<juce::VST3PluginFormat>()), true);
 }
 
 //==============================================================================
 
-AudioPluginManager::PluginScanJob::PluginScanJob (AudioPluginManager& ownerToUse)
+AudioPluginManager::PluginScanJob::PluginScanJob (AudioPluginManager& ownerToUse,
+                                                  std::unique_ptr<juce::AudioPluginFormat> formatToUse)
   : juce::ThreadPoolJob ("Plugin Scanner"),
-    owner (ownerToUse)
+    owner (ownerToUse),
+    format (std::move (formatToUse))
 {
 }
 
 juce::ThreadPoolJob::JobStatus AudioPluginManager::PluginScanJob::runJob()
 {
-    auto deadMansPedal = juce::File::getSpecialLocation (juce::File::tempDirectory).getChildFile ("ScanPlugins");
-    juce::AudioUnitPluginFormat format;
+    auto deadMansPedal = juce::File::getSpecialLocation (juce::File::tempDirectory).getChildFile (format->getName() + "ScanPlugins.tmp");
     juce::PluginDirectoryScanner scanner (owner.knownPluginList,
-                                          format,
-                                          format.getDefaultLocationsToSearch(),
+                                          *format,
+                                          format->getDefaultLocationsToSearch(),
                                           true,
                                           deadMansPedal);
 
     juce::String name;
     while (scanner.scanNextFile (true, name))
     {
-        FOLEYS_LOG ("Scanning: " + name);
+        FOLEYS_LOG ("Scanning " + format->getName() + ": " + name);
     }
 
     auto xml = owner.knownPluginList.createXml();

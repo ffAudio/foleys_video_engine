@@ -62,12 +62,13 @@ private:
     class PluginScanJob : public juce::ThreadPoolJob
     {
     public:
-        PluginScanJob (AudioPluginManager& owner);
+        PluginScanJob (AudioPluginManager& owner, std::unique_ptr<juce::AudioPluginFormat> format);
 
         juce::ThreadPoolJob::JobStatus runJob() override;
 
     private:
         AudioPluginManager& owner;
+        std::unique_ptr<juce::AudioPluginFormat> format;
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PluginScanJob)
     };
 

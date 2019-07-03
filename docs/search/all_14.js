@@ -1,24 +1,4 @@
 var searchData=
 [
-  ['_7eaudioclip',['~AudioClip',['../classfoleys_1_1AudioClip.html#af3b25609d84390596e825b8db0d34325',1,'foleys::AudioClip']]],
-  ['_7eaudiomixer',['~AudioMixer',['../classfoleys_1_1AudioMixer.html#ac95b71b780c1457aec5819b553a55e8c',1,'foleys::AudioMixer']]],
-  ['_7eaudioparameterautomation',['~AudioParameterAutomation',['../classfoleys_1_1AudioParameterAutomation.html#aa2c42aabede497e7ad3041e4be5db090',1,'foleys::AudioParameterAutomation']]],
-  ['_7eavclip',['~AVClip',['../classfoleys_1_1AVClip.html#abad90ffd5f40b14674da4b0d40130550',1,'foleys::AVClip']]],
-  ['_7eavreader',['~AVReader',['../classfoleys_1_1AVReader.html#a1d0a5df6d2992da90ad7293bc629e04e',1,'foleys::AVReader']]],
-  ['_7eavwriter',['~AVWriter',['../classfoleys_1_1AVWriter.html#a9053915592c4a9f2fbdf80e1af1d2c59',1,'foleys::AVWriter']]],
-  ['_7eclipdescriptor',['~ClipDescriptor',['../classfoleys_1_1ClipDescriptor.html#a07ad0acd497ab840c65f78305633cc8b',1,'foleys::ClipDescriptor']]],
-  ['_7ecomposedclip',['~ComposedClip',['../classfoleys_1_1ComposedClip.html#ab194eed27b25460f6996ec0011b5d01b',1,'foleys::ComposedClip']]],
-  ['_7efilmstrip',['~FilmStrip',['../classfoleys_1_1FilmStrip.html#a75dfea51da1c83d2e24964b1248d623f',1,'foleys::FilmStrip']]],
-  ['_7eimageclip',['~ImageClip',['../classfoleys_1_1ImageClip.html#a25b7dd7b2d051d71908d1a6dc4da3563',1,'foleys::ImageClip']]],
-  ['_7emovieclip',['~MovieClip',['../classfoleys_1_1MovieClip.html#a86d8df80a33402119d5399fed1e105fd',1,'foleys::MovieClip']]],
-  ['_7eparameterautomation',['~ParameterAutomation',['../classfoleys_1_1ParameterAutomation.html#a560de7fcaf7929dfd88a8f1d28f10f4e',1,'foleys::ParameterAutomation']]],
-  ['_7eprocessoradapter',['~ProcessorAdapter',['../structfoleys_1_1ProcessorController_1_1ProcessorAdapter.html#a7a8886297cfaa789ee562fb4f9b3ed1b',1,'foleys::ProcessorController::ProcessorAdapter']]],
-  ['_7eprocessorcontroller',['~ProcessorController',['../classfoleys_1_1ProcessorController.html#a01109290051871553015112c335f102f',1,'foleys::ProcessorController']]],
-  ['_7eprocessorparameter',['~ProcessorParameter',['../classfoleys_1_1ProcessorParameter.html#ab051188bedd2d50439b90cd3d9d70e3d',1,'foleys::ProcessorParameter']]],
-  ['_7etimecodelistener',['~TimecodeListener',['../structfoleys_1_1AVClip_1_1TimecodeListener.html#a1637f4f5bbc9231bff530327d44e9bab',1,'foleys::AVClip::TimecodeListener']]],
-  ['_7evideoengine',['~VideoEngine',['../classfoleys_1_1VideoEngine.html#a771bd2e7af9a306e88345a327b3bf946',1,'foleys::VideoEngine']]],
-  ['_7evideomixer',['~VideoMixer',['../classfoleys_1_1VideoMixer.html#a39be5b47b757e6100f2bd2cc97c469e5',1,'foleys::VideoMixer']]],
-  ['_7evideoparameterautomation',['~VideoParameterAutomation',['../classfoleys_1_1VideoParameterAutomation.html#ac68e8e27a94c04d35891f6855fb4b99c',1,'foleys::VideoParameterAutomation']]],
-  ['_7evideopreview',['~VideoPreview',['../classfoleys_1_1VideoPreview.html#a69e6a52f097c959178ef3f1a65e1674d',1,'foleys::VideoPreview']]],
-  ['_7evideoprocessor',['~VideoProcessor',['../classfoleys_1_1VideoProcessor.html#a0de67431b5656eb3b73ec612e7b31fdf',1,'foleys::VideoProcessor']]]
+  ['width',['width',['../structfoleys_1_1Size.html#a2474a5474cbff19523a51eb1de01cda4',1,'foleys::Size']]]
 ];

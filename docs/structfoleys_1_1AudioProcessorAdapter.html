@@ -79,8 +79,8 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="structfoleys_1_1AudioProcessorAdapter-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">AudioProcessorAdapter Struct Reference</div>  </div>
@@ -98,6 +98,11 @@ $(function() {
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1AudioProcessorAdapter_1_1PlayHead.html">PlayHead</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a66265898aba32501ae079604284e82e6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfoleys_1_1AudioProcessorAdapter.html#a66265898aba32501ae079604284e82e6">AudioProcessorAdapter</a> (std::unique_ptr&lt; juce::AudioProcessor &gt; p)</td></tr>
@@ -108,8 +113,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:accd13b98a461ca82a2997aeaac4b0328"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7dd9e40cd4cdea4f36018698bd8680a3"><td class="memItemLeft" align="right" valign="top">juce::AudioProcessor *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfoleys_1_1AudioProcessorAdapter.html#a7dd9e40cd4cdea4f36018698bd8680a3">getAudioProcessor</a> () override</td></tr>
 <tr class="separator:a7dd9e40cd4cdea4f36018698bd8680a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a44303411c7fd1b2165e198c839236e35"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfoleys_1_1AudioProcessorAdapter.html#a44303411c7fd1b2165e198c839236e35">createAutomatedParameters</a> (<a class="el" href="classfoleys_1_1ProcessorController.html">ProcessorController</a> &amp;controller, std::vector&lt; std::unique_ptr&lt; <a class="el" href="classfoleys_1_1ParameterAutomation.html">ParameterAutomation</a> &gt;&gt; &amp;parameters, juce::ValueTree &amp;parameterNode) override</td></tr>
-<tr class="separator:a44303411c7fd1b2165e198c839236e35"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a298bb855da09b9578ceefc4543b206"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfoleys_1_1AudioProcessorAdapter.html#a3a298bb855da09b9578ceefc4543b206">createAutomatedParameters</a> (<a class="el" href="classfoleys_1_1ProcessorController.html">ProcessorController</a> &amp;controller, std::vector&lt; std::unique_ptr&lt; <a class="el" href="classfoleys_1_1ParameterAutomation.html">ParameterAutomation</a> &gt;&gt; &amp;parameters, juce::ValueTree &amp;parameterNode, juce::UndoManager *undoManager) override</td></tr>
+<tr class="separator:a3a298bb855da09b9578ceefc4543b206"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af00ec46c800b0baaf2269230837e0d6a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfoleys_1_1AudioProcessorAdapter.html#af00ec46c800b0baaf2269230837e0d6a">setPosition</a> (juce::int64 samples, double seconds) override</td></tr>
+<tr class="separator:af00ec46c800b0baaf2269230837e0d6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_structfoleys_1_1ProcessorController_1_1ProcessorAdapter"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structfoleys_1_1ProcessorController_1_1ProcessorAdapter')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structfoleys_1_1ProcessorController_1_1ProcessorAdapter.html">ProcessorController::ProcessorAdapter</a></td></tr>
 <tr class="memitem:a6286d561de4e7d8046b6612c526bc57b inherit pub_methods_structfoleys_1_1ProcessorController_1_1ProcessorAdapter"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfoleys_1_1ProcessorController_1_1ProcessorAdapter.html#a6286d561de4e7d8046b6612c526bc57b">ProcessorAdapter</a> ()=default</td></tr>
 <tr class="separator:a6286d561de4e7d8046b6612c526bc57b inherit pub_methods_structfoleys_1_1ProcessorController_1_1ProcessorAdapter"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -117,11 +124,6 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a7a8886297cfaa789ee562fb4f9b3ed1b inherit pub_methods_structfoleys_1_1ProcessorController_1_1ProcessorAdapter"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7a5f8c727cbfadd4dc70976558cbbc72 inherit pub_methods_structfoleys_1_1ProcessorController_1_1ProcessorAdapter"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classfoleys_1_1VideoProcessor.html">VideoProcessor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfoleys_1_1ProcessorController_1_1ProcessorAdapter.html#a7a5f8c727cbfadd4dc70976558cbbc72">getVideoProcessor</a> ()</td></tr>
 <tr class="separator:a7a5f8c727cbfadd4dc70976558cbbc72 inherit pub_methods_structfoleys_1_1ProcessorController_1_1ProcessorAdapter"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:ab8a4559a4c8ab4b0b61d81d51e80df11"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; juce::AudioProcessor &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfoleys_1_1AudioProcessorAdapter.html#ab8a4559a4c8ab4b0b61d81d51e80df11">processor</a></td></tr>
-<tr class="separator:ab8a4559a4c8ab4b0b61d81d51e80df11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a66265898aba32501ae079604284e82e6"></a>
@@ -168,8 +170,6 @@ Public Attributes</h2></td></tr>
 
 <p>Implements <a class="el" href="structfoleys_1_1ProcessorController_1_1ProcessorAdapter.html#a4ebfaf4e2dd8a2a4859959ec9bfa917f">ProcessorController::ProcessorAdapter</a>.</p>
 
-<p class="reference">References <a class="el" href="structfoleys_1_1AudioProcessorAdapter.html#ab8a4559a4c8ab4b0b61d81d51e80df11">AudioProcessorAdapter::processor</a>.</p>
-
 </div>
 </div>
 <a id="accd13b98a461ca82a2997aeaac4b0328"></a>
@@ -196,8 +196,6 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Implements <a class="el" href="structfoleys_1_1ProcessorController_1_1ProcessorAdapter.html#aa636089fa6ddd2474917936e778ca445">ProcessorController::ProcessorAdapter</a>.</p>
-
-<p class="reference">References <a class="el" href="structfoleys_1_1AudioProcessorAdapter.html#ab8a4559a4c8ab4b0b61d81d51e80df11">AudioProcessorAdapter::processor</a>.</p>
 
 </div>
 </div>
@@ -226,12 +224,10 @@ Public Attributes</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="structfoleys_1_1ProcessorController_1_1ProcessorAdapter.html#a05cef10564f04e4a66a51b5ceb2cd22c">ProcessorController::ProcessorAdapter</a>.</p>
 
-<p class="reference">References <a class="el" href="structfoleys_1_1AudioProcessorAdapter.html#ab8a4559a4c8ab4b0b61d81d51e80df11">AudioProcessorAdapter::processor</a>.</p>
-
 </div>
 </div>
-<a id="a44303411c7fd1b2165e198c839236e35"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a44303411c7fd1b2165e198c839236e35">&#9670;&nbsp;</a></span>createAutomatedParameters()</h2>
+<a id="a3a298bb855da09b9578ceefc4543b206"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a298bb855da09b9578ceefc4543b206">&#9670;&nbsp;</a></span>createAutomatedParameters()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -255,7 +251,13 @@ Public Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">juce::ValueTree &amp;&#160;</td>
-          <td class="paramname"><em>parameterNode</em>&#160;</td>
+          <td class="paramname"><em>parameterNode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">juce::UndoManager *&#160;</td>
+          <td class="paramname"><em>undoManager</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -270,26 +272,47 @@ Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implements <a class="el" href="structfoleys_1_1ProcessorController_1_1ProcessorAdapter.html#a90bb7176679e4df087ffe7343f4e3449">ProcessorController::ProcessorAdapter</a>.</p>
-
-<p class="reference">References <a class="el" href="structfoleys_1_1AudioProcessorAdapter.html#ab8a4559a4c8ab4b0b61d81d51e80df11">AudioProcessorAdapter::processor</a>.</p>
+<p>Implements <a class="el" href="structfoleys_1_1ProcessorController_1_1ProcessorAdapter.html#ad607185940598c379c690a7fb6909e32">ProcessorController::ProcessorAdapter</a>.</p>
 
 </div>
 </div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="ab8a4559a4c8ab4b0b61d81d51e80df11"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab8a4559a4c8ab4b0b61d81d51e80df11">&#9670;&nbsp;</a></span>processor</h2>
+<a id="af00ec46c800b0baaf2269230837e0d6a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af00ec46c800b0baaf2269230837e0d6a">&#9670;&nbsp;</a></span>setPosition()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::unique_ptr&lt;juce::AudioProcessor&gt; processor</td>
+          <td class="memname">void setPosition </td>
+          <td>(</td>
+          <td class="paramtype">juce::int64&#160;</td>
+          <td class="paramname"><em>samples</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>seconds</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p class="reference">Referenced by <a class="el" href="structfoleys_1_1AudioProcessorAdapter.html#a44303411c7fd1b2165e198c839236e35">AudioProcessorAdapter::createAutomatedParameters()</a>, <a class="el" href="structfoleys_1_1AudioProcessorAdapter.html#a7dd9e40cd4cdea4f36018698bd8680a3">AudioProcessorAdapter::getAudioProcessor()</a>, <a class="el" href="structfoleys_1_1AudioProcessorAdapter.html#accd13b98a461ca82a2997aeaac4b0328">AudioProcessorAdapter::getIdentifierString()</a>, and <a class="el" href="structfoleys_1_1AudioProcessorAdapter.html#adbf13066cb3cd337c00c2f018762619c">AudioProcessorAdapter::getName()</a>.</p>
+<p>Reimplemented from <a class="el" href="structfoleys_1_1ProcessorController_1_1ProcessorAdapter.html#a6f785dd6421ca7d08cbda35309bffa7a">ProcessorController::ProcessorAdapter</a>.</p>
+
+<p class="reference">References <a class="el" href="classfoleys_1_1AudioProcessorAdapter_1_1PlayHead.html#a557faed995fe74d028ea5e9b7fcaccef">AudioProcessorAdapter::PlayHead::timeInSamples</a>, and <a class="el" href="classfoleys_1_1AudioProcessorAdapter_1_1PlayHead.html#a83066f9ec05f51a4733de0f52d94e188">AudioProcessorAdapter::PlayHead::timeInSeconds</a>.</p>
 
 </div>
 </div>
@@ -299,7 +322,7 @@ Public Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jun 18 2019 00:59:11 for foleys_video_engine by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Jul 3 2019 15:41:30 for foleys_video_engine by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.15
 </small></address>

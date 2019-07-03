@@ -99,6 +99,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1170a2775212a23592b9cd592246fd20"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classfoleys_1_1VideoProcessor.html">VideoProcessor</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1VideoPluginManager.html#a1170a2775212a23592b9cd592246fd20">createVideoPluginInstance</a> (const juce::String &amp;identifierString, juce::String &amp;error) const</td></tr>
 <tr class="memdesc:a1170a2775212a23592b9cd592246fd20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create an instance of a <a class="el" href="classfoleys_1_1VideoProcessor.html" title="The VideoProcessor is the base class to implement any video processor.">VideoProcessor</a> from an identifying string.  <a href="#a1170a2775212a23592b9cd592246fd20">More...</a><br /></td></tr>
 <tr class="separator:a1170a2775212a23592b9cd592246fd20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add4011c17d7b50c07f2684d175107b9e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1VideoPluginManager.html#add4011c17d7b50c07f2684d175107b9e">populatePluginSelection</a> (juce::PopupMenu &amp;menu)</td></tr>
+<tr class="separator:add4011c17d7b50c07f2684d175107b9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac376c9f2d9ff59d672d1a2c487b3b021"><td class="memItemLeft" align="right" valign="top">juce::String&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1VideoPluginManager.html#ac376c9f2d9ff59d672d1a2c487b3b021">getPluginDescriptionFromMenuID</a> (int index)</td></tr>
+<tr class="separator:ac376c9f2d9ff59d672d1a2c487b3b021"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The <a class="el" href="classfoleys_1_1VideoPluginManager.html" title="The VideoPluginManager is used to create VideoProcessor instances to be placed into the image process...">VideoPluginManager</a> is used to create <a class="el" href="classfoleys_1_1VideoProcessor.html" title="The VideoProcessor is the base class to implement any video processor.">VideoProcessor</a> instances to be placed into the image processing pipeline. </p>
@@ -188,6 +192,42 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="add4011c17d7b50c07f2684d175107b9e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#add4011c17d7b50c07f2684d175107b9e">&#9670;&nbsp;</a></span>populatePluginSelection()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void populatePluginSelection </td>
+          <td>(</td>
+          <td class="paramtype">juce::PopupMenu &amp;&#160;</td>
+          <td class="paramname"><em>menu</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac376c9f2d9ff59d672d1a2c487b3b021"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac376c9f2d9ff59d672d1a2c487b3b021">&#9670;&nbsp;</a></span>getPluginDescriptionFromMenuID()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">juce::String getPluginDescriptionFromMenuID </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="foleys__VideoPluginManager_8h.html">foleys_VideoPluginManager.h</a></li>
 <li><a class="el" href="foleys__VideoPluginManager_8cpp.html">foleys_VideoPluginManager.cpp</a></li>
@@ -195,7 +235,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jun 18 2019 00:59:11 for foleys_video_engine by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Jul 3 2019 15:41:30 for foleys_video_engine by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.15
 </small></address>

@@ -129,6 +129,16 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a169594d290e543fb388dc84b3551f79a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0b470f15e518fefcb82f9459dae04067"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ClipDescriptor.html#a0b470f15e518fefcb82f9459dae04067">setOffset</a> (double offset)</td></tr>
 <tr class="separator:a0b470f15e518fefcb82f9459dae04067"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada164424da74cdff821cd411f2d26caa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ClipDescriptor.html#ada164424da74cdff821cd411f2d26caa">setVideoVisible</a> (bool shouldBeVisible)</td></tr>
+<tr class="memdesc:ada164424da74cdff821cd411f2d26caa"><td class="mdescLeft">&#160;</td><td class="mdescRight">switch video invisible  <a href="#ada164424da74cdff821cd411f2d26caa">More...</a><br /></td></tr>
+<tr class="separator:ada164424da74cdff821cd411f2d26caa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ac3ea6f5474dc8e2227f3961afcd712"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ClipDescriptor.html#a0ac3ea6f5474dc8e2227f3961afcd712">getVideoVisible</a> () const</td></tr>
+<tr class="separator:a0ac3ea6f5474dc8e2227f3961afcd712"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e23127a2103f8942a36bc4ed29eee7e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ClipDescriptor.html#a4e23127a2103f8942a36bc4ed29eee7e">setAudioPlaying</a> (bool shouldPlay)</td></tr>
+<tr class="memdesc:a4e23127a2103f8942a36bc4ed29eee7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">switch audio muted  <a href="#a4e23127a2103f8942a36bc4ed29eee7e">More...</a><br /></td></tr>
+<tr class="separator:a4e23127a2103f8942a36bc4ed29eee7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a1658cf7e2486554895fdc7922e2a09"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ClipDescriptor.html#a1a1658cf7e2486554895fdc7922e2a09">getAudioPlaying</a> () const</td></tr>
+<tr class="separator:a1a1658cf7e2486554895fdc7922e2a09"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7381ed214782785a26a0532516191d32"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ClipDescriptor.html#a7381ed214782785a26a0532516191d32">getCurrentPTS</a> () const</td></tr>
 <tr class="memdesc:a7381ed214782785a26a0532516191d32"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns the current timestamp in seconds, deduced from audio clock master and relative to this clip.  <a href="#a7381ed214782785a26a0532516191d32">More...</a><br /></td></tr>
 <tr class="separator:a7381ed214782785a26a0532516191d32"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -168,6 +178,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa45c27354c4333759444d23ec9248b66"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ClipDescriptor.html#aa45c27354c4333759444d23ec9248b66">removeListener</a> (Listener *listener)</td></tr>
 <tr class="memdesc:aa45c27354c4333759444d23ec9248b66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a listener from the <a class="el" href="classfoleys_1_1ClipDescriptor.html" title="The ClipDescriptor configures the placement of each clip to be used in compositing the ComposedClip.">ClipDescriptor</a>.  <a href="#aa45c27354c4333759444d23ec9248b66">More...</a><br /></td></tr>
 <tr class="separator:aa45c27354c4333759444d23ec9248b66"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae91f77da577420dad987388976e157a1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ClipDescriptor.html#ae91f77da577420dad987388976e157a1">notifyParameterAutomationChange</a> (const <a class="el" href="classfoleys_1_1ParameterAutomation.html">ParameterAutomation</a> *)</td></tr>
+<tr class="separator:ae91f77da577420dad987388976e157a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -484,6 +496,84 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="ada164424da74cdff821cd411f2d26caa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada164424da74cdff821cd411f2d26caa">&#9670;&nbsp;</a></span>setVideoVisible()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void setVideoVisible </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>shouldBeVisible</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>switch video invisible </p>
+
+<p class="reference">References <a class="el" href="classfoleys_1_1ComposedClip.html#abd0e3ded0f4b6340fbed147cce590319">ComposedClip::getUndoManager()</a>.</p>
+
+</div>
+</div>
+<a id="a0ac3ea6f5474dc8e2227f3961afcd712"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ac3ea6f5474dc8e2227f3961afcd712">&#9670;&nbsp;</a></span>getVideoVisible()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool getVideoVisible </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4e23127a2103f8942a36bc4ed29eee7e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4e23127a2103f8942a36bc4ed29eee7e">&#9670;&nbsp;</a></span>setAudioPlaying()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void setAudioPlaying </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>shouldPlay</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>switch audio muted </p>
+
+<p class="reference">References <a class="el" href="classfoleys_1_1ComposedClip.html#abd0e3ded0f4b6340fbed147cce590319">ComposedClip::getUndoManager()</a>.</p>
+
+</div>
+</div>
+<a id="a1a1658cf7e2486554895fdc7922e2a09"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a1658cf7e2486554895fdc7922e2a09">&#9670;&nbsp;</a></span>getAudioPlaying()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool getAudioPlaying </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a7381ed214782785a26a0532516191d32"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7381ed214782785a26a0532516191d32">&#9670;&nbsp;</a></span>getCurrentPTS()</h2>
 
@@ -503,7 +593,7 @@ Public Attributes</h2></td></tr>
 
 <p class="reference">References <a class="el" href="classfoleys_1_1ClipDescriptor.html#ab7e0c102bddc0ecd23e6aa93bfedc234">ClipDescriptor::getClipTimeInDescriptorTime()</a>, and <a class="el" href="classfoleys_1_1ClipDescriptor.html#a344fc060cfc262a75b1704062d8db633">ClipDescriptor::getOwningClip()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="classfoleys_1_1AudioParameterAutomation.html#a54565c9803dc4b6c41edeb24954de8b9">AudioParameterAutomation::parameterValueChanged()</a>, and <a class="el" href="classfoleys_1_1VideoParameterAutomation.html#a7829a6620a960d2e0feef86192c09186">VideoParameterAutomation::valueChanged()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classfoleys_1_1ProcessorController.html#a8add06e9014f7baf07e872e5f8a36b00">ProcessorController::getCurrentPTS()</a>.</p>
 
 </div>
 </div>
@@ -745,7 +835,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">References <a class="el" href="classfoleys_1_1ComposedClip.html#a92137d1ad0e9c9df0b5edd0809ec83f5">ComposedClip::getCallbackLock()</a>.</p>
+<p class="reference">References <a class="el" href="classfoleys_1_1ComposedClip.html#a92137d1ad0e9c9df0b5edd0809ec83f5">ComposedClip::getCallbackLock()</a>, and <a class="el" href="classfoleys_1_1ComposedClip.html#abd0e3ded0f4b6340fbed147cce590319">ComposedClip::getUndoManager()</a>.</p>
 
 </div>
 </div>
@@ -765,7 +855,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">References <a class="el" href="classfoleys_1_1ComposedClip.html#a92137d1ad0e9c9df0b5edd0809ec83f5">ComposedClip::getCallbackLock()</a>.</p>
+<p class="reference">References <a class="el" href="classfoleys_1_1ComposedClip.html#a92137d1ad0e9c9df0b5edd0809ec83f5">ComposedClip::getCallbackLock()</a>, and <a class="el" href="classfoleys_1_1ComposedClip.html#abd0e3ded0f4b6340fbed147cce590319">ComposedClip::getUndoManager()</a>.</p>
 
 </div>
 </div>
@@ -801,7 +891,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">Referenced by <a class="el" href="classfoleys_1_1ClipDescriptor.html#a7381ed214782785a26a0532516191d32">ClipDescriptor::getCurrentPTS()</a>, <a class="el" href="classfoleys_1_1ProcessorController.html#ae463363f3bc6d032138bdd73fa67e629">ProcessorController::getProcessorState()</a>, and <a class="el" href="classfoleys_1_1ProcessorController.html#abd58510a5d32e23cd26fd01828780a3a">ProcessorController::setActive()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classfoleys_1_1ClipDescriptor.html#a7381ed214782785a26a0532516191d32">ClipDescriptor::getCurrentPTS()</a>, <a class="el" href="classfoleys_1_1ProcessorController.html#ad9d906247312386056a4c26dd0dfe464">ProcessorController::ProcessorController()</a>, and <a class="el" href="classfoleys_1_1ProcessorController.html#abd58510a5d32e23cd26fd01828780a3a">ProcessorController::setActive()</a>.</p>
 
 </div>
 </div>
@@ -862,6 +952,24 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="ae91f77da577420dad987388976e157a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae91f77da577420dad987388976e157a1">&#9670;&nbsp;</a></span>notifyParameterAutomationChange()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void notifyParameterAutomationChange </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classfoleys_1_1ParameterAutomation.html">ParameterAutomation</a> *&#160;</td>
+          <td class="paramname"><em>p</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <h2 class="groupheader">Member Data Documentation</h2>
 <a id="aa041828b2c80c166ef5e7dc84c23d7e0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa041828b2c80c166ef5e7dc84c23d7e0">&#9670;&nbsp;</a></span>clip</h2>
@@ -886,7 +994,7 @@ Public Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jun 18 2019 00:59:11 for foleys_video_engine by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Jul 3 2019 15:41:30 for foleys_video_engine by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.15
 </small></address>

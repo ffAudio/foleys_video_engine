@@ -104,14 +104,17 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a63f9c41d64f5ab46c44f76d978acdd5d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ParameterAutomation.html#a63f9c41d64f5ab46c44f76d978acdd5d">ParameterAutomation</a> (<a class="el" href="classfoleys_1_1ProcessorController.html">ProcessorController</a> &amp;)</td></tr>
-<tr class="separator:a63f9c41d64f5ab46c44f76d978acdd5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a824fb8317f6a6b99980b6b1921fd7f43"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ParameterAutomation.html#a824fb8317f6a6b99980b6b1921fd7f43">ParameterAutomation</a> (<a class="el" href="classfoleys_1_1ControllableBase.html">ControllableBase</a> &amp;, double defaultValue, const juce::ValueTree &amp;state, juce::UndoManager *)</td></tr>
+<tr class="memdesc:a824fb8317f6a6b99980b6b1921fd7f43"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classfoleys_1_1ParameterAutomation.html" title="This class allows storing and playing back automation values.">ParameterAutomation</a> holds the information about keyframes / automation points and takes care of updating the processor values.  <a href="#a824fb8317f6a6b99980b6b1921fd7f43">More...</a><br /></td></tr>
+<tr class="separator:a824fb8317f6a6b99980b6b1921fd7f43"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a560de7fcaf7929dfd88a8f1d28f10f4e"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ParameterAutomation.html#a560de7fcaf7929dfd88a8f1d28f10f4e">~ParameterAutomation</a> ()=default</td></tr>
 <tr class="separator:a560de7fcaf7929dfd88a8f1d28f10f4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afde4c95241b00d0328eb8697bcc7efd8"><td class="memItemLeft" align="right" valign="top">virtual juce::String&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ParameterAutomation.html#afde4c95241b00d0328eb8697bcc7efd8">getName</a> () const =0</td></tr>
 <tr class="separator:afde4c95241b00d0328eb8697bcc7efd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7a75946b3f500eff2c901b801fb3e350"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ParameterAutomation.html#a7a75946b3f500eff2c901b801fb3e350">getNumSteps</a> () const =0</td></tr>
 <tr class="separator:a7a75946b3f500eff2c901b801fb3e350"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69270d35a8d0b0749692fcefc941d2fb"><td class="memItemLeft" align="right" valign="top">virtual juce::StringArray&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ParameterAutomation.html#a69270d35a8d0b0749692fcefc941d2fb">getAllValueStrings</a> () const =0</td></tr>
+<tr class="separator:a69270d35a8d0b0749692fcefc941d2fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a74f2a11c042bc95f4475d8679074a773"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ParameterAutomation.html#a74f2a11c042bc95f4475d8679074a773">updateProcessor</a> (double pts)=0</td></tr>
 <tr class="separator:a74f2a11c042bc95f4475d8679074a773"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a31743bc7def7cf7fdad044c84d9268"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ParameterAutomation.html#a1a31743bc7def7cf7fdad044c84d9268">setValue</a> (double value)</td></tr>
@@ -120,31 +123,39 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ad78a9afa7452e30a823eb6564dc0a319"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abda9fbd5f4d6f29b441e85bcda466599"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ParameterAutomation.html#abda9fbd5f4d6f29b441e85bcda466599">addKeyframe</a> (double pts, double value)</td></tr>
 <tr class="separator:abda9fbd5f4d6f29b441e85bcda466599"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa4023c8ac46f05e8bbbe3d64400abc3e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ParameterAutomation.html#aa4023c8ac46f05e8bbbe3d64400abc3e">setKeyframe</a> (size_t index, double pts, double value)</td></tr>
-<tr class="separator:aa4023c8ac46f05e8bbbe3d64400abc3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e3675b5892755d339866f280aeb4c0d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ParameterAutomation.html#a0e3675b5892755d339866f280aeb4c0d">setKeyframe</a> (int index, double pts, double value)</td></tr>
+<tr class="separator:a0e3675b5892755d339866f280aeb4c0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaef08133ef0af3ae08169394e38761ad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ParameterAutomation.html#aaef08133ef0af3ae08169394e38761ad">deleteKeyframe</a> (int index)</td></tr>
+<tr class="separator:aaef08133ef0af3ae08169394e38761ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa4d4394595b8e0c98d08854072912036"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ParameterAutomation.html#aa4d4394595b8e0c98d08854072912036">getValueForTime</a> (double pts) const</td></tr>
 <tr class="separator:aa4d4394595b8e0c98d08854072912036"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acba57b14ff887eea4ef9e031d69374cb"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ParameterAutomation.html#acba57b14ff887eea4ef9e031d69374cb">getValue</a> () const</td></tr>
 <tr class="separator:acba57b14ff887eea4ef9e031d69374cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e3cffd0c8ed81a2603f08b877ee4d19"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ParameterAutomation.html#a6e3cffd0c8ed81a2603f08b877ee4d19">getPreviousKeyframeTime</a> (double time) const</td></tr>
+<tr class="separator:a6e3cffd0c8ed81a2603f08b877ee4d19"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2988d135bcde6baf5817b3e51f31cebc"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ParameterAutomation.html#a2988d135bcde6baf5817b3e51f31cebc">getNextKeyframeTime</a> (double time) const</td></tr>
+<tr class="separator:a2988d135bcde6baf5817b3e51f31cebc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ee2306930db6db187b88f91750ffd30"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ParameterAutomation.html#a6ee2306930db6db187b88f91750ffd30">startAutomationGesture</a> ()</td></tr>
+<tr class="memdesc:a6ee2306930db6db187b88f91750ffd30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call this before calling setValue commands (e.g.  <a href="#a6ee2306930db6db187b88f91750ffd30">More...</a><br /></td></tr>
 <tr class="separator:a6ee2306930db6db187b88f91750ffd30"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3427cfb908c87f39653000b51b053382"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ParameterAutomation.html#a3427cfb908c87f39653000b51b053382">finishAutomationGesture</a> ()</td></tr>
+<tr class="memdesc:a3427cfb908c87f39653000b51b053382"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call this to finish user interaction to give back controll to the playing automation.  <a href="#a3427cfb908c87f39653000b51b053382">More...</a><br /></td></tr>
 <tr class="separator:a3427cfb908c87f39653000b51b053382"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af13007874cee5cbf3f80ae68ab5a7b2b"><td class="memItemLeft" align="right" valign="top">const std::map&lt; double, double &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ParameterAutomation.html#af13007874cee5cbf3f80ae68ab5a7b2b">getKeyframes</a> () const</td></tr>
 <tr class="separator:af13007874cee5cbf3f80ae68ab5a7b2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a96b6428a4a396f499a3e6b450cbb5e4b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ParameterAutomation.html#a96b6428a4a396f499a3e6b450cbb5e4b">loadFromValueTree</a> (const juce::ValueTree &amp;state)</td></tr>
-<tr class="separator:a96b6428a4a396f499a3e6b450cbb5e4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a66f9565e08903884af472fc55c80d13f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ParameterAutomation.html#a66f9565e08903884af472fc55c80d13f">saveToValueTree</a> (juce::ValueTree &amp;state, juce::UndoManager *undo)</td></tr>
-<tr class="separator:a66f9565e08903884af472fc55c80d13f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab65c22b10f8d773c8fa0367eaa722c59"><td class="memItemLeft" align="right" valign="top">virtual juce::String&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ParameterAutomation.html#ab65c22b10f8d773c8fa0367eaa722c59">getText</a> (float normalisedValue, int numDigits=0) const =0</td></tr>
-<tr class="separator:ab65c22b10f8d773c8fa0367eaa722c59"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31cfefe9f3d0a1f87277bb154a586cac"><td class="memItemLeft" align="right" valign="top">virtual juce::String&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ParameterAutomation.html#a31cfefe9f3d0a1f87277bb154a586cac">getText</a> (float normalisedValue, int numDigits=2) const =0</td></tr>
+<tr class="separator:a31cfefe9f3d0a1f87277bb154a586cac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9494bd1a67e2000d883f73e06b3b95ab"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ParameterAutomation.html#a9494bd1a67e2000d883f73e06b3b95ab">getValueForText</a> (const juce::String &amp;text) const =0</td></tr>
 <tr class="separator:a9494bd1a67e2000d883f73e06b3b95ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e6755df75cbf9cbf682f034517034f6"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ParameterAutomation.html#a0e6755df75cbf9cbf682f034517034f6">isVideoParameter</a> ()</td></tr>
+<tr class="separator:a0e6755df75cbf9cbf682f034517034f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a087525105145748cad3dd3c1048df8"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ParameterAutomation.html#a6a087525105145748cad3dd3c1048df8">isAudioParameter</a> ()</td></tr>
+<tr class="separator:a6a087525105145748cad3dd3c1048df8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
-<tr class="memitem:a340e312e7b805dbfd25020ddb3db1fc1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classfoleys_1_1ProcessorController.html">ProcessorController</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ParameterAutomation.html#a340e312e7b805dbfd25020ddb3db1fc1">controller</a></td></tr>
-<tr class="separator:a340e312e7b805dbfd25020ddb3db1fc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09f4b48f2a7d9394ad2d6270c7ff6b15"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classfoleys_1_1ControllableBase.html">ControllableBase</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ParameterAutomation.html#a09f4b48f2a7d9394ad2d6270c7ff6b15">controllable</a></td></tr>
+<tr class="separator:a09f4b48f2a7d9394ad2d6270c7ff6b15"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0571d3925e36077e31bf5ce8ddc9ae36"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfoleys_1_1ParameterAutomation.html#a0571d3925e36077e31bf5ce8ddc9ae36">gestureInProgress</a> = false</td></tr>
 <tr class="separator:a0571d3925e36077e31bf5ce8ddc9ae36"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -152,8 +163,8 @@ Protected Attributes</h2></td></tr>
 <div class="textblock"><p>This class allows storing and playing back automation values. </p>
 <p>It is used in the <a class="el" href="classfoleys_1_1ClipDescriptor.html" title="The ClipDescriptor configures the placement of each clip to be used in compositing the ComposedClip.">ClipDescriptor</a>'s <a class="el" href="classfoleys_1_1ProcessorController.html" title="The ProcessorController acts as container foe one AudioProcessor or VideoProcessor inside the ClipDes...">ProcessorController</a>. Using an Adapter it can handle VideoProcessors as well as AudioProcessors. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a63f9c41d64f5ab46c44f76d978acdd5d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a63f9c41d64f5ab46c44f76d978acdd5d">&#9670;&nbsp;</a></span>ParameterAutomation()</h2>
+<a id="a824fb8317f6a6b99980b6b1921fd7f43"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a824fb8317f6a6b99980b6b1921fd7f43">&#9670;&nbsp;</a></span>ParameterAutomation()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -161,12 +172,36 @@ Protected Attributes</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="classfoleys_1_1ParameterAutomation.html">ParameterAutomation</a> </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classfoleys_1_1ProcessorController.html">ProcessorController</a> &amp;&#160;</td>
-          <td class="paramname"><em>controllerToUse</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classfoleys_1_1ControllableBase.html">ControllableBase</a> &amp;&#160;</td>
+          <td class="paramname"><em>controllerToUse</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>defaultValue</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const juce::ValueTree &amp;&#160;</td>
+          <td class="paramname"><em>state</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">juce::UndoManager *&#160;</td>
+          <td class="paramname"><em>undo</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>The <a class="el" href="classfoleys_1_1ParameterAutomation.html" title="This class allows storing and playing back automation values.">ParameterAutomation</a> holds the information about keyframes / automation points and takes care of updating the processor values. </p>
 
 </div>
 </div>
@@ -250,6 +285,33 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a69270d35a8d0b0749692fcefc941d2fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a69270d35a8d0b0749692fcefc941d2fb">&#9670;&nbsp;</a></span>getAllValueStrings()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual juce::StringArray getAllValueStrings </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implemented in <a class="el" href="classfoleys_1_1VideoParameterAutomation.html#a4ba8ee26dcbe5cb9b4215793f9d2d566">VideoParameterAutomation</a>, and <a class="el" href="classfoleys_1_1AudioParameterAutomation.html#a4ba8ee26dcbe5cb9b4215793f9d2d566">AudioParameterAutomation</a>.</p>
+
+</div>
+</div>
 <a id="a74f2a11c042bc95f4475d8679074a773"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a74f2a11c042bc95f4475d8679074a773">&#9670;&nbsp;</a></span>updateProcessor()</h2>
 
@@ -294,7 +356,9 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">Referenced by <a class="el" href="classfoleys_1_1AudioParameterAutomation.html#a54565c9803dc4b6c41edeb24954de8b9">AudioParameterAutomation::parameterValueChanged()</a>, and <a class="el" href="classfoleys_1_1VideoParameterAutomation.html#a7829a6620a960d2e0feef86192c09186">VideoParameterAutomation::valueChanged()</a>.</p>
+<p class="reference">References <a class="el" href="classfoleys_1_1ParameterAutomation.html#a09f4b48f2a7d9394ad2d6270c7ff6b15">ParameterAutomation::controllable</a>, and <a class="el" href="classfoleys_1_1ControllableBase.html#ae963472cfa4db786e639591dfb923511">ControllableBase::notifyParameterAutomationChange()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="classfoleys_1_1AudioParameterAutomation.html#a54565c9803dc4b6c41edeb24954de8b9">AudioParameterAutomation::parameterValueChanged()</a>, <a class="el" href="classfoleys_1_1ParameterAutomation.html#ad78a9afa7452e30a823eb6564dc0a319">ParameterAutomation::setValue()</a>, and <a class="el" href="classfoleys_1_1VideoParameterAutomation.html#a7829a6620a960d2e0feef86192c09186">VideoParameterAutomation::valueChanged()</a>.</p>
 
 </div>
 </div>
@@ -324,7 +388,7 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">References <a class="el" href="classfoleys_1_1ParameterAutomation.html#a340e312e7b805dbfd25020ddb3db1fc1">ParameterAutomation::controller</a>, <a class="el" href="classfoleys_1_1ParameterAutomation.html#a0571d3925e36077e31bf5ce8ddc9ae36">ParameterAutomation::gestureInProgress</a>, and <a class="el" href="classfoleys_1_1ProcessorController.html#a55a9e6c41f44850e5da2fd952d013e78">ProcessorController::synchroniseState()</a>.</p>
+<p class="reference">References <a class="el" href="classfoleys_1_1ParameterAutomation.html#abda9fbd5f4d6f29b441e85bcda466599">ParameterAutomation::addKeyframe()</a>, <a class="el" href="classfoleys_1_1ParameterAutomation.html#a0571d3925e36077e31bf5ce8ddc9ae36">ParameterAutomation::gestureInProgress</a>, and <a class="el" href="classfoleys_1_1ParameterAutomation.html#a1a31743bc7def7cf7fdad044c84d9268">ParameterAutomation::setValue()</a>.</p>
 
 </div>
 </div>
@@ -354,12 +418,12 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">References <a class="el" href="classfoleys_1_1ParameterAutomation.html#a340e312e7b805dbfd25020ddb3db1fc1">ParameterAutomation::controller</a>, and <a class="el" href="classfoleys_1_1ProcessorController.html#a55a9e6c41f44850e5da2fd952d013e78">ProcessorController::synchroniseState()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classfoleys_1_1ParameterAutomation.html#ad78a9afa7452e30a823eb6564dc0a319">ParameterAutomation::setValue()</a>.</p>
 
 </div>
 </div>
-<a id="aa4023c8ac46f05e8bbbe3d64400abc3e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa4023c8ac46f05e8bbbe3d64400abc3e">&#9670;&nbsp;</a></span>setKeyframe()</h2>
+<a id="a0e3675b5892755d339866f280aeb4c0d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e3675b5892755d339866f280aeb4c0d">&#9670;&nbsp;</a></span>setKeyframe()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -367,7 +431,7 @@ Protected Attributes</h2></td></tr>
         <tr>
           <td class="memname">void setKeyframe </td>
           <td>(</td>
-          <td class="paramtype">size_t&#160;</td>
+          <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>index</em>, </td>
         </tr>
         <tr>
@@ -390,7 +454,23 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">References <a class="el" href="classfoleys_1_1ParameterAutomation.html#a340e312e7b805dbfd25020ddb3db1fc1">ParameterAutomation::controller</a>, and <a class="el" href="classfoleys_1_1ProcessorController.html#a55a9e6c41f44850e5da2fd952d013e78">ProcessorController::synchroniseState()</a>.</p>
+</div>
+</div>
+<a id="aaef08133ef0af3ae08169394e38761ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaef08133ef0af3ae08169394e38761ad">&#9670;&nbsp;</a></span>deleteKeyframe()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void deleteKeyframe </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -410,6 +490,8 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p class="reference">References <a class="el" href="classfoleys_1_1ParameterAutomation.html#acba57b14ff887eea4ef9e031d69374cb">ParameterAutomation::getValue()</a>.</p>
+
 <p class="reference">Referenced by <a class="el" href="classfoleys_1_1AudioParameterAutomation.html#a45db9cbfd8819702f6cf745b5323e47e">AudioParameterAutomation::updateProcessor()</a>, and <a class="el" href="classfoleys_1_1VideoParameterAutomation.html#a45db9cbfd8819702f6cf745b5323e47e">VideoParameterAutomation::updateProcessor()</a>.</p>
 
 </div>
@@ -424,6 +506,44 @@ Protected Attributes</h2></td></tr>
           <td class="memname">double getValue </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="reference">Referenced by <a class="el" href="classfoleys_1_1ParameterAutomation.html#aa4d4394595b8e0c98d08854072912036">ParameterAutomation::getValueForTime()</a>.</p>
+
+</div>
+</div>
+<a id="a6e3cffd0c8ed81a2603f08b877ee4d19"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e3cffd0c8ed81a2603f08b877ee4d19">&#9670;&nbsp;</a></span>getPreviousKeyframeTime()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double getPreviousKeyframeTime </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>time</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2988d135bcde6baf5817b3e51f31cebc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2988d135bcde6baf5817b3e51f31cebc">&#9670;&nbsp;</a></span>getNextKeyframeTime()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double getNextKeyframeTime </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>time</em></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -446,6 +566,9 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Call this before calling setValue commands (e.g. </p>
+<p>from the processor editor) to avoid conflicting information from the currently playing automation </p>
+
 <p class="reference">References <a class="el" href="classfoleys_1_1ParameterAutomation.html#a0571d3925e36077e31bf5ce8ddc9ae36">ParameterAutomation::gestureInProgress</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="classfoleys_1_1VideoParameterAutomation.html#afe8c8504fe90466b5568dfaf29eaabc5">VideoParameterAutomation::gestureStarted()</a>, and <a class="el" href="classfoleys_1_1AudioParameterAutomation.html#a04352d0582486eb00f1abdb85283b11d">AudioParameterAutomation::parameterGestureChanged()</a>.</p>
@@ -466,6 +589,8 @@ Protected Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Call this to finish user interaction to give back controll to the playing automation. </p>
 
 <p class="reference">References <a class="el" href="classfoleys_1_1ParameterAutomation.html#a0571d3925e36077e31bf5ce8ddc9ae36">ParameterAutomation::gestureInProgress</a>.</p>
 
@@ -490,54 +615,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a96b6428a4a396f499a3e6b450cbb5e4b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a96b6428a4a396f499a3e6b450cbb5e4b">&#9670;&nbsp;</a></span>loadFromValueTree()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void loadFromValueTree </td>
-          <td>(</td>
-          <td class="paramtype">const juce::ValueTree &amp;&#160;</td>
-          <td class="paramname"><em>state</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a66f9565e08903884af472fc55c80d13f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a66f9565e08903884af472fc55c80d13f">&#9670;&nbsp;</a></span>saveToValueTree()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void saveToValueTree </td>
-          <td>(</td>
-          <td class="paramtype">juce::ValueTree &amp;&#160;</td>
-          <td class="paramname"><em>state</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">juce::UndoManager *&#160;</td>
-          <td class="paramname"><em>undo</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ab65c22b10f8d773c8fa0367eaa722c59"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab65c22b10f8d773c8fa0367eaa722c59">&#9670;&nbsp;</a></span>getText()</h2>
+<a id="a31cfefe9f3d0a1f87277bb154a586cac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a31cfefe9f3d0a1f87277bb154a586cac">&#9670;&nbsp;</a></span>getText()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -555,7 +634,7 @@ Protected Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>numDigits</em> = <code>0</code>&#160;</td>
+          <td class="paramname"><em>numDigits</em> = <code>2</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -602,9 +681,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="a340e312e7b805dbfd25020ddb3db1fc1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a340e312e7b805dbfd25020ddb3db1fc1">&#9670;&nbsp;</a></span>controller</h2>
+<a id="a0e6755df75cbf9cbf682f034517034f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e6755df75cbf9cbf682f034517034f6">&#9670;&nbsp;</a></span>isVideoParameter()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -613,7 +691,62 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classfoleys_1_1ProcessorController.html">ProcessorController</a>&amp; controller</td>
+          <td class="memname">virtual bool isVideoParameter </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reimplemented in <a class="el" href="classfoleys_1_1VideoParameterAutomation.html#a38494875f9ca5340acd0be9ab5dd8a0f">VideoParameterAutomation</a>.</p>
+
+</div>
+</div>
+<a id="a6a087525105145748cad3dd3c1048df8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6a087525105145748cad3dd3c1048df8">&#9670;&nbsp;</a></span>isAudioParameter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool isAudioParameter </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reimplemented in <a class="el" href="classfoleys_1_1AudioParameterAutomation.html#abc2125c9365a5cc251daefa6113e72ca">AudioParameterAutomation</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a09f4b48f2a7d9394ad2d6270c7ff6b15"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a09f4b48f2a7d9394ad2d6270c7ff6b15">&#9670;&nbsp;</a></span>controllable</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classfoleys_1_1ControllableBase.html">ControllableBase</a>&amp; controllable</td>
         </tr>
       </table>
   </td>
@@ -623,7 +756,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="reference">Referenced by <a class="el" href="classfoleys_1_1ParameterAutomation.html#abda9fbd5f4d6f29b441e85bcda466599">ParameterAutomation::addKeyframe()</a>, <a class="el" href="classfoleys_1_1AudioParameterAutomation.html#a54565c9803dc4b6c41edeb24954de8b9">AudioParameterAutomation::parameterValueChanged()</a>, <a class="el" href="classfoleys_1_1ParameterAutomation.html#aa4023c8ac46f05e8bbbe3d64400abc3e">ParameterAutomation::setKeyframe()</a>, <a class="el" href="classfoleys_1_1ParameterAutomation.html#ad78a9afa7452e30a823eb6564dc0a319">ParameterAutomation::setValue()</a>, and <a class="el" href="classfoleys_1_1VideoParameterAutomation.html#a7829a6620a960d2e0feef86192c09186">VideoParameterAutomation::valueChanged()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classfoleys_1_1AudioParameterAutomation.html#a54565c9803dc4b6c41edeb24954de8b9">AudioParameterAutomation::parameterValueChanged()</a>, <a class="el" href="classfoleys_1_1ParameterAutomation.html#a1a31743bc7def7cf7fdad044c84d9268">ParameterAutomation::setValue()</a>, and <a class="el" href="classfoleys_1_1VideoParameterAutomation.html#a7829a6620a960d2e0feef86192c09186">VideoParameterAutomation::valueChanged()</a>.</p>
 
 </div>
 </div>
@@ -658,7 +791,7 @@ Protected Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jun 18 2019 00:59:11 for foleys_video_engine by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Jul 3 2019 15:41:30 for foleys_video_engine by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.15
 </small></address>
