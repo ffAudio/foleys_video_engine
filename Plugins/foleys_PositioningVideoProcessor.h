@@ -98,6 +98,19 @@ public:
         return state.getParameters();
     }
 
+    void getStateInformation (juce::MemoryBlock& destData) override
+    {
+        juce::MemoryOutputStream stream(destData, false);
+        state.state.writeToStream (stream);
+    }
+
+    void setStateInformation (const void* data, int sizeInBytes) override
+    {
+        auto tree = juce::ValueTree::readFromData (data, size_t (sizeInBytes));
+        if (tree.isValid())
+            state.state = tree;
+    }
+
 private:
     juce::UndoManager undo;
     ProcessorState state { this, &undo, "PARAMETERS", createParameters() };

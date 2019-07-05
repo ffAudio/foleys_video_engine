@@ -227,6 +227,16 @@ ProcessorController::ProcessorController (ClipDescriptor& ownerToUse,
         auto processor = engine->createVideoPluginInstance (identifier, error);
         if (processor.get() != nullptr)
         {
+            if (state.hasProperty (IDs::state))
+            {
+                juce::MemoryBlock block;
+                if (block.fromBase64Encoding (state.getProperty (IDs::state).toString()))
+                {
+                    // phew, that's a bit big for the JUCE API
+                    jassert (block.getSize() < std::numeric_limits<int>::max());
+                    processor->setStateInformation (block.getData(), int (block.getSize()));
+                }
+            }
             adapter = std::make_unique<VideoProcessorAdapter> (std::move (processor));
             adapter->createAutomatedParameters (*this, parameters, state, owner.getOwningClip().getUndoManager());
         }
@@ -330,7 +340,10 @@ void ProcessorController::readPluginStatesIntoValueTree()
     {
         audioProcessor->getStateInformation (block);
     }
-    // VideoProcessor has no state yet...
+    else if (auto* videoProcessor = getVideoProcessor())
+    {
+        videoProcessor->getStateInformation (block);
+    }
 
     if (block.getSize() > 0)
     {

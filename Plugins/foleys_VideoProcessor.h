@@ -54,6 +54,11 @@ public:
     virtual void processFrame (juce::Image& frame, int64_t count, const VideoStreamSettings& settings, double clipDuration) = 0;
 
     virtual std::vector<ProcessorParameter*> getParameters() = 0;
+
+    virtual void getStateInformation (juce::MemoryBlock& destData) = 0;
+
+    virtual void setStateInformation (const void* data, int sizeInBytes) = 0;
+
 private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (VideoProcessor)
 };
