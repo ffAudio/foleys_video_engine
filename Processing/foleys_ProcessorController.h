@@ -106,6 +106,9 @@ public:
 
     void notifyParameterAutomationChange (const ParameterAutomation*) override;
 
+    /** Read all plugins getStateInformation() and save it into the statusTree as BLOB */
+    void readPluginStatesIntoValueTree();
+
     /** Grants access to the underlying state. Your GUI may use this to add private data.
         It is your responsibility to avoid property or child collissions. */
     juce::ValueTree& getProcessorState();
@@ -155,8 +158,6 @@ private:
 
     ClipDescriptor& owner;
     juce::ValueTree state;
-
-    bool isUpdating = false;
 
     std::unique_ptr<ProcessorAdapter> adapter;
     std::vector<std::unique_ptr<ParameterAutomation>> parameters;

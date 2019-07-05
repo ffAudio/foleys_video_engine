@@ -208,6 +208,16 @@ ProcessorController::ProcessorController (ClipDescriptor& ownerToUse,
         auto processor = engine->createAudioPluginInstance (identifier, composedClip.getSampleRate(), composedClip.getDefaultBufferSize(), error);
         if (processor.get() != nullptr)
         {
+            if (state.hasProperty (IDs::state))
+            {
+                juce::MemoryBlock block;
+                if (block.fromBase64Encoding (state.getProperty (IDs::state).toString()))
+                {
+                    // phew, that's a bit big for the JUCE API
+                    jassert (block.getSize() < std::numeric_limits<int>::max());
+                    processor->setStateInformation (block.getData(), int (block.getSize()));
+                }
+            }
             adapter = std::make_unique<AudioProcessorAdapter> (std::move (processor));
             adapter->createAutomatedParameters (*this, parameters, state, owner.getOwningClip().getUndoManager());
         }
@@ -311,6 +321,22 @@ juce::AudioProcessor* ProcessorController::getAudioProcessor()
 VideoProcessor* ProcessorController::getVideoProcessor()
 {
     return adapter->getVideoProcessor();
+}
+
+void ProcessorController::readPluginStatesIntoValueTree()
+{
+    juce::MemoryBlock block;
+    if (auto* audioProcessor = getAudioProcessor())
+    {
+        audioProcessor->getStateInformation (block);
+    }
+    // VideoProcessor has no state yet...
+
+    if (block.getSize() > 0)
+    {
+        auto* undo = owner.getOwningClip().getUndoManager();
+        state.setProperty (IDs::state, block.toBase64Encoding(), undo);
+    }
 }
 
 } // foleys

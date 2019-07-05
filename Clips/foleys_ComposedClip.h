@@ -82,6 +82,9 @@ public:
 
     juce::TimeSliceClient* getBackgroundJob() override;
 
+    /** Read all plugins getStateInformation() and save it into the statusTree as BLOB */
+    void readPluginStatesIntoValueTree();
+
     /** The ValueTree describes the media and positions of the individual clips.
         You can use this to listen to changes or to serialise a clip / project */
     juce::ValueTree& getStatusTree();

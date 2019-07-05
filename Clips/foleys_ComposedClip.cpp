@@ -34,6 +34,7 @@ namespace IDs
     static juce::Identifier offset       { "offset" };
     static juce::Identifier visible      { "visible" };
     static juce::Identifier audio        { "audio" };
+    static juce::Identifier state        { "state" };
     static juce::Identifier audioProcessors { "AudioProcessors" };
     static juce::Identifier videoProcessors { "VideoProcessors" };
 }
@@ -350,6 +351,12 @@ juce::UndoManager* ComposedClip::getUndoManager()
 juce::ValueTree& ComposedClip::getStatusTree()
 {
     return state;
+}
+
+void ComposedClip::readPluginStatesIntoValueTree()
+{
+    for (auto clip : getClips())
+        clip->readPluginStatesIntoValueTree();
 }
 
 std::vector<std::shared_ptr<ClipDescriptor>> ComposedClip::getClips() const

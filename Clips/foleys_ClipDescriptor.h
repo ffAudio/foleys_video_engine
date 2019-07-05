@@ -99,6 +99,9 @@ public:
 
     std::shared_ptr<AVClip> clip;
 
+    /** Read all plugins getStateInformation() and save it into the statusTree as BLOB */
+    void readPluginStatesIntoValueTree();
+
     /** Grants access to the underlying state. Your GUI may use this to add private data.
         It is your responsibility to avoid property or child collissions. */
     juce::ValueTree& getStatusTree();

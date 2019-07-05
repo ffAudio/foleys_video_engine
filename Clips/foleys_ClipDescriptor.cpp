@@ -381,6 +381,15 @@ void ClipDescriptor::removeProcessor (ProcessorController* controller)
 
 }
 
+void ClipDescriptor::readPluginStatesIntoValueTree()
+{
+    for (auto& processor : audioProcessors)
+        processor->readPluginStatesIntoValueTree();
+
+    for (auto& processor : videoProcessors)
+        processor->readPluginStatesIntoValueTree();
+}
+
 ComposedClip& ClipDescriptor::getOwningClip()
 {
     return owner;
