@@ -21,7 +21,7 @@
 namespace foleys
 {
 
-    juce::StringPairArray UsageReporter::createUsageData (const juce::String& event)
+juce::StringPairArray UsageReporter::createUsageData (const juce::String& event)
 {
     const auto anon_id = juce::String (juce::SystemStats::getDeviceIdentifiers().joinIntoString (":").hashCode64());
 

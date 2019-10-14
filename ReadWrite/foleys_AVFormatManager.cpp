@@ -37,6 +37,8 @@ std::shared_ptr<AVClip> AVFormatManager::createClipFromFile (VideoEngine& engine
         return clip;
     }
 
+    // findFormatForFileExtension would consume some video formats as well
+    // if (audioFormatManager.findFormatForFileExtension (file.getFileExtension()) != nullptr)
     if (file.hasFileExtension ("wav;aif;aiff;mp3;wma;m4a"))
     {
         if (auto* audio = audioFormatManager.createReaderFor (file))
