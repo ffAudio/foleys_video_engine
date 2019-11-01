@@ -40,7 +40,7 @@ void DefaultAudioMixer::mixAudio (const juce::AudioSourceChannelInfo& info,
             juce::AudioSourceChannelInfo reader (&mixBuffer, 0, info.numSamples - offset);
             clip->clip->getNextAudioBlock (reader);
 
-            if (clip->getAudioPlaying() == false)
+            if (clip->getAudioPlaying() == false || offset > info.numSamples)
                 continue;
 
             juce::AudioBuffer<float> procBuffer (mixBuffer.getArrayOfWritePointers(), mixBuffer.getNumChannels(), 0, info.numSamples - offset);

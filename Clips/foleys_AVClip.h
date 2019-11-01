@@ -48,7 +48,7 @@ public:
     virtual ~AVClip() = default;
 
     /** returns the original media file to restore */
-    virtual juce::File getMediaFile() const { return {}; }
+    virtual juce::URL getMediaFile() const { return {}; }
 
     /** returns a string describing the clip. This could be the
         filename of the original media file */
@@ -90,7 +90,7 @@ public:
     /** This returns a copy of the clip. Note that this will not work properly
         if the clip is not properly registered in the engine, because the
         copy will automatically be registered with the engine as well. */
-    virtual std::shared_ptr<AVClip> createCopy() = 0;
+    virtual std::shared_ptr<AVClip> createCopy (StreamTypes types) = 0;
 
     /** Use a TimecodeListener to be notified, when the visual frame changes */
     struct TimecodeListener
@@ -109,15 +109,28 @@ public:
     /** Unregister a TimecodeListener */
     void removeTimecodeListener (TimecodeListener* listener);
 
+    /** When rendering non realtime (bounce), use this to wait for background
+        threads to read ahead */
+    virtual bool waitForDataReady (int samples)
+    {
+        juce::ignoreUnused (samples);
+        return true;
+    }
+
     /** @internal */
     virtual juce::TimeSliceClient* getBackgroundJob();
 
     /** @internal */
     VideoEngine* getVideoEngine() const;
 
+    //==============================================================================
+
 protected:
+
     /** Subclasses can call this to notify displays, that the time code has changed, e.g. to display a new frame */
     void sendTimecode (int64_t count, double seconds, juce::NotificationType nt);
+
+    //==============================================================================
 
 private:
     juce::WeakReference<VideoEngine> videoEngine;

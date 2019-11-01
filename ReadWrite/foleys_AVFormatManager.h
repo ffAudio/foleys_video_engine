@@ -41,14 +41,18 @@ public:
 
     AVFormatManager();
 
-    std::shared_ptr<AVClip> createClipFromFile (VideoEngine& engine, juce::File file);
+    std::shared_ptr<AVClip> createClipFromFile (VideoEngine& engine, juce::URL url, StreamTypes type = StreamTypes::all());
 
     std::unique_ptr<AVReader> createReaderFor (juce::File file, StreamTypes type = StreamTypes::all());
 
     std::unique_ptr<AVWriter> createClipWriter (juce::File file);
 
+    void registerFactory (const juce::String& schema, std::function<AVClip*(foleys::VideoEngine& videoEngine, juce::URL url, StreamTypes type)> factory);
+
 private:
     juce::AudioFormatManager audioFormatManager;
+
+    std::map<juce::String, std::function<AVClip*(foleys::VideoEngine& videoEngine, juce::URL url, StreamTypes type)>> factories;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AVFormatManager)
 };

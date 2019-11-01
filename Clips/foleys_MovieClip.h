@@ -46,7 +46,7 @@ public:
 
     bool openFromFile (const juce::File file);
 
-    juce::File getMediaFile() const override;
+    juce::URL getMediaFile() const override;
 
     void setReader (std::unique_ptr<AVReader> reader);
     void setThumbnailReader (std::unique_ptr<AVReader> reader);
@@ -79,9 +79,13 @@ public:
     bool hasVideo() const override;
     bool hasAudio() const override;
 
-    std::shared_ptr<AVClip> createCopy() override;
+    std::shared_ptr<AVClip> createCopy (StreamTypes types) override;
 
     double getSampleRate() const override;
+
+    /** When rendering non realtime (bounce), use this to wait for background
+        threads to read ahead */
+    bool waitForDataReady (int samples) override;
 
 private:
 

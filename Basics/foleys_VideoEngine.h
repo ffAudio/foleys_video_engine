@@ -43,7 +43,7 @@ public:
     /**
      Use the source file to figure the most appropriate AVClip descendant.
      */
-    std::shared_ptr<AVClip> createClipFromFile (juce::File file);
+    std::shared_ptr<AVClip> createClipFromFile (juce::URL url, StreamTypes type = StreamTypes::all());
 
     /**
      Find an appropriate AVReader to be used to read a video file.

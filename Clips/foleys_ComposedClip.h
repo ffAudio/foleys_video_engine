@@ -74,9 +74,13 @@ public:
     bool hasVideo() const override;
     bool hasAudio() const override;
 
-    std::shared_ptr<AVClip> createCopy() override;
+    std::shared_ptr<AVClip> createCopy (StreamTypes types) override;
 
     double getSampleRate() const override;
+
+    /** When rendering non realtime (bounce), use this to wait for background
+        threads to read ahead */
+    bool waitForDataReady (int samples) override;
 
     int getDefaultBufferSize() const;
 

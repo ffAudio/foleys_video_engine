@@ -123,6 +123,7 @@ juce::ThreadPoolJob::JobStatus ClipRenderer::RenderJob::runJob()
         juce::AudioSourceChannelInfo info (&buffer, 0, std::min (int (totalDuration - audioPosition),
                                                                  audioSettings.defaultNumSamples));
 
+        clip->waitForDataReady (info.numSamples);
         clip->getNextAudioBlock (info);
         juce::AudioBuffer<float> writeBuffer (buffer.getArrayOfWritePointers(),
                                               buffer.getNumChannels(),
@@ -130,7 +131,7 @@ juce::ThreadPoolJob::JobStatus ClipRenderer::RenderJob::runJob()
                                               info.numSamples);
         bouncer.writer->pushSamples (writeBuffer);
 
-        audioPosition += audioSettings.defaultNumSamples;
+        audioPosition += writeBuffer.getNumSamples();
 
         const auto secs = audioPosition / double (audioSettings.timebase);
         const auto videoCount = secs * videoSettings.timebase;
@@ -148,7 +149,7 @@ juce::ThreadPoolJob::JobStatus ClipRenderer::RenderJob::runJob()
                     return juce::ThreadPoolJob::jobHasFinished;
                 }
 
-                juce::Thread::yield();
+                juce::Thread::sleep (10);
             }
 
             auto frame = clip->getFrame (timestamp);

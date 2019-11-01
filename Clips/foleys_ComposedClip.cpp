@@ -185,6 +185,16 @@ void ComposedClip::getNextAudioBlock (const juce::AudioSourceChannelInfo& info)
     triggerAsyncUpdate();
 }
 
+bool ComposedClip::waitForDataReady (int samples)
+{
+    bool ready = true;
+
+    for (auto clip : getActiveClips ([pos = position.load()](ClipDescriptor& clip) { return clip.clip->hasAudio() && pos >= clip.start && pos < clip.start + clip.length; }))
+        ready &= clip->clip->waitForDataReady (samples);
+
+    return ready;
+}
+
 void ComposedClip::setNextReadPosition (juce::int64 samples)
 {
     const auto wasSuspended = videoRenderJob.isSuspended();
@@ -244,7 +254,7 @@ bool ComposedClip::hasAudio() const
     return hasAudio;
 }
 
-std::shared_ptr<AVClip> ComposedClip::createCopy()
+std::shared_ptr<AVClip> ComposedClip::createCopy (StreamTypes types)
 {
     auto* engine = getVideoEngine();
     if (engine == nullptr)

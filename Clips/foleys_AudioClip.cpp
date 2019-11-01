@@ -28,15 +28,18 @@ AudioClip::AudioClip (VideoEngine& engine) : foleys::AVClip (engine)
 
 juce::String AudioClip::getDescription() const
 {
-    return mediaFile.getFileNameWithoutExtension();
+    if (mediaFile.isLocalFile())
+        return mediaFile.getLocalFile().getFileNameWithoutExtension();
+
+    return mediaFile.getFileName();
 }
 
-juce::File AudioClip::getMediaFile() const
+juce::URL AudioClip::getMediaFile() const
 {
     return mediaFile;
 }
 
-void AudioClip::setMediaFile (const juce::File& media)
+void AudioClip::setMediaFile (const juce::URL& media)
 {
     mediaFile = media;
 }
@@ -170,13 +173,13 @@ double AudioClip::getLengthInSeconds() const
     return 0.0;
 }
 
-std::shared_ptr<AVClip> AudioClip::createCopy()
+std::shared_ptr<AVClip> AudioClip::createCopy (StreamTypes types)
 {
     auto* engine = getVideoEngine();
     if (engine == nullptr)
         return {};
 
-    return engine->createClipFromFile (getMediaFile());
+    return engine->createClipFromFile (getMediaFile(), types);
 }
 
 } // foleys

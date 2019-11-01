@@ -32,7 +32,8 @@ class ComposedClip;
  in compositing the ComposedClip. It also holds a list of VideoProcessors
  and AudioProcessors including their automation data relative to the clip.
  */
-class ClipDescriptor : private juce::ValueTree::Listener
+class ClipDescriptor  : public ControllableBase,
+                        private juce::ValueTree::Listener
 {
 public:
     /**
@@ -90,10 +91,6 @@ public:
     void setAudioPlaying (bool shouldPlay);
     bool getAudioPlaying() const;
 
-    /** returns the current timestamp in seconds, deduced from audio clock master and
-        relative to this clip. */
-    double getCurrentPTS() const;
-
     /** Transforms a time relative to the containing clip into a local time in ClipDescriptor. */
     double getClipTimeInDescriptorTime (double time) const;
 
@@ -145,7 +142,28 @@ public:
     /** Add a listener from the ClipDescriptor */
     void removeListener (Listener* listener);
 
-    void notifyParameterAutomationChange (const ParameterAutomation*);
+    //==============================================================================
+    // From ControllableBase:
+
+    /**
+     Since the automation values are time dependent, every instance, that inherits
+     ControllableBase needs a way to tell the local time (presentation time stamp).
+     */
+    double getCurrentPTS() const override;
+
+    /**
+     Grant access to the individual parameters.
+     */
+    std::vector<std::unique_ptr<ParameterAutomation>>& getParameters() override { return parameters; }
+    int getNumParameters() const override { return int (parameters.size()); }
+
+    /**
+     This notifies all ProcessorController::Listeners about an automation change,
+     so they can adapt accordingly by redrawing the curves or invalidating pre-rendered
+     video frames.
+     */
+    void notifyParameterAutomationChange (const ParameterAutomation*) override;
+
 
 private:
     std::atomic<int64_t> start {0};
@@ -173,6 +191,8 @@ private:
     ComposedClip& owner;
 
     juce::ListenerList<Listener> listeners;
+
+    std::vector<std::unique_ptr<ParameterAutomation>> parameters;
 
     std::vector<std::unique_ptr<ProcessorController>> videoProcessors;
     std::vector<std::unique_ptr<ProcessorController>> audioProcessors;

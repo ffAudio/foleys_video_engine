@@ -26,39 +26,50 @@ AVFormatManager::AVFormatManager()
     audioFormatManager.registerBasicFormats();
 }
 
-std::shared_ptr<AVClip> AVFormatManager::createClipFromFile (VideoEngine& engine, juce::File file)
+std::shared_ptr<AVClip> AVFormatManager::createClipFromFile (VideoEngine& engine, juce::URL url, StreamTypes type)
 {
-    auto image = juce::ImageFileFormat::loadFrom (file);
-    if (image.isValid())
+    const auto& factory = factories.find (url.getScheme());
+    if (factory != factories.end())
     {
-        auto clip = std::make_shared<ImageClip> (engine);
-        clip->setImage (image);
-        clip->setMediaFile (file);
+        auto clip = std::shared_ptr<foleys::AVClip> (factory->second (engine, url, type));
         return clip;
     }
 
-    // findFormatForFileExtension would consume some video formats as well
-    // if (audioFormatManager.findFormatForFileExtension (file.getFileExtension()) != nullptr)
-    if (file.hasFileExtension ("wav;aif;aiff;mp3;wma;m4a"))
+    if (url.isLocalFile())
     {
-        if (auto* audio = audioFormatManager.createReaderFor (file))
+        const auto file = url.getLocalFile();
+        auto image = juce::ImageFileFormat::loadFrom (file);
+        if (image.isValid())
         {
-            auto clip = std::make_shared<AudioClip> (engine);
-            clip->setAudioFormatReader (audio);
-            clip->setMediaFile (file);
+            auto clip = std::make_shared<ImageClip> (engine);
+            clip->setImage (image);
+            clip->setMediaFile (url);
             return clip;
         }
-    }
 
-    auto reader = AVFormatManager::createReaderFor (file);
-    if (reader->isOpenedOk())
-    {
-        auto clip = std::make_shared<MovieClip> (engine);
-        if (reader->hasVideo())
-            clip->setThumbnailReader (AVFormatManager::createReaderFor (file, StreamTypes::video()));
+        // findFormatForFileExtension would consume some video formats as well
+        // if (audioFormatManager.findFormatForFileExtension (file.getFileExtension()) != nullptr)
+        if (file.hasFileExtension ("wav;aif;aiff;mp3;wma;m4a"))
+        {
+            if (auto* audio = audioFormatManager.createReaderFor (file))
+            {
+                auto clip = std::make_shared<AudioClip> (engine);
+                clip->setAudioFormatReader (audio);
+                clip->setMediaFile (url);
+                return clip;
+            }
+        }
 
-        clip->setReader (std::move (reader));
-        return clip;
+        auto reader = AVFormatManager::createReaderFor (file, type);
+        if (reader->isOpenedOk())
+        {
+            auto clip = std::make_shared<MovieClip> (engine);
+            if (reader->hasVideo())
+                clip->setThumbnailReader (AVFormatManager::createReaderFor (file, StreamTypes::video()));
+
+            clip->setReader (std::move (reader));
+            return clip;
+        }
     }
 
     return {};
@@ -83,6 +94,11 @@ std::unique_ptr<AVWriter> AVFormatManager::createClipWriter (juce::File file)
     return writer;
 #endif
     return {};
+}
+
+void AVFormatManager::registerFactory (const juce::String& schema, std::function<AVClip*(foleys::VideoEngine& videoEngine, juce::URL url, StreamTypes type)> factory)
+{
+    factories [schema] = factory;
 }
 
 

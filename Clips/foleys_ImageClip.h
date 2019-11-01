@@ -40,8 +40,8 @@ public:
 
     juce::String getDescription() const override;
 
-    juce::File getMediaFile() const override;
-    void setMediaFile (const juce::File& media);
+    juce::URL getMediaFile() const override;
+    void setMediaFile (const juce::URL& media);
 
     void setImage (const juce::Image& image);
 
@@ -69,14 +69,14 @@ public:
     bool hasVideo() const override    { return true; };
     bool hasAudio() const override    { return false; };
 
-    std::shared_ptr<AVClip> createCopy() override;
+    std::shared_ptr<AVClip> createCopy (StreamTypes types) override;
 
     double getSampleRate() const override;
 
 private:
 
     juce::Image image;
-    juce::File  mediaFile;
+    juce::URL   mediaFile;
     VideoStreamSettings videoSettings;
 
     double sampleRate = 0.0;

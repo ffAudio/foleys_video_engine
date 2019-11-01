@@ -28,15 +28,18 @@ ImageClip::ImageClip (VideoEngine& engine)
 
 juce::String ImageClip::getDescription() const
 {
-    return mediaFile.getFileNameWithoutExtension();
+    if (mediaFile.isLocalFile())
+        return mediaFile.getLocalFile().getFileNameWithoutExtension();
+
+    return mediaFile.getFileName();
 }
 
-juce::File ImageClip::getMediaFile() const
+juce::URL ImageClip::getMediaFile() const
 {
     return mediaFile;
 }
 
-void ImageClip::setMediaFile (const juce::File& media)
+void ImageClip::setMediaFile (const juce::URL& media)
 {
     mediaFile = media;
 }
@@ -115,13 +118,16 @@ void ImageClip::setLooping (bool)
 {
 }
 
-std::shared_ptr<AVClip> ImageClip::createCopy()
+std::shared_ptr<AVClip> ImageClip::createCopy (StreamTypes types)
 {
+    if (types.test (foleys::StreamTypes::Video) == false)
+        return {};
+
     auto* engine = getVideoEngine();
     if (engine == nullptr)
         return {};
 
-    return engine->createClipFromFile (getMediaFile());
+    return engine->createClipFromFile (getMediaFile(), types);
 }
 
 double ImageClip::getSampleRate() const
