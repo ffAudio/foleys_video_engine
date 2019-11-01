@@ -38,8 +38,8 @@ ClipDescriptor::ClipDescriptor (ComposedClip& ownerToUse, std::shared_ptr<AVClip
     clip = clipToUse;
     state = juce::ValueTree (IDs::clip);
     auto mediaFile = clip->getMediaFile();
-    if (mediaFile.getFullPathName().isNotEmpty())
-        state.setProperty (IDs::source, mediaFile.getFullPathName(), nullptr);
+    if (mediaFile.toString (true).isNotEmpty())
+        state.setProperty (IDs::source, mediaFile.toString (true), nullptr);
 
     state.getOrCreateChildWithName (IDs::videoProcessors, nullptr);
     state.getOrCreateChildWithName (IDs::audioProcessors, nullptr);

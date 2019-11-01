@@ -29,20 +29,35 @@ AudioStrip::AudioStrip()
     setInterceptsMouseClicks (false, true);
 }
 
+AudioStrip::~AudioStrip()
+{
+    if (thumbnailJob != nullptr)
+        if (auto* threadPool = getThreadPool())
+            threadPool->removeJob (thumbnailJob.get(), true, 1000);
+}
+
 void AudioStrip::setClip (std::shared_ptr<AVClip> clipToUse)
 {
     clip = clipToUse;
 
-    if (clip && clip->getMediaFile().existsAsFile())
+    if (clip.get() == nullptr)
+        return;
+
+    const auto url = clip->getMediaFile();
+    if (url.isLocalFile() && url.getLocalFile().existsAsFile())
     {
-        if (auto* reader = formatManager.createReaderFor (clip->getMediaFile()))
+        if (auto* reader = formatManager.createReaderFor (url.getLocalFile()))
             thumbnail.setReader (reader, 0);
+    }
+    else
+    {
+        update();
     }
 }
 
 void AudioStrip::paint (juce::Graphics& g)
 {
-    thumbnail.drawChannels (g, getLocalBounds(), startTime, endTime, 1.0);
+    thumbnail.drawChannels (g, getLocalBounds(), startTime, endTime, 2.0);
 }
 
 void AudioStrip::changeListenerCallback (juce::ChangeBroadcaster*)
@@ -60,7 +75,11 @@ void AudioStrip::setStartAndEnd (double start, double end)
 
 void AudioStrip::update()
 {
-    if (clip == nullptr || endTime <= startTime)
+    if (clip == nullptr ||
+        endTime <= startTime ||
+        endTime <= rendered ||
+        (clip->getMediaFile().isLocalFile() &&
+         clip->getMediaFile().getLocalFile().existsAsFile()))
         return;
 
     auto* threadPool = getThreadPool();
@@ -68,9 +87,10 @@ void AudioStrip::update()
         return;
 
     if (thumbnailJob != nullptr)
-        threadPool->removeJob (thumbnailJob.get(), true, 200);
-    else
-        thumbnailJob = std::make_unique<ThumbnailJob>(*this);
+        threadPool->removeJob (thumbnailJob.get(), true, 1000);
+
+    thumbnailJob = std::make_unique<ThumbnailJob>(*this);
+    rendered = endTime;
 
     threadPool->addJob (thumbnailJob.get(), false);
 }
@@ -92,11 +112,33 @@ AudioStrip::ThumbnailJob::ThumbnailJob (AudioStrip& ownerToUse)
   : juce::ThreadPoolJob ("Audio Thumbnail Job"),
     owner (ownerToUse)
 {
-    juce::ignoreUnused (owner);
+    clipToRender = owner.clip->createCopy (StreamTypes::audio());
 }
 
 juce::ThreadPoolJob::JobStatus AudioStrip::ThumbnailJob::runJob()
 {
+    const auto        sampleRate = 48000.0;
+    const auto        blockSize  = 2048;
+    const juce::int64 length = (owner.startTime + owner.endTime) * sampleRate;
+    juce::int64       pos = 0;
+
+    if (shouldExit())
+        return juce::ThreadPoolJob::jobHasFinished;
+
+    clipToRender->prepareToPlay (blockSize, sampleRate);
+    owner.thumbnail.reset (2, sampleRate, length);
+    juce::AudioBuffer<float> buffer (2, blockSize);
+    juce::AudioSourceChannelInfo info (&buffer, 0, buffer.getNumSamples());
+
+    while (!shouldExit() && pos < length)
+    {
+        buffer.clear();
+        clipToRender->waitForDataReady (blockSize);
+        clipToRender->getNextAudioBlock (info);
+        owner.thumbnail.addBlock (pos, buffer, 0, buffer.getNumSamples());
+        pos += buffer.getNumSamples();
+    }
+
     return juce::ThreadPoolJob::jobHasFinished;
 }
 

@@ -105,6 +105,7 @@
 #include "Plugins/foleys_VideoPluginManager.h"
 #include "Basics/foleys_AudioFifo.h"
 #include "Basics/foleys_VideoFifo.h"
+#include "Processing/foleys_ControllableBase.h"
 #include "Processing/foleys_ProcessorController.h"
 #include "Processing/foleys_ParameterAutomation.h"
 #include "Clips/foleys_AVClip.h"

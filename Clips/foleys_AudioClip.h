@@ -42,8 +42,8 @@ public:
 
     juce::String getDescription() const override;
 
-    juce::File getMediaFile() const override;
-    void setMediaFile (const juce::File& media);
+    juce::URL getMediaFile() const override;
+    void setMediaFile (const juce::URL& media);
 
     void setAudioFormatReader (juce::AudioFormatReader* reader, int samplesToBuffer = 48000);
 
@@ -71,7 +71,7 @@ public:
     bool hasVideo() const override    { return false; };
     bool hasAudio() const override    { return true; };
 
-    std::shared_ptr<AVClip> createCopy() override;
+    std::shared_ptr<AVClip> createCopy (StreamTypes types) override;
 
     double getSampleRate() const override { return sampleRate; }
 
@@ -82,7 +82,7 @@ private:
     std::unique_ptr<juce::AudioFormatReader>       reader;
     std::unique_ptr<juce::PositionableAudioSource> readerSource;
     std::unique_ptr<juce::ResamplingAudioSource>   resampler;
-    juce::File mediaFile;
+    juce::URL mediaFile;
     double sampleRate = 0.0;
     double originalSampleRate = 0.0;
     int    samplesPerBlock = 0;

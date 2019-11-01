@@ -59,10 +59,10 @@ bool MovieClip::openFromFile (const juce::File file)
     return false;
 }
 
-juce::File MovieClip::getMediaFile() const
+juce::URL MovieClip::getMediaFile() const
 {
     if (movieReader)
-        return movieReader->getMediaFile();
+        return juce::URL (movieReader->getMediaFile());
 
     return {};
 }
@@ -100,7 +100,7 @@ Size MovieClip::getVideoSize() const
 double MovieClip::getLengthInSeconds() const
 {
     if (movieReader && movieReader->isOpenedOk())
-        return movieReader->getTotalLength() / sampleRate;
+        return movieReader->getTotalLength() / movieReader->sampleRate;
 
     return {};
 }
@@ -156,6 +156,23 @@ void MovieClip::releaseResources()
     sampleRate = 0;
 }
 
+bool MovieClip::waitForDataReady (int samples)
+{
+    if (movieReader && movieReader->isOpenedOk() && movieReader->hasAudio())
+    {
+        const auto start = juce::Time::getMillisecondCounter();
+
+        while (audioFifo.getAvailableSamples() < samples && juce::Time::getMillisecondCounter() - start < 1000)
+            juce::Thread::sleep (5);
+
+        return audioFifo.getAvailableSamples() >= samples;
+    }
+    else
+    {
+        return true;
+    }
+}
+
 void MovieClip::getNextAudioBlock (const juce::AudioSourceChannelInfo& info)
 {
     if (movieReader && movieReader->isOpenedOk() && movieReader->hasAudio())
@@ -181,13 +198,13 @@ bool MovieClip::hasAudio() const
     return movieReader ? movieReader->hasAudio() : false;
 }
 
-std::shared_ptr<AVClip> MovieClip::createCopy()
+std::shared_ptr<AVClip> MovieClip::createCopy (StreamTypes types)
 {
     auto* engine = getVideoEngine();
     if (engine == nullptr)
         return {};
 
-    return engine->createClipFromFile (getMediaFile());
+    return engine->createClipFromFile (getMediaFile(), types);
 }
 
 double MovieClip::getSampleRate() const
