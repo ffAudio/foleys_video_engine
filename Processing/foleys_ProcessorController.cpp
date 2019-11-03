@@ -86,10 +86,11 @@ struct AudioProcessorAdapter : public ProcessorController::ProcessorAdapter
         {
             if (parameter->isAutomatable())
             {
-                auto node = parameterNode.getChildWithProperty (IDs::name, parameter->getName(128));
+                auto node = parameterNode.getChildWithProperty (IDs::index, parameter->getParameterIndex());
                 if (!node.isValid())
                 {
                     node = juce::ValueTree { IDs::parameter };
+                    node.setProperty (IDs::index, parameter->getParameterIndex(), nullptr);
                     node.setProperty (IDs::name, parameter->getName(128), nullptr);
                     node.setProperty (IDs::value, parameter->getValue(), nullptr);
                     parameterNode.appendChild (node, undoManager);

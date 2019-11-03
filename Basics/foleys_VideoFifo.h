@@ -49,8 +49,6 @@ public:
 
     void clear();
 
-    void clearFramesOlderThan (int64_t count);
-
     VideoStreamSettings& getVideoSettings();
     const VideoStreamSettings& getVideoSettings() const;
 
@@ -60,6 +58,7 @@ private:
     VideoStreamSettings settings;
 
     std::map<int64_t, juce::Image> videoFrames;
+    std::vector<juce::Image>       framesPool;
     int64_t lastViewedFrame = -1;
     bool reverse = false;
 

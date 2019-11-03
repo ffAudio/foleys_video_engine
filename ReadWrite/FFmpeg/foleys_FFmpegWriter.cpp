@@ -416,14 +416,6 @@ private:
         writer.opened = false;
         writer.started = false;
 
-        for (auto& descriptor : videoStreams)
-            av_free (&descriptor->context);
-        for (auto& descriptor : audioStreams)
-            av_free (&descriptor->context);
-
-        videoStreams.clear();
-        audioStreams.clear();
-
         if (formatContext != nullptr)
         {
             avformat_free_context (formatContext);

@@ -133,7 +133,7 @@ juce::ThreadPoolJob::JobStatus AudioStrip::ThumbnailJob::runJob()
     while (!shouldExit() && pos < length)
     {
         buffer.clear();
-        clipToRender->waitForDataReady (blockSize);
+        clipToRender->waitForSamplesReady (blockSize);
         clipToRender->getNextAudioBlock (info);
         owner.thumbnail.addBlock (pos, buffer, 0, buffer.getNumSamples());
         pos += buffer.getNumSamples();

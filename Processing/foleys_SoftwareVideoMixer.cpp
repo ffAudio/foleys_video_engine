@@ -32,9 +32,16 @@ void SoftwareVideoMixer::compose (juce::Image&        target,
     juce::Graphics g (target);
     g.fillAll (juce::Colours::black);
 
+    const auto renderStart = juce::Time::getMillisecondCounter();
+    const auto timeout = 1000;
+
     for (const auto& clip : clips)
     {
         const auto clipTime = timeInSeconds + clip->getOffset() - clip->getStart();
+
+        if (clip->clip->waitForFrameReady (clipTime, std::min (timeout, int (juce::Time::getMillisecondCounter() + timeout - renderStart))) == false)
+            continue;
+
         auto frame = clip->clip->getFrame (clipTime).second;
 
         if (clip->getVideoVisible() == false || frame.isNull())

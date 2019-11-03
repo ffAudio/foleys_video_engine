@@ -83,6 +83,7 @@ void ClipRenderer::startRendering (bool cancelRunningJob)
 void ClipRenderer::cancelRendering()
 {
     videoEngine.getThreadPool().removeJob (&renderJob, true, 1000);
+    writer.reset();
 
     if (onRenderingFinished)
         onRenderingFinished (false);
@@ -123,7 +124,7 @@ juce::ThreadPoolJob::JobStatus ClipRenderer::RenderJob::runJob()
         juce::AudioSourceChannelInfo info (&buffer, 0, std::min (int (totalDuration - audioPosition),
                                                                  audioSettings.defaultNumSamples));
 
-        clip->waitForDataReady (info.numSamples);
+        clip->waitForSamplesReady (info.numSamples);
         clip->getNextAudioBlock (info);
         juce::AudioBuffer<float> writeBuffer (buffer.getArrayOfWritePointers(),
                                               buffer.getNumChannels(),

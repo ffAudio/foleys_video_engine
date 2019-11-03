@@ -156,13 +156,13 @@ void MovieClip::releaseResources()
     sampleRate = 0;
 }
 
-bool MovieClip::waitForDataReady (int samples)
+bool MovieClip::waitForSamplesReady (int samples, int timeout)
 {
     if (movieReader && movieReader->isOpenedOk() && movieReader->hasAudio())
     {
         const auto start = juce::Time::getMillisecondCounter();
 
-        while (audioFifo.getAvailableSamples() < samples && juce::Time::getMillisecondCounter() - start < 1000)
+        while (audioFifo.getAvailableSamples() < samples && juce::Time::getMillisecondCounter() - start < timeout)
             juce::Thread::sleep (5);
 
         return audioFifo.getAvailableSamples() >= samples;
@@ -171,6 +171,16 @@ bool MovieClip::waitForDataReady (int samples)
     {
         return true;
     }
+}
+
+bool MovieClip::waitForFrameReady (double pts, int timeout)
+{
+    const auto start = juce::Time::getMillisecondCounter();
+
+    while (videoFifo.isFrameAvailable (pts) == false && juce::Time::getMillisecondCounter() - start < timeout)
+        juce::Thread::sleep (3);
+
+    return videoFifo.isFrameAvailable (pts);
 }
 
 void MovieClip::getNextAudioBlock (const juce::AudioSourceChannelInfo& info)
@@ -223,8 +233,6 @@ void MovieClip::handleAsyncUpdate()
             sendTimecode (count, seconds, juce::sendNotificationAsync);
             lastShownFrame = count;
         }
-
-        videoFifo.clearFramesOlderThan (count);
     }
 }
 

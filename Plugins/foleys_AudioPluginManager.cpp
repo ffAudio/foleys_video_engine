@@ -69,15 +69,17 @@ void AudioPluginManager::setPluginDataFile (const juce::File& file)
         knownPluginList.recreateFromXml (*xml);
     }
 
-#if JUCE_MAC
+#if JUCE_PLUGINHOST_AU && (JUCE_MAC || JUCE_IOS)
     videoEngine.addJob (new PluginScanJob (*this, std::make_unique<juce::AudioUnitPluginFormat>()), true);
 #endif
 
-#if JUCE_LINUX
+#if JUCE_PLUGINHOST_LADSPA && JUCE_LINUX
     videoEngine.addJob (new PluginScanJob (*this, std::make_unique<juce::LADSPAPluginFormat>()), true);
 #endif
 
+#if JUCE_PLUGINHOST_VST3 && (JUCE_MAC || JUCE_WINDOWS)
     videoEngine.addJob (new PluginScanJob (*this, std::make_unique<juce::VST3PluginFormat>()), true);
+#endif
 }
 
 //==============================================================================
