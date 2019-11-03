@@ -288,6 +288,7 @@ void AudioParameterAutomation::updateProcessor (double pts)
 
 void AudioParameterAutomation::parameterValueChanged (int parameterIndex, float newValue)
 {
+//    DBG ("Got Value: " << getName() << " - " << juce::String (newValue) << " " << juce::String (parameterIndex) << "/" << juce::String (parameter.getParameterIndex()));
     auto pts = controllable.getCurrentPTS();
     setValue (pts, newValue);
 }
@@ -295,9 +296,15 @@ void AudioParameterAutomation::parameterValueChanged (int parameterIndex, float 
 void AudioParameterAutomation::parameterGestureChanged (int parameterIndex, bool gestureIsStarting)
 {
     if (gestureIsStarting)
+    {
+//        DBG ("Start gesture: " << getName() << " " << juce::String (parameterIndex) << "/" << juce::String (parameter.getParameterIndex()));
         startAutomationGesture();
+    }
     else
+    {
+//        DBG ("End gesture: " << getName() << " " << juce::String (parameterIndex) << "/" << juce::String (parameter.getParameterIndex()));
         finishAutomationGesture();
+    }
 }
 
 //==============================================================================

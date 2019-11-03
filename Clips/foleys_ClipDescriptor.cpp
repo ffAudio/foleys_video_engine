@@ -26,6 +26,7 @@ namespace IDs
     static juce::Identifier audioProcessor  { "AudioProcessor" };
     static juce::Identifier videoProcessor  { "VideoProcessor" };
     static juce::Identifier identifier      { "Identifier" };
+    static juce::Identifier index           { "Index" };
     static juce::Identifier name            { "Name" };
     static juce::Identifier parameter       { "Parameter" };
     static juce::Identifier pluginStatus    { "PluginStatus" };

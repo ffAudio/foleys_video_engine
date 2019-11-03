@@ -164,6 +164,8 @@ public:
     void setPosition (int64_t position)
     {
         FOLEYS_LOG ("Seek for sample position: " << position);
+//        auto videoPts = av_rescale_q (position, audioContext->time_base, videoContext->time_base);
+//        auto response = av_seek_frame (formatContext, videoStreamIdx, videoPts, AVSEEK_FLAG_BACKWARD);
         auto response = av_seek_frame (formatContext, audioStreamIdx, position, AVSEEK_FLAG_BACKWARD);
         if (response < 0)
         {

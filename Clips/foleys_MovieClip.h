@@ -85,7 +85,9 @@ public:
 
     /** When rendering non realtime (bounce), use this to wait for background
         threads to read ahead */
-    bool waitForDataReady (int samples) override;
+    bool waitForSamplesReady (int samples, int timeout=1000) override;
+
+    bool waitForFrameReady (double pts, int timeout=1000) override;
 
 private:
 

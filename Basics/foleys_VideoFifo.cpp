@@ -39,41 +39,52 @@ std::pair<int64_t, juce::Image> VideoFifo::popVideoFrame()
 
 std::pair<int64_t, juce::Image> VideoFifo::getVideoFrame (double timestamp) const
 {
+    const juce::int64 pts = timestamp * settings.timebase;
+
     const juce::ScopedLock sl (lock);
 
     auto vf = videoFrames.lower_bound (timestamp * settings.timebase);
-    if (vf != videoFrames.end())
-    {
-        const_cast<int64_t&>(lastViewedFrame) = vf->first;
-        return { vf->first, vf->second };
-    }
+    if (vf == videoFrames.end())
+        return {};
 
-    return {};
+    if (vf->first > pts && vf != videoFrames.begin())
+        --vf;
+
+    const_cast<int64_t&>(lastViewedFrame) = vf->first;
+    return { vf->first, vf->second };
 }
 
 bool VideoFifo::isFrameAvailable (double timestamp) const
 {
+    const juce::int64 pts = timestamp * settings.timebase;
+
     const juce::ScopedLock sl (lock);
 
-    auto vf = videoFrames.lower_bound (timestamp * settings.timebase);
-    if (vf != videoFrames.end())
-    {
-        auto frameEnd = double (vf->first + settings.defaultDuration) / settings.timebase;
-        return timestamp <= frameEnd;
-    }
+    auto vf = videoFrames.lower_bound (pts);
+    if (vf == videoFrames.end())
+        return false;
 
-    return false;
+    if (vf->first > pts && vf != videoFrames.begin())
+        --vf;
+
+    return vf->first <= pts && vf->first + settings.defaultDuration > pts;
 }
 
-int64_t VideoFifo::getFrameCountForTime (double time) const
+int64_t VideoFifo::getFrameCountForTime (double timestamp) const
 {
+    const juce::int64 pts = timestamp * settings.timebase;
+
     const juce::ScopedLock sl (lock);
 
-    auto vf = videoFrames.lower_bound (time * settings.timebase);
-    if (vf != videoFrames.end())
-        return vf->first;
+    auto vf = videoFrames.lower_bound (pts);
+    if (vf == videoFrames.end())
+        return -1;
 
-    return -1;
+    if (vf->first > pts && vf != videoFrames.begin())
+        --vf;
+
+    return vf->first
+    ;
 }
 
 size_t VideoFifo::size() const
@@ -88,7 +99,7 @@ int VideoFifo::getNumAvailableFrames() const
 
     auto it = videoFrames.lower_bound (lastViewedFrame);
     if (it == videoFrames.end())
-        return int (std::min (videoFrames.size(), size_t (std::numeric_limits<int>::max())));
+        return 0;
 
     return int (std::distance (it, videoFrames.end()));
 }
@@ -119,15 +130,21 @@ juce::Image VideoFifo::getOldestFrameForRecycling()
 {
     const juce::ScopedLock sl (lock);
 
-    juce::Image image;
+    if (framesPool.size() > 0)
+    {
+        auto image = framesPool.back();
+        framesPool.pop_back();
+        return image;
+    }
 
     if (reverse == false)
     {
         auto iterator = videoFrames.begin();
         if (iterator != videoFrames.end() && iterator->first < lastViewedFrame)
         {
-            image = iterator->second;
+            auto image = iterator->second;
             videoFrames.erase (iterator);
+            return image;
         }
     }
     else if (! videoFrames.empty())
@@ -136,34 +153,24 @@ juce::Image VideoFifo::getOldestFrameForRecycling()
         --iterator;
         if (iterator->first > lastViewedFrame)
         {
-            image = iterator->second;
+            auto image = iterator->second;
             videoFrames.erase (iterator);
+            return image;
         }
     }
 
-    if (image.isNull())
-        image = juce::Image (juce::Image::ARGB, settings.frameSize.width, settings.frameSize.height, false);
-
-    return image;
+    return juce::Image (juce::Image::ARGB, settings.frameSize.width, settings.frameSize.height, false);
 }
 
 void VideoFifo::clear()
 {
     const juce::ScopedLock sl (lock);
 
+    for (auto it : videoFrames)
+        framesPool.push_back (it.second);
+
     videoFrames.clear();
     lastViewedFrame = -1;
-}
-
-void VideoFifo::clearFramesOlderThan (int64_t count)
-{
-    const juce::ScopedLock sl (lock);
-
-    auto current = videoFrames.find (count);
-    if (current == videoFrames.begin())
-        return;
-
-    videoFrames.erase (videoFrames.begin(), --current);
 }
 
 VideoStreamSettings& VideoFifo::getVideoSettings()

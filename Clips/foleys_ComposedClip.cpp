@@ -185,12 +185,16 @@ void ComposedClip::getNextAudioBlock (const juce::AudioSourceChannelInfo& info)
     triggerAsyncUpdate();
 }
 
-bool ComposedClip::waitForDataReady (int samples)
+bool ComposedClip::waitForSamplesReady (int samples, int timeout)
 {
-    bool ready = true;
-
+    auto ready = true;
+    const auto start = juce::Time::getMillisecondCounter();
     for (auto clip : getActiveClips ([pos = position.load()](ClipDescriptor& clip) { return clip.clip->hasAudio() && pos >= clip.start && pos < clip.start + clip.length; }))
-        ready &= clip->clip->waitForDataReady (samples);
+    {
+        ready &= clip->clip->waitForSamplesReady (samples, std::min (timeout, int (start + timeout - juce::Time::getMillisecondCounter())));
+        if (ready == false)
+            break;
+    }
 
     return ready;
 }
@@ -281,17 +285,16 @@ int ComposedClip::getDefaultBufferSize() const
 
 void ComposedClip::handleAsyncUpdate()
 {
-    if (audioSettings.timebase > 0 && hasVideo())
+    if (audioSettings.timebase > 0)
     {
+        const auto v = hasVideo();
         auto seconds = getCurrentTimeInSeconds();
-        auto count = videoFifo.getFrameCountForTime (seconds);
-        if (count != lastShownFrame)
+        auto count = v ? videoFifo.getFrameCountForTime (seconds) : 0;
+        if (count != lastShownFrame || v == false)
         {
             sendTimecode (count, seconds, juce::sendNotificationAsync);
             lastShownFrame = count;
         }
-
-        videoFifo.clearFramesOlderThan (count);
     }
 }
 

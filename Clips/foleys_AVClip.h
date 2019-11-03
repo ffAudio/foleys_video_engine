@@ -111,9 +111,19 @@ public:
 
     /** When rendering non realtime (bounce), use this to wait for background
         threads to read ahead */
-    virtual bool waitForDataReady (int samples)
+    virtual bool waitForSamplesReady (int samples, int timeout=1000)
     {
         juce::ignoreUnused (samples);
+        juce::ignoreUnused (timeout);
+        return true;
+    }
+
+    /** When rendering non realtime (bounce), use this to wait for background
+     threads to read ahead */
+    virtual bool waitForFrameReady (double pts, int timeout=1000)
+    {
+        juce::ignoreUnused (pts);
+        juce::ignoreUnused (timeout);
         return true;
     }
 
