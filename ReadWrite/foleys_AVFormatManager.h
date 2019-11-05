@@ -49,8 +49,9 @@ public:
 
     void registerFactory (const juce::String& schema, std::function<AVClip*(foleys::VideoEngine& videoEngine, juce::URL url, StreamTypes type)> factory);
 
-private:
     juce::AudioFormatManager audioFormatManager;
+
+private:
 
     std::map<juce::String, std::function<AVClip*(foleys::VideoEngine& videoEngine, juce::URL url, StreamTypes type)>> factories;
 

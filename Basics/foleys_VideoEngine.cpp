@@ -163,6 +163,11 @@ VideoPluginManager& VideoEngine::getVideoPluginManager()
     return videoPluginManager;
 }
 
+juce::AudioFormatManager& VideoEngine::getAudioFormatManager()
+{
+    return formatManager.audioFormatManager;
+}
+
 std::unique_ptr<VideoProcessor> VideoEngine::createVideoPluginInstance (const juce::String& identifierString,
                                                                         juce::String& error) const
 {
