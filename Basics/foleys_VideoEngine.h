@@ -92,6 +92,11 @@ public:
     VideoPluginManager& getVideoPluginManager();
 
     /**
+     Grants access to the VideoPluginManager, e.g. to register VideoProcessor factories
+     */
+    juce::AudioFormatManager& getAudioFormatManager();
+
+    /**
      Use the VideoPluginManager to create a VideoProcessor instance.
      */
     std::unique_ptr<VideoProcessor> createVideoPluginInstance (const juce::String& identifierString,

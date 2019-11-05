@@ -114,6 +114,8 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioProcessorAdapter)
 };
 
+//==============================================================================
+
 struct VideoProcessorAdapter : public ProcessorController::ProcessorAdapter
 {
     VideoProcessorAdapter (std::unique_ptr<VideoProcessor> p) : processor (std::move (p)) {}
