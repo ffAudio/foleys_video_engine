@@ -39,6 +39,11 @@ const juce::String& ProcessorParameter::getName() const
     return name;
 }
 
+juce::NamedValueSet& ProcessorParameter::getProperties()
+{
+    return properties;
+}
+
 void ProcessorParameter::sendUpdateNotification()
 {
     listeners.call ([this, v = getRealValue()](Listener& l) { l.valueChanged (*this, v); });

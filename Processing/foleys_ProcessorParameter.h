@@ -50,8 +50,9 @@ public:
 
     virtual ~ProcessorParameter() = default;
 
-    const juce::String& getParameterID() const;
-    const juce::String& getName() const;
+    const juce::String&  getParameterID() const;
+    const juce::String&  getName() const;
+    juce::NamedValueSet& getProperties();
 
     virtual const int getNumSteps() const = 0;
 
@@ -81,8 +82,10 @@ public:
     void sendUpdateNotification();
 
 private:
-    const juce::String paramID;
-    juce::String name;
+    const juce::String  paramID;
+    juce::String        name;
+    juce::NamedValueSet properties;
+
     int gestureInProgress = 0;
 
     juce::ListenerList<Listener> listeners;

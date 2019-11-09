@@ -82,6 +82,8 @@ public:
     virtual juce::String getText (float normalisedValue, int numDigits = 2) const = 0;
     virtual double getValueForText (const juce::String& text) const = 0;
 
+    virtual juce::NamedValueSet& getParameterProperties() = 0;
+
     virtual bool isVideoParameter() { return false; }
     virtual bool isAudioParameter() { return false; }
 
@@ -141,6 +143,8 @@ public:
 
     juce::String getName() const override;
 
+    juce::NamedValueSet& getParameterProperties() override;
+
     int getNumSteps() const override;
     juce::StringArray getAllValueStrings() const override;
 
@@ -158,6 +162,7 @@ public:
 private:
 
     juce::AudioProcessorParameter& parameter;
+    juce::NamedValueSet            properties;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioParameterAutomation)
 };
@@ -169,7 +174,7 @@ class VideoParameterAutomation  : public ParameterAutomation,
                                   private ProcessorParameter::Listener
 {
 public:
-    VideoParameterAutomation (ProcessorController& controller,
+    VideoParameterAutomation (ControllableBase& controller,
                               ProcessorParameter& parameter,
                               const juce::ValueTree& state,
                               juce::UndoManager*);
@@ -177,6 +182,8 @@ public:
     ~VideoParameterAutomation() override;
 
     juce::String getName() const override;
+
+    juce::NamedValueSet& getParameterProperties() override;
 
     int getNumSteps() const override;
     juce::StringArray getAllValueStrings() const override;

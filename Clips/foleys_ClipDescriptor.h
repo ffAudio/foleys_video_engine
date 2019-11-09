@@ -32,10 +32,12 @@ class ComposedClip;
  in compositing the ComposedClip. It also holds a list of VideoProcessors
  and AudioProcessors including their automation data relative to the clip.
  */
-class ClipDescriptor  : public ControllableBase,
-                        private juce::ValueTree::Listener
+class ClipDescriptor  : private juce::ValueTree::Listener
 {
 public:
+
+    class ClipParameterController;
+
     /**
      Create a ClipDescriptor from an AVClip, that will be included in the ComposedClip.
      Every ClipDescriptor can only live in one ComposedClip.
@@ -105,6 +107,9 @@ public:
 
     void updateSampleCounts();
 
+    ClipParameterController& getAudioParameterController();
+    ClipParameterController& getVideoParameterController();
+
     void addProcessor (juce::ValueTree tree, int index = -1);
 
     void addAudioProcessor (std::unique_ptr<ProcessorController> controller, int index=-1);
@@ -142,30 +147,48 @@ public:
     /** Add a listener from the ClipDescriptor */
     void removeListener (Listener* listener);
 
-    //==============================================================================
-    // From ControllableBase:
+    void notifyParameterAutomationChange (const ParameterAutomation* p);
 
     /**
      Since the automation values are time dependent, every instance, that inherits
      ControllableBase needs a way to tell the local time (presentation time stamp).
      */
-    double getCurrentPTS() const override;
+    double getCurrentPTS() const;
 
-    /**
-     Grant access to the individual parameters.
-     */
-    std::vector<std::unique_ptr<ParameterAutomation>>& getParameters() override { return parameters; }
-    int getNumParameters() const override { return int (parameters.size()); }
+    void updateAudioAutomations (double pts);
+    void updateVideoAutomations (double pts);
 
-    /**
-     This notifies all ProcessorController::Listeners about an automation change,
-     so they can adapt accordingly by redrawing the curves or invalidating pre-rendered
-     video frames.
-     */
-    void notifyParameterAutomationChange (const ParameterAutomation*) override;
+    //==============================================================================
 
+    class ClipParameterController : public ControllableBase
+    {
+    public:
+        ClipParameterController (ClipDescriptor& owner);
+
+        void setClip (const std::vector<std::unique_ptr<ProcessorParameter>>& parameters,
+                      juce::ValueTree node,
+                      juce::UndoManager* undoManager);
+
+        std::vector<std::unique_ptr<ParameterAutomation>>& getParameters() override;
+        int getNumParameters() const override;
+
+        double getCurrentPTS() const override;
+        void notifyParameterAutomationChange (const ParameterAutomation*) override;
+
+        void updateAutomations (double pts);
+
+    private:
+        ClipDescriptor& owner;
+        std::vector<std::unique_ptr<ParameterAutomation>> parameters;
+
+        JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ClipParameterController)
+    };
 
 private:
+
+    ClipParameterController audioParameterController { *this };
+    ClipParameterController videoParameterController { *this };
+
     std::atomic<int64_t> start {0};
     std::atomic<int64_t> length {0};
     std::atomic<int64_t> offset {0};
@@ -191,8 +214,6 @@ private:
     ComposedClip& owner;
 
     juce::ListenerList<Listener> listeners;
-
-    std::vector<std::unique_ptr<ParameterAutomation>> parameters;
 
     std::vector<std::unique_ptr<ProcessorController>> videoProcessors;
     std::vector<std::unique_ptr<ProcessorController>> audioProcessors;

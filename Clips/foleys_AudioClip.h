@@ -40,6 +40,9 @@ public:
     AudioClip (VideoEngine& videoEngine);
     virtual ~AudioClip() = default;
 
+    /** Used to identify the clip type to the user */
+    juce::String getClipType() const override { return NEEDS_TRANS ("Audio"); }
+
     juce::String getDescription() const override;
 
     juce::URL getMediaFile() const override;
@@ -86,6 +89,7 @@ private:
     double sampleRate = 0.0;
     double originalSampleRate = 0.0;
     int    samplesPerBlock = 0;
+    double lastGain = 0.0;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioClip)
 };

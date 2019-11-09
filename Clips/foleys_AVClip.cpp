@@ -56,6 +56,26 @@ void AVClip::removeTimecodeListener (TimecodeListener* listener)
     timecodeListeners.remove (listener);
 }
 
+const std::vector<std::unique_ptr<ProcessorParameter>>& AVClip::getVideoParameters()
+{
+    return videoParameters;
+}
+
+const std::vector<std::unique_ptr<ProcessorParameter>>& AVClip::getAudioParameters()
+{
+    return audioParameters;
+}
+
+void AVClip::addAudioParameter (std::unique_ptr<ProcessorParameter> parameter)
+{
+    audioParameters.push_back (std::move (parameter));
+}
+
+void AVClip::addVideoParameter (std::unique_ptr<ProcessorParameter> parameter)
+{
+    videoParameters.push_back (std::move (parameter));
+}
+
 juce::TimeSliceClient* AVClip::getBackgroundJob()
 {
     return nullptr;

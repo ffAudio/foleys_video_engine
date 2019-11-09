@@ -42,6 +42,9 @@ public:
     MovieClip (VideoEngine& videoEngine);
     virtual ~MovieClip() = default;
 
+    /** Used to identify the clip type to the user */
+    juce::String getClipType() const override { return NEEDS_TRANS ("Movie"); }
+
     juce::String getDescription() const override;
 
     bool openFromFile (const juce::File file);
@@ -121,6 +124,7 @@ private:
     int64_t nextReadPosition = 0;
     int64_t lastShownFrame = -1;
     bool    loop = false;
+    double  lastGain = 0.0;
 
     Size originalSize;
 

@@ -24,6 +24,7 @@ namespace foleys
 
 AudioClip::AudioClip (VideoEngine& engine) : foleys::AVClip (engine)
 {
+    addAudioParameter (std::make_unique<ProcessorParameterFloat>("gain", "Gain", juce::NormalisableRange<double>(-100.0, 6.0, 0.1), -6.0));
 }
 
 juce::String AudioClip::getDescription() const
@@ -112,12 +113,17 @@ void AudioClip::releaseResources()
 
 void AudioClip::getNextAudioBlock (const juce::AudioSourceChannelInfo& info)
 {
+    const auto gain = juce::Decibels::decibelsToGain (getAudioParameters()[0]->getRealValue());
+
     if (resampler.get() != nullptr)
         resampler->getNextAudioBlock (info);
     else if (readerSource.get() != nullptr)
         readerSource->getNextAudioBlock (info);
     else
         info.clearActiveBufferRegion();
+
+    info.buffer->applyGainRamp (info.startSample, info.numSamples, lastGain, gain);
+    lastGain = gain;
 }
 
 void AudioClip::setNextReadPosition (juce::int64 samples)

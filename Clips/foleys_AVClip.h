@@ -47,6 +47,9 @@ public:
 
     virtual ~AVClip() = default;
 
+    /** Used to identify the clip type to the user */
+    virtual juce::String getClipType() const = 0;
+
     /** returns the original media file to restore */
     virtual juce::URL getMediaFile() const { return {}; }
 
@@ -127,6 +130,9 @@ public:
         return true;
     }
 
+    const std::vector<std::unique_ptr<ProcessorParameter>>& getVideoParameters();
+    const std::vector<std::unique_ptr<ProcessorParameter>>& getAudioParameters();
+
     /** @internal */
     virtual juce::TimeSliceClient* getBackgroundJob();
 
@@ -140,10 +146,16 @@ protected:
     /** Subclasses can call this to notify displays, that the time code has changed, e.g. to display a new frame */
     void sendTimecode (int64_t count, double seconds, juce::NotificationType nt);
 
+    void addAudioParameter (std::unique_ptr<ProcessorParameter> parameter);
+    void addVideoParameter (std::unique_ptr<ProcessorParameter> parameter);
+
     //==============================================================================
 
 private:
     juce::WeakReference<VideoEngine> videoEngine;
+
+    std::vector<std::unique_ptr<ProcessorParameter>> videoParameters;
+    std::vector<std::unique_ptr<ProcessorParameter>> audioParameters;
 
     juce::ListenerList<TimecodeListener> timecodeListeners;
 
