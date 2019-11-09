@@ -28,6 +28,9 @@ namespace IDs
     static juce::Identifier identifier      { "Identifier" };
     static juce::Identifier index           { "Index" };
     static juce::Identifier name            { "Name" };
+    static juce::Identifier value           { "Value" };
+    static juce::Identifier audioParameters { "AudioParameters" };
+    static juce::Identifier videoParameters { "VideoParameters" };
     static juce::Identifier parameter       { "Parameter" };
     static juce::Identifier pluginStatus    { "PluginStatus" };
     static juce::Identifier active          { "active" };
@@ -41,6 +44,9 @@ ClipDescriptor::ClipDescriptor (ComposedClip& ownerToUse, std::shared_ptr<AVClip
     auto mediaFile = clip->getMediaFile();
     if (mediaFile.toString (true).isNotEmpty())
         state.setProperty (IDs::source, mediaFile.toString (true), nullptr);
+
+    audioParameterController.setClip (clip->getAudioParameters(), state.getOrCreateChildWithName (IDs::audioParameters, nullptr), nullptr);
+    videoParameterController.setClip (clip->getVideoParameters(), state.getOrCreateChildWithName (IDs::videoParameters, nullptr), nullptr);
 
     state.getOrCreateChildWithName (IDs::videoProcessors, nullptr);
     state.getOrCreateChildWithName (IDs::audioProcessors, nullptr);
@@ -59,6 +65,9 @@ ClipDescriptor::ClipDescriptor (ComposedClip& ownerToUse, juce::ValueTree stateT
     {
         auto source = state.getProperty (IDs::source);
         clip = engine->createClipFromFile ({ source });
+
+        audioParameterController.setClip (clip->getAudioParameters(), state.getOrCreateChildWithName (IDs::audioParameters, nullptr), nullptr);
+        videoParameterController.setClip (clip->getVideoParameters(), state.getOrCreateChildWithName (IDs::videoParameters, nullptr), nullptr);
 
         const auto audioProcessorsNode = state.getOrCreateChildWithName (IDs::audioProcessors, nullptr);
         for (const auto& audioProcessor : audioProcessorsNode)
@@ -221,6 +230,16 @@ void ClipDescriptor::updateSampleCounts()
     start = sampleRate * double (state.getProperty (IDs::start));
     length = sampleRate * double (state.getProperty (IDs::length));
     offset = sampleRate * double (state.getProperty (IDs::offset));
+}
+
+ClipDescriptor::ClipParameterController& ClipDescriptor::getAudioParameterController()
+{
+    return audioParameterController;
+}
+
+ClipDescriptor::ClipParameterController& ClipDescriptor::getVideoParameterController()
+{
+    return videoParameterController;
 }
 
 int64_t ClipDescriptor::getStartInSamples() const { return start; }
@@ -391,6 +410,16 @@ void ClipDescriptor::readPluginStatesIntoValueTree()
         processor->readPluginStatesIntoValueTree();
 }
 
+void ClipDescriptor::updateAudioAutomations (double pts)
+{
+    audioParameterController.updateAutomations (pts);
+}
+
+void ClipDescriptor::updateVideoAutomations (double pts)
+{
+    videoParameterController.updateAutomations (pts);
+}
+
 ComposedClip& ClipDescriptor::getOwningClip()
 {
     return owner;
@@ -399,6 +428,60 @@ ComposedClip& ClipDescriptor::getOwningClip()
 const ComposedClip& ClipDescriptor::getOwningClip() const
 {
     return owner;
+}
+
+//==============================================================================
+
+ClipDescriptor::ClipParameterController::ClipParameterController (ClipDescriptor& ownerToUse)
+  : owner (ownerToUse)
+{
+}
+
+void ClipDescriptor::ClipParameterController::setClip (const std::vector<std::unique_ptr<ProcessorParameter>>& parametersToConnect,
+                                                       juce::ValueTree parameterNode,
+                                                       juce::UndoManager* undoManager)
+{
+    parameters.clear();
+
+    for (auto& parameter : parametersToConnect)
+    {
+        auto node = parameterNode.getChildWithProperty (IDs::name, parameter->getName());
+        if (!node.isValid())
+        {
+            node = juce::ValueTree { IDs::parameter };
+            node.setProperty (IDs::name, parameter->getName(), undoManager);
+            node.setProperty (IDs::value, parameter->getDefaultValue(), undoManager);
+            parameterNode.appendChild (node, undoManager);
+        }
+        parameters.push_back (std::make_unique<VideoParameterAutomation> (*this, *parameter, node, undoManager));
+    }
+
+}
+
+std::vector<std::unique_ptr<ParameterAutomation>>& ClipDescriptor::ClipParameterController::getParameters()
+{
+    return parameters;
+}
+
+int ClipDescriptor::ClipParameterController::getNumParameters() const
+{
+    return int (parameters.size());
+}
+
+double ClipDescriptor::ClipParameterController::getCurrentPTS() const
+{
+    return owner.getCurrentPTS();
+}
+
+void ClipDescriptor::ClipParameterController::updateAutomations (double pts)
+{
+    for (auto& parameter : parameters)
+        parameter->updateProcessor (pts);
+}
+
+void ClipDescriptor::ClipParameterController::notifyParameterAutomationChange (const ParameterAutomation*)
+{
+
 }
 
 } // foleys

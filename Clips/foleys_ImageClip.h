@@ -38,6 +38,9 @@ public:
     ImageClip (VideoEngine& videoEngine);
     virtual ~ImageClip() = default;
 
+    /** Used to identify the clip type to the user */
+    juce::String getClipType() const override { return NEEDS_TRANS ("Still Image"); }
+
     juce::String getDescription() const override;
 
     juce::URL getMediaFile() const override;

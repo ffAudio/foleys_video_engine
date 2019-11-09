@@ -44,6 +44,9 @@ public:
     ComposedClip (VideoEngine& videoEngine);
     virtual ~ComposedClip() = default;
 
+    /** Used to identify the clip type to the user */
+    juce::String getClipType() const override { return NEEDS_TRANS ("Edit"); }
+
     /** Forces the video to re-render, e.g. if a parameter was changed */
     void invalidateVideo();
 

@@ -36,6 +36,8 @@ void DefaultAudioMixer::mixAudio (const juce::AudioSourceChannelInfo& info,
         const auto start = clip->getStartInSamples();
         if (position + info.numSamples >= start && position < start + clip->getLengthInSamples())
         {
+            clip->updateAudioAutomations (timeInSeconds - clip->getStart());
+
             const auto offset = std::max (int (start - position), 0);
             juce::AudioSourceChannelInfo reader (&mixBuffer, 0, info.numSamples - offset);
             clip->clip->getNextAudioBlock (reader);

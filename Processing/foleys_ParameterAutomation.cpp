@@ -23,7 +23,6 @@ namespace foleys
 
 namespace IDs
 {
-    static juce::Identifier value           { "Value" };
     static juce::Identifier keyframe        { "Keyframe" };
     static juce::Identifier time            { "Time" };
 }
@@ -260,6 +259,11 @@ juce::String AudioParameterAutomation::getName() const
     return parameter.getName (128);
 }
 
+juce::NamedValueSet& AudioParameterAutomation::getParameterProperties()
+{
+    return properties;
+}
+
 int AudioParameterAutomation::getNumSteps() const
 {
     return parameter.getNumSteps();
@@ -309,7 +313,7 @@ void AudioParameterAutomation::parameterGestureChanged (int parameterIndex, bool
 
 //==============================================================================
 
-VideoParameterAutomation::VideoParameterAutomation (ProcessorController& controllerToUse,
+VideoParameterAutomation::VideoParameterAutomation (ControllableBase& controllerToUse,
                                                     ProcessorParameter& parameterToUse,
                                                     const juce::ValueTree& stateToUse,
                                                     juce::UndoManager* undo)
@@ -321,6 +325,7 @@ VideoParameterAutomation::VideoParameterAutomation (ProcessorController& control
 {
     parameter.addListener (this);
 }
+
 VideoParameterAutomation::~VideoParameterAutomation()
 {
     parameter.removeListener (this);
@@ -329,6 +334,11 @@ VideoParameterAutomation::~VideoParameterAutomation()
 juce::String VideoParameterAutomation::getName() const
 {
     return parameter.getName();
+}
+
+juce::NamedValueSet& VideoParameterAutomation::getParameterProperties()
+{
+    return parameter.getProperties();
 }
 
 int VideoParameterAutomation::getNumSteps() const
