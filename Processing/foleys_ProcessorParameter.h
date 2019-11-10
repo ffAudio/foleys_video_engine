@@ -45,12 +45,12 @@ public:
      @param paramID an unique identifier for host and your processor to identify the parameter
      @param name the name the host will use to display the automation
      */
-    ProcessorParameter (const juce::String& paramID,
+    ProcessorParameter (const juce::Identifier& paramID,
                         const juce::String& name);
 
     virtual ~ProcessorParameter() = default;
 
-    const juce::String&  getParameterID() const;
+    const juce::Identifier&  getParameterID() const;
     const juce::String&  getName() const;
     juce::NamedValueSet& getProperties();
 
@@ -60,6 +60,9 @@ public:
 
     virtual double getNormalisedValue() const = 0;
     virtual double getRealValue() const = 0;
+
+    virtual double normaliseValue (double unnormalised) const = 0;
+    virtual double unNormaliseValue (double normalised) const = 0;
 
     /**
      Returns the default value in normalised for the automation to initialise.
@@ -82,15 +85,17 @@ public:
     void sendUpdateNotification();
 
 private:
-    const juce::String  paramID;
-    juce::String        name;
-    juce::NamedValueSet properties;
+    const juce::Identifier paramID;
+    juce::String           name;
+    juce::NamedValueSet    properties;
 
     int gestureInProgress = 0;
 
     juce::ListenerList<Listener> listeners;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ProcessorParameter)
 };
+
+using ParameterMap=std::map<juce::Identifier, std::unique_ptr<ProcessorParameter>>;
 
 //==============================================================================
 
@@ -100,8 +105,8 @@ private:
 class ProcessorParameterFloat : public ProcessorParameter
 {
 public:
-    ProcessorParameterFloat (const juce::String& paramID,
-                             const juce::String& name,
+    ProcessorParameterFloat (const juce::Identifier&         paramID,
+                             const juce::String&             name,
                              juce::NormalisableRange<double> range,
                              double defaultValue,
                              std::function<juce::String (double, int)> valueToText = nullptr,
@@ -117,6 +122,9 @@ public:
 
     void setNormalisedValue (double value) override;
     void setRealValue (double value) override;
+
+    double normaliseValue (double unnormalised) const override;
+    double unNormaliseValue (double normalised) const override;
 
     juce::String getText (float normalisedValue, int numDigits = 0) const override;
     double getValueForText (const juce::String& text) const override;
@@ -141,17 +149,17 @@ private:
 class ProcessorState
 {
 public:
-    ProcessorState (void*, juce::UndoManager*, const juce::String& rootType, std::vector<std::unique_ptr<ProcessorParameter>> layout);
+    ProcessorState (void*, juce::UndoManager*, const juce::String& rootType, ParameterMap layout);
 
-    ProcessorParameter* getParameter (const juce::String& paramID);
+    ProcessorParameter* getParameter (const juce::Identifier& paramID);
 
-    double* getRawParameterValue (const juce::String& paramID);
+    double* getRawParameterValue (const juce::Identifier& paramID);
 
     std::vector<ProcessorParameter*> getParameters();
 
     juce::ValueTree state;
 private:
-    std::map<juce::String, std::unique_ptr<ProcessorParameter>> parameters;
+    ParameterMap       parameters;
     juce::UndoManager* undoManager = nullptr;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ProcessorState)
 };

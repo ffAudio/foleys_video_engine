@@ -75,7 +75,7 @@ struct AudioProcessorAdapter : public ProcessorController::ProcessorAdapter
     };
 
     void createAutomatedParameters (ProcessorController& controller,
-                                    std::vector<std::unique_ptr<ParameterAutomation>>& parameters,
+                                    AutomationMap& parameters,
                                     juce::ValueTree& parameterNode,
                                     juce::UndoManager* undoManager) override
     {
@@ -96,7 +96,10 @@ struct AudioProcessorAdapter : public ProcessorController::ProcessorAdapter
                     parameterNode.appendChild (node, undoManager);
                 }
 
-                parameters.push_back (std::make_unique<AudioParameterAutomation> (controller, *parameter, node, undoManager));
+                if (auto* pWithID = dynamic_cast<juce::AudioProcessorParameterWithID*>(parameter))
+                    parameters [juce::Identifier (pWithID->paramID)] = std::make_unique<AudioParameterAutomation> (controller, *pWithID, node, undoManager);
+                else
+                    parameters [juce::Identifier (juce::String (parameter->getParameterIndex()))] = std::make_unique<AudioParameterAutomation> (controller, *parameter, node, undoManager);
             }
         }
     }
@@ -134,7 +137,7 @@ struct VideoProcessorAdapter : public ProcessorController::ProcessorAdapter
     std::unique_ptr<VideoProcessor> processor;
 
     void createAutomatedParameters (ProcessorController& controller,
-                                    std::vector<std::unique_ptr<ParameterAutomation>>& parameters,
+                                    AutomationMap& parameters,
                                     juce::ValueTree& parameterNode,
                                     juce::UndoManager* undoManager) override
     {
@@ -151,7 +154,7 @@ struct VideoProcessorAdapter : public ProcessorController::ProcessorAdapter
                 node.setProperty (IDs::value, parameter->getDefaultValue(), undoManager);
                 parameterNode.appendChild (node, undoManager);
             }
-            parameters.push_back (std::make_unique<VideoParameterAutomation> (controller, *parameter, node, undoManager));
+            parameters [parameter->getParameterID()] = std::make_unique<VideoParameterAutomation> (controller, *parameter, node, undoManager);
         }
     }
 
@@ -276,10 +279,18 @@ double ProcessorController::getCurrentPTS() const
     return owner.getCurrentPTS();
 }
 
+double ProcessorController::getValueAtTime (juce::Identifier paramID, double pts, double defaultValue)
+{
+    if (auto* parameter = parameters [paramID].get())
+        return parameter->getRealValueForTime (pts);
+
+    return defaultValue;
+}
+
 void ProcessorController::updateAutomation (double pts)
 {
     for (auto& parameter : parameters)
-        parameter->updateProcessor (pts);
+        parameter.second->updateProcessor (pts);
 }
 
 void ProcessorController::notifyParameterAutomationChange (const ParameterAutomation* parameter)
@@ -311,7 +322,7 @@ void ProcessorController::setPosition (juce::int64 timeInSamples, double timeInS
     adapter->setPosition (timeInSamples, timeInSeconds);
 }
 
-std::vector<std::unique_ptr<ParameterAutomation>>& ProcessorController::getParameters()
+AutomationMap& ProcessorController::getParameters()
 {
     return parameters;
 }

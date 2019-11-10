@@ -24,6 +24,7 @@ namespace foleys
 ImageClip::ImageClip (VideoEngine& engine)
   : AVClip (engine)
 {
+    addDefaultVideoParameters (*this);
 }
 
 juce::String ImageClip::getDescription() const

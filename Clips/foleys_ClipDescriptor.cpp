@@ -437,7 +437,7 @@ ClipDescriptor::ClipParameterController::ClipParameterController (ClipDescriptor
 {
 }
 
-void ClipDescriptor::ClipParameterController::setClip (const std::vector<std::unique_ptr<ProcessorParameter>>& parametersToConnect,
+void ClipDescriptor::ClipParameterController::setClip (const ParameterMap& parametersToConnect,
                                                        juce::ValueTree parameterNode,
                                                        juce::UndoManager* undoManager)
 {
@@ -445,20 +445,20 @@ void ClipDescriptor::ClipParameterController::setClip (const std::vector<std::un
 
     for (auto& parameter : parametersToConnect)
     {
-        auto node = parameterNode.getChildWithProperty (IDs::name, parameter->getName());
+        auto node = parameterNode.getChildWithProperty (IDs::name, parameter.second->getName());
         if (!node.isValid())
         {
             node = juce::ValueTree { IDs::parameter };
-            node.setProperty (IDs::name, parameter->getName(), undoManager);
-            node.setProperty (IDs::value, parameter->getDefaultValue(), undoManager);
+            node.setProperty (IDs::name, parameter.second->getName(), undoManager);
+            node.setProperty (IDs::value, parameter.second->getDefaultValue(), undoManager);
             parameterNode.appendChild (node, undoManager);
         }
-        parameters.push_back (std::make_unique<VideoParameterAutomation> (*this, *parameter, node, undoManager));
+        parameters [parameter.second->getParameterID()] = std::make_unique<VideoParameterAutomation> (*this, *parameter.second, node, undoManager);
     }
 
 }
 
-std::vector<std::unique_ptr<ParameterAutomation>>& ClipDescriptor::ClipParameterController::getParameters()
+AutomationMap& ClipDescriptor::ClipParameterController::getParameters()
 {
     return parameters;
 }
@@ -473,10 +473,18 @@ double ClipDescriptor::ClipParameterController::getCurrentPTS() const
     return owner.getCurrentPTS();
 }
 
+double ClipDescriptor::ClipParameterController::getValueAtTime (juce::Identifier paramID, double pts, double defaultValue)
+{
+    if (auto* parameter = parameters [paramID].get())
+        return parameter->getRealValueForTime (pts);
+
+    return defaultValue;
+}
+
 void ClipDescriptor::ClipParameterController::updateAutomations (double pts)
 {
     for (auto& parameter : parameters)
-        parameter->updateProcessor (pts);
+        parameter.second->updateProcessor (pts);
 }
 
 void ClipDescriptor::ClipParameterController::notifyParameterAutomationChange (const ParameterAutomation*)

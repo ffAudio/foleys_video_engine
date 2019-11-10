@@ -24,7 +24,8 @@ namespace foleys
 MovieClip::MovieClip (VideoEngine& engine)
   : AVClip (engine)
 {
-    addAudioParameter (std::make_unique<ProcessorParameterFloat>("gain", "Gain", juce::NormalisableRange<double>(-100.0, 6.0, 0.1), -6.0));
+    addDefaultAudioParameters (*this);
+    addDefaultVideoParameters (*this);
 }
 
 juce::String MovieClip::getDescription() const
@@ -186,7 +187,7 @@ bool MovieClip::waitForFrameReady (double pts, int timeout)
 
 void MovieClip::getNextAudioBlock (const juce::AudioSourceChannelInfo& info)
 {
-    const auto gain = juce::Decibels::decibelsToGain (getAudioParameters()[0]->getRealValue());
+    const auto gain = juce::Decibels::decibelsToGain (getAudioParameters().at(IDs::gain)->getRealValue());
 
     if (movieReader && movieReader->isOpenedOk() && movieReader->hasAudio())
     {

@@ -58,7 +58,8 @@ public:
     void setKeyframe (int index, double pts, double value);
     void deleteKeyframe (int index);
 
-    double getValueForTime (double pts) const;
+    double         getValueForTime (double pts) const;
+    virtual double getRealValueForTime (double pts) const = 0;
 
     double getValue() const;
 
@@ -149,6 +150,7 @@ public:
     juce::StringArray getAllValueStrings() const override;
 
     void updateProcessor (double pts) override;
+    double getRealValueForTime (double pts) const override;
 
     void parameterValueChanged (int parameterIndex, float newValue) override;
 
@@ -189,6 +191,7 @@ public:
     juce::StringArray getAllValueStrings() const override;
 
     void updateProcessor (double pts) override;
+    double getRealValueForTime (double pts) const override;
 
     void valueChanged (ProcessorParameter& parameter, double newValue) override;
     void gestureStarted (ProcessorParameter& parameter) override;

@@ -135,6 +135,4 @@
 #include "ReadWrite/FFmpeg/foleys_FFmpegWriter.h"
 #endif
 
-#include "Plugins/foleys_PanningAudioProcessor.h"
-#include "Plugins/foleys_PositioningVideoProcessor.h"
 #include "Plugins/foleys_ColourCurveVideoProcessor.h"

@@ -60,6 +60,8 @@ public:
     /** Return the current timestamp in seconds of the owning clip */
     double getCurrentPTS() const override;
 
+    double getValueAtTime (juce::Identifier paramID, double pts, double defaultValue) override;
+
     /**
      This sets all parameters in the contained processor according to the current
      time point in seconds.
@@ -89,7 +91,7 @@ public:
         virtual juce::AudioProcessor* getAudioProcessor() { return nullptr; }
 
         virtual void createAutomatedParameters (ProcessorController& controller,
-                                                std::vector<std::unique_ptr<ParameterAutomation>>& parameters,
+                                                AutomationMap& parameters,
                                                 juce::ValueTree& parameterNode,
                                                 juce::UndoManager* undoManager) = 0;
 
@@ -108,7 +110,7 @@ public:
         AudioProcessor or if loading of the plugin failed. */
     VideoProcessor* getVideoProcessor();
 
-    std::vector<std::unique_ptr<ParameterAutomation>>& getParameters() override;
+    AutomationMap& getParameters() override;
     int getNumParameters() const override;
 
     void setActive (bool shouldBeActive);
@@ -122,7 +124,7 @@ private:
     juce::ValueTree state;
 
     std::unique_ptr<ProcessorAdapter> adapter;
-    std::vector<std::unique_ptr<ParameterAutomation>> parameters;
+    AutomationMap parameters;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ProcessorController)
 };
