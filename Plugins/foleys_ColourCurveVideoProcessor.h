@@ -25,15 +25,15 @@ namespace foleys
 
 namespace IDs
 {
-    static juce::String redBrightness   { "01redBrightness" };
-    static juce::String redContrast     { "02redContrast" };
-    static juce::String redGamma        { "03redGamma" };
-    static juce::String greenBrightness { "04greenBrightness" };
-    static juce::String greenContrast   { "05greenContrast" };
-    static juce::String greenGamma      { "06greenGamma" };
-    static juce::String blueBrightness  { "07blueBrightness" };
-    static juce::String blueContrast    { "08blueContrast" };
-    static juce::String blueGamma       { "09blueGamma" };
+    static juce::Identifier redBrightness   { "01redBrightness" };
+    static juce::Identifier redContrast     { "02redContrast" };
+    static juce::Identifier redGamma        { "03redGamma" };
+    static juce::Identifier greenBrightness { "04greenBrightness" };
+    static juce::Identifier greenContrast   { "05greenContrast" };
+    static juce::Identifier greenGamma      { "06greenGamma" };
+    static juce::Identifier blueBrightness  { "07blueBrightness" };
+    static juce::Identifier blueContrast    { "08blueContrast" };
+    static juce::Identifier blueGamma       { "09blueGamma" };
 }
 
 class ColourCurveVideoProcessor : public VideoProcessor
@@ -42,18 +42,18 @@ class ColourCurveVideoProcessor : public VideoProcessor
 public:
     static juce::String getPluginName() { return "Colour Curves"; }
 
-    std::vector<std::unique_ptr<ProcessorParameter>> createParameters()
+    ParameterMap createParameters()
     {
-        std::vector<std::unique_ptr<ProcessorParameter>> params;
-        params.emplace_back (std::make_unique<ProcessorParameterFloat> (IDs::redBrightness, "Red Brightness", juce::NormalisableRange<double> (-1.0, 1.0), 0.0));
-        params.emplace_back (std::make_unique<ProcessorParameterFloat> (IDs::redContrast, "Red Contrast", juce::NormalisableRange<double> (-1.0, 1.0), 0.0));
-        params.emplace_back (std::make_unique<ProcessorParameterFloat> (IDs::redGamma, "Red Gamma", juce::NormalisableRange<double> (0.1, 4.0), 1.0));
-        params.emplace_back (std::make_unique<ProcessorParameterFloat> (IDs::greenBrightness, "Green Brightness", juce::NormalisableRange<double> (-1.0, 1.0), 0.0));
-        params.emplace_back (std::make_unique<ProcessorParameterFloat> (IDs::greenContrast, "Green Contrast", juce::NormalisableRange<double> (-1.0, 1.0), 0.0));
-        params.emplace_back (std::make_unique<ProcessorParameterFloat> (IDs::greenGamma, "Green Gamma", juce::NormalisableRange<double> (0.1, 4.0), 1.0));
-        params.emplace_back (std::make_unique<ProcessorParameterFloat> (IDs::blueBrightness, "Blue Brightness", juce::NormalisableRange<double> (-1.0, 1.0), 0.0));
-        params.emplace_back (std::make_unique<ProcessorParameterFloat> (IDs::blueContrast, "Blue Contrast", juce::NormalisableRange<double> (-1.0, 1.0), 0.0));
-        params.emplace_back (std::make_unique<ProcessorParameterFloat> (IDs::blueGamma, "Blue Gamma", juce::NormalisableRange<double> (0.1, 4.0), 1.0));
+        ParameterMap params;
+        params [IDs::redBrightness] = std::make_unique<ProcessorParameterFloat> (IDs::redBrightness, "Red Brightness", juce::NormalisableRange<double> (-1.0, 1.0), 0.0);
+        params [IDs::redContrast] = std::make_unique<ProcessorParameterFloat> (IDs::redContrast, "Red Contrast", juce::NormalisableRange<double> (-1.0, 1.0), 0.0);
+        params [IDs::redGamma] = std::make_unique<ProcessorParameterFloat> (IDs::redGamma, "Red Gamma", juce::NormalisableRange<double> (0.1, 4.0), 1.0);
+        params [IDs::greenBrightness] = std::make_unique<ProcessorParameterFloat> (IDs::greenBrightness, "Green Brightness", juce::NormalisableRange<double> (-1.0, 1.0), 0.0);
+        params [IDs::greenContrast] = std::make_unique<ProcessorParameterFloat> (IDs::greenContrast, "Green Contrast", juce::NormalisableRange<double> (-1.0, 1.0), 0.0);
+        params [IDs::greenGamma] = std::make_unique<ProcessorParameterFloat> (IDs::greenGamma, "Green Gamma", juce::NormalisableRange<double> (0.1, 4.0), 1.0);
+        params [IDs::blueBrightness] = std::make_unique<ProcessorParameterFloat> (IDs::blueBrightness, "Blue Brightness", juce::NormalisableRange<double> (-1.0, 1.0), 0.0);
+        params [IDs::blueContrast] = std::make_unique<ProcessorParameterFloat> (IDs::blueContrast, "Blue Contrast", juce::NormalisableRange<double> (-1.0, 1.0), 0.0);
+        params [IDs::blueGamma] = std::make_unique<ProcessorParameterFloat> (IDs::blueGamma, "Blue Gamma", juce::NormalisableRange<double> (0.1, 4.0), 1.0);
 
         return params;
     }

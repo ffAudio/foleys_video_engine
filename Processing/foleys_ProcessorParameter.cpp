@@ -22,14 +22,14 @@
 namespace foleys
 {
 
-ProcessorParameter::ProcessorParameter (const juce::String& id,
+ProcessorParameter::ProcessorParameter (const juce::Identifier& id,
                                         const juce::String& nameToUse)
   : paramID (id),
     name (nameToUse)
 {
 }
 
-const juce::String& ProcessorParameter::getParameterID() const
+const juce::Identifier& ProcessorParameter::getParameterID() const
 {
     return paramID;
 }
@@ -79,8 +79,8 @@ void ProcessorParameter::removeListener (Listener* listener)
 
 //==============================================================================
 
-ProcessorParameterFloat::ProcessorParameterFloat (const juce::String& id,
-                                                  const juce::String& nameToUse,
+ProcessorParameterFloat::ProcessorParameterFloat (const juce::Identifier&         id,
+                                                  const juce::String&             nameToUse,
                                                   juce::NormalisableRange<double> rangeToUse,
                                                   double defaultToUse,
                                                   std::function<juce::String (double, int)> valueToTextToUse,
@@ -111,12 +111,12 @@ double ProcessorParameterFloat::getRealValue() const
 
 double ProcessorParameterFloat::getDefaultValue() const
 {
-    return range.convertTo0to1 (defaultValue);
+    return normaliseValue (defaultValue);
 }
 
 void ProcessorParameterFloat::setNormalisedValue (double newValue)
 {
-    auto candidate = range.convertFrom0to1 (newValue);
+    auto candidate = unNormaliseValue (newValue);
     if (candidate != value)
     {
         value = candidate;
@@ -139,6 +139,16 @@ double* ProcessorParameterFloat::getRawParameterValue()
     return &value;
 }
 
+double ProcessorParameterFloat::normaliseValue (double unnormalised) const
+{
+    return range.convertTo0to1 (unnormalised);
+}
+
+double ProcessorParameterFloat::unNormaliseValue (double normalised) const
+{
+    return range.convertFrom0to1 (normalised);
+}
+
 juce::String ProcessorParameterFloat::getText (float normalisedValue, int numDigits) const
 {
     auto normal = range.convertFrom0to1 (normalisedValue);
@@ -156,7 +166,7 @@ double ProcessorParameterFloat::getValueForText (const juce::String& text) const
 
 //==============================================================================
 
-ProcessorState::ProcessorState (void*, juce::UndoManager* undo, const juce::String& rootType, std::vector<std::unique_ptr<ProcessorParameter>> parametersToUse)
+ProcessorState::ProcessorState (void*, juce::UndoManager* undo, const juce::String& rootType, ParameterMap parametersToUse)
   : state (rootType),
     undoManager (undo)
 {
@@ -165,13 +175,13 @@ ProcessorState::ProcessorState (void*, juce::UndoManager* undo, const juce::Stri
     for (auto& p : parametersToUse)
     {
         // you have a duplicate parameter with paramID!
-        jassert (parameters.find (p->getParameterID()) == parameters.end());
+        jassert (parameters.find (p.second->getParameterID()) == parameters.end());
 
-        parameters [p->getParameterID()] = std::move (p);
+        parameters [p.second->getParameterID()] = std::move (p.second);
     }
 }
 
-ProcessorParameter* ProcessorState::getParameter (const juce::String& paramID)
+ProcessorParameter* ProcessorState::getParameter (const juce::Identifier& paramID)
 {
     auto p = parameters.find (paramID);
     if (p != parameters.end())
@@ -188,7 +198,7 @@ std::vector<ProcessorParameter*> ProcessorState::getParameters()
     return references;
 }
 
-double* ProcessorState::getRawParameterValue (const juce::String& paramID)
+double* ProcessorState::getRawParameterValue (const juce::Identifier& paramID)
 {
     if (auto* parameter = getParameter (paramID))
         return parameter->getRawParameterValue();

@@ -165,12 +165,14 @@ public:
     public:
         ClipParameterController (ClipDescriptor& owner);
 
-        void setClip (const std::vector<std::unique_ptr<ProcessorParameter>>& parameters,
+        void setClip (const ParameterMap& parameters,
                       juce::ValueTree node,
                       juce::UndoManager* undoManager);
 
-        std::vector<std::unique_ptr<ParameterAutomation>>& getParameters() override;
+        AutomationMap& getParameters() override;
         int getNumParameters() const override;
+
+        double getValueAtTime (juce::Identifier paramID, double pts, double defaultValue) override;
 
         double getCurrentPTS() const override;
         void notifyParameterAutomationChange (const ParameterAutomation*) override;
@@ -179,7 +181,7 @@ public:
 
     private:
         ClipDescriptor& owner;
-        std::vector<std::unique_ptr<ParameterAutomation>> parameters;
+        AutomationMap parameters;
 
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ClipParameterController)
     };

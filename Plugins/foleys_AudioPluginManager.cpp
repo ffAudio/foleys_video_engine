@@ -25,8 +25,6 @@ AudioPluginManager::AudioPluginManager (VideoEngine& videoEngineToUse)
   : videoEngine (videoEngineToUse)
 {
     pluginManager.addDefaultFormats();
-
-    registerAudioProcessor ("BUILTIN: " + PanningAudioProcessor::getPluginName(), [] { return std::make_unique<PanningAudioProcessor>(); });
 }
 
 void AudioPluginManager::registerAudioProcessor (const juce::String& identifierString, std::function<std::unique_ptr<juce::AudioProcessor>()> factory)

@@ -130,8 +130,11 @@ public:
         return true;
     }
 
-    const std::vector<std::unique_ptr<ProcessorParameter>>& getVideoParameters();
-    const std::vector<std::unique_ptr<ProcessorParameter>>& getAudioParameters();
+    static void addDefaultAudioParameters (AVClip& clip);
+    static void addDefaultVideoParameters (AVClip& clip);
+
+    const ParameterMap& getVideoParameters();
+    const ParameterMap& getAudioParameters();
 
     /** @internal */
     virtual juce::TimeSliceClient* getBackgroundJob();
@@ -154,8 +157,8 @@ protected:
 private:
     juce::WeakReference<VideoEngine> videoEngine;
 
-    std::vector<std::unique_ptr<ProcessorParameter>> videoParameters;
-    std::vector<std::unique_ptr<ProcessorParameter>> audioParameters;
+    ParameterMap videoParameters;
+    ParameterMap audioParameters;
 
     juce::ListenerList<TimecodeListener> timecodeListeners;
 

@@ -290,6 +290,14 @@ void AudioParameterAutomation::updateProcessor (double pts)
         parameter.setValueNotifyingHost (getValueForTime (pts));
 }
 
+double AudioParameterAutomation::getRealValueForTime (double pts) const
+{
+    if (auto* ranged = dynamic_cast<juce::RangedAudioParameter*>(&parameter))
+        return ranged->getNormalisableRange().convertFrom0to1 (getValueForTime (pts));
+
+    return getValueForTime (pts);
+}
+
 void AudioParameterAutomation::parameterValueChanged (int parameterIndex, float newValue)
 {
 //    DBG ("Got Value: " << getName() << " - " << juce::String (newValue) << " " << juce::String (parameterIndex) << "/" << juce::String (parameter.getParameterIndex()));
@@ -365,6 +373,11 @@ void VideoParameterAutomation::updateProcessor (double pts)
 {
     if (!gestureInProgress)
         parameter.setNormalisedValue (getValueForTime (pts));
+}
+
+double VideoParameterAutomation::getRealValueForTime (double pts) const
+{
+    return parameter.unNormaliseValue (getValueForTime (pts));
 }
 
 void VideoParameterAutomation::valueChanged (ProcessorParameter&, double newValue)

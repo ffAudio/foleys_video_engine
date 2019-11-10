@@ -39,17 +39,36 @@ void SoftwareVideoMixer::compose (juce::Image&        target,
     {
         const auto clipTime = timeInSeconds + clip->getOffset() - clip->getStart();
 
+        clip->updateAudioAutomations (timeInSeconds - clip->getStart());
+
+        if (clip->getVideoVisible() == false)
+            continue;
+
+        const auto alpha    = clip->getVideoParameterController().getValueAtTime (IDs::alpha,  clipTime, 1.0);
+        const auto zoom     = clip->getVideoParameterController().getValueAtTime (IDs::zoom,   clipTime, 1.0);
+        const auto transX   = clip->getVideoParameterController().getValueAtTime (IDs::translateX, clipTime, 0.0);
+        const auto transY   = clip->getVideoParameterController().getValueAtTime (IDs::translateY, clipTime, 0.0);
+        const auto rotation = clip->getVideoParameterController().getValueAtTime (IDs::rotation, clipTime, 0.0);
+
         if (clip->clip->waitForFrameReady (clipTime, std::min (timeout, int (juce::Time::getMillisecondCounter() + timeout - renderStart))) == false)
             continue;
 
         auto frame = clip->clip->getFrame (clipTime).second;
 
-        if (clip->getVideoVisible() == false || frame.isNull())
-            continue;
-
         auto factor = std::min (double (target.getWidth()) / frame.getWidth(),
-                                double (target.getHeight()) / frame.getHeight());
-        frame = frame.rescaled (frame.getWidth() * factor, frame.getHeight() * factor);
+                                      double (target.getHeight()) / frame.getHeight());
+        if (zoom > 100.0)
+            factor *= std::pow (2.0, (zoom - 100.0) / 50.0);
+        else if (zoom > 0.0)
+            factor *= zoom / 100.0;
+        else
+            factor = 0.0;
+
+        const auto w = frame.getWidth() * factor;
+        const auto h = frame.getHeight() * factor;
+
+        if (frame.isNull() || w < 1 || h < 1)
+            continue;
 
         for (const auto& controller : clip->getVideoProcessors())
         {
@@ -61,7 +80,14 @@ void SoftwareVideoMixer::compose (juce::Image&        target,
                 videoProcessor->processFrame (frame, count, settings, clip->getLength());
         }
 
-        g.drawImageAt (frame, 0, 0);
+        juce::Graphics::ScopedSaveState save (g);
+        auto posX = (settings.frameSize.width - w) * 0.5 + transX * w;
+        auto posY = (settings.frameSize.height - h)  * 0.5 - transY * h;
+        g.setOpacity (alpha);
+        if (rotation != 0)
+            g.addTransform (juce::AffineTransform::rotation (rotation * juce::MathConstants<float>::pi / 180.0f, posX + w * 0.5, posY + h * 0.5));
+
+        g.drawImageWithin (frame, posX, posY, w, h, juce::RectanglePlacement (juce::RectanglePlacement::centred));
     }
 }
 

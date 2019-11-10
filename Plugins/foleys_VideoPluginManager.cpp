@@ -27,7 +27,6 @@ VideoPluginManager::VideoPluginManager (VideoEngine& videoEngineToUse)
   : videoEngine (videoEngineToUse)
 {
     juce::ignoreUnused (videoEngine);
-    registerVideoProcessor ("BUILTIN: " + PositioningVideoProcessor::getPluginName(), [] { return std::make_unique<PositioningVideoProcessor>(); });
     registerVideoProcessor ("BUILTIN: " + ColourCurveVideoProcessor::getPluginName(), [] { return std::make_unique<ColourCurveVideoProcessor>(); });
 }
 

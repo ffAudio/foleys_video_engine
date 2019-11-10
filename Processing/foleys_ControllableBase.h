@@ -26,6 +26,7 @@ namespace foleys
 class ClipDescriptor;
 class ParameterAutomation;
 
+    using AutomationMap=std::map<juce::Identifier, std::unique_ptr<ParameterAutomation>>;
 
 /**
  The ControllableBase acts as counterpart to ParameterAutomation. By inheriting this
@@ -42,14 +43,27 @@ public:
     /**
      Since the automation values are time dependent, every instance, that inherits
      ControllableBase needs a way to tell the local time (presentation time stamp).
+     The PTS refers to the audio clock master, video is rendered asynchronously and
+     may have a different PTS
      */
     virtual double getCurrentPTS() const = 0;
 
     /**
      Grant access to the individual parameters.
      */
-    virtual std::vector<std::unique_ptr<ParameterAutomation>>& getParameters() = 0;
+    virtual AutomationMap& getParameters() = 0;
     virtual int getNumParameters() const = 0;
+
+    /**
+     Return the value of the parameter at a certain time point.
+     Since the parameter can be used from outside the parameter (i.e. for scale, position etc.)
+     There needs to be a default value, in case the ControllableBase doesn't provide that parameter.
+
+     @param paramID      the identifier of the parameter
+     @param pts          the timestamp in seconds in clip time
+     @param defaultValue the value that is returned, if the parameter is not set up
+     */
+    virtual double getValueAtTime (juce::Identifier paramID, double pts, double defaultValue) = 0;
 
     /**
      This notifies all ProcessorController::Listeners about an automation change,
