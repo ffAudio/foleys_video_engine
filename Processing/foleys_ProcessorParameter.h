@@ -54,6 +54,9 @@ public:
     const juce::String&  getName() const;
     juce::NamedValueSet& getProperties();
 
+    void setParameterIndex (int index);
+    int getParameterIndex() const;
+
     virtual const int getNumSteps() const = 0;
 
     virtual double* getRawParameterValue() = 0;
@@ -88,6 +91,7 @@ private:
     const juce::Identifier paramID;
     juce::String           name;
     juce::NamedValueSet    properties;
+    int                    index = 0;
 
     int gestureInProgress = 0;
 

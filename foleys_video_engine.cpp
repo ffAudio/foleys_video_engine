@@ -35,6 +35,7 @@
 #include "Plugins/foleys_AudioPluginManager.cpp"
 #include "Plugins/foleys_VideoPluginManager.cpp"
 
+#include "Processing/foleys_ControllableBase.cpp"
 #include "Processing/foleys_ParameterAutomation.cpp"
 #include "Processing/foleys_ProcessorParameter.cpp"
 #include "Processing/foleys_ProcessorController.cpp"

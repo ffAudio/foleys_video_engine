@@ -235,6 +235,11 @@ void ParameterAutomation::valueTreeChildRemoved (juce::ValueTree&, juce::ValueTr
     loadFromValueTree();
 }
 
+ControllableBase& ParameterAutomation::getControllable()
+{
+    return controllable;
+}
+
 //==============================================================================
 
 AudioParameterAutomation::AudioParameterAutomation (ProcessorController& controllerToUse,
@@ -257,6 +262,11 @@ AudioParameterAutomation::~AudioParameterAutomation()
 juce::String AudioParameterAutomation::getName() const
 {
     return parameter.getName (128);
+}
+
+int AudioParameterAutomation::getParameterIndex() const
+{
+    return parameter.getParameterIndex();
 }
 
 juce::NamedValueSet& AudioParameterAutomation::getParameterProperties()
@@ -342,6 +352,11 @@ VideoParameterAutomation::~VideoParameterAutomation()
 juce::String VideoParameterAutomation::getName() const
 {
     return parameter.getName();
+}
+
+int VideoParameterAutomation::getParameterIndex() const
+{
+    return parameter.getParameterIndex();
 }
 
 juce::NamedValueSet& VideoParameterAutomation::getParameterProperties()

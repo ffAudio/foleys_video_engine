@@ -43,6 +43,7 @@ public:
     virtual ~ParameterAutomation() = default;
 
     virtual juce::String getName() const = 0;
+    virtual int getParameterIndex() const = 0;
 
     virtual int getNumSteps() const = 0;
     virtual juce::StringArray getAllValueStrings() const = 0;
@@ -87,6 +88,8 @@ public:
 
     virtual bool isVideoParameter() { return false; }
     virtual bool isAudioParameter() { return false; }
+
+    ControllableBase& getControllable();
 
 protected:
 
@@ -143,6 +146,7 @@ public:
     ~AudioParameterAutomation() override;
 
     juce::String getName() const override;
+    int getParameterIndex() const override;
 
     juce::NamedValueSet& getParameterProperties() override;
 
@@ -184,6 +188,7 @@ public:
     ~VideoParameterAutomation() override;
 
     juce::String getName() const override;
+    int getParameterIndex() const override;
 
     juce::NamedValueSet& getParameterProperties() override;
 

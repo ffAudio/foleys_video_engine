@@ -180,11 +180,6 @@ void ClipDescriptor::removeListener (Listener* listener)
     listeners.remove (listener);
 }
 
-void ClipDescriptor::notifyParameterAutomationChange (const ParameterAutomation* p)
-{
-    listeners.call ([p](auto& l) { l.parameterAutomationChanged (p); });
-}
-
 void ClipDescriptor::valueTreePropertyChanged (juce::ValueTree& treeWhosePropertyHasChanged,
                                                              const juce::Identifier& property)
 {
@@ -490,11 +485,6 @@ void ClipDescriptor::ClipParameterController::updateAutomations (double pts)
 ClipDescriptor& ClipDescriptor::ClipParameterController::getOwningClipDescriptor()
 {
     return owner;
-}
-
-void ClipDescriptor::ClipParameterController::notifyParameterAutomationChange (const ParameterAutomation*)
-{
-
 }
 
 } // foleys

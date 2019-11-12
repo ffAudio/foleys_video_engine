@@ -39,6 +39,16 @@ const juce::String& ProcessorParameter::getName() const
     return name;
 }
 
+void ProcessorParameter::setParameterIndex (int indexToUse)
+{
+    index = indexToUse;
+}
+
+int ProcessorParameter::getParameterIndex() const
+{
+    return index;
+}
+
 juce::NamedValueSet& ProcessorParameter::getProperties()
 {
     return properties;
@@ -195,6 +205,7 @@ std::vector<ProcessorParameter*> ProcessorState::getParameters()
     std::vector<ProcessorParameter*> references;
     for (auto& p : parameters)
         references.push_back (p.second.get());
+
     return references;
 }
 

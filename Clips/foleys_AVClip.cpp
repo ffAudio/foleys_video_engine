@@ -116,11 +116,13 @@ const ParameterMap& AVClip::getAudioParameters()
 
 void AVClip::addAudioParameter (std::unique_ptr<ProcessorParameter> parameter)
 {
+    parameter->setParameterIndex (int (audioParameters.size() + 1));
     audioParameters [parameter->getParameterID()] = std::move (parameter);
 }
 
 void AVClip::addVideoParameter (std::unique_ptr<ProcessorParameter> parameter)
 {
+    parameter->setParameterIndex (int (videoParameters.size() + 1));
     videoParameters [parameter->getParameterID()] = std::move (parameter);
 }
 

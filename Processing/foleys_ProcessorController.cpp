@@ -293,11 +293,6 @@ void ProcessorController::updateAutomation (double pts)
         parameter.second->updateProcessor (pts);
 }
 
-void ProcessorController::notifyParameterAutomationChange (const ParameterAutomation* parameter)
-{
-    owner.notifyParameterAutomationChange (parameter);
-}
-
 juce::ValueTree& ProcessorController::getProcessorState()
 {
     return state;

@@ -26,7 +26,7 @@ namespace foleys
 class ClipDescriptor;
 class ParameterAutomation;
 
-    using AutomationMap=std::map<juce::Identifier, std::unique_ptr<ParameterAutomation>>;
+using AutomationMap=std::map<juce::Identifier, std::unique_ptr<ParameterAutomation>>;
 
 /**
  The ControllableBase acts as counterpart to ParameterAutomation. By inheriting this
@@ -70,9 +70,25 @@ public:
      so they can adapt accordingly by redrawing the curves or invalidating pre-rendered
      video frames.
      */
-    virtual void notifyParameterAutomationChange (const ParameterAutomation*) = 0;
+    void notifyParameterAutomationChange (const ParameterAutomation* p);
+
+    class Listener
+    {
+    public:
+        Listener() = default;
+        virtual ~Listener() = default;
+
+        virtual void parameterAutomationChanged (const ParameterAutomation*) = 0;
+    private:
+        JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Listener)
+    };
+
+    void addListener (Listener*);
+    void removeListener (Listener*);
 
 private:
+    juce::ListenerList<Listener> listeners;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ControllableBase)
 };
 

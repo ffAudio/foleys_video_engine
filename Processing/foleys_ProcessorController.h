@@ -68,8 +68,6 @@ public:
      */
     void updateAutomation (double pts);
 
-    void notifyParameterAutomationChange (const ParameterAutomation*) override;
-
     /** Read all plugins getStateInformation() and save it into the statusTree as BLOB */
     void readPluginStatesIntoValueTree();
 
