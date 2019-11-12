@@ -487,6 +487,11 @@ void ClipDescriptor::ClipParameterController::updateAutomations (double pts)
         parameter.second->updateProcessor (pts);
 }
 
+ClipDescriptor& ClipDescriptor::ClipParameterController::getOwningClipDescriptor()
+{
+    return owner;
+}
+
 void ClipDescriptor::ClipParameterController::notifyParameterAutomationChange (const ParameterAutomation*)
 {
 

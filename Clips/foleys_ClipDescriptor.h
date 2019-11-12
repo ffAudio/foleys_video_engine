@@ -179,6 +179,8 @@ public:
 
         void updateAutomations (double pts);
 
+        ClipDescriptor& getOwningClipDescriptor();
+
     private:
         ClipDescriptor& owner;
         AutomationMap parameters;
