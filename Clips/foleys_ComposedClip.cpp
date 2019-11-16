@@ -61,6 +61,12 @@ juce::String ComposedClip::getDescription() const
     return "Edit";
 }
 
+double ComposedClip::getFrameDurationInSeconds() const
+{
+    const auto& settings = videoFifo.getVideoSettings();
+    return double (settings.defaultDuration) / double (settings.timebase);
+}
+
 void ComposedClip::invalidateVideo()
 {
     const auto wasSuspended = videoRenderJob.isSuspended();

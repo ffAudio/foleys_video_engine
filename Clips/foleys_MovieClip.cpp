@@ -214,6 +214,12 @@ bool MovieClip::hasAudio() const
     return movieReader ? movieReader->hasAudio() : false;
 }
 
+double MovieClip::getFrameDurationInSeconds() const
+{
+    const auto& settings = videoFifo.getVideoSettings();
+    return double (settings.defaultDuration) / double (settings.timebase);
+}
+
 std::shared_ptr<AVClip> MovieClip::createCopy (StreamTypes types)
 {
     auto* engine = getVideoEngine();

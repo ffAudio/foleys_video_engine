@@ -90,6 +90,11 @@ public:
      this clip will produce audio and use as clock source. */
     virtual double getSampleRate() const = 0;
 
+    /**
+     Returns the duration of a frame in seconds. This is the inverse of frame rate.
+     */
+    virtual double getFrameDurationInSeconds() const { return 0.0; };
+
     /** This returns a copy of the clip. Note that this will not work properly
         if the clip is not properly registered in the engine, because the
         copy will automatically be registered with the engine as well. */

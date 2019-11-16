@@ -82,6 +82,8 @@ public:
     bool hasVideo() const override;
     bool hasAudio() const override;
 
+    double getFrameDurationInSeconds() const override;
+
     std::shared_ptr<AVClip> createCopy (StreamTypes types) override;
 
     double getSampleRate() const override;
