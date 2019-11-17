@@ -82,7 +82,7 @@ void ComposedClip::invalidateVideo()
 
 std::shared_ptr<ClipDescriptor> ComposedClip::addClip (std::shared_ptr<AVClip> clip, double start, double length, double offset)
 {
-    auto clipDescriptor = std::make_shared<ClipDescriptor> (*this, clip);
+    auto clipDescriptor = std::make_shared<ClipDescriptor> (*this, clip, getUndoManager());
     clip->prepareToPlay (audioSettings.defaultNumSamples, audioSettings.timebase);
 
     clipDescriptor->setDescription (makeUniqueDescription (clip->getDescription()));
@@ -325,7 +325,7 @@ void ComposedClip::valueTreeChildAdded (juce::ValueTree& parentTree,
 
     if (childWhichHasBeenAdded.getType() == IDs::clip)
     {
-        auto descriptor = std::make_shared<ClipDescriptor>(*this, childWhichHasBeenAdded);
+        auto descriptor = std::make_shared<ClipDescriptor>(*this, childWhichHasBeenAdded, getUndoManager());
         if (descriptor->clip != nullptr)
         {
             descriptor->clip->prepareToPlay (getDefaultBufferSize(), getSampleRate());

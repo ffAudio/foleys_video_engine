@@ -120,13 +120,16 @@ juce::ThreadPoolJob::JobStatus AudioStrip::ThumbnailJob::runJob()
     const auto        sampleRate = 48000.0;
     const auto        blockSize  = 1024;
     const juce::int64 length = (owner.startTime + owner.endTime) * sampleRate;
-    juce::int64       pos = 0;
 
     if (shouldExit())
         return juce::ThreadPoolJob::jobHasFinished;
 
     clipToRender->prepareToPlay (blockSize, sampleRate);
-    owner.thumbnail.reset (2, sampleRate, 0);
+    if (owner.thumbnail.getNumChannels() != 2)
+        owner.thumbnail.reset (2, sampleRate, 0);
+
+    juce::int64       pos = owner.thumbnail.getTotalLength() * sampleRate;
+
     juce::AudioBuffer<float> buffer (2, blockSize);
     juce::AudioSourceChannelInfo info (&buffer, 0, buffer.getNumSamples());
 

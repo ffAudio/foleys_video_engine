@@ -45,7 +45,7 @@ public:
      @param owner is the ComposedClip, where the Clipdescriptor will live in.
      @param clip the AVClip, that will be wrapped and described by this ClipDescriptor.
      */
-    ClipDescriptor (ComposedClip& owner, std::shared_ptr<AVClip> clip);
+    ClipDescriptor (ComposedClip& owner, std::shared_ptr<AVClip> clip, juce::UndoManager* undo);
 
     /**
      Create a ClipDescriptor from an AVClip, that will be included in the ComposedClip.
@@ -55,7 +55,7 @@ public:
      @param owner is the ComposedClip, where the Clipdescriptor will live in.
      @param state is the ValueTree coded state to describe this ClipDescriptor.
      */
-    ClipDescriptor (ComposedClip& owner, juce::ValueTree state);
+    ClipDescriptor (ComposedClip& owner, juce::ValueTree state, juce::UndoManager* undo);
 
     ~ClipDescriptor();
 
@@ -208,10 +208,11 @@ private:
 
     void valueTreeParentChanged (juce::ValueTree& treeWhoseParentHasChanged) override {}
 
-    juce::ValueTree state;
-    bool manualStateChange = false;
+    ComposedClip&      owner;
 
-    ComposedClip& owner;
+    juce::ValueTree    state;
+    juce::UndoManager* undoManager = nullptr;
+    bool               manualStateChange = false;
 
     juce::ListenerList<Listener> listeners;
 

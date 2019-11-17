@@ -36,26 +36,31 @@ namespace IDs
     static juce::Identifier active          { "active" };
 };
 
-ClipDescriptor::ClipDescriptor (ComposedClip& ownerToUse, std::shared_ptr<AVClip> clipToUse)
-  : owner (ownerToUse)
+ClipDescriptor::ClipDescriptor (ComposedClip& ownerToUse, std::shared_ptr<AVClip> clipToUse, juce::UndoManager* undo)
+  : owner (ownerToUse),
+    undoManager (undo)
 {
     clip = clipToUse;
-    state = juce::ValueTree (IDs::clip);
+    state = juce::ValueTree (IDs::clip, {}, {
+        juce::ValueTree (IDs::videoParameters),
+        juce::ValueTree (IDs::audioParameters),
+        juce::ValueTree (IDs::videoProcessors),
+        juce::ValueTree (IDs::audioProcessors)
+    });
+
     auto mediaFile = clip->getMediaFile();
     if (mediaFile.toString (true).isNotEmpty())
         state.setProperty (IDs::source, mediaFile.toString (true), nullptr);
 
-    audioParameterController.setClip (clip->getAudioParameters(), state.getOrCreateChildWithName (IDs::audioParameters, nullptr), nullptr);
-    videoParameterController.setClip (clip->getVideoParameters(), state.getOrCreateChildWithName (IDs::videoParameters, nullptr), nullptr);
-
-    state.getOrCreateChildWithName (IDs::videoProcessors, nullptr);
-    state.getOrCreateChildWithName (IDs::audioProcessors, nullptr);
+    audioParameterController.setClip (clip->getAudioParameters(), state.getOrCreateChildWithName (IDs::audioParameters, nullptr), undoManager);
+    videoParameterController.setClip (clip->getVideoParameters(), state.getOrCreateChildWithName (IDs::videoParameters, nullptr), undoManager);
 
     state.addListener (this);
 }
 
-ClipDescriptor::ClipDescriptor (ComposedClip& ownerToUse, juce::ValueTree stateToUse)
-  : owner (ownerToUse)
+ClipDescriptor::ClipDescriptor (ComposedClip& ownerToUse, juce::ValueTree stateToUse, juce::UndoManager* undo)
+  : owner (ownerToUse),
+    undoManager (undo)
 {
     juce::ScopedValueSetter<bool> manual (manualStateChange, true);
 
@@ -66,14 +71,14 @@ ClipDescriptor::ClipDescriptor (ComposedClip& ownerToUse, juce::ValueTree stateT
         auto source = state.getProperty (IDs::source);
         clip = engine->createClipFromFile ({ source });
 
-        audioParameterController.setClip (clip->getAudioParameters(), state.getOrCreateChildWithName (IDs::audioParameters, nullptr), nullptr);
-        videoParameterController.setClip (clip->getVideoParameters(), state.getOrCreateChildWithName (IDs::videoParameters, nullptr), nullptr);
+        audioParameterController.setClip (clip->getAudioParameters(), state.getOrCreateChildWithName (IDs::audioParameters, undoManager), undoManager);
+        videoParameterController.setClip (clip->getVideoParameters(), state.getOrCreateChildWithName (IDs::videoParameters, undoManager), undoManager);
 
-        const auto audioProcessorsNode = state.getOrCreateChildWithName (IDs::audioProcessors, nullptr);
+        const auto audioProcessorsNode = state.getOrCreateChildWithName (IDs::audioProcessors, undoManager);
         for (const auto& audioProcessor : audioProcessorsNode)
             addAudioProcessor (std::make_unique<ProcessorController>(*this, audioProcessor));
 
-        const auto videoProcessorsNode = state.getOrCreateChildWithName (IDs::videoProcessors, nullptr);
+        const auto videoProcessorsNode = state.getOrCreateChildWithName (IDs::videoProcessors, undoManager);
         for (const auto& videoProcessor : videoProcessorsNode)
             addVideoProcessor (std::make_unique<ProcessorController>(*this, videoProcessor));
 
@@ -97,7 +102,7 @@ juce::String ClipDescriptor::getDescription() const
 
 void ClipDescriptor::setDescription (const juce::String& name)
 {
-    state.setProperty (IDs::description, name, owner.getUndoManager());
+    state.setProperty (IDs::description, name,undoManager);
 }
 
 double ClipDescriptor::getStart() const
@@ -107,7 +112,7 @@ double ClipDescriptor::getStart() const
 
 void ClipDescriptor::setStart (double s)
 {
-    state.setProperty (IDs::start, s, owner.getUndoManager());
+    state.setProperty (IDs::start, s, undoManager);
 }
 
 double ClipDescriptor::getLength() const
@@ -117,7 +122,7 @@ double ClipDescriptor::getLength() const
 
 void ClipDescriptor::setLength (double l)
 {
-    state.setProperty (IDs::length, l, owner.getUndoManager());
+    state.setProperty (IDs::length, l, undoManager);
 }
 
 double ClipDescriptor::getOffset() const
@@ -127,12 +132,12 @@ double ClipDescriptor::getOffset() const
 
 void ClipDescriptor::setOffset (double o)
 {
-    state.setProperty (IDs::offset, o, owner.getUndoManager());
+    state.setProperty (IDs::offset, o, undoManager);
 }
 
 void ClipDescriptor::setVideoVisible (bool shouldBeVisible)
 {
-    state.setProperty (IDs::visible, shouldBeVisible, owner.getUndoManager());
+    state.setProperty (IDs::visible, shouldBeVisible, undoManager);
 }
 
 bool ClipDescriptor::getVideoVisible() const
@@ -142,7 +147,7 @@ bool ClipDescriptor::getVideoVisible() const
 
 void ClipDescriptor::setAudioPlaying (bool shouldPlay)
 {
-    state.setProperty (IDs::audio, shouldPlay, owner.getUndoManager());
+    state.setProperty (IDs::audio, shouldPlay, undoManager);
 }
 
 bool ClipDescriptor::getAudioPlaying() const
@@ -181,7 +186,7 @@ void ClipDescriptor::removeListener (Listener* listener)
 }
 
 void ClipDescriptor::valueTreePropertyChanged (juce::ValueTree& treeWhosePropertyHasChanged,
-                                                             const juce::Identifier& property)
+                                               const juce::Identifier& property)
 {
     if (treeWhosePropertyHasChanged != state)
         return;
@@ -248,32 +253,28 @@ juce::ValueTree& ClipDescriptor::getStatusTree()
 
 void ClipDescriptor::addProcessor (juce::ValueTree tree, int index)
 {
-    auto* undo = owner.getUndoManager();
-
     if (tree.getType() == IDs::videoProcessor)
     {
-        auto node = state.getOrCreateChildWithName (IDs::videoProcessors, undo);
-        node.addChild (tree, index, undo);
+        auto node = state.getOrCreateChildWithName (IDs::videoProcessors, undoManager);
+        node.addChild (tree, index, undoManager);
     }
     else if (tree.getType() == IDs::audioProcessor)
     {
-        auto node = state.getOrCreateChildWithName (IDs::audioProcessors, undo);
-        node.addChild (tree, index, undo);
+        auto node = state.getOrCreateChildWithName (IDs::audioProcessors, undoManager);
+        node.addChild (tree, index, undoManager);
     }
 }
 
 void ClipDescriptor::addAudioProcessor (std::unique_ptr<ProcessorController> controller, int index)
 {
-    auto* undo = owner.getUndoManager();
-
     if (auto* audioProcessor = controller->getAudioProcessor())
         audioProcessor->prepareToPlay (owner.getSampleRate(), owner.getDefaultBufferSize());
 
     if (manualStateChange == false)
     {
         juce::ScopedValueSetter<bool> manual (manualStateChange, true);
-        auto processorsNode = state.getOrCreateChildWithName (IDs::audioProcessors, undo);
-        processorsNode.addChild (controller->getProcessorState(), index, undo);
+        auto processorsNode = state.getOrCreateChildWithName (IDs::audioProcessors, undoManager);
+        processorsNode.addChild (controller->getProcessorState(), index, undoManager);
     }
 
     {
@@ -306,13 +307,11 @@ void ClipDescriptor::removeAudioProcessor (int index)
 
 void ClipDescriptor::addVideoProcessor (std::unique_ptr<ProcessorController> controller, int index)
 {
-    auto* undo = owner.getUndoManager();
-
     if (manualStateChange == false)
     {
         juce::ScopedValueSetter<bool> manual (manualStateChange, true);
-        auto processorsNode = state.getOrCreateChildWithName (IDs::videoProcessors, undo);
-        processorsNode.addChild (controller->getProcessorState(), index, undo);
+        auto processorsNode = state.getOrCreateChildWithName (IDs::videoProcessors, undoManager);
+        processorsNode.addChild (controller->getProcessorState(), index, undoManager);
     }
 
     {
@@ -341,9 +340,8 @@ void ClipDescriptor::removeVideoProcessor (int index)
 
     listeners.call ([&](ClipDescriptor::Listener& l) { l.processorControllerToBeDeleted (toBeRemoved->get()); } );
 
-    auto* undo = owner.getUndoManager();
-    auto processorsNode = state.getOrCreateChildWithName (IDs::videoProcessors, undo);
-    processorsNode.removeChild (index, undo);
+    auto processorsNode = state.getOrCreateChildWithName (IDs::videoProcessors, undoManager);
+    processorsNode.removeChild (index, undoManager);
 
     juce::ScopedLock sl (owner.getCallbackLock());
     videoProcessors.erase (toBeRemoved);
@@ -362,9 +360,8 @@ void ClipDescriptor::removeProcessor (ProcessorController* controller)
         if (!manualStateChange)
         {
             juce::ScopedValueSetter<bool> manual (manualStateChange, true);
-            auto* undo = owner.getUndoManager();
-            auto processorsNode = state.getOrCreateChildWithName (IDs::videoProcessors, undo);
-            processorsNode.removeChild (int (index), undo);
+            auto processorsNode = state.getOrCreateChildWithName (IDs::videoProcessors, undoManager);
+            processorsNode.removeChild (int (index), undoManager);
         }
 
         juce::ScopedLock sl (owner.getCallbackLock());
@@ -384,9 +381,8 @@ void ClipDescriptor::removeProcessor (ProcessorController* controller)
         if (!manualStateChange)
         {
             juce::ScopedValueSetter<bool> manual (manualStateChange, true);
-            auto* undo = owner.getUndoManager();
-            auto processorsNode = state.getOrCreateChildWithName (IDs::audioProcessors, undo);
-            processorsNode.removeChild (int (index), undo);
+            auto processorsNode = state.getOrCreateChildWithName (IDs::audioProcessors, undoManager);
+            processorsNode.removeChild (int (index), undoManager);
         }
 
         juce::ScopedLock sl (owner.getCallbackLock());
@@ -443,9 +439,10 @@ void ClipDescriptor::ClipParameterController::setClip (const ParameterMap& param
         auto node = parameterNode.getChildWithProperty (IDs::name, parameter.second->getName());
         if (!node.isValid())
         {
-            node = juce::ValueTree { IDs::parameter };
-            node.setProperty (IDs::name, parameter.second->getName(), undoManager);
-            node.setProperty (IDs::value, parameter.second->getDefaultValue(), undoManager);
+            node = juce::ValueTree { IDs::parameter, {
+                { IDs::name, parameter.second->getName() },
+                { IDs::value, parameter.second->getDefaultValue() }
+            }};
             parameterNode.appendChild (node, undoManager);
         }
         parameters [parameter.second->getParameterID()] = std::make_unique<VideoParameterAutomation> (*this, *parameter.second, node, undoManager);
