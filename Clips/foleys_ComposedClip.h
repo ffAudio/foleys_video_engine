@@ -37,6 +37,7 @@ namespace foleys
  background jobs with the TimeSliceThreads.
  */
 class ComposedClip  : public AVClip,
+                      private ControllableBase::Listener,
                       private juce::AsyncUpdater,
                       private juce::ValueTree::Listener
 {
@@ -78,6 +79,7 @@ public:
     bool hasAudio() const override;
 
     double getFrameDurationInSeconds() const override;
+    void parameterAutomationChanged (const ParameterAutomation*) override;
 
     std::shared_ptr<AVClip> createCopy (StreamTypes types) override;
 

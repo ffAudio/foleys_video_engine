@@ -73,36 +73,6 @@ AVClip::AVClip (VideoEngine& videoEngineToUse) : videoEngine (&videoEngineToUse)
 {
 }
 
-void AVClip::sendTimecode (int64_t count, double seconds, juce::NotificationType nt)
-{
-    if (nt == juce::sendNotification || nt == juce::sendNotificationAsync)
-    {
-        timecodeListeners.call ([count, seconds](TimecodeListener& l)
-                                {
-                                    juce::MessageManager::callAsync ([&l, count, seconds]
-                                    {
-                                        l.timecodeChanged (count, seconds);
-                                    });
-                                });
-    }
-    else if (nt == juce::sendNotificationSync)
-    {
-        timecodeListeners.call ([count, seconds](TimecodeListener& l)
-                                {
-                                    l.timecodeChanged (count, seconds);
-                                });
-    }
-}
-
-void AVClip::addTimecodeListener (TimecodeListener* listener)
-{
-    timecodeListeners.add (listener);
-}
-
-void AVClip::removeTimecodeListener (TimecodeListener* listener)
-{
-    timecodeListeners.remove (listener);
-}
 
 const ParameterMap& AVClip::getVideoParameters()
 {

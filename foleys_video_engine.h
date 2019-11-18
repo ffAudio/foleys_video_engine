@@ -99,6 +99,7 @@
 
 #include "Basics/foleys_Structures.h"
 #include "Basics/foleys_Usage.h"
+#include "Basics/foleys_TimeCodeAware.h"
 #include "Processing/foleys_ProcessorParameter.h"
 #include "Plugins/foleys_AudioPluginManager.h"
 #include "Plugins/foleys_VideoProcessor.h"

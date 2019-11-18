@@ -37,20 +37,20 @@ public:
      It will create all necessary ProcessorAutomation to wrap the AudioProcessorParameters.
      The generated state to represent the controller is added to the state of it's owner.
      */
-    ProcessorController (ClipDescriptor& owner, std::unique_ptr<juce::AudioProcessor> processor);
+    ProcessorController (ClipDescriptor& owner, std::unique_ptr<juce::AudioProcessor> processor, juce::UndoManager* undo);
 
     /**
      This ProcessorController constructor creates an instance using a given VideoProcessor.
      It will create all necessary ProcessorAutomation to wrap the ProcessorParameters.
      The generated state to represent the controller is added to the state of it's owner.
      */
-    ProcessorController (ClipDescriptor& owner, std::unique_ptr<VideoProcessor> processor);
+    ProcessorController (ClipDescriptor& owner, std::unique_ptr<VideoProcessor> processor, juce::UndoManager* undo);
 
     /**
      This ProcessorController constructor creates either an AudioProcessor or VideoProcessor
      from a saved state in a ValueTree.
      */
-    ProcessorController (ClipDescriptor& owner, const juce::ValueTree& state, int index=-1);
+    ProcessorController (ClipDescriptor& owner, const juce::ValueTree& state, juce::UndoManager* undo, int index);
 
     ~ProcessorController();
 
@@ -122,7 +122,8 @@ private:
     juce::ValueTree state;
 
     std::unique_ptr<ProcessorAdapter> adapter;
-    AutomationMap parameters;
+    AutomationMap                     parameters;
+    juce::UndoManager*                undoManager=nullptr;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ProcessorController)
 };

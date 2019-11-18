@@ -128,10 +128,17 @@ juce::ThreadPoolJob::JobStatus AudioStrip::ThumbnailJob::runJob()
     if (owner.thumbnail.getNumChannels() != 2)
         owner.thumbnail.reset (2, sampleRate, 0);
 
-    juce::int64       pos = owner.thumbnail.getTotalLength() * sampleRate;
+    juce::int64       pos = std::max (0.0, owner.thumbnail.getTotalLength() * sampleRate - blockSize);
 
     juce::AudioBuffer<float> buffer (2, blockSize);
     juce::AudioSourceChannelInfo info (&buffer, 0, buffer.getNumSamples());
+
+    if (pos >= blockSize)
+    {
+        // one to discard -> update automation state from potential smoothing
+        clipToRender->getNextAudioBlock (info);
+        pos += buffer.getNumSamples();
+    }
 
     while (!shouldExit() && pos < length)
     {

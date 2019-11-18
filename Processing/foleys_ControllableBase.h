@@ -37,7 +37,8 @@ using AutomationMap=std::map<juce::Identifier, std::unique_ptr<ParameterAutomati
 class ControllableBase
 {
 public:
-    ControllableBase() = default;
+    ControllableBase (TimeCodeAware& reference);
+
     virtual ~ControllableBase() = default;
 
     /**
@@ -66,12 +67,8 @@ public:
     virtual double getValueAtTime (juce::Identifier paramID, double pts, double defaultValue) = 0;
 
     /**
-     This notifies all ProcessorController::Listeners about an automation change,
-     so they can adapt accordingly by redrawing the curves or invalidating pre-rendered
-     video frames.
+     The Listener can subscribe to automation changes, e.g. to invalidate existing render, to update UI elements etc.
      */
-    void notifyParameterAutomationChange (const ParameterAutomation* p);
-
     class Listener
     {
     public:
@@ -86,7 +83,21 @@ public:
     void addListener (Listener*);
     void removeListener (Listener*);
 
+    /**
+     This notifies all ProcessorController::Listeners about an automation change,
+     so they can adapt accordingly by redrawing the curves or invalidating pre-rendered
+     video frames.
+     */
+    void notifyParameterAutomationChange (const ParameterAutomation* p);
+
+    /**
+     Grant access to the time reference of this ControllableBase
+     */
+    TimeCodeAware& getTimeReference();
+    const TimeCodeAware& getTimeReference() const;
+
 private:
+    TimeCodeAware&               timeReference;
     juce::ListenerList<Listener> listeners;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ControllableBase)

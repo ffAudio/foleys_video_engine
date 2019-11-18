@@ -18,38 +18,41 @@
  ==============================================================================
  */
 
+
 namespace foleys
 {
 
-ControllableBase::ControllableBase (TimeCodeAware& reference)
-  : timeReference (reference)
+void TimeCodeAware::sendTimecode (int64_t count, double seconds, juce::NotificationType nt)
 {
+    if (nt == juce::sendNotification || nt == juce::sendNotificationAsync)
+    {
+        timecodeListeners.call ([count, seconds](Listener& l)
+                                {
+                                    juce::MessageManager::callAsync ([&l, count, seconds]
+                                    {
+                                        l.timecodeChanged (count, seconds);
+                                    });
+                                });
+    }
+    else if (nt == juce::sendNotificationSync)
+    {
+        timecodeListeners.call ([count, seconds](Listener& l)
+                                {
+                                    l.timecodeChanged (count, seconds);
+                                });
+    }
 }
 
-void ControllableBase::notifyParameterAutomationChange (const ParameterAutomation* p)
+void TimeCodeAware::addTimecodeListener (Listener* listener)
 {
-    listeners.call ([p](auto& l) { l.parameterAutomationChanged (p); });
+    timecodeListeners.add (listener);
 }
 
-void ControllableBase::addListener (Listener* listener)
+void TimeCodeAware::removeTimecodeListener (Listener* listener)
 {
-    listeners.add (listener);
+    timecodeListeners.remove (listener);
 }
 
-void ControllableBase::removeListener (Listener* listener)
-{
-    listeners.remove (listener);
-}
-
-TimeCodeAware& ControllableBase::getTimeReference()
-{
-    return timeReference;
-}
-
-const TimeCodeAware& ControllableBase::getTimeReference() const
-{
-    return timeReference;
-}
 
 
 } // namespace foleys

@@ -24,6 +24,7 @@
 #include "Basics/foleys_VideoFifo.cpp"
 #include "Basics/foleys_AudioFifo.cpp"
 #include "Basics/foleys_VideoEngine.cpp"
+#include "Basics/foleys_TimeCodeAware.cpp"
 
 #include "Clips/foleys_AVClip.cpp"
 #include "Clips/foleys_AudioClip.cpp"

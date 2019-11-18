@@ -165,36 +165,41 @@ private:
 //==============================================================================
 
 ProcessorController::ProcessorController (ClipDescriptor& ownerToUse,
-                                          std::unique_ptr<juce::AudioProcessor> processorToUse)
-  : owner (ownerToUse)
+                                          std::unique_ptr<juce::AudioProcessor> processorToUse,
+                                          juce::UndoManager* undo)
+  : ControllableBase (ownerToUse),
+    owner (ownerToUse),
+    undoManager (undo)
 {
-    auto* undo = owner.getOwningClip().getUndoManager();
-
     adapter = std::make_unique<AudioProcessorAdapter> (std::move (processorToUse));
     state = juce::ValueTree { IDs::audioProcessor };
-    state.setProperty (IDs::name, adapter->getName(), undo);
-    state.setProperty (IDs::identifier, adapter->getIdentifierString(), undo);
+    state.setProperty (IDs::name, adapter->getName(), undoManager);
+    state.setProperty (IDs::identifier, adapter->getIdentifierString(), undoManager);
 
-    adapter->createAutomatedParameters (*this, parameters, state, undo);
+    adapter->createAutomatedParameters (*this, parameters, state, undoManager);
 }
 
 ProcessorController::ProcessorController (ClipDescriptor& ownerToUse,
-                                          std::unique_ptr<VideoProcessor> processorToUse)
-: owner (ownerToUse)
+                                          std::unique_ptr<VideoProcessor> processorToUse,
+                                          juce::UndoManager* undo)
+  : ControllableBase (ownerToUse),
+    owner (ownerToUse),
+    undoManager (undo)
 {
-    auto* undo = owner.getOwningClip().getUndoManager();
-
     adapter = std::make_unique<VideoProcessorAdapter> (std::move (processorToUse));
     state = juce::ValueTree { IDs::videoProcessor };
-    state.setProperty (IDs::name, adapter->getName(), undo);
-    state.setProperty (IDs::identifier, adapter->getIdentifierString(), undo);
+    state.setProperty (IDs::name, adapter->getName(), undoManager);
+    state.setProperty (IDs::identifier, adapter->getIdentifierString(), undoManager);
 
-    adapter->createAutomatedParameters (*this, parameters, state, undo);
+    adapter->createAutomatedParameters (*this, parameters, state, undoManager);
 }
 
 ProcessorController::ProcessorController (ClipDescriptor& ownerToUse,
-                                          const juce::ValueTree& stateToUse, int index)
-: owner (ownerToUse)
+                                          const juce::ValueTree& stateToUse,
+                                          juce::UndoManager* undo, int index)
+  : ControllableBase (ownerToUse),
+    owner (ownerToUse),
+    undoManager (undo)
 {
     state = stateToUse;
 
@@ -204,7 +209,7 @@ ProcessorController::ProcessorController (ClipDescriptor& ownerToUse,
 
     if (engine == nullptr)
     {
-        state.setProperty (IDs::pluginStatus, NEEDS_TRANS ("Video engine not present"), nullptr);
+        state.setProperty (IDs::pluginStatus, NEEDS_TRANS ("Video engine not present"), undoManager);
         return;
     }
 
@@ -225,7 +230,7 @@ ProcessorController::ProcessorController (ClipDescriptor& ownerToUse,
                 }
             }
             adapter = std::make_unique<AudioProcessorAdapter> (std::move (processor));
-            adapter->createAutomatedParameters (*this, parameters, state, owner.getOwningClip().getUndoManager());
+            adapter->createAutomatedParameters (*this, parameters, state, undoManager);
         }
     }
     else if (state.getType() == IDs::videoProcessor)
@@ -244,7 +249,7 @@ ProcessorController::ProcessorController (ClipDescriptor& ownerToUse,
                 }
             }
             adapter = std::make_unique<VideoProcessorAdapter> (std::move (processor));
-            adapter->createAutomatedParameters (*this, parameters, state, owner.getOwningClip().getUndoManager());
+            adapter->createAutomatedParameters (*this, parameters, state, undoManager);
         }
     }
     else
@@ -254,7 +259,7 @@ ProcessorController::ProcessorController (ClipDescriptor& ownerToUse,
         jassertfalse;
     }
 
-    state.setProperty (IDs::pluginStatus, error, nullptr);
+    state.setProperty (IDs::pluginStatus, error, undoManager);
 }
 
 ProcessorController::~ProcessorController()
@@ -276,7 +281,7 @@ juce::String ProcessorController::getName() const
 
 double ProcessorController::getCurrentPTS() const
 {
-    return owner.getCurrentPTS();
+    return owner.getCurrentTimeInSeconds();
 }
 
 double ProcessorController::getValueAtTime (juce::Identifier paramID, double pts, double defaultValue)
@@ -356,8 +361,7 @@ void ProcessorController::readPluginStatesIntoValueTree()
 
     if (block.getSize() > 0)
     {
-        auto* undo = owner.getOwningClip().getUndoManager();
-        state.setProperty (IDs::state, block.toBase64Encoding(), undo);
+        state.setProperty (IDs::state, block.toBase64Encoding(), undoManager);
     }
 }
 

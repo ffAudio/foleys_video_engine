@@ -76,11 +76,11 @@ ClipDescriptor::ClipDescriptor (ComposedClip& ownerToUse, juce::ValueTree stateT
 
         const auto audioProcessorsNode = state.getOrCreateChildWithName (IDs::audioProcessors, undoManager);
         for (const auto& audioProcessor : audioProcessorsNode)
-            addAudioProcessor (std::make_unique<ProcessorController>(*this, audioProcessor));
+            addAudioProcessor (std::make_unique<ProcessorController>(*this, audioProcessor, undoManager, -1));
 
         const auto videoProcessorsNode = state.getOrCreateChildWithName (IDs::videoProcessors, undoManager);
         for (const auto& videoProcessor : videoProcessorsNode)
-            addVideoProcessor (std::make_unique<ProcessorController>(*this, videoProcessor));
+            addVideoProcessor (std::make_unique<ProcessorController>(*this, videoProcessor, undoManager, -1));
 
     }
     state.addListener (this);
@@ -155,9 +155,14 @@ bool ClipDescriptor::getAudioPlaying() const
     return state.getProperty (IDs::audio, true);
 }
 
-double ClipDescriptor::getCurrentPTS() const
+double ClipDescriptor::getCurrentTimeInSeconds() const
 {
     return getClipTimeInDescriptorTime (getOwningClip().getCurrentTimeInSeconds());
+}
+
+void ClipDescriptor::timecodeChanged (int64_t count, double seconds)
+{
+    sendTimecode (0, getCurrentTimeInSeconds(), juce::sendNotificationSync);
 }
 
 double ClipDescriptor::getClipTimeInDescriptorTime (double time) const
@@ -201,11 +206,11 @@ void ClipDescriptor::valueTreeChildAdded (juce::ValueTree& parentTree,
         return;
 
     if (parentTree.getType() == IDs::audioProcessors)
-        addAudioProcessor (std::make_unique<ProcessorController>(*this, childWhichHasBeenAdded),
+        addAudioProcessor (std::make_unique<ProcessorController>(*this, childWhichHasBeenAdded, undoManager, -1),
                            parentTree.indexOf (childWhichHasBeenAdded));
 
     if (parentTree.getType() == IDs::videoProcessors)
-        addVideoProcessor (std::make_unique<ProcessorController>(*this, childWhichHasBeenAdded),
+        addVideoProcessor (std::make_unique<ProcessorController>(*this, childWhichHasBeenAdded, undoManager, -1),
                            parentTree.indexOf (childWhichHasBeenAdded));
 }
 
@@ -290,7 +295,7 @@ void ClipDescriptor::addAudioProcessor (std::unique_ptr<ProcessorController> con
 
 void ClipDescriptor::addAudioProcessor (std::unique_ptr<juce::AudioProcessor> processor, int index)
 {
-    addAudioProcessor (std::make_unique<ProcessorController>(*this, std::move (processor)), index);
+    addAudioProcessor (std::make_unique<ProcessorController>(*this, std::move (processor), undoManager), index);
 }
 
 void ClipDescriptor::removeAudioProcessor (int index)
@@ -327,7 +332,7 @@ void ClipDescriptor::addVideoProcessor (std::unique_ptr<ProcessorController> con
 
 void ClipDescriptor::addVideoProcessor (std::unique_ptr<VideoProcessor> processor, int index)
 {
-    addVideoProcessor (std::make_unique<ProcessorController>(*this, std::move (processor)), index);
+    addVideoProcessor (std::make_unique<ProcessorController>(*this, std::move (processor), undoManager), index);
 }
 
 void ClipDescriptor::removeVideoProcessor (int index)
@@ -423,8 +428,8 @@ const ComposedClip& ClipDescriptor::getOwningClip() const
 
 //==============================================================================
 
-ClipDescriptor::ClipParameterController::ClipParameterController (ClipDescriptor& ownerToUse)
-  : owner (ownerToUse)
+ClipDescriptor::ClipParameterController::ClipParameterController (TimeCodeAware& timeReference)
+  : ControllableBase (timeReference)
 {
 }
 
@@ -447,7 +452,6 @@ void ClipDescriptor::ClipParameterController::setClip (const ParameterMap& param
         }
         parameters [parameter.second->getParameterID()] = std::make_unique<VideoParameterAutomation> (*this, *parameter.second, node, undoManager);
     }
-
 }
 
 AutomationMap& ClipDescriptor::ClipParameterController::getParameters()
@@ -462,7 +466,7 @@ int ClipDescriptor::ClipParameterController::getNumParameters() const
 
 double ClipDescriptor::ClipParameterController::getCurrentPTS() const
 {
-    return owner.getCurrentPTS();
+    return getTimeReference().getCurrentTimeInSeconds();
 }
 
 double ClipDescriptor::ClipParameterController::getValueAtTime (juce::Identifier paramID, double pts, double defaultValue)
@@ -479,9 +483,5 @@ void ClipDescriptor::ClipParameterController::updateAutomations (double pts)
         parameter.second->updateProcessor (pts);
 }
 
-ClipDescriptor& ClipDescriptor::ClipParameterController::getOwningClipDescriptor()
-{
-    return owner;
-}
 
 } // foleys

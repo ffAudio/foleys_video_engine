@@ -40,7 +40,8 @@ class VideoEngine;
  that will add it to the auto release pool and register possible background jobs
  with the TimeSliceThreads.
  */
-class AVClip  : public juce::PositionableAudioSource
+class AVClip  : public juce::PositionableAudioSource,
+                public TimeCodeAware
 {
 public:
     AVClip (VideoEngine& videoEngine);
@@ -73,9 +74,6 @@ public:
     /** Returns the frame for the current time */
     virtual juce::Image getCurrentFrame() const = 0;
 
-    /** Return the clip's read position in seconds */
-    virtual double getCurrentTimeInSeconds() const = 0;
-
     /** This returns a still frame on the selected position. Don't use
         this method for streaming a video, because it will be slow */
     virtual juce::Image getStillImage (double seconds, Size size) = 0;
@@ -99,23 +97,6 @@ public:
         if the clip is not properly registered in the engine, because the
         copy will automatically be registered with the engine as well. */
     virtual std::shared_ptr<AVClip> createCopy (StreamTypes types) = 0;
-
-    /** Use a TimecodeListener to be notified, when the visual frame changes */
-    struct TimecodeListener
-    {
-        /** Destructor:w
-         */
-        virtual ~TimecodeListener() = default;
-
-        /** Listen to this callback to get notified, when the time code changes.
-            This is most useful to redraw the display or encode the next frame */
-        virtual void timecodeChanged (int64_t count, double seconds) = 0;
-    };
-
-    /** Register a TimecodeListener to be notified, when the visual frame changes */
-    void addTimecodeListener (TimecodeListener* listener);
-    /** Unregister a TimecodeListener */
-    void removeTimecodeListener (TimecodeListener* listener);
 
     /** When rendering non realtime (bounce), use this to wait for background
         threads to read ahead */
@@ -151,9 +132,6 @@ public:
 
 protected:
 
-    /** Subclasses can call this to notify displays, that the time code has changed, e.g. to display a new frame */
-    void sendTimecode (int64_t count, double seconds, juce::NotificationType nt);
-
     void addAudioParameter (std::unique_ptr<ProcessorParameter> parameter);
     void addVideoParameter (std::unique_ptr<ProcessorParameter> parameter);
 
@@ -164,8 +142,6 @@ private:
 
     ParameterMap videoParameters;
     ParameterMap audioParameters;
-
-    juce::ListenerList<TimecodeListener> timecodeListeners;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AVClip)
 };

@@ -30,7 +30,7 @@ namespace foleys
  real time.
  */
 class VideoPreview  : public juce::Component,
-                      public AVClip::TimecodeListener
+                      public TimeCodeAware::Listener
 {
 public:
     VideoPreview();

@@ -73,7 +73,7 @@ void ComposedClip::invalidateVideo()
     videoRenderJob.setSuspended (true);
 
     videoFifo.clear();
-    lastShownFrame = 0;
+    lastShownFrame = -1;
     triggerAsyncUpdate();
     handleUpdateNowIfNeeded();
 
@@ -99,11 +99,17 @@ std::shared_ptr<ClipDescriptor> ComposedClip::addClip (std::shared_ptr<AVClip> c
     juce::ScopedValueSetter<bool> manual (manualStateChange, true);
     state.appendChild (clipDescriptor->getStatusTree(), getUndoManager());
 
+    clipDescriptor->getVideoParameterController().addListener (this);
+    addTimecodeListener (clipDescriptor.get());
+
     return clipDescriptor;
 }
 
 void ComposedClip::removeClip (std::shared_ptr<ClipDescriptor> descriptor)
 {
+    removeTimecodeListener (descriptor.get());
+    descriptor->getVideoParameterController().removeListener (this);
+
     auto it = std::find (clips.begin(), clips.end(), descriptor);
     if (it != clips.end())
         clips.erase (it);
@@ -264,6 +270,11 @@ bool ComposedClip::hasAudio() const
     return hasAudio;
 }
 
+void ComposedClip::parameterAutomationChanged (const ParameterAutomation*)
+{
+    invalidateVideo();
+}
+
 std::shared_ptr<AVClip> ComposedClip::createCopy (StreamTypes types)
 {
     auto* engine = getVideoEngine();
@@ -296,7 +307,7 @@ void ComposedClip::handleAsyncUpdate()
         const auto v = hasVideo();
         auto seconds = getCurrentTimeInSeconds();
         auto count = v ? videoFifo.getFrameCountForTime (seconds) : 0;
-        if (count != lastShownFrame || v == false)
+        if (count != lastShownFrame || lastShownFrame < 0 || v == false)
         {
             sendTimecode (count, seconds, juce::sendNotificationAsync);
             lastShownFrame = count;
@@ -330,6 +341,8 @@ void ComposedClip::valueTreeChildAdded (juce::ValueTree& parentTree,
         {
             descriptor->clip->prepareToPlay (getDefaultBufferSize(), getSampleRate());
             descriptor->updateSampleCounts();
+            descriptor->getVideoParameterController().addListener (this);
+            addTimecodeListener (descriptor.get());
 
             juce::ScopedLock sl (clipDescriptorLock);
             clips.push_back (descriptor);
@@ -350,6 +363,9 @@ void ComposedClip::valueTreeChildRemoved (juce::ValueTree& parentTree,
         {
             if ((*it)->getStatusTree() == childWhichHasBeenRemoved)
             {
+                (*it)->getVideoParameterController().removeListener (this);
+                removeTimecodeListener (it->get());
+
                 juce::ScopedLock sl (clipDescriptorLock);
                 clips.erase (it);
                 return;

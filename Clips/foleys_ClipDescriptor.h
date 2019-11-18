@@ -32,7 +32,9 @@ class ComposedClip;
  in compositing the ComposedClip. It also holds a list of VideoProcessors
  and AudioProcessors including their automation data relative to the clip.
  */
-class ClipDescriptor  : private juce::ValueTree::Listener
+class ClipDescriptor  : public TimeCodeAware,
+                        public TimeCodeAware::Listener,
+                        private juce::ValueTree::Listener
 {
 public:
 
@@ -96,6 +98,8 @@ public:
     /** Transforms a time relative to the containing clip into a local time in ClipDescriptor. */
     double getClipTimeInDescriptorTime (double time) const;
 
+    void timecodeChanged (int64_t count, double seconds) override;
+
     std::shared_ptr<AVClip> clip;
 
     /** Read all plugins getStateInformation() and save it into the statusTree as BLOB */
@@ -150,7 +154,7 @@ public:
      Since the automation values are time dependent, every instance, that inherits
      ControllableBase needs a way to tell the local time (presentation time stamp).
      */
-    double getCurrentPTS() const;
+    double getCurrentTimeInSeconds() const override;
 
     void updateAudioAutomations (double pts);
     void updateVideoAutomations (double pts);
@@ -160,7 +164,7 @@ public:
     class ClipParameterController : public ControllableBase
     {
     public:
-        ClipParameterController (ClipDescriptor& owner);
+        ClipParameterController (TimeCodeAware& timeReference);
 
         void setClip (const ParameterMap& parameters,
                       juce::ValueTree node,
@@ -175,10 +179,7 @@ public:
 
         void updateAutomations (double pts);
 
-        ClipDescriptor& getOwningClipDescriptor();
-
     private:
-        ClipDescriptor& owner;
         AutomationMap parameters;
 
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ClipParameterController)

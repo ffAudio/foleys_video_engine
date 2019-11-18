@@ -77,6 +77,8 @@ void ParameterAutomation::addKeyframe (double pts, double newValue)
 
     sortKeyframesInValueTree();
     loadFromValueTree();
+
+    controllable.notifyParameterAutomationChange (this);
 }
 
 void ParameterAutomation::setKeyframe (int index, double pts, double newValue)
@@ -92,12 +94,16 @@ void ParameterAutomation::setKeyframe (int index, double pts, double newValue)
         sortKeyframesInValueTree();
         loadFromValueTree();
     }
+
+    controllable.notifyParameterAutomationChange (this);
 }
 
 void ParameterAutomation::deleteKeyframe (int index)
 {
     state.removeChild (index, undoManager);
     loadFromValueTree();
+
+    controllable.notifyParameterAutomationChange (this);
 }
 
 double ParameterAutomation::getValueForTime (double pts) const
