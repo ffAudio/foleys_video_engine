@@ -36,8 +36,9 @@ public:
 
     ~AudioStrip();
 
-    /** Set the clip to be shown as thimbnail */
+    /** Set the clip to be shown as thumbnail */
     void setClip (std::shared_ptr<AVClip> clip);
+    void setClip (std::shared_ptr<ClipDescriptor> descriptor);
 
     /** @internal */
     void paint (juce::Graphics&) override;
@@ -47,15 +48,21 @@ public:
     void setStartAndEnd (double start, double end);
 
     /** @internal */
-    class ThumbnailJob : public juce::ThreadPoolJob
+    class ThumbnailJob : public juce::ThreadPoolJob,
+                         public TimeCodeAware
     {
     public:
         ThumbnailJob (AudioStrip& owner);
 
+        double getCurrentTimeInSeconds() const override;
+
         juce::ThreadPoolJob::JobStatus runJob() override;
     private:
-        AudioStrip& owner;
+        AudioStrip&  owner;
         std::shared_ptr<AVClip> clipToRender;
+        std::unique_ptr<ClipDescriptor::ClipParameterController> parameterController;
+        juce::int64  position = 0;
+        const double sampleRate = 48000.0;
 
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ThumbnailJob)
     };
@@ -76,6 +83,7 @@ private:
     double startTime = {};
     double endTime   = {};
     double rendered  = {};
+    juce::ValueTree clipAudioParameters;
 
     std::unique_ptr<ThumbnailJob> thumbnailJob;
     juce::AudioThumbnailCache cache { 1 };

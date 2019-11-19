@@ -23,6 +23,8 @@ namespace foleys
 
 AudioStrip::AudioStrip()
 {
+    clipAudioParameters = juce::ValueTree (IDs::audioParameters);
+
     formatManager.registerBasicFormats();
     thumbnail.addChangeListener (this);
     setOpaque (false);
@@ -34,6 +36,12 @@ AudioStrip::~AudioStrip()
     if (thumbnailJob != nullptr)
         if (auto* threadPool = getThreadPool())
             threadPool->removeJob (thumbnailJob.get(), true, 1000);
+}
+
+void AudioStrip::setClip (std::shared_ptr<ClipDescriptor> descriptor)
+{
+    clipAudioParameters = descriptor->getStatusTree().getChildWithName (IDs::audioParameters);
+    setClip (descriptor->clip);
 }
 
 void AudioStrip::setClip (std::shared_ptr<AVClip> clipToUse)
@@ -113,11 +121,18 @@ AudioStrip::ThumbnailJob::ThumbnailJob (AudioStrip& ownerToUse)
     owner (ownerToUse)
 {
     clipToRender = owner.clip->createCopy (StreamTypes::audio());
+
+    parameterController = std::make_unique<ClipDescriptor::ClipParameterController>(*this);
+    parameterController->setClip (clipToRender->getAudioParameters(), owner.clipAudioParameters, nullptr);
+}
+
+double AudioStrip::ThumbnailJob::getCurrentTimeInSeconds() const
+{
+    return position / sampleRate;
 }
 
 juce::ThreadPoolJob::JobStatus AudioStrip::ThumbnailJob::runJob()
 {
-    const auto        sampleRate = 48000.0;
     const auto        blockSize  = 1024;
     const juce::int64 length = (owner.startTime + owner.endTime) * sampleRate;
 
@@ -128,25 +143,27 @@ juce::ThreadPoolJob::JobStatus AudioStrip::ThumbnailJob::runJob()
     if (owner.thumbnail.getNumChannels() != 2)
         owner.thumbnail.reset (2, sampleRate, 0);
 
-    juce::int64       pos = std::max (0.0, owner.thumbnail.getTotalLength() * sampleRate - blockSize);
+    position = std::max (0.0, owner.thumbnail.getTotalLength() * sampleRate - blockSize);
 
     juce::AudioBuffer<float> buffer (2, blockSize);
     juce::AudioSourceChannelInfo info (&buffer, 0, buffer.getNumSamples());
 
-    if (pos >= blockSize)
+    if (position >= blockSize)
     {
         // one to discard -> update automation state from potential smoothing
+        parameterController->updateAutomations (getCurrentTimeInSeconds());
         clipToRender->getNextAudioBlock (info);
-        pos += buffer.getNumSamples();
+        position += buffer.getNumSamples();
     }
 
-    while (!shouldExit() && pos < length)
+    while (!shouldExit() && position < length)
     {
         buffer.clear();
+        parameterController->updateAutomations (getCurrentTimeInSeconds());
         clipToRender->waitForSamplesReady (blockSize);
         clipToRender->getNextAudioBlock (info);
-        owner.thumbnail.addBlock (pos, buffer, 0, buffer.getNumSamples());
-        pos += buffer.getNumSamples();
+        owner.thumbnail.addBlock (position, buffer, 0, buffer.getNumSamples());
+        position += buffer.getNumSamples();
     }
 
     return juce::ThreadPoolJob::jobHasFinished;
