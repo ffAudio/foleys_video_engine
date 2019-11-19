@@ -105,9 +105,10 @@ UsageReporter::UsageReporter (const juce::String& event) : juce::ThreadPoolJob (
 
 juce::ThreadPoolJob::JobStatus UsageReporter::runJob()
 {
-    auto webStream = std::make_unique<juce::WebInputStream> (url, true);
-    webStream->withExtraHeaders (headers);
-    webStream->connect (nullptr);
+    juce::WebInputStream (url, true)
+    .withExtraHeaders (headers)
+    .withConnectionTimeout (2000)
+    .connect (nullptr);
 
     return juce::ThreadPoolJob::jobHasFinished;
 }
