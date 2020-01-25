@@ -18,7 +18,7 @@ Features
 - Audio plugins for clips
 - Automatable parameters for video composition
 - Video plugins for image processing / colour adjustments etc.
-- _Multiple audio stems per ComposedClip (avadilable soon)_
+- _Multiple audio stems per ComposedClip (available soon)_
 - _Video generator plugins for titles, backgrounds etc. (coming later)_
 - _Alternative video file backend (coming much later)_
 - _Hardware rendering backend (coming even later)_
