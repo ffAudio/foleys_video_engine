@@ -119,7 +119,7 @@ int64_t VideoFifo::getHighestTimeCode() const
     const juce::ScopedLock sl (lock);
 
     if (videoFrames.empty())
-        return 0;
+        return -settings.defaultDuration;
 
     auto it = videoFrames.end();
     --it;

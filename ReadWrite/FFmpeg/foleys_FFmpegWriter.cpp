@@ -29,12 +29,14 @@ struct FFmpegWriter::Pimpl
 {
     Pimpl(FFmpegWriter& owner) : writer (owner)
     {
+        packet = av_packet_alloc();
         openContainer (writer.mediaFile, writer.formatName);
     }
 
     ~Pimpl()
     {
         closeContainer();
+        av_packet_free (&packet);
     }
 
     int addVideoStream (const VideoStreamSettings& settings, AVCodecID codec)
@@ -101,6 +103,15 @@ struct FFmpegWriter::Pimpl
         descriptor->context = context;
         descriptor->settings = settings;
 
+        descriptor->frame->width = context->width;
+        descriptor->frame->height = context->height;
+        descriptor->frame->format = context->pix_fmt;
+
+        ret = av_frame_get_buffer (descriptor->frame, 0);
+        if (ret < 0) {
+            FOLEYS_LOG ("Cannot allocate buffers for video frame: " << juce::String (ret));
+        }
+
         videoStreams.push_back (std::move (descriptor));
         return int (videoStreams.size() - 1);
     }
@@ -157,6 +168,16 @@ struct FFmpegWriter::Pimpl
         descriptor->context = context;
         descriptor->settings = settings;
 
+        descriptor->frame->nb_samples   = settings.defaultNumSamples;
+        descriptor->frame->format       = AV_SAMPLE_FMT_FLTP;
+        descriptor->frame->channel_layout = AV_CH_LAYOUT_STEREO;
+        descriptor->frame->channels     = 2;
+
+        ret = av_frame_get_buffer (descriptor->frame, 0);
+        if (ret < 0) {
+            FOLEYS_LOG ("Cannot allocate buffers for audio frame: " << juce::String (ret));
+        }
+
         audioStreams.push_back (std::move (descriptor));
         return int (audioStreams.size() - 1);
     }
@@ -190,6 +211,14 @@ struct FFmpegWriter::Pimpl
         jassert (formatContext != nullptr);
         jassert (descriptor.context != nullptr);
 
+//        {
+//            auto folder = juce::File::getSpecialLocation (juce::File::userDesktopDirectory).getChildFile ("debug");
+//            juce::JPEGImageFormat format;
+//            format.setQuality (0.8);
+//            juce::FileOutputStream stream (folder.getChildFile ("frame" + juce::String (timestamp).paddedLeft ('0', 8) + ".jpg"));
+//            format.writeImageToStream (image, stream);
+//        }
+
         descriptor.scaler.setupScaler (image.getWidth(),
                                        image.getHeight(),
                                        AV_PIX_FMT_BGR0,
@@ -198,27 +227,33 @@ struct FFmpegWriter::Pimpl
                                        descriptor.context->pix_fmt);
 
         auto* context = descriptor.context;
-        auto* frame = av_frame_alloc ();
-        frame->width = context->width;
-        frame->height = context->height;
-        frame->format = context->pix_fmt;
-        frame->pts = timestamp;
+
+        descriptor.frame->width = context->width;
+        descriptor.frame->height = context->height;
+        descriptor.frame->format = context->pix_fmt;
+        descriptor.frame->pts = timestamp;
 
         FOLEYS_LOG ("Start writing video frame, pts: " << timestamp);
 
-        int ret = av_image_alloc(frame->data, frame->linesize,
-                                 context->width,
-                                 context->height,
-                                 context->pix_fmt, 32);
+        auto ret = av_frame_make_writable (descriptor.frame);
         if (ret < 0)
         {
-            FOLEYS_LOG ("Could not allocate raw picture buffer");
-            av_free (&frame);
+            FOLEYS_LOG ("Error making video frame writeable: " << juce::String (ret));
             return;
         }
 
-        descriptor.scaler.convertImageToFrame (frame, image);
-        encodeWriteFrame (descriptor.context, frame, descriptor.streamIndex);
+//        ret = av_image_alloc(descriptor.frame->data, descriptor.frame->linesize,
+//                             context->width,
+//                             context->height,
+//                             context->pix_fmt, 32);
+//        if (ret < 0)
+//        {
+//            FOLEYS_LOG ("Could not allocate raw picture buffer");
+//            return;
+//        }
+
+        descriptor.scaler.convertImageToFrame (descriptor.frame, image);
+        encodeWriteFrame (descriptor.context, descriptor.frame, descriptor.streamIndex);
     }
 
     void encodeAudioFrame (AudioStreamDescriptor& descriptor, juce::AudioBuffer<float>& buffer, int64_t timestamp)
@@ -227,29 +262,39 @@ struct FFmpegWriter::Pimpl
         jassert (descriptor.settings.numChannels == buffer.getNumChannels());
         jassert (descriptor.settings.defaultNumSamples >= buffer.getNumSamples());
 
-        auto* frame = av_frame_alloc ();
-        frame->nb_samples   = buffer.getNumSamples();
-        frame->format       = AV_SAMPLE_FMT_FLTP;
-        frame->channel_layout = AV_CH_LAYOUT_STEREO;
-        frame->channels     = buffer.getNumChannels();
-        frame->pts          = timestamp;
+        descriptor.frame->nb_samples   = buffer.getNumSamples();
+        descriptor.frame->format       = AV_SAMPLE_FMT_FLTP;
+        descriptor.frame->channel_layout = AV_CH_LAYOUT_STEREO;
+        descriptor.frame->channels     = buffer.getNumChannels();
+        descriptor.frame->pts          = timestamp;
         FOLEYS_LOG ("Start writing audio frame, pts: " << timestamp);
-        auto  bufferSize = av_samples_get_buffer_size (nullptr, frame->channels, frame->nb_samples, AVSampleFormat (frame->format), 0);
-        auto* samples = static_cast<float*> (av_malloc (bufferSize));
+
+        auto  bufferSize = av_samples_get_buffer_size (nullptr, descriptor.frame->channels, descriptor.frame->nb_samples, AVSampleFormat (descriptor.frame->format), 0);
+        if (descriptor.converterBuffer.getData() == nullptr)
+            descriptor.converterBuffer.malloc (bufferSize);
+
+        auto* samples = reinterpret_cast<float*> (descriptor.converterBuffer.getData());
 
         for (int channel = 0; channel < buffer.getNumChannels(); ++channel)
-            juce::FloatVectorOperations::copy (samples + channel * frame->nb_samples,
+            juce::FloatVectorOperations::copy (samples + channel * descriptor.frame->nb_samples,
                                                buffer.getReadPointer (channel),
                                                buffer.getNumSamples());
 
-        avcodec_fill_audio_frame (frame,
-                                  frame->channels,
-                                  AVSampleFormat (frame->format),
-                                  (const uint8_t*) (samples),
+        auto ret = av_frame_make_writable (descriptor.frame);
+        if (ret < 0)
+        {
+            FOLEYS_LOG ("Error making audio frame writeable: " << juce::String (ret));
+            return;
+        }
+
+        avcodec_fill_audio_frame (descriptor.frame,
+                                  descriptor.frame->channels,
+                                  AVSampleFormat (descriptor.frame->format),
+                                  descriptor.converterBuffer.getData(),
                                   bufferSize,
                                   0);
 
-        encodeWriteFrame (descriptor.context, frame, descriptor.streamIndex);
+        encodeWriteFrame (descriptor.context, descriptor.frame, descriptor.streamIndex);
     }
 
     bool startWriting()
@@ -427,12 +472,7 @@ private:
     {
         jassert (formatContext != nullptr);
 
-        AVPacket* packet = av_packet_alloc();
-        av_init_packet (packet);
-
         avcodec_send_frame (codecContext, frame);
-
-        av_frame_free (&frame);
 
         auto ret = avcodec_receive_packet (codecContext, packet);
         packet->stream_index = streamIndex;
@@ -443,7 +483,7 @@ private:
             return false;
         }
 
-        if (av_interleaved_write_frame (formatContext, packet) < 0)
+        if (av_write_frame (formatContext, packet) < 0)
             FOLEYS_LOG ("Error muxing packet");
 
         av_packet_unref (packet);
@@ -458,6 +498,7 @@ private:
     juce::File    writeFile;
 
     AVFormatContext* formatContext = nullptr;
+    AVPacket*        packet        = nullptr;
 
     std::vector<std::unique_ptr<VideoStreamDescriptor>> videoStreams;
     std::vector<std::unique_ptr<AudioStreamDescriptor>> audioStreams;

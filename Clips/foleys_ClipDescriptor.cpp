@@ -69,19 +69,21 @@ ClipDescriptor::ClipDescriptor (ComposedClip& ownerToUse, juce::ValueTree stateT
     if (state.hasProperty (IDs::source) && engine)
     {
         auto source = state.getProperty (IDs::source);
+
         clip = engine->createClipFromFile ({ source });
+        if (clip)
+        {
+            audioParameterController.setClip (clip->getAudioParameters(), state.getOrCreateChildWithName (IDs::audioParameters, undoManager), undoManager);
+            videoParameterController.setClip (clip->getVideoParameters(), state.getOrCreateChildWithName (IDs::videoParameters, undoManager), undoManager);
 
-        audioParameterController.setClip (clip->getAudioParameters(), state.getOrCreateChildWithName (IDs::audioParameters, undoManager), undoManager);
-        videoParameterController.setClip (clip->getVideoParameters(), state.getOrCreateChildWithName (IDs::videoParameters, undoManager), undoManager);
+            const auto audioProcessorsNode = state.getOrCreateChildWithName (IDs::audioProcessors, undoManager);
+            for (const auto& audioProcessor : audioProcessorsNode)
+                addAudioProcessor (std::make_unique<ProcessorController>(*this, audioProcessor, undoManager, -1));
 
-        const auto audioProcessorsNode = state.getOrCreateChildWithName (IDs::audioProcessors, undoManager);
-        for (const auto& audioProcessor : audioProcessorsNode)
-            addAudioProcessor (std::make_unique<ProcessorController>(*this, audioProcessor, undoManager, -1));
-
-        const auto videoProcessorsNode = state.getOrCreateChildWithName (IDs::videoProcessors, undoManager);
-        for (const auto& videoProcessor : videoProcessorsNode)
-            addVideoProcessor (std::make_unique<ProcessorController>(*this, videoProcessor, undoManager, -1));
-
+            const auto videoProcessorsNode = state.getOrCreateChildWithName (IDs::videoProcessors, undoManager);
+            for (const auto& videoProcessor : videoProcessorsNode)
+                addVideoProcessor (std::make_unique<ProcessorController>(*this, videoProcessor, undoManager, -1));
+        }
     }
     state.addListener (this);
 }

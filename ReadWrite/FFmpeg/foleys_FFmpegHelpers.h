@@ -189,8 +189,14 @@ struct VideoStreamDescriptor
     FFmpegVideoScaler    scaler;
     int                  streamIndex = -1;
     AVCodecContext*      context = nullptr;
+    AVFrame*             frame   = av_frame_alloc();
     VideoStreamSettings  settings;
     VideoFifo            videoBuffer;
+
+    ~VideoStreamDescriptor()
+    {
+        av_frame_free (&frame);
+    }
 };
 
 struct AudioStreamDescriptor
@@ -198,8 +204,15 @@ struct AudioStreamDescriptor
     FFmpegAudioConverter converter;
     int                  streamIndex = -1;
     AVCodecContext*      context = nullptr;
+    AVFrame*             frame   = av_frame_alloc();
     AudioStreamSettings  settings;
     AudioFifo            sampleBuffer;
+    juce::HeapBlock<uint8_t> converterBuffer;
+
+    ~AudioStreamDescriptor()
+    {
+        av_frame_free (&frame);
+    }
 };
 
 
