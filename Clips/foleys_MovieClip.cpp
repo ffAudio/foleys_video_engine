@@ -164,7 +164,7 @@ bool MovieClip::waitForSamplesReady (int samples, int timeout)
     {
         const auto start = juce::Time::getMillisecondCounter();
 
-        while (audioFifo.getAvailableSamples() < samples && juce::Time::getMillisecondCounter() - start < timeout)
+        while (audioFifo.getAvailableSamples() < samples && int (juce::Time::getMillisecondCounter() - start) < timeout)
             juce::Thread::sleep (5);
 
         return audioFifo.getAvailableSamples() >= samples;
@@ -179,7 +179,7 @@ bool MovieClip::waitForFrameReady (double pts, int timeout)
 {
     const auto start = juce::Time::getMillisecondCounter();
 
-    while (videoFifo.isFrameAvailable (pts) == false && juce::Time::getMillisecondCounter() - start < timeout)
+    while (videoFifo.isFrameAvailable (pts) == false && int (juce::Time::getMillisecondCounter() - start) < timeout)
         juce::Thread::sleep (3);
 
     return videoFifo.isFrameAvailable (pts);
