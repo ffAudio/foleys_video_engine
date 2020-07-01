@@ -133,8 +133,8 @@ double AudioStrip::ThumbnailJob::getCurrentTimeInSeconds() const
 
 juce::ThreadPoolJob::JobStatus AudioStrip::ThumbnailJob::runJob()
 {
-    const auto        blockSize  = 1024;
-    const juce::int64 length = (owner.startTime + owner.endTime) * sampleRate;
+    const auto blockSize  = 1024;
+    const auto length = juce::int64 ((owner.startTime + owner.endTime) * sampleRate);
 
     if (shouldExit())
         return juce::ThreadPoolJob::jobHasFinished;
@@ -143,7 +143,7 @@ juce::ThreadPoolJob::JobStatus AudioStrip::ThumbnailJob::runJob()
     if (owner.thumbnail.getNumChannels() != 2)
         owner.thumbnail.reset (2, sampleRate, 0);
 
-    position = std::max (0.0, owner.thumbnail.getTotalLength() * sampleRate - blockSize);
+    position = juce::int64 (std::max (0.0, owner.thumbnail.getTotalLength() * sampleRate - blockSize));
 
     juce::AudioBuffer<float> buffer (2, blockSize);
     juce::AudioSourceChannelInfo info (&buffer, 0, buffer.getNumSamples());

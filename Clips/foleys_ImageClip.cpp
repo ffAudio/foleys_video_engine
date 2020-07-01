@@ -62,7 +62,7 @@ juce::Image ImageClip::getCurrentFrame() const
     return image;
 }
 
-juce::Image ImageClip::getStillImage (double seconds, Size size)
+juce::Image ImageClip::getStillImage (double, Size size)
 {
     return image.rescaled (size.width, size.height);
 }
@@ -82,7 +82,7 @@ double ImageClip::getCurrentTimeInSeconds() const
     return 0;
 }
 
-void ImageClip::prepareToPlay (int samplesPerBlockExpected, double sampleRateToUse)
+void ImageClip::prepareToPlay (int, double sampleRateToUse)
 {
     sampleRate = sampleRateToUse;
 }

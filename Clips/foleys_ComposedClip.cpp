@@ -120,7 +120,7 @@ void ComposedClip::removeClip (std::shared_ptr<ClipDescriptor> descriptor)
 std::shared_ptr<ClipDescriptor> ComposedClip::getClip (int index)
 {
     if (juce::isPositiveAndBelow (index, clips.size()))
-        return clips [index];
+        return clips [size_t (index)];
 
     return {};
 }
@@ -150,7 +150,7 @@ double ComposedClip::getCurrentTimeInSeconds() const
     return convertToSamples (position.load());
 }
 
-juce::Image ComposedClip::getStillImage (double seconds, Size size)
+juce::Image ComposedClip::getStillImage ([[maybe_unused]]double seconds, [[maybe_unused]]Size size)
 {
     // TODO
     return {};
@@ -163,7 +163,7 @@ double ComposedClip::getLengthInSeconds() const
 
 void ComposedClip::prepareToPlay (int samplesPerBlockExpected, double sampleRateToUse)
 {
-    audioSettings.timebase = sampleRateToUse;
+    audioSettings.timebase = juce::roundToInt (sampleRateToUse);
     audioSettings.defaultNumSamples = samplesPerBlockExpected;
 
     audioMixer->setup (audioSettings.numChannels, audioSettings.timebase, audioSettings.defaultNumSamples);
@@ -203,7 +203,7 @@ bool ComposedClip::waitForSamplesReady (int samples, int timeout)
     const auto start = juce::Time::getMillisecondCounter();
     for (auto clip : getActiveClips ([pos = position.load()](ClipDescriptor& clip) { return clip.clip->hasAudio() && pos >= clip.start && pos < clip.start + clip.length; }))
     {
-        ready &= clip->clip->waitForSamplesReady (samples, std::min (timeout, int (start + timeout - juce::Time::getMillisecondCounter())));
+        ready &= clip->clip->waitForSamplesReady (samples, std::min (timeout, timeout + int (start - juce::Time::getMillisecondCounter())));
         if (ready == false)
             break;
     }
@@ -275,7 +275,7 @@ void ComposedClip::parameterAutomationChanged (const ParameterAutomation*)
     invalidateVideo();
 }
 
-std::shared_ptr<AVClip> ComposedClip::createCopy (StreamTypes types)
+std::shared_ptr<AVClip> ComposedClip::createCopy (StreamTypes)
 {
     auto* engine = getVideoEngine();
     if (engine == nullptr)
@@ -323,13 +323,12 @@ double ComposedClip::convertToSamples (int64_t pos) const
     return {};
 }
 
-void ComposedClip::valueTreePropertyChanged (juce::ValueTree& treeWhosePropertyHasChanged,
-                                             const juce::Identifier& property)
+void ComposedClip::valueTreePropertyChanged (juce::ValueTree&,
+                                             const juce::Identifier&)
 {
 }
 
-void ComposedClip::valueTreeChildAdded (juce::ValueTree& parentTree,
-                                        juce::ValueTree& childWhichHasBeenAdded)
+void ComposedClip::valueTreeChildAdded (juce::ValueTree&, juce::ValueTree& childWhichHasBeenAdded)
 {
     if (manualStateChange)
         return;
@@ -350,9 +349,7 @@ void ComposedClip::valueTreeChildAdded (juce::ValueTree& parentTree,
     }
 }
 
-void ComposedClip::valueTreeChildRemoved (juce::ValueTree& parentTree,
-                                          juce::ValueTree& childWhichHasBeenRemoved,
-                                          int indexFromWhichChildWasRemoved)
+void ComposedClip::valueTreeChildRemoved (juce::ValueTree&, juce::ValueTree& childWhichHasBeenRemoved, int)
 {
     if (manualStateChange)
         return;

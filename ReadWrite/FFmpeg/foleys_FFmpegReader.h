@@ -29,7 +29,6 @@ class FFmpegReader : public AVReader
 {
 public:
     FFmpegReader (const juce::File& file, StreamTypes type);
-    virtual ~FFmpegReader();
 
     juce::File getMediaFile() const override;
 

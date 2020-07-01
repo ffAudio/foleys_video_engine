@@ -69,8 +69,8 @@ juce::TimeSliceThread& VideoEngine::getNextTimeSliceThread()
     jassert (!readingThreads.empty());
 
     int minClients = std::numeric_limits<int>::max();
-    int nextThread = 0;
-    for (int i=0; i < int (readingThreads.size()); ++i)
+    size_t nextThread = 0;
+    for (size_t i=0; i < readingThreads.size(); ++i)
     {
         auto& thread = readingThreads.at (i);
         if (thread->getNumClients() <= minClients)

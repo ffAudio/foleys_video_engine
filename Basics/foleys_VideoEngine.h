@@ -38,7 +38,7 @@ class VideoEngine  : private juce::Timer
 {
 public:
     VideoEngine();
-    ~VideoEngine();
+    ~VideoEngine() override;
 
     /**
      Use the source file to figure the most appropriate AVClip descendant.

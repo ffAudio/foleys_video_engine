@@ -34,7 +34,7 @@ namespace IDs
     static juce::Identifier parameter       { "Parameter" };
     static juce::Identifier pluginStatus    { "PluginStatus" };
     static juce::Identifier active          { "active" };
-};
+}
 
 ClipDescriptor::ClipDescriptor (ComposedClip& ownerToUse, std::shared_ptr<AVClip> clipToUse, juce::UndoManager* undo)
   : owner (ownerToUse),
@@ -162,7 +162,7 @@ double ClipDescriptor::getCurrentTimeInSeconds() const
     return getClipTimeInDescriptorTime (getOwningClip().getCurrentTimeInSeconds());
 }
 
-void ClipDescriptor::timecodeChanged (int64_t count, double seconds)
+void ClipDescriptor::timecodeChanged (int64_t, double)
 {
     sendTimecode (0, getCurrentTimeInSeconds(), juce::sendNotificationSync);
 }
@@ -193,7 +193,7 @@ void ClipDescriptor::removeListener (Listener* listener)
 }
 
 void ClipDescriptor::valueTreePropertyChanged (juce::ValueTree& treeWhosePropertyHasChanged,
-                                               const juce::Identifier& property)
+                                               const juce::Identifier&)
 {
     if (treeWhosePropertyHasChanged != state)
         return;
@@ -217,7 +217,7 @@ void ClipDescriptor::valueTreeChildAdded (juce::ValueTree& parentTree,
 }
 
 void ClipDescriptor::valueTreeChildRemoved (juce::ValueTree& parentTree,
-                                            juce::ValueTree& childWhichHasBeenRemoved,
+                                            juce::ValueTree&,
                                             int indexFromWhichChildWasRemoved)
 {
     if (manualStateChange)
@@ -234,9 +234,9 @@ void ClipDescriptor::updateSampleCounts()
 {
     auto sampleRate = clip->getSampleRate();
 
-    start = sampleRate * double (state.getProperty (IDs::start));
-    length = sampleRate * double (state.getProperty (IDs::length));
-    offset = sampleRate * double (state.getProperty (IDs::offset));
+    start  = juce::int64 (sampleRate * double (state.getProperty (IDs::start)));
+    length = juce::int64 (sampleRate * double (state.getProperty (IDs::length)));
+    offset = juce::int64 (sampleRate * double (state.getProperty (IDs::offset)));
 }
 
 ClipDescriptor::ClipParameterController& ClipDescriptor::getAudioParameterController()
@@ -437,7 +437,7 @@ ClipDescriptor::ClipParameterController::ClipParameterController (TimeCodeAware&
 
 void ClipDescriptor::ClipParameterController::setClip (const ParameterMap& parametersToConnect,
                                                        juce::ValueTree parameterNode,
-                                                       juce::UndoManager* undoManager)
+                                                       juce::UndoManager* undo)
 {
     parameters.clear();
 
@@ -450,9 +450,9 @@ void ClipDescriptor::ClipParameterController::setClip (const ParameterMap& param
                 { IDs::name, parameter.second->getName() },
                 { IDs::value, parameter.second->getDefaultValue() }
             }};
-            parameterNode.appendChild (node, undoManager);
+            parameterNode.appendChild (node, undo);
         }
-        parameters [parameter.second->getParameterID()] = std::make_unique<VideoParameterAutomation> (*this, *parameter.second, node, undoManager);
+        parameters [parameter.second->getParameterID()] = std::make_unique<VideoParameterAutomation> (*this, *parameter.second, node, undo);
     }
 }
 

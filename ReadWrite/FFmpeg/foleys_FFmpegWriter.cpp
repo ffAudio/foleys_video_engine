@@ -60,7 +60,7 @@ struct FFmpegWriter::Pimpl
             return -1;
         }
 
-        auto* stream = avformat_new_stream (formatContext, NULL);
+        auto* stream = avformat_new_stream (formatContext, nullptr);
         if (stream == nullptr)
         {
             FOLEYS_LOG ("Failed allocating video output stream");
@@ -99,7 +99,7 @@ struct FFmpegWriter::Pimpl
         av_dict_free (&options);
 
         auto descriptor = std::make_unique<VideoStreamDescriptor>();
-        descriptor->streamIndex = formatContext->nb_streams - 1;
+        descriptor->streamIndex = int (formatContext->nb_streams - 1);
         descriptor->context = context;
         descriptor->settings = settings;
 
@@ -134,14 +134,14 @@ struct FFmpegWriter::Pimpl
             return -1;
         }
 
-        auto* stream = avformat_new_stream (formatContext, NULL);
+        auto* stream = avformat_new_stream (formatContext, nullptr);
         if (stream == nullptr)
         {
             FOLEYS_LOG ("Failed allocating video output stream");
             return -1;
         }
 
-        auto channelLayout = AV_CH_LAYOUT_STEREO;
+        auto channelLayout = uint64_t (AV_CH_LAYOUT_STEREO);
 
         stream->time_base = av_make_q (1, settings.timebase);
         auto* context = avcodec_alloc_context3 (encoder);
@@ -158,13 +158,13 @@ struct FFmpegWriter::Pimpl
         if (formatContext->oformat->flags & AVFMT_GLOBALHEADER)
             context->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
 
-        int ret = avcodec_open2 (context, encoder, NULL);
+        int ret = avcodec_open2 (context, encoder, nullptr);
         if (ret < 0) {
             FOLEYS_LOG ("Cannot open audio encoder: " << codec);
         }
 
         auto descriptor = std::make_unique<AudioStreamDescriptor>();
-        descriptor->streamIndex = formatContext->nb_streams - 1;
+        descriptor->streamIndex = int (formatContext->nb_streams - 1);
         descriptor->context = context;
         descriptor->settings = settings;
 
@@ -187,7 +187,7 @@ struct FFmpegWriter::Pimpl
         if (juce::isPositiveAndBelow (stream, audioStreams.size()) == false)
             return;
 
-        auto& descriptor = audioStreams [stream];
+        auto& descriptor = audioStreams [size_t (stream)];
         descriptor->sampleBuffer.pushSamples (input);
 
         if (multiThreaded == false)
@@ -199,7 +199,7 @@ struct FFmpegWriter::Pimpl
         if (juce::isPositiveAndBelow (stream, videoStreams.size()) == false)
             return;
 
-        auto& descriptor = videoStreams [stream];
+        auto& descriptor = videoStreams [size_t (stream)];
         descriptor->videoBuffer.pushVideoFrame (image, pos);
 
         if (multiThreaded == false)
@@ -328,26 +328,26 @@ struct FFmpegWriter::Pimpl
 
         for (int idx=0; idx < int (formatContext->nb_streams); ++idx)
         {
-            auto descriptor = std::find_if (videoStreams.begin(), videoStreams.end(), [idx](const auto& descriptor) { return descriptor->streamIndex == idx; });
-            if (descriptor != videoStreams.end())
+            auto it = std::find_if (videoStreams.begin(), videoStreams.end(), [idx](const auto& descriptor) { return descriptor->streamIndex == idx; });
+            if (it != videoStreams.end())
             {
-                auto* context = (*descriptor)->context;
+                auto* context = (*it)->context;
                 if (context->codec != nullptr && context->codec->capabilities & AV_CODEC_CAP_DELAY)
                 {
                     FOLEYS_LOG ("Flushing video encoder stream " << idx);
-                    while (encodeWriteFrame (context, nullptr, (*descriptor)->streamIndex));
+                    while (encodeWriteFrame (context, nullptr, (*it)->streamIndex));
                 }
             }
             else
             {
-                auto descriptor = std::find_if (audioStreams.begin(), audioStreams.end(), [idx](const auto& descriptor) { return descriptor->streamIndex == idx; });
-                if (descriptor != audioStreams.end())
+                auto it2 = std::find_if (audioStreams.begin(), audioStreams.end(), [idx](const auto& descriptor) { return descriptor->streamIndex == idx; });
+                if (it2 != audioStreams.end())
                 {
-                    auto* context = (*descriptor)->context;
+                    auto* context = (*it2)->context;
                     if (context->codec != nullptr && context->codec->capabilities & AV_CODEC_CAP_DELAY)
                     {
                         FOLEYS_LOG ("Flushing audio encoder stream " << idx);
-                        while (encodeWriteFrame (context, nullptr, (*descriptor)->streamIndex));
+                        while (encodeWriteFrame (context, nullptr, (*it2)->streamIndex));
                     }
                 }
             }
@@ -389,11 +389,12 @@ private:
     bool processStreams()
     {
         // find oldest stream
-        int  next = -1;
-        bool video = false;
-        auto pts = std::numeric_limits<double>::max();
+        bool found = false;
+        size_t next = 0;
+        bool   video = false;
+        auto   pts = std::numeric_limits<double>::max();
 
-        for (int s=0; s < int (audioStreams.size()); ++s)
+        for (size_t s=0; s < audioStreams.size() && !found; ++s)
         {
             auto& descriptor = audioStreams [s];
             auto  streamPTS  = double (descriptor->sampleBuffer.getReadPosition()) / descriptor->settings.timebase;
@@ -405,7 +406,7 @@ private:
             }
         }
 
-        for (int s=0; s < int (videoStreams.size()); ++s)
+        for (size_t s=0; s < videoStreams.size() && !found; ++s)
         {
             auto& descriptor = videoStreams [s];
             auto  streamPTS  = double (descriptor->videoBuffer.getLowestTimeCode()) / descriptor->settings.timebase;
@@ -417,7 +418,7 @@ private:
             }
         }
 
-        if (next >= 0)
+        if (found)
         {
             if (video)
             {
@@ -442,9 +443,9 @@ private:
     void openContainer (juce::File file, juce::String format)
     {
         if (format.isEmpty())
-            avformat_alloc_output_context2 (&formatContext, NULL, NULL, file.getFullPathName().toRawUTF8());
+            avformat_alloc_output_context2 (&formatContext, nullptr, nullptr, file.getFullPathName().toRawUTF8());
         else
-            avformat_alloc_output_context2 (&formatContext, NULL, format.toRawUTF8(), file.getFullPathName().toRawUTF8());
+            avformat_alloc_output_context2 (&formatContext, nullptr, format.toRawUTF8(), file.getFullPathName().toRawUTF8());
 
         if (formatContext == nullptr)
         {

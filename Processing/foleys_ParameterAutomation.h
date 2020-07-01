@@ -40,8 +40,6 @@ public:
                          const juce::ValueTree& state,
                          juce::UndoManager*);
 
-    virtual ~ParameterAutomation() = default;
-
     virtual juce::String getName() const = 0;
     virtual int getParameterIndex() const = 0;
 
@@ -115,11 +113,10 @@ private:
                                 int indexFromWhichChildWasRemoved) override;
 
     /** @internal */
-    void valueTreeChildOrderChanged (juce::ValueTree& parentTreeWhoseChildrenHaveMoved,
-                                     int oldIndex, int newIndex) override {}
+    void valueTreeChildOrderChanged (juce::ValueTree&, int, int) override {}
 
     /** @internal */
-    void valueTreeParentChanged (juce::ValueTree& treeWhoseParentHasChanged) override {}
+    void valueTreeParentChanged (juce::ValueTree&) override {}
 
     juce::ValueTree state;
     juce::UndoManager* undoManager = nullptr;

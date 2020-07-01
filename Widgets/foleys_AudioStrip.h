@@ -34,7 +34,7 @@ class AudioStrip  : public juce::Component,
 public:
     AudioStrip();
 
-    ~AudioStrip();
+    ~AudioStrip() override;
 
     /** Set the clip to be shown as thumbnail */
     void setClip (std::shared_ptr<AVClip> clip);

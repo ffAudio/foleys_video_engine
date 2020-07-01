@@ -36,7 +36,6 @@ class ImageClip : public AVClip
 {
 public:
     ImageClip (VideoEngine& videoEngine);
-    virtual ~ImageClip() = default;
 
     /** Used to identify the clip type to the user */
     juce::String getClipType() const override { return NEEDS_TRANS ("Still Image"); }
@@ -50,7 +49,7 @@ public:
 
     std::pair<int64_t, juce::Image> getFrame (double pts) const override;
     juce::Image getCurrentFrame() const override;
-    bool isFrameAvailable (double pts) const override { return image.isValid(); }
+    bool isFrameAvailable ([[maybe_unused]]double pts) const override { return image.isValid(); }
 
     Size getVideoSize() const override;
     double getCurrentTimeInSeconds() const override;
@@ -69,8 +68,8 @@ public:
 
     double getLengthInSeconds() const override;
 
-    bool hasVideo() const override    { return true; };
-    bool hasAudio() const override    { return false; };
+    bool hasVideo() const override    { return true; }
+    bool hasAudio() const override    { return false; }
 
     std::shared_ptr<AVClip> createCopy (StreamTypes types) override;
 

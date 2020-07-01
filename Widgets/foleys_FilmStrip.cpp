@@ -46,7 +46,7 @@ void FilmStrip::setClip (std::shared_ptr<AVClip> clipToUse)
 void FilmStrip::paint (juce::Graphics& g)
 {
     g.fillAll (juce::Colours::black);
-    auto target = getLocalBounds().withWidth (getHeight() * aspectRatio);
+    auto target = getLocalBounds().withWidth (juce::roundToInt (getHeight() * aspectRatio));
     for (auto& image : thumbnails)
     {
         g.drawImage (image, target.toFloat());
@@ -86,9 +86,9 @@ void FilmStrip::update()
 void FilmStrip::setThumbnail (int index, juce::Image image)
 {
     if (index >= int (thumbnails.size()))
-        thumbnails.resize (index + 1);
+        thumbnails.resize (size_t (index + 1));
 
-    thumbnails [index] = image;
+    thumbnails [size_t (index)] = image;
 
     repaint();
 }

@@ -196,7 +196,7 @@ ProcessorController::ProcessorController (ClipDescriptor& ownerToUse,
 
 ProcessorController::ProcessorController (ClipDescriptor& ownerToUse,
                                           const juce::ValueTree& stateToUse,
-                                          juce::UndoManager* undo, int index)
+                                          juce::UndoManager* undo, int)
   : ControllableBase (ownerToUse),
     owner (ownerToUse),
     undoManager (undo)

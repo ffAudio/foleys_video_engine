@@ -59,7 +59,7 @@ public:
      */
     ClipDescriptor (ComposedClip& owner, juce::ValueTree state, juce::UndoManager* undo);
 
-    ~ClipDescriptor();
+    ~ClipDescriptor() override;
 
     /**
      Returns a human readable description of this clip. This is initially set to the
@@ -204,10 +204,9 @@ private:
                                 juce::ValueTree& childWhichHasBeenRemoved,
                                 int indexFromWhichChildWasRemoved) override;
 
-    void valueTreeChildOrderChanged (juce::ValueTree& parentTreeWhoseChildrenHaveMoved,
-                                     int oldIndex, int newIndex) override {}
+    void valueTreeChildOrderChanged (juce::ValueTree&, int, int) override {}
 
-    void valueTreeParentChanged (juce::ValueTree& treeWhoseParentHasChanged) override {}
+    void valueTreeParentChanged (juce::ValueTree&) override {}
 
     ComposedClip&      owner;
 

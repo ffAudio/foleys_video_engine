@@ -40,7 +40,6 @@ class MovieClip   : public AVClip,
 {
 public:
     MovieClip (VideoEngine& videoEngine);
-    virtual ~MovieClip() = default;
 
     /** Used to identify the clip type to the user */
     juce::String getClipType() const override { return NEEDS_TRANS ("Movie"); }
@@ -103,7 +102,6 @@ private:
     {
     public:
         BackgroundReaderJob (MovieClip& owner);
-        virtual ~BackgroundReaderJob() = default;
 
         int useTimeSlice() override;
 
@@ -126,7 +124,7 @@ private:
     int64_t nextReadPosition = 0;
     int64_t lastShownFrame = -1;
     bool    loop = false;
-    double  lastGain = 0.0;
+    float   lastGain = 0.0;
 
     Size originalSize;
 

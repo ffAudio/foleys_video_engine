@@ -35,7 +35,7 @@ class VideoPreview  : public juce::Component,
 public:
     VideoPreview();
 
-    virtual ~VideoPreview();
+    ~VideoPreview() override;
 
     void setClip (std::shared_ptr<AVClip> clip);
 

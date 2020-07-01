@@ -51,14 +51,14 @@ public:
         if (isLinear())
         {
             for (size_t i = 0; i < 256; ++i)
-                map [i] = i;
+                map [i] = uint8_t (i);
         }
         else
         {
             for (size_t i = 0; i < 256; ++i)
-                map [i] = juce::jlimit (0.0, 255.0,
-                                        ((std::pow (i / 255.0, gamma) - 0.5) * (contrast + 1.0) + 0.5
-                                         + brightness) * 255.0);
+                map [i] = uint8_t (juce::jlimit (0.0, 255.0,
+                                                 ((std::pow (i / 255.0, gamma) - 0.5) * (contrast + 1.0) + 0.5
+                                                  + brightness) * 255.0));
         }
     }
 

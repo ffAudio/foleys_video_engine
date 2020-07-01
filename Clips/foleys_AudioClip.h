@@ -38,7 +38,6 @@ class AudioClip : public AVClip
 {
 public:
     AudioClip (VideoEngine& videoEngine);
-    virtual ~AudioClip() = default;
 
     /** Used to identify the clip type to the user */
     juce::String getClipType() const override { return NEEDS_TRANS ("Audio"); }
@@ -50,9 +49,9 @@ public:
 
     void setAudioFormatReader (juce::AudioFormatReader* reader, int samplesToBuffer = 48000);
 
-    std::pair<int64_t, juce::Image> getFrame (double pts) const override { return {}; }
+    std::pair<int64_t, juce::Image> getFrame ([[maybe_unused]]double pts) const override { return {}; }
     juce::Image getCurrentFrame() const override  { return {}; }
-    bool isFrameAvailable (double pts) const override { return false; }
+    bool isFrameAvailable ([[maybe_unused]]double pts) const override { return false; }
 
     Size getVideoSize() const override  { return {}; }
     double getCurrentTimeInSeconds() const override;
@@ -65,14 +64,14 @@ public:
     juce::int64 getNextReadPosition() const override;
     juce::int64 getTotalLength() const override;
     bool isLooping() const override { return false; }
-    void setLooping (bool shouldLoop) override {}
+    void setLooping ([[maybe_unused]]bool shouldLoop) override {}
 
-    juce::Image getStillImage (double seconds, Size size) override { return {}; }
+    juce::Image getStillImage ([[maybe_unused]]double seconds, [[maybe_unused]]Size size) override { return {}; }
 
     double getLengthInSeconds() const override;
 
-    bool hasVideo() const override    { return false; };
-    bool hasAudio() const override    { return true; };
+    bool hasVideo() const override    { return false; }
+    bool hasAudio() const override    { return true; }
 
     std::shared_ptr<AVClip> createCopy (StreamTypes types) override;
 
@@ -89,7 +88,7 @@ private:
     double sampleRate = 0.0;
     double originalSampleRate = 0.0;
     int    samplesPerBlock = 0;
-    double lastGain = 0.0;
+    float  lastGain = 0.0;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioClip)
 };

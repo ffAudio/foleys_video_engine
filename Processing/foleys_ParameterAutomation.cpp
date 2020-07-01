@@ -303,25 +303,25 @@ double AudioParameterAutomation::getValueForText (const juce::String& text) cons
 void AudioParameterAutomation::updateProcessor (double pts)
 {
     if (!gestureInProgress)
-        parameter.setValueNotifyingHost (getValueForTime (pts));
+        parameter.setValueNotifyingHost (float (getValueForTime (pts)));
 }
 
 double AudioParameterAutomation::getRealValueForTime (double pts) const
 {
     if (auto* ranged = dynamic_cast<juce::RangedAudioParameter*>(&parameter))
-        return ranged->getNormalisableRange().convertFrom0to1 (getValueForTime (pts));
+        return ranged->getNormalisableRange().convertFrom0to1 (float (getValueForTime (pts)));
 
     return getValueForTime (pts);
 }
 
-void AudioParameterAutomation::parameterValueChanged (int parameterIndex, float newValue)
+void AudioParameterAutomation::parameterValueChanged (int, float newValue)
 {
 //    DBG ("Got Value: " << getName() << " - " << juce::String (newValue) << " " << juce::String (parameterIndex) << "/" << juce::String (parameter.getParameterIndex()));
     auto pts = controllable.getCurrentPTS();
     setValue (pts, newValue);
 }
 
-void AudioParameterAutomation::parameterGestureChanged (int parameterIndex, bool gestureIsStarting)
+void AudioParameterAutomation::parameterGestureChanged (int, bool gestureIsStarting)
 {
     if (gestureIsStarting)
     {

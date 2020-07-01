@@ -22,6 +22,11 @@
 
 #if FOLEYS_USE_FFMPEG
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wconversion"
+#pragma clang diagnostic ignored "-Wsign-conversion"
+#pragma clang diagnostic ignored "-Wfloat-conversion"
+
 #if JUCE_MSVC
 #pragma comment (lib, "avformat.lib")
 #pragma comment (lib, "avutil.lib")
@@ -47,6 +52,7 @@ extern "C" {
 }
 #endif
 
+#pragma clang diagnostic pop
 
 namespace foleys
 {
@@ -93,7 +99,7 @@ public:
         /* create scaling context */
         scalerContext = sws_getContext (in_width,  in_height, in_format,
                                         out_width, out_height, out_format,
-                                        SWS_BILINEAR, NULL, NULL, NULL);
+                                        SWS_BILINEAR, nullptr, nullptr, nullptr);
         if (!scalerContext) {
             FOLEYS_LOG ("Impossible to create scale context for the conversion");
         }

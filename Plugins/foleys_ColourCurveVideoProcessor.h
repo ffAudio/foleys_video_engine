@@ -73,7 +73,10 @@ public:
         blueGamma       = state.getRawParameterValue (IDs::blueGamma);
     }
 
-    void processFrame (juce::Image& frame, int64_t count, const VideoStreamSettings& settings, double clipDuration) override
+    void processFrame (juce::Image& frame,
+    [[maybe_unused]]int64_t count,
+    [[maybe_unused]]const VideoStreamSettings& settings,
+    [[maybe_unused]]double clipDuration) override
     {
         red.calculateColourMap   (*redBrightness,   *redContrast,   *redGamma);
         green.calculateColourMap (*greenBrightness, *greenContrast, *greenGamma);

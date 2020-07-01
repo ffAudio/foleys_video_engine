@@ -91,7 +91,7 @@ public:
     /**
      Returns the duration of a frame in seconds. This is the inverse of frame rate.
      */
-    virtual double getFrameDurationInSeconds() const { return 0.0; };
+    virtual double getFrameDurationInSeconds() const { return 0.0; }
 
     /** This returns a copy of the clip. Note that this will not work properly
         if the clip is not properly registered in the engine, because the

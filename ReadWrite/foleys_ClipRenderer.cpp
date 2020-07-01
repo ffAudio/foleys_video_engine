@@ -106,26 +106,26 @@ juce::ThreadPoolJob::JobStatus ClipRenderer::RenderJob::runJob()
     if (bouncer.writer == nullptr || bouncer.clip == nullptr)
         return juce::ThreadPoolJob::jobHasFinished;
 
-    const auto videoSettings = bouncer.videoSettings;
-    const auto audioSettings = bouncer.audioSettings;
+    const auto targetVideoSettings = bouncer.videoSettings;
+    const auto targetAudioSettings = bouncer.audioSettings;
 
     const auto totalDuration = bouncer.clip->getTotalLength();
     int64_t    audioPosition = 0;
-    int64_t    videoPosition = - videoSettings.defaultDuration;
+    int64_t    videoPosition = - targetVideoSettings.defaultDuration;
 
-    auto  clip = bouncer.clip;
+    auto  targetClip = bouncer.clip;
 
-    buffer.setSize (audioSettings.numChannels, audioSettings.defaultNumSamples);
-    clip->prepareToPlay (audioSettings.defaultNumSamples, audioSettings.timebase);
-    clip->setNextReadPosition (0);
+    buffer.setSize (targetAudioSettings.numChannels, targetAudioSettings.defaultNumSamples);
+    targetClip->prepareToPlay (targetAudioSettings.defaultNumSamples, targetAudioSettings.timebase);
+    targetClip->setNextReadPosition (0);
 
     while (! shouldExit() && audioPosition < totalDuration)
     {
         juce::AudioSourceChannelInfo info (&buffer, 0, std::min (int (totalDuration - audioPosition),
-                                                                 audioSettings.defaultNumSamples));
+                                                                 targetAudioSettings.defaultNumSamples));
 
-        clip->waitForSamplesReady (info.numSamples);
-        clip->getNextAudioBlock (info);
+        targetClip->waitForSamplesReady (info.numSamples);
+        targetClip->getNextAudioBlock (info);
         juce::AudioBuffer<float> writeBuffer (buffer.getArrayOfWritePointers(),
                                               buffer.getNumChannels(),
                                               info.startSample,
@@ -134,13 +134,13 @@ juce::ThreadPoolJob::JobStatus ClipRenderer::RenderJob::runJob()
 
         audioPosition += writeBuffer.getNumSamples();
 
-        const auto secs = audioPosition / double (audioSettings.timebase);
-        const auto videoCount = secs * videoSettings.timebase;
+        const auto secs = audioPosition / double (targetAudioSettings.timebase);
+        const auto videoCount = secs * targetVideoSettings.timebase;
         if (videoCount >= videoPosition)
         {
-            videoPosition += videoSettings.defaultDuration;
-            auto timestamp = videoCount / double (videoSettings.timebase);
-            while (! clip->isFrameAvailable (timestamp))
+            videoPosition += targetVideoSettings.defaultDuration;
+            auto timestamp = videoCount / double (targetVideoSettings.timebase);
+            while (! targetClip->isFrameAvailable (timestamp))
             {
                 if (shouldExit())
                 {
@@ -153,7 +153,7 @@ juce::ThreadPoolJob::JobStatus ClipRenderer::RenderJob::runJob()
                 juce::Thread::sleep (10);
             }
 
-            auto frame = clip->getFrame (timestamp);
+            auto frame = targetClip->getFrame (timestamp);
 
             bouncer.writer->pushImage (videoPosition, frame.second);
         }

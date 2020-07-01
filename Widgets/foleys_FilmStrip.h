@@ -35,7 +35,7 @@ class FilmStrip final : public juce::Component
 {
 public:
     FilmStrip();
-    virtual ~FilmStrip();
+    ~FilmStrip() override;
 
     /** Set the clip to be shown as thimbnails */
     void setClip (std::shared_ptr<AVClip> clip);

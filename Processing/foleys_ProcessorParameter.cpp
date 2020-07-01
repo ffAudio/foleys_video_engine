@@ -106,7 +106,7 @@ ProcessorParameterFloat::ProcessorParameterFloat (const juce::Identifier&       
 
 const int ProcessorParameterFloat::getNumSteps() const
 {
-    return range.interval == 0 ? 0 : (range.end - range.start) / range.interval;
+    return range.interval == 0 ? 0 : juce::roundToInt ((range.end - range.start) / range.interval);
 }
 
 double ProcessorParameterFloat::getNormalisedValue() const

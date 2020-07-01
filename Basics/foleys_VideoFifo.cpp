@@ -39,11 +39,11 @@ std::pair<int64_t, juce::Image> VideoFifo::popVideoFrame()
 
 std::pair<int64_t, juce::Image> VideoFifo::getVideoFrame (double timestamp) const
 {
-    const juce::int64 pts = timestamp * settings.timebase;
+    const auto pts = juce::int64 (timestamp * settings.timebase);
 
     const juce::ScopedLock sl (lock);
 
-    auto vf = videoFrames.lower_bound (timestamp * settings.timebase);
+    auto vf = videoFrames.lower_bound (pts);
     if (vf == videoFrames.end())
         return {};
 
@@ -56,7 +56,7 @@ std::pair<int64_t, juce::Image> VideoFifo::getVideoFrame (double timestamp) cons
 
 bool VideoFifo::isFrameAvailable (double timestamp) const
 {
-    const juce::int64 pts = timestamp * settings.timebase;
+    const auto pts = juce::int64 (timestamp * settings.timebase);
 
     const juce::ScopedLock sl (lock);
 
@@ -72,7 +72,7 @@ bool VideoFifo::isFrameAvailable (double timestamp) const
 
 int64_t VideoFifo::getFrameCountForTime (double timestamp) const
 {
-    const juce::int64 pts = timestamp * settings.timebase;
+    const auto pts = juce::int64 (timestamp * settings.timebase);
 
     const juce::ScopedLock sl (lock);
 

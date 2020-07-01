@@ -82,7 +82,7 @@ void MovieClip::setReader (std::unique_ptr<AVReader> readerToUse)
         movieReader->setOutputSampleRate (sampleRate);
 
     auto& settings = videoFifo.getVideoSettings();
-    settings.timebase = movieReader->timebase;
+    settings.timebase = juce::roundToInt (movieReader->timebase);
     settings.frameSize = movieReader->originalSize;
     videoFifo.clear();
 
@@ -141,10 +141,10 @@ juce::Image MovieClip::getCurrentFrame() const
     return videoFifo.getVideoFrame (nextReadPosition / sampleRate).second;
 }
 
-void MovieClip::prepareToPlay (int samplesPerBlockExpected, double sampleRateToUse)
+void MovieClip::prepareToPlay (int, double sampleRateToUse)
 {
     sampleRate = sampleRateToUse;
-    audioFifo.setNumSamples (sampleRate);
+    audioFifo.setNumSamples (juce::roundToInt (sampleRate));
     audioFifo.setSampleRate (sampleRate);
 
     if (movieReader)
@@ -187,7 +187,7 @@ bool MovieClip::waitForFrameReady (double pts, int timeout)
 
 void MovieClip::getNextAudioBlock (const juce::AudioSourceChannelInfo& info)
 {
-    const auto gain = juce::Decibels::decibelsToGain (getAudioParameters().at(IDs::gain)->getRealValue());
+    const auto gain = float (juce::Decibels::decibelsToGain (getAudioParameters().at(IDs::gain)->getRealValue()));
 
     if (movieReader && movieReader->isOpenedOk() && movieReader->hasAudio())
     {
@@ -263,7 +263,7 @@ void MovieClip::setNextReadPosition (juce::int64 samples)
         }
         else
         {
-            movieReader->setPosition (time * movieReader->sampleRate);
+            movieReader->setPosition (juce::int64 (time * movieReader->sampleRate));
         }
         videoFifo.clear();
     }

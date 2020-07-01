@@ -34,7 +34,7 @@ public:
     {
         frame = av_frame_alloc();
 
-        auto ret = avformat_open_input (&formatContext, file.getFullPathName().toRawUTF8(), NULL, NULL);
+        auto ret = avformat_open_input (&formatContext, file.getFullPathName().toRawUTF8(), nullptr, nullptr);
         if (ret < 0)
         {
             FOLEYS_LOG ("Opening file failed: " << getErrorString (ret));
@@ -42,7 +42,7 @@ public:
         }
 
         // retrieve stream information
-        if (avformat_find_stream_info (formatContext, NULL) < 0)
+        if (avformat_find_stream_info (formatContext, nullptr) < 0)
         {
             closeVideoFile();
             return;
@@ -137,8 +137,8 @@ public:
     void processPacket (VideoFifo& videoFifo, AudioFifo& audioFifo)
     {
         AVPacket packet;
-        // initialize packet, set data to NULL, let the demuxer fill it
-        packet.data = NULL;
+        // initialize packet, set data to nullptr, let the demuxer fill it
+        packet.data = nullptr;
         packet.size = 0;
         av_init_packet (&packet);
 
@@ -182,7 +182,7 @@ public:
                             size.height,
                             AV_PIX_FMT_BGR0);
 
-        auto targetPts = seconds * reader.timebase;
+        auto targetPts = int64_t (seconds * reader.timebase);
         auto response = av_seek_frame (formatContext, videoStreamIdx, targetPts, AVSEEK_FLAG_BACKWARD);
         if (response < 0)
         {
@@ -228,17 +228,17 @@ public:
         if (audioContext == nullptr)
         {
             if (juce::isPositiveAndBelow (videoStreamIdx, formatContext->nb_streams))
-                reader.numSamples  = formatContext->streams [videoStreamIdx]->duration * sr
-                * av_q2d (formatContext->streams [videoStreamIdx]->time_base);
+                reader.numSamples  = int (formatContext->streams [videoStreamIdx]->duration * sr
+                * av_q2d (formatContext->streams [videoStreamIdx]->time_base));
 
             return false;
         }
 
         audioConverterContext = swr_alloc_set_opts (audioConverterContext,
-                                                    channelLayout,              // out_ch_layout
+                                                    int64_t (channelLayout),    // out_ch_layout
                                                     AV_SAMPLE_FMT_FLTP,         // out_sample_fmt
-                                                    sr,                         // out_sample_rate
-                                                    channelLayout,              // in_ch_layout
+                                                    juce::roundToInt (sr),      // out_sample_rate
+                                                    int64_t (channelLayout),    // in_ch_layout
                                                     audioContext->sample_fmt,   // in_sample_fmt
                                                     audioContext->sample_rate,  // in_sample_rate
                                                     0,                          // log_offset
@@ -268,10 +268,10 @@ private:
                           enum AVMediaType type,
                           bool refCounted)
     {
-        AVCodec *decoder = NULL;
-        AVDictionary *opts = NULL;
+        AVCodec *decoder = nullptr;
+        AVDictionary *opts = nullptr;
 
-        int id = av_find_best_stream (formatContext, type, -1, -1, NULL, 0);
+        int id = av_find_best_stream (formatContext, type, -1, -1, nullptr, 0);
 
         if (juce::isPositiveAndBelow(id, static_cast<int> (formatContext->nb_streams))) {
             AVStream* stream = formatContext->streams [id];
@@ -459,10 +459,6 @@ FFmpegReader::FFmpegReader (const juce::File& file, StreamTypes type)
     pimpl = std::make_unique<Pimpl> (*this, file, type);
 }
 
-FFmpegReader::~FFmpegReader()
-{
-}
-
 juce::File FFmpegReader::getMediaFile() const
 {
     return mediaFile;
@@ -488,9 +484,9 @@ void FFmpegReader::readNewData (VideoFifo& videoFifo, AudioFifo& audioFifo)
     pimpl->processPacket (videoFifo, audioFifo);
 }
 
-void FFmpegReader::setOutputSampleRate (double sampleRate)
+void FFmpegReader::setOutputSampleRate (double sr)
 {
-    pimpl->setOutputSampleRate (sampleRate);
+    pimpl->setOutputSampleRate (sr);
 }
 
 bool FFmpegReader::hasVideo() const

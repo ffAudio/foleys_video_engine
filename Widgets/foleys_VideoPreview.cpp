@@ -79,7 +79,7 @@ void VideoPreview::paint (juce::Graphics& g)
     }
 }
 
-void VideoPreview::timecodeChanged (int64_t count, double seconds)
+void VideoPreview::timecodeChanged (int64_t, double)
 {
     repaint();
 }

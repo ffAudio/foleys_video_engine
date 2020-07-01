@@ -52,7 +52,7 @@ public:
      */
     ProcessorController (ClipDescriptor& owner, const juce::ValueTree& state, juce::UndoManager* undo, int index);
 
-    ~ProcessorController();
+    ~ProcessorController() override;
 
     /** Returns the name of the controlled processor */
     juce::String getName() const;

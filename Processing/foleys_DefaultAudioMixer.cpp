@@ -21,7 +21,7 @@
 namespace foleys
 {
 
-void DefaultAudioMixer::setup (int numChannels, double sampleRate, int samplesPerBlockExpected)
+void DefaultAudioMixer::setup (int numChannels, double, int samplesPerBlockExpected)
 {
     mixBuffer.setSize (numChannels, samplesPerBlockExpected);
 }

@@ -43,7 +43,6 @@ class ComposedClip  : public AVClip,
 {
 public:
     ComposedClip (VideoEngine& videoEngine);
-    virtual ~ComposedClip() = default;
 
     /** Used to identify the clip type to the user */
     juce::String getClipType() const override { return NEEDS_TRANS ("Edit"); }
@@ -116,10 +115,9 @@ public:
                                 juce::ValueTree& childWhichHasBeenRemoved,
                                 int indexFromWhichChildWasRemoved) override;
 
-    void valueTreeChildOrderChanged (juce::ValueTree& parentTreeWhoseChildrenHaveMoved,
-                                     int oldIndex, int newIndex) override {}
+    void valueTreeChildOrderChanged (juce::ValueTree&, int, int) override {}
 
-    void valueTreeParentChanged (juce::ValueTree& treeWhoseParentHasChanged) override {}
+    void valueTreeParentChanged (juce::ValueTree&) override {}
 
     juce::UndoManager* getUndoManager();
 
