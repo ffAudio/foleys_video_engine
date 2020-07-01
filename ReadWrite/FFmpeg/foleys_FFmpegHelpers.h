@@ -22,10 +22,12 @@
 
 #if FOLEYS_USE_FFMPEG
 
+#if JUCE_MAC
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wconversion"
 #pragma clang diagnostic ignored "-Wsign-conversion"
 #pragma clang diagnostic ignored "-Wfloat-conversion"
+#endif
 
 #if JUCE_MSVC
 #pragma comment (lib, "avformat.lib")
@@ -52,7 +54,9 @@ extern "C" {
 }
 #endif
 
+#if JUCE_MAC
 #pragma clang diagnostic pop
+#endif
 
 namespace foleys
 {
