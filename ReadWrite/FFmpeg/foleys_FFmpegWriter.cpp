@@ -78,6 +78,13 @@ struct FFmpegWriter::Pimpl
         context->bit_rate  = 480000;
         context->gop_size  = 10;
         context->time_base = av_make_q (1, settings.timebase);
+
+        if (encoder->id == AV_CODEC_ID_H264)
+            context->ticks_per_frame = 2;
+
+        if (formatContext->oformat->flags & AVFMT_GLOBALHEADER)
+            context->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
+
         avcodec_parameters_from_context (stream->codecpar, context);
 
         AVDictionary* options = nullptr;
@@ -87,9 +94,6 @@ struct FFmpegWriter::Pimpl
             av_dict_set (&options, "tune", "film", 0);
             av_opt_set (context->priv_data, "profile", "baseline", AV_OPT_SEARCH_CHILDREN);
         }
-
-        if (formatContext->oformat->flags & AVFMT_GLOBALHEADER)
-            context->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
 
         int ret = avcodec_open2 (context, encoder, &options);
         if (ret < 0) {
@@ -107,7 +111,7 @@ struct FFmpegWriter::Pimpl
         descriptor->frame->height = context->height;
         descriptor->frame->format = context->pix_fmt;
 
-        ret = av_frame_get_buffer (descriptor->frame, 0);
+        ret = av_frame_get_buffer (descriptor->frame, 1);
         if (ret < 0) {
             FOLEYS_LOG ("Cannot allocate buffers for video frame: " << juce::String (ret));
         }
@@ -173,7 +177,7 @@ struct FFmpegWriter::Pimpl
         descriptor->frame->channel_layout = AV_CH_LAYOUT_STEREO;
         descriptor->frame->channels     = 2;
 
-        ret = av_frame_get_buffer (descriptor->frame, 0);
+        ret = av_frame_get_buffer (descriptor->frame, 1);
         if (ret < 0) {
             FOLEYS_LOG ("Cannot allocate buffers for audio frame: " << juce::String (ret));
         }
@@ -208,6 +212,8 @@ struct FFmpegWriter::Pimpl
 
     void encodeVideoFrame (VideoStreamDescriptor& descriptor, juce::Image& image, int64_t timestamp)
     {
+        FOLEYS_LOG ("encodeVideoFrame: " << timestamp << " size: " << image.getWidth() << "x" << image.getHeight());
+
         jassert (formatContext != nullptr);
         jassert (descriptor.context != nullptr);
 
@@ -254,6 +260,8 @@ struct FFmpegWriter::Pimpl
 
         descriptor.scaler.convertImageToFrame (descriptor.frame, image);
         encodeWriteFrame (descriptor.context, descriptor.frame, descriptor.streamIndex);
+
+        av_frame_unref (descriptor.frame);
     }
 
     void encodeAudioFrame (AudioStreamDescriptor& descriptor, juce::AudioBuffer<float>& buffer, int64_t timestamp)
@@ -295,6 +303,8 @@ struct FFmpegWriter::Pimpl
                                   0);
 
         encodeWriteFrame (descriptor.context, descriptor.frame, descriptor.streamIndex);
+
+        av_frame_unref (descriptor.frame);
     }
 
     bool startWriting()
@@ -403,6 +413,7 @@ private:
             {
                 next = s;
                 pts = streamPTS;
+                found = true;
             }
         }
 
@@ -415,6 +426,7 @@ private:
                 next = s;
                 pts = streamPTS;
                 video = true;
+                found = true;
             }
         }
 
@@ -484,7 +496,7 @@ private:
             return false;
         }
 
-        if (av_write_frame (formatContext, packet) < 0)
+        if (av_interleaved_write_frame (formatContext, packet) < 0)
             FOLEYS_LOG ("Error muxing packet");
 
         av_packet_unref (packet);
