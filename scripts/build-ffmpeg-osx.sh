@@ -2,6 +2,11 @@
 
 set -e
 
+if [[ $# -ne 2 ]]; then
+    echo "Please add the path to the ffmpeg repository as first argument"
+    exit 1
+fi
+
 mkdir -p ../libs
 pushd ../libs
 mkdir -p ffmpeg.build
