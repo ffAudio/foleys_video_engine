@@ -59,6 +59,11 @@ public:
 
     virtual void setOutputSampleRate (double sampleRate) = 0;
 
+    virtual int                 getNumVideoStreams() const = 0;
+    virtual VideoStreamSettings getVideoSettings (int streamIndex) const = 0;
+    virtual int                 getNumAudioStreams() const = 0;
+    virtual AudioStreamSettings getAudioSettings (int streamIndex) const = 0;
+
     Size   originalSize;
     int    pixelFormat;
     double timebase = {};

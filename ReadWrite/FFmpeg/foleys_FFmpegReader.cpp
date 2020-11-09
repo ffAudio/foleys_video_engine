@@ -49,6 +49,21 @@ public:
         }
 
         // open the streams
+        numVideoStreams    = 0;
+        numAudioStreams    = 0;
+        numSubtitleStreams = 0;
+        for (int i = 0; i < formatContext->nb_streams; ++i)
+        {
+            auto* stream = formatContext->streams [i];
+            switch (stream->codecpar->codec_type)
+            {
+                case AVMEDIA_TYPE_VIDEO: ++numVideoStreams; break;
+                case AVMEDIA_TYPE_AUDIO: ++numAudioStreams; break;
+                case AVMEDIA_TYPE_SUBTITLE: ++numSubtitleStreams; break;
+                default: break;
+            }
+        }
+
         if (type.test (StreamTypes::Audio))
             audioStreamIdx = openCodecContext (&audioContext, AVMEDIA_TYPE_AUDIO, true);
 
@@ -262,6 +277,29 @@ public:
         return subtitleStreamIdx >= 0;
     }
 
+    VideoStreamSettings getVideoSettings (int streamIndex) const
+    {
+        foleys::VideoStreamSettings settings;
+        settings.frameSize = { videoContext->width, videoContext->height };
+        return settings;
+    }
+
+    AudioStreamSettings getAudioSettings (int streamIndex) const
+    {
+        foleys::AudioStreamSettings settings;
+        settings.numChannels = audioContext->channels;
+        settings.timebase = audioContext->sample_rate;
+        settings.defaultNumSamples = int (audioContext->max_samples);
+        return settings;
+    }
+
+    int numVideoStreams    =  0;
+    int videoStreamIdx     = -1;
+    int numAudioStreams    =  0;
+    int audioStreamIdx     = -1;
+    int numSubtitleStreams =  0;
+    int subtitleStreamIdx  = -1;
+
 private:
 
     int openCodecContext (AVCodecContext** decoderContext,
@@ -439,10 +477,6 @@ private:
 
     AVFrame  *frame             = nullptr;
 
-    int       videoStreamIdx    = -1;
-    int       audioStreamIdx    = -1;
-    int       subtitleStreamIdx = -1;
-
     uint64_t  channelLayout = AV_CH_LAYOUT_STEREO;
     double    outputSampleRate = {};
 
@@ -502,6 +536,32 @@ bool FFmpegReader::hasAudio() const
 bool FFmpegReader::hasSubtitle() const
 {
     return pimpl->hasSubtitle();
+}
+
+int FFmpegReader::getNumVideoStreams() const
+{
+    return pimpl->numVideoStreams;
+}
+
+VideoStreamSettings FFmpegReader::getVideoSettings (int streamIndex) const
+{
+    // Multiple streams opening not yet implemented
+    jassert (streamIndex == 0);
+
+    return pimpl->getVideoSettings (pimpl->videoStreamIdx);
+}
+
+int FFmpegReader::getNumAudioStreams() const
+{
+    return pimpl->numAudioStreams;
+}
+
+AudioStreamSettings FFmpegReader::getAudioSettings (int streamIndex) const
+{
+    // Multiple streams opening not yet implemented
+    jassert (streamIndex == 0);
+
+    return pimpl->getAudioSettings (pimpl->audioStreamIdx);
 }
 
 

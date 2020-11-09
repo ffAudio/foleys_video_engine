@@ -46,6 +46,11 @@ public:
     bool hasAudio() const override;
     bool hasSubtitle() const override;
 
+    int                 getNumVideoStreams() const override;
+    VideoStreamSettings getVideoSettings (int streamIndex) const override;
+    int                 getNumAudioStreams() const override;
+    AudioStreamSettings getAudioSettings (int streamIndex) const override;
+
 private:
     juce::File mediaFile;
 
