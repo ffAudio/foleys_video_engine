@@ -64,7 +64,7 @@ class FFmpegVideoScaler
 {
 public:
     /** Creates a scaler object. It does nothing before you call setupScaler */
-    FFmpegVideoScaler () : scalerContext (nullptr) {}
+    FFmpegVideoScaler() = default;
 
     ~FFmpegVideoScaler ()
     {
@@ -76,25 +76,45 @@ public:
     void setupScaler (const int in_width,  const int in_height,  const AVPixelFormat in_format,
                       const int out_width, const int out_height, const AVPixelFormat out_format)
     {
-        if (scalerContext) {
+        if (scalerContext)
+        {
+            if (in_width == iWidth &&
+                in_height == iHeight &&
+                in_format == iFormat &&
+                out_width == oWidth &&
+                out_height == oHeight &&
+                out_format == oFormat)
+                return;
+
             sws_freeContext (scalerContext);
             scalerContext = nullptr;
         }
 
+        iWidth = in_width;
+        iHeight = in_height;
+        iFormat = in_format;
+        oWidth = out_width;
+        oHeight = out_height;
+        oFormat = out_format;
+
         const AVPixFmtDescriptor* in_descriptor = av_pix_fmt_desc_get (in_format);
-        if (!in_descriptor) {
+        if (!in_descriptor)
+        {
             FOLEYS_LOG ("No description for input pixel format");
             return;
         }
+
         const int in_bitsPerPixel = av_get_padded_bits_per_pixel (in_descriptor);
         for (int i=0; i < 4; ++i)
             inLinesizes [i] = i < in_descriptor->nb_components ? in_width * in_bitsPerPixel >> 3 : 0;
 
         const AVPixFmtDescriptor* out_descriptor = av_pix_fmt_desc_get (out_format);
-        if (!out_descriptor) {
+        if (!out_descriptor)
+        {
             FOLEYS_LOG ("No description for output pixel format");
             return;
         }
+
         const int out_bitsPerPixel = av_get_padded_bits_per_pixel (out_descriptor);
         for (int i=0; i < 4; ++i)
             outLinesizes [i] = i < out_descriptor->nb_components ? out_width * out_bitsPerPixel >> 3 : 0;
@@ -103,7 +123,8 @@ public:
         scalerContext = sws_getContext (in_width,  in_height, in_format,
                                         out_width, out_height, out_format,
                                         SWS_BILINEAR, nullptr, nullptr, nullptr);
-        if (!scalerContext) {
+        if (!scalerContext)
+        {
             FOLEYS_LOG ("Impossible to create scale context for the conversion");
         }
     }
@@ -113,7 +134,8 @@ public:
      matching to the platform */
     void convertFrameToImage (juce::Image& image, const AVFrame* frame)
     {
-        if (scalerContext) {
+        if (scalerContext)
+        {
             juce::Image::BitmapData data (image, 0, 0,
                                           image.getWidth(),
                                           image.getHeight(),
@@ -154,10 +176,17 @@ public:
 
 
 private:
-    SwsContext* scalerContext;
+    SwsContext*     scalerContext = nullptr;
 
-    int         inLinesizes[4];
-    int         outLinesizes[4];
+    int             iWidth  = 0;
+    int             iHeight = 0;
+    AVPixelFormat   iFormat = AV_PIX_FMT_NONE;
+    int             oWidth  = 0;
+    int             oHeight = 0;
+    AVPixelFormat   oFormat = AV_PIX_FMT_NONE;
+
+    int             inLinesizes[4];
+    int             outLinesizes[4];
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FFmpegVideoScaler)
 };
@@ -193,19 +222,29 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FFmpegAudioConverter)
 };
 
+struct FFmpegFrame
+{
+    FFmpegFrame()
+    {
+        frame = av_frame_alloc();
+    }
+
+    ~FFmpegFrame()
+    {
+        av_frame_unref (frame);
+        av_frame_free (&frame);
+    }
+
+    AVFrame* frame;
+};
+
 struct VideoStreamDescriptor
 {
     FFmpegVideoScaler    scaler;
     int                  streamIndex = -1;
     AVCodecContext*      context = nullptr;
-    AVFrame*             frame   = av_frame_alloc();
     VideoStreamSettings  settings;
     VideoFifo            videoBuffer;
-
-    ~VideoStreamDescriptor()
-    {
-        av_frame_free (&frame);
-    }
 };
 
 struct AudioStreamDescriptor
@@ -213,15 +252,9 @@ struct AudioStreamDescriptor
     FFmpegAudioConverter converter;
     int                  streamIndex = -1;
     AVCodecContext*      context = nullptr;
-    AVFrame*             frame   = av_frame_alloc();
     AudioStreamSettings  settings;
     AudioFifo            sampleBuffer;
     juce::HeapBlock<uint8_t> converterBuffer;
-
-    ~AudioStreamDescriptor()
-    {
-        av_frame_free (&frame);
-    }
 };
 
 

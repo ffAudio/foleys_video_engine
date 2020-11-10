@@ -52,7 +52,7 @@ public:
         numVideoStreams    = 0;
         numAudioStreams    = 0;
         numSubtitleStreams = 0;
-        for (int i = 0; i < formatContext->nb_streams; ++i)
+        for (unsigned int i = 0; i < formatContext->nb_streams; ++i)
         {
             auto* stream = formatContext->streams [i];
             switch (stream->codecpar->codec_type)
@@ -60,6 +60,10 @@ public:
                 case AVMEDIA_TYPE_VIDEO: ++numVideoStreams; break;
                 case AVMEDIA_TYPE_AUDIO: ++numAudioStreams; break;
                 case AVMEDIA_TYPE_SUBTITLE: ++numSubtitleStreams; break;
+                case AVMEDIA_TYPE_NB:
+                case AVMEDIA_TYPE_DATA:
+                case AVMEDIA_TYPE_ATTACHMENT:
+                case AVMEDIA_TYPE_UNKNOWN:
                 default: break;
             }
         }
@@ -279,6 +283,9 @@ public:
 
     VideoStreamSettings getVideoSettings (int streamIndex) const
     {
+        // multiple video streams not yet implemented
+        juce::ignoreUnused (streamIndex);
+
         foleys::VideoStreamSettings settings;
         settings.frameSize = { videoContext->width, videoContext->height };
         return settings;
@@ -286,6 +293,9 @@ public:
 
     AudioStreamSettings getAudioSettings (int streamIndex) const
     {
+        // multiple audio streams not yet implemented
+        juce::ignoreUnused (streamIndex);
+
         foleys::AudioStreamSettings settings;
         settings.numChannels = audioContext->channels;
         settings.timebase = audioContext->sample_rate;
