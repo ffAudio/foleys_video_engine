@@ -33,6 +33,7 @@ public:
     juce::File getMediaFile() const override;
 
     juce::int64 getTotalLength() const override;
+    double getLengthInSeconds() const override;
 
     void setPosition (const int64_t position) override;
 

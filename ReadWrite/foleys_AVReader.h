@@ -39,6 +39,14 @@ public:
     virtual juce::File getMediaFile() const = 0;
 
     bool isOpenedOk() const { return opened; }
+
+    /** Returns the length of the clip in seconds */
+    virtual double getLengthInSeconds() const = 0;
+
+    /**
+     Returns the length in samples. Note before prepareToPlay this returns the number of samples in the audio stream.
+     Since the Reader will resample to suit the output, this number can change.
+     */
     virtual juce::int64 getTotalLength() const = 0;
 
     /**

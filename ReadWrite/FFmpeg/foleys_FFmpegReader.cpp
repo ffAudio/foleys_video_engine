@@ -266,16 +266,28 @@ public:
         return swr_init (audioConverterContext) >= 0;
     }
 
+    double getLengthInSeconds() const
+    {
+        AVStream* stream = nullptr;
+
+        if (audioStreamIdx >= 0)
+            stream = formatContext->streams [audioStreamIdx];
+        else if (videoStreamIdx >= 0)
+            stream = formatContext->streams [videoStreamIdx];
+
+        if (stream)
+            return stream->duration * av_q2d (stream->time_base);
+
+        return 0.0;
+    }
+
     juce::int64 getTotalLength() const
     {
+        if (outputSampleRate > 0.0)
+            return getLengthInSeconds() * outputSampleRate;
+
         if (audioStreamIdx >= 0)
             return formatContext->streams [audioStreamIdx]->duration;
-
-        if (videoStreamIdx && outputSampleRate > 0.0)
-        {
-            const auto* stream = formatContext->streams [videoStreamIdx];
-            return juce::int64 (stream->duration * av_q2d (stream->time_base) * outputSampleRate);
-        }
 
         return 0;
     }
@@ -524,7 +536,12 @@ juce::File FFmpegReader::getMediaFile() const
 
 juce::int64 FFmpegReader::getTotalLength() const
 {
-    return numSamples;
+    return pimpl->getTotalLength();
+}
+
+double FFmpegReader::getLengthInSeconds() const
+{
+    return pimpl->getLengthInSeconds();
 }
 
 void FFmpegReader::setPosition (const int64_t position)
