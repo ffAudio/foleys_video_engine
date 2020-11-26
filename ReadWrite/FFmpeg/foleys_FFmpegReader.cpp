@@ -266,6 +266,20 @@ public:
         return swr_init (audioConverterContext) >= 0;
     }
 
+    juce::int64 getTotalLength() const
+    {
+        if (audioStreamIdx >= 0)
+            return formatContext->streams [audioStreamIdx]->duration;
+
+        if (videoStreamIdx && outputSampleRate > 0.0)
+        {
+            const auto* stream = formatContext->streams [videoStreamIdx];
+            return juce::int64 (stream->duration * av_q2d (stream->time_base) * outputSampleRate);
+        }
+
+        return 0;
+    }
+
     bool hasVideo() const
     {
         return videoStreamIdx >= 0;
