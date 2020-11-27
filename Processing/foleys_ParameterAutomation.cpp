@@ -182,6 +182,36 @@ const std::map<double, double>& ParameterAutomation::getKeyframes() const
     return keyframes;
 }
 
+void ParameterAutomation::setKeyframes (std::map<double, double> keys)
+{
+    if (undoManager)
+        undoManager->beginNewTransaction();
+
+    int index = 0;
+    for (auto& k : keys)
+    {
+        if (state.getNumChildren() > index)
+        {
+            auto tree = state.getChild (index);
+            tree.setProperty (IDs::time, k.first, undoManager);
+            tree.setProperty (IDs::value, k.second, undoManager);
+        }
+        else
+        {
+            state.appendChild ({IDs::keyframe, {
+                { IDs::time, k.first },
+                { IDs::value, k.second }
+            }}, undoManager);
+        }
+        ++index;
+    }
+
+    while (state.getNumChildren() > index)
+        state.removeChild (index, undoManager);
+
+    loadFromValueTree();
+}
+
 void ParameterAutomation::loadFromValueTree()
 {
     juce::ScopedValueSetter<bool>(manualUpdate, true);

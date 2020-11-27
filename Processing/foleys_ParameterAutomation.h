@@ -77,7 +77,15 @@ public:
      */
     void finishAutomationGesture();
 
+    /**
+     Give reading access to the keyframes
+     */
     const std::map<double, double>& getKeyframes() const;
+
+    /**
+     Replace all keyframes
+     */
+    void  setKeyframes (std::map<double, double> keys);
 
     virtual juce::String getText (float normalisedValue, int numDigits = 2) const = 0;
     virtual double getValueForText (const juce::String& text) const = 0;
