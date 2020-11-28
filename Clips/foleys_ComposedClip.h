@@ -90,8 +90,6 @@ public:
 
     int getDefaultBufferSize() const;
 
-    juce::TimeSliceClient* getBackgroundJob() override;
-
     /** Read all plugins getStateInformation() and save it into the statusTree as BLOB */
     void readPluginStatesIntoValueTree();
 
@@ -136,32 +134,13 @@ private:
 
     std::vector<std::shared_ptr<ClipDescriptor>> getActiveClips (std::function<bool(ClipDescriptor&)> selector) const;
 
-    /** @internal */
-    class ComposingThread : public juce::TimeSliceClient
-    {
-    public:
-        ComposingThread (ComposedClip& owner);
-        int useTimeSlice() override;
-
-        void setSuspended (bool s);
-        bool isSuspended() const;
-
-    private:
-        ComposedClip& owner;
-        bool suspended = true;
-        bool inRenderBlock = false;
-        JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ComposingThread)
-    };
-
     juce::CriticalSection clipDescriptorLock;
-
-    VideoFifo videoFifo;
-    ComposingThread videoRenderJob;
 
     juce::ValueTree state;
     bool manualStateChange = false;
 
     AudioStreamSettings audioSettings;
+    VideoStreamSettings videoSettings;
 
     std::unique_ptr<VideoMixer> videoMixer;
     std::unique_ptr<AudioMixer> audioMixer;

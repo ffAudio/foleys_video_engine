@@ -40,16 +40,15 @@ namespace IDs
 }
 
 ComposedClip::ComposedClip (VideoEngine& engine)
-  : AVClip (engine),
-    videoRenderJob (*this)
+  : AVClip (engine)
 {
     state = juce::ValueTree (IDs::compoundClip);
 
     videoMixer = std::make_unique<SoftwareVideoMixer>();
-    auto& settings = videoFifo.getVideoSettings();
-    settings.frameSize = {1280, 720};
-    settings.timebase = 24000;
-    settings.defaultDuration = 1001;
+
+    videoSettings.frameSize = {1280, 720};
+    videoSettings.timebase = 24000;
+    videoSettings.defaultDuration = 1001;
 
     audioMixer = std::make_unique<DefaultAudioMixer>();
 
@@ -63,21 +62,14 @@ juce::String ComposedClip::getDescription() const
 
 double ComposedClip::getFrameDurationInSeconds() const
 {
-    const auto& settings = videoFifo.getVideoSettings();
-    return double (settings.defaultDuration) / double (settings.timebase);
+    return double (videoSettings.defaultDuration) / double (videoSettings.timebase);
 }
 
 void ComposedClip::invalidateVideo()
 {
-    const auto wasSuspended = videoRenderJob.isSuspended();
-    videoRenderJob.setSuspended (true);
-
-    videoFifo.clear();
     lastShownFrame = -1;
     triggerAsyncUpdate();
     handleUpdateNowIfNeeded();
-
-    videoRenderJob.setSuspended (wasSuspended);
 }
 
 std::shared_ptr<ClipDescriptor> ComposedClip::addClip (std::shared_ptr<AVClip> clip, double start, double length, double offset)
@@ -125,24 +117,42 @@ std::shared_ptr<ClipDescriptor> ComposedClip::getClip (int index)
     return {};
 }
 
-std::pair<int64_t, juce::Image> ComposedClip::getFrame (double pts) const
-{
-    return videoFifo.getVideoFrame (pts);
-}
-
 bool ComposedClip::isFrameAvailable (double pts) const
 {
-    return videoFifo.isFrameAvailable (pts);
+    for (auto clip : getActiveClips ([pos = pts * getSampleRate()](ClipDescriptor& clip)
+                    {
+                        return clip.clip->hasVideo() && pos >= clip.start && pos < clip.start + clip.length;
+                    }))
+    {
+        if (clip->clip->isFrameAvailable (pts - clip->getStart() + clip->getOffset()) == false)
+            return false;
+    }
+
+    return true;
+}
+
+std::pair<int64_t, juce::Image> ComposedClip::getFrame (double pts) const
+{
+    auto nextTimeCode = convertTimecode (pts, videoSettings);
+
+    juce::Image image (juce::Image::ARGB, videoSettings.frameSize.width, videoSettings.frameSize.height, false);
+    videoMixer->compose (image, videoSettings, nextTimeCode, pts,
+                         getActiveClips ([pos = pts * getSampleRate()](ClipDescriptor& clip)
+    {
+        return clip.clip->hasVideo() && pos >= clip.start && pos < clip.start + clip.length;
+    }));
+
+    return { nextTimeCode, image };
 }
 
 juce::Image ComposedClip::getCurrentFrame() const
 {
-    return videoFifo.getVideoFrame (getCurrentTimeInSeconds()).second;
+    return getFrame (getCurrentTimeInSeconds()).second;
 }
 
 Size ComposedClip::getVideoSize() const
 {
-    return videoFifo.getVideoSettings().frameSize;
+    return videoSettings.frameSize;
 }
 
 double ComposedClip::getCurrentTimeInSeconds() const
@@ -173,8 +183,6 @@ void ComposedClip::prepareToPlay (int samplesPerBlockExpected, double sampleRate
         descriptor->clip->prepareToPlay (audioSettings.defaultNumSamples, audioSettings.timebase);
         descriptor->updateSampleCounts();
     }
-
-    videoRenderJob.setSuspended (false);
 }
 
 void ComposedClip::releaseResources()
@@ -213,17 +221,11 @@ bool ComposedClip::waitForSamplesReady (int samples, int timeout)
 
 void ComposedClip::setNextReadPosition (juce::int64 samples)
 {
-    const auto wasSuspended = videoRenderJob.isSuspended();
-    videoRenderJob.setSuspended (true);
-
     position.store (samples);
     for (auto& descriptor : getClips())
         descriptor->clip->setNextReadPosition (std::max (juce::int64 (samples + descriptor->offset - descriptor->start), juce::int64 (descriptor->offset)));
 
-    videoFifo.clear();
-
     lastShownFrame = 0;
-    videoRenderJob.setSuspended (wasSuspended);
 
     triggerAsyncUpdate();
 }
@@ -306,7 +308,7 @@ void ComposedClip::handleAsyncUpdate()
     {
         const auto v = hasVideo();
         auto seconds = getCurrentTimeInSeconds();
-        auto count = v ? videoFifo.getFrameCountForTime (seconds) : 0;
+        auto count = v ? convertTimecode (seconds, videoSettings) : 0;
         if (count != lastShownFrame || lastShownFrame < 0 || v == false)
         {
             sendTimecode (count, seconds, juce::sendNotificationAsync);
@@ -433,57 +435,6 @@ juce::String ComposedClip::makeUniqueDescription (const juce::String& descriptio
         return withoutNumber + " #" + juce::String (suffix + 1);
 
     return description;
-}
-
-//==============================================================================
-
-ComposedClip::ComposingThread::ComposingThread (ComposedClip& ownerToUse)
-  : owner (ownerToUse)
-{
-}
-
-juce::TimeSliceClient* ComposedClip::getBackgroundJob()
-{
-    return &videoRenderJob;
-}
-
-int ComposedClip::ComposingThread::useTimeSlice()
-{
-    juce::ScopedValueSetter<bool> guard (inRenderBlock, true);
-
-    if (suspended || owner.videoFifo.getNumAvailableFrames() >= 10)
-        return 10;
-
-    auto& settings = owner.videoFifo.getVideoSettings();
-
-    auto image = owner.videoFifo.getOldestFrameForRecycling();
-    auto current = convertTimecode (owner.getCurrentTimeInSeconds(), settings);
-    auto highest = owner.videoFifo.getHighestTimeCode() + settings.defaultDuration;
-
-    auto nextTimeCode = std::max (current, highest);
-
-    auto timeInSeconds = nextTimeCode / double (settings.timebase);
-    auto pos = timeInSeconds * owner.getSampleRate();
-
-    owner.videoMixer->compose (image, settings, nextTimeCode, timeInSeconds,
-                               owner.getActiveClips ([pos](ClipDescriptor& clip) { return clip.clip->hasVideo() && pos >= clip.start && pos < clip.start + clip.length; }));
-
-    owner.videoFifo.pushVideoFrame (image, nextTimeCode);
-
-    return 0;
-}
-
-void ComposedClip::ComposingThread::setSuspended (bool s)
-{
-    suspended = s;
-
-    while (suspended && inRenderBlock)
-        juce::Thread::sleep (5);
-}
-
-bool ComposedClip::ComposingThread::isSuspended() const
-{
-    return suspended;
 }
 
 

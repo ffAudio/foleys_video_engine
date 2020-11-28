@@ -284,7 +284,7 @@ public:
     juce::int64 getTotalLength() const
     {
         if (outputSampleRate > 0.0)
-            return getLengthInSeconds() * outputSampleRate;
+            return juce::int64 (getLengthInSeconds() * outputSampleRate);
 
         if (audioStreamIdx >= 0)
             return formatContext->streams [audioStreamIdx]->duration;
