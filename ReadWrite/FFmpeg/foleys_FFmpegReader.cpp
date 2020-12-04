@@ -586,6 +586,7 @@ int FFmpegReader::getNumVideoStreams() const
 
 VideoStreamSettings FFmpegReader::getVideoSettings (int streamIndex) const
 {
+    juce::ignoreUnused (streamIndex);
     // Multiple streams opening not yet implemented
     jassert (streamIndex == 0);
 
@@ -599,6 +600,7 @@ int FFmpegReader::getNumAudioStreams() const
 
 AudioStreamSettings FFmpegReader::getAudioSettings (int streamIndex) const
 {
+    juce::ignoreUnused (streamIndex);
     // Multiple streams opening not yet implemented
     jassert (streamIndex == 0);
 
