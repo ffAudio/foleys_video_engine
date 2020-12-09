@@ -179,7 +179,9 @@ struct FFmpegWriter::Pimpl
             return;
 
         auto& descriptor = videoStreams [size_t (stream)];
-        descriptor->videoBuffer.pushVideoFrame (image, pos);
+        auto& target = descriptor->videoBuffer.getWritingFrame();
+        target.timecode = pos;
+        target.image = image;
 
         if (multiThreaded == false)
             while (processStreams());
@@ -394,15 +396,15 @@ private:
 
         for (size_t s=0; s < videoStreams.size() && !found; ++s)
         {
-            auto& descriptor = videoStreams [s];
-            auto  streamPTS  = double (descriptor->videoBuffer.getLowestTimeCode()) / descriptor->settings.timebase;
-            if (descriptor->videoBuffer.getNumAvailableFrames() > 0 && streamPTS < pts)
-            {
-                next = s;
-                pts = streamPTS;
-                video = true;
-                found = true;
-            }
+//            auto& descriptor = videoStreams [s];
+//            auto  streamPTS  = double (descriptor->videoBuffer.getLowestTimeCode()) / descriptor->settings.timebase;
+//            if (descriptor->videoBuffer.getNumAvailableFrames() > 0 && streamPTS < pts)
+//            {
+//                next = s;
+//                pts = streamPTS;
+//                video = true;
+//                found = true;
+//            }
         }
 
         if (found)
@@ -410,8 +412,8 @@ private:
             if (video)
             {
                 auto& stream = videoStreams [next];
-                auto frame = stream->videoBuffer.popVideoFrame();
-                encodeVideoFrame (*stream, frame.second, frame.first);
+                auto& frame  = stream->videoBuffer.getWritingFrame();
+                encodeVideoFrame (*stream, frame.image, frame.timecode);
             }
             else
             {

@@ -24,6 +24,7 @@ namespace foleys
 VideoPreview::VideoPreview()
 {
 #if FOLEYS_USE_OPENGL
+    openGLcontext.setImageCacheSize (64 * 1024 * 1024);
     openGLcontext.attachTo (*this);
 #endif
 

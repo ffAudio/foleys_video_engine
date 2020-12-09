@@ -93,7 +93,7 @@
 #  define FOLEYS_LOG(textToWrite)
 #endif
 
-#if FOLEYS_USE_OPENGL
+#ifdef JUCE_MODULE_AVAILABLE_juce_opengl
 #include <juce_opengl/juce_opengl.h>
 #endif
 

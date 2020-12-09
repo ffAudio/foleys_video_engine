@@ -21,166 +21,106 @@
 namespace foleys
 {
 
-void VideoFifo::pushVideoFrame (juce::Image& image, int64_t timestamp)
+VideoFifo::VideoFifo()
 {
-    const juce::ScopedLock sl (lock);
-    videoFrames [timestamp] = image;
 }
 
-std::pair<int64_t, juce::Image> VideoFifo::popVideoFrame()
+VideoFrame& VideoFifo::getWritingFrame()
 {
-    const juce::ScopedLock sl (lock);
-    if (videoFrames.empty())
-        return {};
+    auto pos = size_t (writePosition.load());
 
-    auto frame = videoFrames.extract (videoFrames.begin());
-    return { frame.key(), frame.mapped() };
+    if (pos + 1 >= frames.size())
+        writePosition.store (0);
+    else
+        ++writePosition;
+
+    return frames[pos];
 }
 
-std::pair<int64_t, juce::Image> VideoFifo::getVideoFrame (double timestamp) const
+const VideoFrame& VideoFifo::getFrame (int64_t timecode)
 {
-    const auto pts = juce::int64 (timestamp * settings.timebase);
+    auto pos = readPosition.load();
+    auto nextPos = findFramePosition (timecode, pos);
+    if (nextPos >= 0)
+    {
+        readPosition.store (nextPos);
+        return frames [size_t (nextPos)];
+    }
 
-    const juce::ScopedLock sl (lock);
-
-    auto vf = videoFrames.lower_bound (pts);
-    if (vf == videoFrames.end())
-        return {};
-
-    if (vf->first > pts && vf != videoFrames.begin())
-        --vf;
-
-    const_cast<int64_t&>(lastViewedFrame) = vf->first;
-    return { vf->first, vf->second };
+    return frames [size_t (pos)];
 }
 
-bool VideoFifo::isFrameAvailable (double timestamp) const
+const VideoFrame& VideoFifo::getFrameSeconds (double pts)
 {
-    const auto pts = juce::int64 (timestamp * settings.timebase);
-
-    const juce::ScopedLock sl (lock);
-
-    auto vf = videoFrames.lower_bound (pts);
-    if (vf == videoFrames.end())
-        return false;
-
-    if (vf->first > pts && vf != videoFrames.begin())
-        --vf;
-
-    return vf->first <= pts && vf->first + settings.defaultDuration > pts;
-}
-
-int64_t VideoFifo::getFrameCountForTime (double timestamp) const
-{
-    const auto pts = juce::int64 (timestamp * settings.timebase);
-
-    const juce::ScopedLock sl (lock);
-
-    auto vf = videoFrames.lower_bound (pts);
-    if (vf == videoFrames.end())
-        return -1;
-
-    if (vf->first > pts && vf != videoFrames.begin())
-        --vf;
-
-    return vf->first
-    ;
-}
-
-size_t VideoFifo::size() const
-{
-    const juce::ScopedLock sl (lock);
-    return videoFrames.size();
+    auto timecode = convertTimecode (pts, settings);
+    return getFrame (timecode);
 }
 
 int VideoFifo::getNumAvailableFrames() const
 {
-    const juce::ScopedLock sl (lock);
+    auto read = readPosition.load();
+    auto write = writePosition.load();
 
-    auto it = videoFrames.lower_bound (lastViewedFrame);
-    if (it == videoFrames.end())
-        return 0;
-
-    return int (std::distance (it, videoFrames.end()));
+    return (write > read) ? write - read : int (frames.size()) + (write - read);
 }
 
-int64_t VideoFifo::getLowestTimeCode() const
+bool VideoFifo::isFrameAvailable (double pts) const
 {
-    const juce::ScopedLock sl (lock);
-
-    if (videoFrames.empty())
-        return 0;
-
-    return videoFrames.cbegin()->first;
+    auto timecode = convertTimecode (pts, settings);
+    auto pos = findFramePosition (timecode, readPosition.load());
+    return pos >= 0;
 }
 
-int64_t VideoFifo::getHighestTimeCode() const
+int VideoFifo::findFramePosition (int64_t timecode, int start) const
 {
-    const juce::ScopedLock sl (lock);
+    const auto size = int (frames.size());
 
-    if (videoFrames.empty())
-        return -settings.defaultDuration;
+    // direct hit
+    if (juce::isPositiveAndBelow (timecode - frames [size_t (start)].timecode, settings.defaultDuration))
+        return start;
 
-    auto it = videoFrames.end();
-    --it;
-    return it->first;
+    // forward seek
+    while (timecode >= frames [size_t (start)].timecode + settings.defaultDuration)
+    {
+        start = (start + 1 < size) ? start + 1 : 0;
+        if (frames [size_t (start)].timecode < 0)
+            return -1;
+
+        if (juce::isPositiveAndBelow (timecode - frames [size_t (start)].timecode, settings.defaultDuration))
+            return start;
+    }
+
+    // backward seek
+    while (timecode >= frames [size_t (start)].timecode + settings.defaultDuration)
+    {
+        start = (start - 1 < 0) ? size - 1 : start - 1;
+        if (frames [size_t (start)].timecode < 0)
+            return -1;
+
+        if (juce::isPositiveAndBelow (timecode - frames [size_t (start)].timecode, settings.defaultDuration))
+            return start;
+    }
+
+    return -1;
 }
 
-juce::Image VideoFifo::getOldestFrameForRecycling()
+void VideoFifo::setVideoSettings (VideoStreamSettings& s)
 {
-    const juce::ScopedLock sl (lock);
-
-    if (framesPool.size() > 0)
-    {
-        auto image = framesPool.back();
-        framesPool.pop_back();
-        return image;
-    }
-
-    if (reverse == false)
-    {
-        auto iterator = videoFrames.begin();
-        if (iterator != videoFrames.end() && iterator->first < lastViewedFrame)
-        {
-            auto image = iterator->second;
-            videoFrames.erase (iterator);
-            return image;
-        }
-    }
-    else if (! videoFrames.empty())
-    {
-        auto iterator = videoFrames.end();
-        --iterator;
-        if (iterator->first > lastViewedFrame)
-        {
-            auto image = iterator->second;
-            videoFrames.erase (iterator);
-            return image;
-        }
-    }
-
-    return juce::Image (juce::Image::ARGB, settings.frameSize.width, settings.frameSize.height, false);
+    settings = s;
 }
 
 void VideoFifo::clear()
 {
-    const juce::ScopedLock sl (lock);
+    readPosition.store (0);
+    writePosition.store (0);
 
-    for (auto it : videoFrames)
-        framesPool.push_back (it.second);
-
-    videoFrames.clear();
-    lastViewedFrame = -1;
-}
-
-VideoStreamSettings& VideoFifo::getVideoSettings()
-{
-    return settings;
-}
-
-const VideoStreamSettings& VideoFifo::getVideoSettings() const
-{
-    return settings;
+    for (auto& frame : frames)
+    {
+        frame.timecode = -1;
+#if FOLEYS_USE_OPENGL
+        frame.upToDate = false;
+#endif
+    }
 }
 
 } // foleys

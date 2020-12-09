@@ -29,36 +29,29 @@ namespace foleys
 class VideoFifo final
 {
 public:
-    VideoFifo() = default;
+    VideoFifo();
 
-    void pushVideoFrame (juce::Image& image, int64_t timestamp);
-    std::pair<int64_t, juce::Image> popVideoFrame();
+    VideoFrame& getWritingFrame();
 
-    std::pair<int64_t, juce::Image> getVideoFrame (double timestamp) const;
-    bool isFrameAvailable (double timestamp) const;
+    const VideoFrame& getFrame (int64_t timecode);
+    const VideoFrame& getFrameSeconds (double pts);
 
     int getNumAvailableFrames() const;
-    int64_t getLowestTimeCode() const;
-    int64_t getHighestTimeCode() const;
-
-    juce::Image getOldestFrameForRecycling();
-
-    int64_t getFrameCountForTime (double time) const;
-
-    size_t size() const;
+    bool isFrameAvailable (double pts) const;
 
     void clear();
 
-    VideoStreamSettings& getVideoSettings();
-    const VideoStreamSettings& getVideoSettings() const;
+    void setVideoSettings (VideoStreamSettings& settings);
 
 private:
-    juce::CriticalSection lock;
+    int findFramePosition (int64_t timecode, int start) const;
 
-    VideoStreamSettings settings;
+    VideoStreamSettings     settings;
 
-    std::map<int64_t, juce::Image> videoFrames;
-    std::vector<juce::Image>       framesPool;
+    std::array<VideoFrame, 60>  frames;
+    std::atomic<int>            writePosition {0};
+    std::atomic<int>            readPosition  {0};
+
     int64_t lastViewedFrame = -1;
     bool reverse = false;
 

@@ -66,13 +66,13 @@ public:
     virtual double getLengthInSeconds() const = 0;
 
     /** Returns the frame for a certain timecode */
-    virtual std::pair<int64_t, juce::Image> getFrame (double pts) const = 0;
+    virtual std::pair<int64_t, juce::Image> getFrame (double pts) = 0;
 
     /** Checks, if a frame is available */
     virtual bool isFrameAvailable (double pts) const = 0;
 
     /** Returns the frame for the current time */
-    virtual juce::Image getCurrentFrame() const = 0;
+    virtual juce::Image getCurrentFrame() = 0;
 
     /** This returns a still frame on the selected position. Don't use
         this method for streaming a video, because it will be slow */

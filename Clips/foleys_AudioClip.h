@@ -49,8 +49,8 @@ public:
 
     void setAudioFormatReader (juce::AudioFormatReader* reader, int samplesToBuffer = 48000);
 
-    std::pair<int64_t, juce::Image> getFrame ([[maybe_unused]]double pts) const override { return {}; }
-    juce::Image getCurrentFrame() const override  { return {}; }
+    std::pair<int64_t, juce::Image> getFrame ([[maybe_unused]]double pts) override { return {}; }
+    juce::Image getCurrentFrame() override  { return {}; }
     bool isFrameAvailable ([[maybe_unused]]double pts) const override { return false; }
 
     Size getVideoSize() const override  { return {}; }

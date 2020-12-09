@@ -52,10 +52,10 @@ public:
 
     juce::String getDescription() const override;
 
-    std::pair<int64_t, juce::Image> getFrame (double pts) const override;
+    std::pair<int64_t, juce::Image> getFrame (double pts) override;
     bool isFrameAvailable (double pts) const override;
 
-    juce::Image getCurrentFrame() const override;
+    juce::Image getCurrentFrame() override;
 
     Size getVideoSize() const override;
     double getCurrentTimeInSeconds() const override;

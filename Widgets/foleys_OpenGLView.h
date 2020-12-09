@@ -27,7 +27,6 @@ namespace foleys
 
 class OpenGLView  : public juce::OpenGLAppComponent,
                     public TimeCodeAware::Listener
-
 {
 public:
 

@@ -47,8 +47,8 @@ public:
 
     void setImage (const juce::Image& image);
 
-    std::pair<int64_t, juce::Image> getFrame (double pts) const override;
-    juce::Image getCurrentFrame() const override;
+    std::pair<int64_t, juce::Image> getFrame (double pts) override;
+    juce::Image getCurrentFrame() override;
     bool isFrameAvailable ([[maybe_unused]]double pts) const override { return image.isValid(); }
 
     Size getVideoSize() const override;
