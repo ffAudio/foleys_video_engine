@@ -131,7 +131,7 @@ bool ComposedClip::isFrameAvailable (double pts) const
     return true;
 }
 
-std::pair<int64_t, juce::Image> ComposedClip::getFrame (double pts) const
+std::pair<int64_t, juce::Image> ComposedClip::getFrame (double pts)
 {
     auto nextTimeCode = convertTimecode (pts, videoSettings);
 
@@ -145,7 +145,7 @@ std::pair<int64_t, juce::Image> ComposedClip::getFrame (double pts) const
     return { nextTimeCode, image };
 }
 
-juce::Image ComposedClip::getCurrentFrame() const
+juce::Image ComposedClip::getCurrentFrame()
 {
     return getFrame (getCurrentTimeInSeconds()).second;
 }

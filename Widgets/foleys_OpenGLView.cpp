@@ -60,7 +60,7 @@ void OpenGLView::setClip (std::shared_ptr<AVClip> clipToUse)
 
 void OpenGLView::initialise()
 {
-    
+    openGLContext.setImageCacheSize (64 * 1024 * 1024);
 }
 
 void OpenGLView::shutdown()

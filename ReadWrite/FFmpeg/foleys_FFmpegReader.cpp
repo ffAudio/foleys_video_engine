@@ -405,9 +405,15 @@ private:
                     timeBase = formatContext->streams [videoStreamIdx]->time_base;
                 }
 
-                juce::Image image = videoFifo.getOldestFrameForRecycling();
-                scaler.convertFrameToImage (image, frame);
-                videoFifo.pushVideoFrame (image, frame->best_effort_timestamp);
+                auto& target = videoFifo.getWritingFrame();
+                if (target.image.getWidth() != frame->width || target.image.getHeight() != frame->height)
+                    target.image = juce::Image (juce::Image::ARGB, frame->width, frame->height, false);
+
+                scaler.convertFrameToImage (target.image, frame);
+                target.timecode = frame->best_effort_timestamp;
+#if FOLEYS_USE_OPENGL
+                target.upToDate = false;
+#endif
 
                 FOLEYS_LOG ("Stream " << juce::String (packet.stream_index) <<
                      " (Video) " <<

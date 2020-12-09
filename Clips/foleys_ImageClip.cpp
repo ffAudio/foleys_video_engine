@@ -52,12 +52,12 @@ void ImageClip::setImage (const juce::Image& imageToUse)
     videoSettings.frameSize.height = image.getHeight();
 }
 
-std::pair<int64_t, juce::Image> ImageClip::getFrame (double pts) const
+std::pair<int64_t, juce::Image> ImageClip::getFrame (double pts)
 {
     return { convertTimecode (pts, videoSettings), image };
 }
 
-juce::Image ImageClip::getCurrentFrame() const
+juce::Image ImageClip::getCurrentFrame()
 {
     return image;
 }

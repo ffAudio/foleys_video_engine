@@ -81,9 +81,8 @@ void MovieClip::setReader (std::unique_ptr<AVReader> readerToUse)
     if (sampleRate > 0)
         movieReader->setOutputSampleRate (sampleRate);
 
-    auto& settings = videoFifo.getVideoSettings();
-    settings.timebase = juce::roundToInt (movieReader->timebase);
-    settings.frameSize = movieReader->originalSize;
+    auto settings = movieReader->getVideoSettings (0);
+    videoFifo.setVideoSettings (settings);
     videoFifo.clear();
 
     backgroundJob.setSuspended (false);
@@ -112,9 +111,10 @@ double MovieClip::getCurrentTimeInSeconds() const
     return sampleRate == 0 ? 0 : nextReadPosition / sampleRate;
 }
 
-std::pair<int64_t, juce::Image> MovieClip::getFrame (double pts) const
+std::pair<int64_t, juce::Image> MovieClip::getFrame (double pts)
 {
-    return videoFifo.getVideoFrame (pts);
+    auto& frame = videoFifo.getFrameSeconds (pts);
+    return { frame.timecode, frame.image };
 }
 
 bool MovieClip::isFrameAvailable (double pts) const
@@ -130,15 +130,15 @@ juce::Image MovieClip::getStillImage (double seconds, Size size)
     return {};
 }
 
-juce::Image MovieClip::getCurrentFrame() const
+juce::Image MovieClip::getCurrentFrame()
 {
     if (sampleRate == 0)
-        return videoFifo.getVideoFrame (0).second;
+        return {};
 
     if (movieReader)
-        return videoFifo.getVideoFrame (audioFifo.getReadPosition() / sampleRate).second;
+        return videoFifo.getFrameSeconds (audioFifo.getReadPosition() / sampleRate).image;
 
-    return videoFifo.getVideoFrame (nextReadPosition / sampleRate).second;
+    return videoFifo.getFrameSeconds (nextReadPosition / sampleRate).image;
 }
 
 void MovieClip::prepareToPlay (int, double sampleRateToUse)
@@ -216,8 +216,13 @@ bool MovieClip::hasAudio() const
 
 double MovieClip::getFrameDurationInSeconds() const
 {
-    const auto& settings = videoFifo.getVideoSettings();
-    return double (settings.defaultDuration) / double (settings.timebase);
+    if (movieReader.get() != nullptr)
+    {
+        const auto& settings = movieReader->getVideoSettings (0);
+        return double (settings.defaultDuration) / double (settings.timebase);
+    }
+
+    return {};
 }
 
 std::shared_ptr<AVClip> MovieClip::createCopy (StreamTypes types)
@@ -239,11 +244,11 @@ void MovieClip::handleAsyncUpdate()
     if (sampleRate > 0 && hasVideo())
     {
         auto seconds = nextReadPosition / sampleRate;
-        auto count = videoFifo.getFrameCountForTime (seconds);
-        if (count != lastShownFrame)
+        const auto& frame = videoFifo.getFrameSeconds (seconds);
+        if (frame.timecode != lastShownFrame)
         {
-            sendTimecode (count, seconds, juce::sendNotificationAsync);
-            lastShownFrame = count;
+            sendTimecode (frame.timecode, seconds, juce::sendNotificationAsync);
+            lastShownFrame = frame.timecode;
         }
     }
 }
