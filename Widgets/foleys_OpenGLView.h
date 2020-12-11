@@ -38,6 +38,11 @@ public:
      */
     void setClip (std::shared_ptr<AVClip> clip);
 
+    /**
+     Access the currently played clip
+     */
+    std::shared_ptr<AVClip> getClip() const;
+
     void paint (juce::Graphics& g) override;
     void render() override;
     void initialise() override;

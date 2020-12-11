@@ -72,11 +72,11 @@ void VideoPreview::paint (juce::Graphics& g)
     if (clip)
     {
         const auto pts = clip->getCurrentTimeInSeconds();
-        auto image = clip->getCurrentFrame();
+
         if (clip->isFrameAvailable (pts) == false)
             juce::Timer::callAfterDelay (20, [&]{ repaint(); });
         else
-            g.drawImage (clip->getFrame (pts).second, getLocalBounds().toFloat(), placement);
+            g.drawImage (clip->getFrame (pts).image, getLocalBounds().toFloat(), placement);
     }
 }
 

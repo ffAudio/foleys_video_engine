@@ -23,6 +23,8 @@ namespace foleys
 
 VideoFifo::VideoFifo()
 {
+    for (int i=0; i < 60; ++i)
+        frames.emplace_back (std::make_unique<VideoFrame>());
 }
 
 VideoFrame& VideoFifo::getWritingFrame()
@@ -34,23 +36,23 @@ VideoFrame& VideoFifo::getWritingFrame()
     else
         ++writePosition;
 
-    return frames[pos];
+    return *frames[pos];
 }
 
-const VideoFrame& VideoFifo::getFrame (int64_t timecode)
+VideoFrame& VideoFifo::getFrame (int64_t timecode)
 {
     auto pos = readPosition.load();
     auto nextPos = findFramePosition (timecode, pos);
     if (nextPos >= 0)
     {
         readPosition.store (nextPos);
-        return frames [size_t (nextPos)];
+        return *frames [size_t (nextPos)];
     }
 
-    return frames [size_t (pos)];
+    return *frames [size_t (pos)];
 }
 
-const VideoFrame& VideoFifo::getFrameSeconds (double pts)
+VideoFrame& VideoFifo::getFrameSeconds (double pts)
 {
     auto timecode = convertTimecode (pts, settings);
     return getFrame (timecode);
@@ -73,31 +75,29 @@ bool VideoFifo::isFrameAvailable (double pts) const
 
 int VideoFifo::findFramePosition (int64_t timecode, int start) const
 {
-    const auto size = int (frames.size());
-
     // direct hit
-    if (juce::isPositiveAndBelow (timecode - frames [size_t (start)].timecode, settings.defaultDuration))
+    if (juce::isPositiveAndBelow (timecode - frames [size_t (start)]->timecode, settings.defaultDuration))
         return start;
 
     // forward seek
-    while (timecode >= frames [size_t (start)].timecode + settings.defaultDuration)
+    while (timecode >= frames [size_t (start)]->timecode + settings.defaultDuration)
     {
-        start = (start + 1 < size) ? start + 1 : 0;
-        if (frames [size_t (start)].timecode < 0)
+        start = nextIndex (start);
+        if (frames [size_t (start)]->timecode < 0)
             return -1;
 
-        if (juce::isPositiveAndBelow (timecode - frames [size_t (start)].timecode, settings.defaultDuration))
+        if (juce::isPositiveAndBelow (timecode - frames [size_t (start)]->timecode, settings.defaultDuration))
             return start;
     }
 
     // backward seek
-    while (timecode >= frames [size_t (start)].timecode + settings.defaultDuration)
+    while (timecode >= frames [size_t (start)]->timecode + settings.defaultDuration)
     {
-        start = (start - 1 < 0) ? size - 1 : start - 1;
-        if (frames [size_t (start)].timecode < 0)
+        start = previousIndex (start);
+        if (frames [size_t (start)]->timecode < 0)
             return -1;
 
-        if (juce::isPositiveAndBelow (timecode - frames [size_t (start)].timecode, settings.defaultDuration))
+        if (juce::isPositiveAndBelow (timecode - frames [size_t (start)]->timecode, settings.defaultDuration))
             return start;
     }
 
@@ -109,6 +109,26 @@ void VideoFifo::setVideoSettings (VideoStreamSettings& s)
     settings = s;
 }
 
+int VideoFifo::nextIndex (int pos, int offset) const
+{
+    jassert (offset < int (frames.size()));
+
+    if (pos + offset >= int (frames.size()))
+        return pos + offset - int (frames.size());
+
+    return pos + offset;
+}
+
+int VideoFifo::previousIndex (int pos, int offset) const
+{
+    jassert (offset < int (frames.size()));
+
+    if (pos - offset < 0)
+        return int (frames.size()) + pos - offset;
+
+    return pos - offset;
+}
+
 void VideoFifo::clear()
 {
     readPosition.store (0);
@@ -116,9 +136,9 @@ void VideoFifo::clear()
 
     for (auto& frame : frames)
     {
-        frame.timecode = -1;
+        frame->timecode = -1;
 #if FOLEYS_USE_OPENGL
-        frame.upToDate = false;
+        frame->upToDate = false;
 #endif
     }
 }

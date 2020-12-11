@@ -46,16 +46,33 @@ void OpenGLView::render()
 {
     juce::ScopedLock l (clipLock);
     if (clip.get() == nullptr)
+    {
+        juce::OpenGLHelpers::clear (juce::Colours::black);
         return;
+    }
 
-    auto frame = clip->getCurrentFrame();
-    
+    jassert (juce::OpenGLHelpers::isContextActive());
+
+    auto desktopScale = (float) openGLContext.getRenderingScale();
+    juce::OpenGLHelpers::clear (juce::Colours::black);
+
+    glEnable (GL_BLEND);
+    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    glViewport (0, 0, juce::roundToInt (desktopScale * (float) getWidth()), juce::roundToInt (desktopScale * (float) getHeight()));
+
+    clip->render (clip->getCurrentTimeInSeconds());
 }
 
 void OpenGLView::setClip (std::shared_ptr<AVClip> clipToUse)
 {
     juce::ScopedLock l (clipLock);
     clip = clipToUse;
+}
+
+std::shared_ptr<AVClip> OpenGLView::getClip() const
+{
+    return clip;
 }
 
 void OpenGLView::initialise()
