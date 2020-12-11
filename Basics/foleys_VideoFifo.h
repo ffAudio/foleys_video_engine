@@ -33,8 +33,8 @@ public:
 
     VideoFrame& getWritingFrame();
 
-    const VideoFrame& getFrame (int64_t timecode);
-    const VideoFrame& getFrameSeconds (double pts);
+    VideoFrame& getFrame (int64_t timecode);
+    VideoFrame& getFrameSeconds (double pts);
 
     int getNumAvailableFrames() const;
     bool isFrameAvailable (double pts) const;
@@ -46,14 +46,17 @@ public:
 private:
     int findFramePosition (int64_t timecode, int start) const;
 
+    int nextIndex (int pos, int offset=1) const;
+    int previousIndex (int pos, int offset=1) const;
+
     VideoStreamSettings     settings;
 
-    std::array<VideoFrame, 60>  frames;
-    std::atomic<int>            writePosition {0};
-    std::atomic<int>            readPosition  {0};
+    std::vector<std::unique_ptr<VideoFrame>> frames;
+    std::atomic<int>    writePosition {0};
+    std::atomic<int>    readPosition  {0};
 
     int64_t lastViewedFrame = -1;
-    bool reverse = false;
+    bool    reverse = false;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (VideoFifo)
 };

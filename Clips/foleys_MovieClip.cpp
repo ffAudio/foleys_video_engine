@@ -111,11 +111,32 @@ double MovieClip::getCurrentTimeInSeconds() const
     return sampleRate == 0 ? 0 : nextReadPosition / sampleRate;
 }
 
-std::pair<int64_t, juce::Image> MovieClip::getFrame (double pts)
+VideoFrame& MovieClip::getFrame (double pts)
 {
-    auto& frame = videoFifo.getFrameSeconds (pts);
-    return { frame.timecode, frame.image };
+    return videoFifo.getFrameSeconds (pts);
 }
+
+#if FOLEYS_USE_OPENGL
+void MovieClip::render (double pts)
+{
+    auto& frame = getFrame (pts);
+    if (! frame.upToDate)
+        frame.texture.loadImage (frame.image);
+
+    glEnable(GL_TEXTURE_2D);
+    frame.texture.bind();
+
+    // Draw a textured quad - FIXME: need a replacement for current OpenGL
+//    glBegin (GL_QUADS);
+//    glTexCoord2f (0, 0); glVertex3f (0, 0, 0);
+//    glTexCoord2f (0, 1); glVertex3f (0, 100, 0);
+//    glTexCoord2f (1, 1); glVertex3f (100, 100, 0);
+//    glTexCoord2f (1, 0); glVertex3f (100, 0, 0);
+//    glEnd();
+
+    frame.texture.unbind();
+}
+#endif
 
 bool MovieClip::isFrameAvailable (double pts) const
 {
@@ -128,17 +149,6 @@ juce::Image MovieClip::getStillImage (double seconds, Size size)
         return thumbnailReader->getStillImage (seconds, size);
 
     return {};
-}
-
-juce::Image MovieClip::getCurrentFrame()
-{
-    if (sampleRate == 0)
-        return {};
-
-    if (movieReader)
-        return videoFifo.getFrameSeconds (audioFifo.getReadPosition() / sampleRate).image;
-
-    return videoFifo.getFrameSeconds (nextReadPosition / sampleRate).image;
 }
 
 void MovieClip::prepareToPlay (int, double sampleRateToUse)

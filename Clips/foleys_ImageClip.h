@@ -47,9 +47,12 @@ public:
 
     void setImage (const juce::Image& image);
 
-    std::pair<int64_t, juce::Image> getFrame (double pts) override;
-    juce::Image getCurrentFrame() override;
-    bool isFrameAvailable ([[maybe_unused]]double pts) const override { return image.isValid(); }
+    VideoFrame& getFrame (double pts) override;
+    bool isFrameAvailable ([[maybe_unused]]double pts) const override { return frame.image.isValid(); }
+
+#if FOLEYS_USE_OPENGL
+    void render (double) override {}
+#endif
 
     Size getVideoSize() const override;
     double getCurrentTimeInSeconds() const override;
@@ -77,8 +80,8 @@ public:
 
 private:
 
-    juce::Image image;
-    juce::URL   mediaFile;
+    juce::URL           mediaFile;
+    VideoFrame          frame;
     VideoStreamSettings videoSettings;
 
     double sampleRate = 0.0;

@@ -52,10 +52,12 @@ public:
 
     juce::String getDescription() const override;
 
-    std::pair<int64_t, juce::Image> getFrame (double pts) override;
+    VideoFrame& getFrame (double pts) override;
     bool isFrameAvailable (double pts) const override;
 
-    juce::Image getCurrentFrame() override;
+#if FOLEYS_USE_OPENGL
+    void render (double) override {}
+#endif
 
     Size getVideoSize() const override;
     double getCurrentTimeInSeconds() const override;
@@ -147,6 +149,7 @@ private:
 
     std::vector<std::shared_ptr<ClipDescriptor>> clips;
     std::atomic<int64_t> position = {};
+    VideoFrame           frame;
 
     int64_t lastShownFrame;
 

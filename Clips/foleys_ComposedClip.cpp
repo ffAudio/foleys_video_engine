@@ -131,23 +131,27 @@ bool ComposedClip::isFrameAvailable (double pts) const
     return true;
 }
 
-std::pair<int64_t, juce::Image> ComposedClip::getFrame (double pts)
+VideoFrame& ComposedClip::getFrame (double pts)
 {
     auto nextTimeCode = convertTimecode (pts, videoSettings);
 
-    juce::Image image (juce::Image::ARGB, videoSettings.frameSize.width, videoSettings.frameSize.height, false);
-    videoMixer->compose (image, videoSettings, nextTimeCode, pts,
+    if (frame.image.getWidth() != videoSettings.frameSize.width || frame.image.getHeight() != videoSettings.frameSize.height)
+        frame.image = juce::Image (juce::Image::ARGB, videoSettings.frameSize.width, videoSettings.frameSize.height, true);
+    else
+        frame.image.clear (frame.image.getBounds());
+
+    videoMixer->compose (frame.image, videoSettings, nextTimeCode, pts,
                          getActiveClips ([pos = pts * getSampleRate()](ClipDescriptor& clip)
     {
         return clip.clip->hasVideo() && pos >= clip.start && pos < clip.start + clip.length;
     }));
 
-    return { nextTimeCode, image };
-}
+    frame.timecode = nextTimeCode;
+#if FOLEYS_USE_OPENGL
+    frame.upToDate = false;
+#endif
 
-juce::Image ComposedClip::getCurrentFrame()
-{
-    return getFrame (getCurrentTimeInSeconds()).second;
+    return frame;
 }
 
 Size ComposedClip::getVideoSize() const

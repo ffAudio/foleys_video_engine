@@ -59,10 +59,12 @@ public:
 
     double getCurrentTimeInSeconds() const override;
 
-    std::pair<int64_t, juce::Image> getFrame (double pts) override;
+    VideoFrame& getFrame (double pts) override;
     bool isFrameAvailable (double pts) const override;
 
-    juce::Image getCurrentFrame() override;
+#if FOLEYS_USE_OPENGL
+    void render (double pts) override;
+#endif
 
     void prepareToPlay (int samplesPerBlockExpected, double sampleRate) override;
     void releaseResources() override;

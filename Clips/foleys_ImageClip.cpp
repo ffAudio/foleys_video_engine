@@ -47,24 +47,24 @@ void ImageClip::setMediaFile (const juce::URL& media)
 
 void ImageClip::setImage (const juce::Image& imageToUse)
 {
-    image = imageToUse;
-    videoSettings.frameSize.width = image.getWidth();
-    videoSettings.frameSize.height = image.getHeight();
+    frame.image = imageToUse;
+    frame.timecode = 0;
+#if FOLEYS_USE_OPENGL
+    frame.upToDate = false;
+#endif
+    videoSettings.frameSize.width = frame.image.getWidth();
+    videoSettings.frameSize.height = frame.image.getHeight();
 }
 
-std::pair<int64_t, juce::Image> ImageClip::getFrame (double pts)
+VideoFrame& ImageClip::getFrame (double pts)
 {
-    return { convertTimecode (pts, videoSettings), image };
-}
-
-juce::Image ImageClip::getCurrentFrame()
-{
-    return image;
+    juce::ignoreUnused (pts);
+    return frame;
 }
 
 juce::Image ImageClip::getStillImage (double, Size size)
 {
-    return image.rescaled (size.width, size.height);
+    return frame.image.rescaled (size.width, size.height);
 }
 
 double ImageClip::getLengthInSeconds() const
@@ -74,7 +74,7 @@ double ImageClip::getLengthInSeconds() const
 
 Size ImageClip::getVideoSize() const
 {
-    return { image.getWidth(), image.getHeight() };
+    return { frame.image.getWidth(), frame.image.getHeight() };
 }
 
 double ImageClip::getCurrentTimeInSeconds() const

@@ -49,9 +49,12 @@ public:
 
     void setAudioFormatReader (juce::AudioFormatReader* reader, int samplesToBuffer = 48000);
 
-    std::pair<int64_t, juce::Image> getFrame ([[maybe_unused]]double pts) override { return {}; }
-    juce::Image getCurrentFrame() override  { return {}; }
+    VideoFrame& getFrame ([[maybe_unused]]double pts) override { return dummy; }
     bool isFrameAvailable ([[maybe_unused]]double pts) const override { return false; }
+
+#if FOLEYS_USE_OPENGL
+    void render (double) override {}
+#endif
 
     Size getVideoSize() const override  { return {}; }
     double getCurrentTimeInSeconds() const override;
@@ -84,7 +87,8 @@ private:
     std::unique_ptr<juce::AudioFormatReader>       reader;
     std::unique_ptr<juce::PositionableAudioSource> readerSource;
     std::unique_ptr<juce::ResamplingAudioSource>   resampler;
-    juce::URL mediaFile;
+    VideoFrame dummy;
+    juce::URL  mediaFile;
     double sampleRate = 0.0;
     double originalSampleRate = 0.0;
     int    samplesPerBlock = 0;
