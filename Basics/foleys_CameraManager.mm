@@ -40,9 +40,7 @@ struct CameraManager::Pimpl
     std::unique_ptr<CameraReceiver> openCamera (int index);
 
 private:
-    void *session = nullptr;
-
-    NSObject<OS_dispatch_queue>* videoDataOutputQueue = nullptr;
+    void* session = nullptr;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Pimpl)
 };
@@ -51,13 +49,37 @@ private:
 
 struct CameraReceiver::Pimpl : public juce::ObjCClass<NSObject>
 {
-    Pimpl (CameraReceiver& ownerToUse)
+    Pimpl (CameraReceiver& ownerToUse, int index, void* sessionToUse)
       : juce::ObjCClass<NSObject> ("JUCEVideoDelegate_"),
-        owner (ownerToUse)
+        owner (ownerToUse),
+        session (sessionToUse)
     {
         addProtocol (@protocol (AVCaptureVideoDataOutputSampleBufferDelegate));
         addMethod (@selector (captureOutput:didOutputSampleBuffer:fromConnection:), captureOutput, "v@:@@@");
         registerClass();
+
+        videoDataOutputQueue = dispatch_queue_create ("VideoDataOutputQueue", DISPATCH_QUEUE_SERIAL);
+
+        //Add device
+        NSArray *devices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
+
+        AVCaptureDevice *inputDevice = devices [(NSUInteger)index];
+
+        //Add input
+        NSError *inputError=nil;
+        input = [[[AVCaptureDeviceInput alloc] initWithDevice:inputDevice error:&inputError] autorelease];
+        [(AVCaptureSession*)session addInput:input];
+
+        //Add output
+        output = [[[AVCaptureVideoDataOutput alloc] init] autorelease];
+        [output setSampleBufferDelegate: (id <AVCaptureVideoDataOutputSampleBufferDelegate>)this queue:(NSObject<OS_dispatch_queue> *)videoDataOutputQueue];
+        [(AVCaptureSession*)session addOutput: output];
+    }
+
+    ~Pimpl()
+    {
+        [(AVCaptureSession*)session removeOutput: output];
+        [(AVCaptureSession*)session removeInput: input];
     }
 
     VideoFrame& getNewFrameToFill()
@@ -117,6 +139,12 @@ private:
 
     CameraReceiver& owner;
 
+    void* session = nullptr;
+
+    NSObject<OS_dispatch_queue>* videoDataOutputQueue = nullptr;
+    AVCaptureDeviceInput*  input = nullptr;
+    AVCaptureVideoDataOutput* output = nullptr;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Pimpl)
 };
 
@@ -124,8 +152,6 @@ private:
 
 CameraManager::Pimpl::Pimpl()
 {
-    videoDataOutputQueue = dispatch_queue_create ("VideoDataOutputQueue", DISPATCH_QUEUE_SERIAL);
-
     //Capture Session
     AVCaptureSession* newSession = [[[AVCaptureSession alloc]init] autorelease];
     newSession.sessionPreset = AVCaptureSessionPresetPhoto;
@@ -159,25 +185,7 @@ juce::StringArray CameraManager::Pimpl::getCameraNames()
 
 std::unique_ptr<CameraReceiver> CameraManager::Pimpl::openCamera (int index)
 {
-    //Add device
-    NSArray *devices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
-
-    AVCaptureDevice *inputDevice = devices [(NSUInteger)index];
-
-    auto receiver = std::make_unique<CameraReceiver>();
-
-    //Add input
-    NSError *inputError=nil;
-    AVCaptureDeviceInput* input = [[[AVCaptureDeviceInput alloc] initWithDevice:inputDevice error:&inputError] autorelease];
-    [(AVCaptureSession*)session addInput:input];
-
-    //Add output
-    AVCaptureVideoDataOutput *output = [[[AVCaptureVideoDataOutput alloc] init] autorelease];
-    auto* delegate = (id <AVCaptureVideoDataOutputSampleBufferDelegate>)receiver->getPlatformDelegate();
-    [output setSampleBufferDelegate: delegate queue:(NSObject<OS_dispatch_queue> *)videoDataOutputQueue];
-    [(AVCaptureSession*)session addOutput:output];
-
-    return receiver;
+    return std::make_unique<CameraReceiver>(index, session);
 }
 
 //==============================================================================

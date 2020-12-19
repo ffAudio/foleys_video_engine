@@ -32,18 +32,14 @@ class CameraClip;
  The CameraReceiver is the platform specific backend to get the frames from
  the camera so it can be used in the engine.
  */
-class CameraReceiver : public juce::ChangeBroadcaster
+class CameraReceiver
 {
 public:
-    CameraReceiver();
+    CameraReceiver (int index, void* session);
 
     VideoFrame& getCurrentFrame();
 
     struct Pimpl;
-
-#if JUCE_MAC
-    CameraReceiver::Pimpl* getPlatformDelegate();
-#endif
 
     std::function<void()> onFrameCaptured = nullptr;
 
