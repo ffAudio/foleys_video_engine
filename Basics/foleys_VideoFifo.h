@@ -29,12 +29,16 @@ namespace foleys
 class VideoFifo final
 {
 public:
-    VideoFifo();
+    VideoFifo (int size);
 
     VideoFrame& getWritingFrame();
+    void finishWriting();
 
     VideoFrame& getFrame (int64_t timecode);
     VideoFrame& getFrameSeconds (double pts);
+
+    /** Returns tha last written frame. Use this for streaming clips */
+    VideoFrame& getLatestFrame();
 
     int getNumAvailableFrames() const;
     bool isFrameAvailable (double pts) const;

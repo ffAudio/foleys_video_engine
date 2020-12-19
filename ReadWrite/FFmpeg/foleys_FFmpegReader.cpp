@@ -414,6 +414,7 @@ private:
 #if FOLEYS_USE_OPENGL
                 target.upToDate = false;
 #endif
+                videoFifo.finishWriting();
 
                 FOLEYS_LOG ("Stream " << juce::String (packet.stream_index) <<
                      " (Video) " <<

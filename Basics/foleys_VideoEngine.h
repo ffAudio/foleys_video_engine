@@ -96,6 +96,10 @@ public:
      */
     juce::AudioFormatManager& getAudioFormatManager();
 
+#if FOLEYS_CAMERA_SUPPORT
+    CameraManager& getCameraManager();
+#endif
+
     /**
      Use the VideoPluginManager to create a VideoProcessor instance.
      */
@@ -126,6 +130,10 @@ private:
     AudioPluginManager audioPluginManager { *this };
 
     VideoPluginManager videoPluginManager { *this };
+
+#if FOLEYS_CAMERA_SUPPORT
+    CameraManager cameraManager { *this };
+#endif
 
     juce::OptionalScopedPointer<juce::UndoManager> undoManager { new juce::UndoManager(), true };
 
