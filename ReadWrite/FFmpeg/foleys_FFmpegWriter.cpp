@@ -182,6 +182,7 @@ struct FFmpegWriter::Pimpl
         auto& target = descriptor->videoBuffer.getWritingFrame();
         target.timecode = pos;
         target.image = image;
+        descriptor->videoBuffer.finishWriting();
 
         if (multiThreaded == false)
             while (processStreams());
@@ -414,6 +415,7 @@ private:
                 auto& stream = videoStreams [next];
                 auto& frame  = stream->videoBuffer.getWritingFrame();
                 encodeVideoFrame (*stream, frame.image, frame.timecode);
+                stream->videoBuffer.finishWriting();
             }
             else
             {

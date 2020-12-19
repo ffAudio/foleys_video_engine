@@ -21,13 +21,18 @@
 namespace foleys
 {
 
-VideoFifo::VideoFifo()
+VideoFifo::VideoFifo (int size)
 {
-    for (int i=0; i < 60; ++i)
+    for (int i=0; i < size; ++i)
         frames.emplace_back (std::make_unique<VideoFrame>());
 }
 
 VideoFrame& VideoFifo::getWritingFrame()
+{
+    return *frames [size_t (writePosition.load())];
+}
+
+void VideoFifo::finishWriting()
 {
     auto pos = size_t (writePosition.load());
 
@@ -35,8 +40,6 @@ VideoFrame& VideoFifo::getWritingFrame()
         writePosition.store (0);
     else
         ++writePosition;
-
-    return *frames[pos];
 }
 
 VideoFrame& VideoFifo::getFrame (int64_t timecode)
@@ -56,6 +59,11 @@ VideoFrame& VideoFifo::getFrameSeconds (double pts)
 {
     auto timecode = convertTimecode (pts, settings);
     return getFrame (timecode);
+}
+
+VideoFrame& VideoFifo::getLatestFrame()
+{
+    return *frames [size_t (previousIndex (writePosition.load()))];
 }
 
 int VideoFifo::getNumAvailableFrames() const

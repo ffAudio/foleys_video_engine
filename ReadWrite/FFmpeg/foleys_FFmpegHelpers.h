@@ -244,7 +244,7 @@ struct VideoStreamDescriptor
     int                  streamIndex = -1;
     AVCodecContext*      context = nullptr;
     VideoStreamSettings  settings;
-    VideoFifo            videoBuffer;
+    VideoFifo            videoBuffer { 30 };
 };
 
 struct AudioStreamDescriptor

@@ -25,9 +25,11 @@
   name:              Video engine to read, process, display and write video in JUCE
   description:       Provides classes to read audio streams from video files or to
                      mux audio into an existing video
-  dependencies:      juce_audio_basics, juce_audio_formats, juce_gui_basics,
-                     juce_graphics, juce_core, juce_audio_utils
- minimumCppStandard: 17
+  dependencies:      juce_audio_basics juce_audio_formats juce_gui_basics
+                     juce_graphics juce_core juce_audio_utils
+  OSXFrameworks:     AVFoundation CoreMedia
+  iOSFrameworks:     AVFoundation CoreMedia
+  minimumCppStandard: 17
 
   website:       https://foleysfinest.com/
 
@@ -60,6 +62,13 @@
  */
 #ifndef FOLEYS_SHOW_SPLASHSCREEN
 #define FOLEYS_SHOW_SPLASHSCREEN 1
+#endif
+
+/** Config: FOLEYS_CAMERA_SUPPORT
+    Set this flag to access the cameras attached to the system
+ */
+#ifndef FOLEYS_CAMERA_SUPPORT
+#define FOLEYS_CAMERA_SUPPORT 0
 #endif
 
 /** Config: FOLEYS_USE_FFMPEG
@@ -101,12 +110,13 @@
 #include "Basics/foleys_Usage.h"
 #include "Basics/foleys_VideoFrame.h"
 #include "Basics/foleys_TimeCodeAware.h"
+#include "Basics/foleys_AudioFifo.h"
+#include "Basics/foleys_VideoFifo.h"
+#include "Basics/foleys_CameraManager.h"
 #include "Processing/foleys_ProcessorParameter.h"
 #include "Plugins/foleys_AudioPluginManager.h"
 #include "Plugins/foleys_VideoProcessor.h"
 #include "Plugins/foleys_VideoPluginManager.h"
-#include "Basics/foleys_AudioFifo.h"
-#include "Basics/foleys_VideoFifo.h"
 #include "Processing/foleys_ControllableBase.h"
 #include "Processing/foleys_ProcessorController.h"
 #include "Processing/foleys_ParameterAutomation.h"
@@ -125,6 +135,7 @@
 #include "Clips/foleys_AudioClip.h"
 #include "Clips/foleys_ImageClip.h"
 #include "Clips/foleys_MovieClip.h"
+#include "Clips/foleys_CameraClip.h"
 #include "Clips/foleys_ComposedClip.h"
 
 #include "Basics/foleys_VideoEngine.h"
