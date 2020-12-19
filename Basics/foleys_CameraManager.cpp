@@ -64,22 +64,15 @@ std::shared_ptr<CameraClip> CameraManager::createCameraClip (int index)
 
 //==============================================================================
 
-CameraReceiver::CameraReceiver()
+CameraReceiver::CameraReceiver(int index, void* session)
 {
-    pimpl = std::make_unique<Pimpl>(*this);
+    pimpl = std::make_unique<Pimpl>(*this, index, session);
 }
 
 VideoFrame& CameraReceiver::getCurrentFrame()
 {
     return videoFifo.getLatestFrame();
 }
-
-#if JUCE_MAC
-CameraReceiver::Pimpl* CameraReceiver::getPlatformDelegate()
-{
-    return pimpl.get();
-}
-#endif
 
 } // namespace foleys
 
