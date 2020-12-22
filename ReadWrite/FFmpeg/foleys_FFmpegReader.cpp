@@ -73,12 +73,12 @@ public:
 
         if (juce::isPositiveAndBelow (audioStreamIdx, static_cast<int> (formatContext->nb_streams)))
         {
-            channelLayout = formatContext->streams [audioStreamIdx]->codecpar->channel_layout;
+            auto* stream = formatContext->streams [audioStreamIdx];
+            channelLayout = stream->codecpar->channel_layout;
 
             reader.sampleRate  = audioContext->sample_rate;
             reader.numChannels = audioContext->channels;
-            reader.numSamples  = formatContext->streams [audioStreamIdx]->duration > 0
-            ? formatContext->streams [audioStreamIdx]->duration : std::numeric_limits<int64_t>::max();
+            reader.numSamples  = stream->duration > 0 ? stream->duration : std::numeric_limits<int64_t>::max();
 
             if (! setOutputSampleRate (audioContext->sample_rate))
             {
@@ -86,6 +86,8 @@ public:
                 closeVideoFile();
                 return;
             }
+
+            FOLEYS_LOG ("Audio stream [" << audioStreamIdx << "]: timebase " << stream->time_base.den << "/" << stream->time_base.num);
         }
 
         if (type.test (StreamTypes::Video))
@@ -105,6 +107,7 @@ public:
                                 videoContext->height,
                                 AV_PIX_FMT_BGR0);
 
+            FOLEYS_LOG ("Video stream [" << videoStreamIdx << "]: timebase " << stream->time_base.den << "/" << stream->time_base.num);
         }
 
         // TODO subtitle and data stream
@@ -314,6 +317,14 @@ public:
 
         foleys::VideoStreamSettings settings;
         settings.frameSize = { videoContext->width, videoContext->height };
+
+        if (juce::isPositiveAndBelow (videoStreamIdx, static_cast<int> (formatContext->nb_streams)))
+        {
+            auto* stream = formatContext->streams [videoStreamIdx];
+            settings.timebase = int (stream->time_base.num > 0 ? double (stream->time_base.den) / stream->time_base.num : AV_TIME_BASE);
+            settings.defaultDuration = stream->time_base.den == stream->avg_frame_rate.num ? stream->avg_frame_rate.den : int (double (stream->avg_frame_rate.den * stream->time_base.den) / stream->avg_frame_rate.num);
+        }
+
         return settings;
     }
 
