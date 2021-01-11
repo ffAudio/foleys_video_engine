@@ -24,6 +24,9 @@ namespace foleys
 AudioPluginManager::AudioPluginManager (VideoEngine& videoEngineToUse)
   : videoEngine (videoEngineToUse)
 {
+    // If no plugin hosting is selected, this would issue a warning
+    juce::ignoreUnused (videoEngine);
+
     pluginManager.addDefaultFormats();
 }
 

@@ -61,7 +61,7 @@ VideoFrame& CameraClip::getFrame (double pts)
 #if FOLEYS_USE_OPENGL
 void CameraClip::render (double pts)
 {
-    juce::ignoreUnknown (pts);
+    juce::ignoreUnused (pts);
 }
 #endif
 
