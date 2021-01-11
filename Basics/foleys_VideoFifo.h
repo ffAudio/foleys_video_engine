@@ -59,9 +59,6 @@ private:
     std::atomic<int>    writePosition {0};
     std::atomic<int>    readPosition  {0};
 
-    int64_t lastViewedFrame = -1;
-    bool    reverse = false;
-
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (VideoFifo)
 };
 
