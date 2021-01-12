@@ -313,9 +313,12 @@ void ComposedClip::handleAsyncUpdate()
         auto count = v ? convertTimecode (seconds, videoSettings) : 0;
         if (count != lastShownFrame || lastShownFrame < 0 || v == false)
         {
-            sendTimecode (count, seconds, juce::sendNotificationAsync);
+            sendTimecode (count, seconds, juce::sendNotificationSync);
             lastShownFrame = count;
         }
+
+        for (auto clip : clips)
+            clip->triggerTimecodeUpdate (juce::sendNotificationSync);
     }
 }
 

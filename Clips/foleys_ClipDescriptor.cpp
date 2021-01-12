@@ -167,6 +167,12 @@ double ClipDescriptor::getClipTimeInDescriptorTime (double time) const
     return time + getOffset() - getStart();
 }
 
+void ClipDescriptor::triggerTimecodeUpdate (juce::NotificationType type)
+{
+    // FIXME: Send actual frame count
+    sendTimecode (0, getCurrentTimeInSeconds(), type);
+}
+
 const std::vector<std::unique_ptr<ProcessorController>>& ClipDescriptor::getVideoProcessors() const
 {
     return videoProcessors;

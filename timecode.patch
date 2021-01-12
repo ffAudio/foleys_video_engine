@@ -1,0 +1,72 @@
+diff --git a/Clips/foleys_ClipDescriptor.cpp b/Clips/foleys_ClipDescriptor.cpp
+index 65a5635..5f46501 100644
+--- a/Clips/foleys_ClipDescriptor.cpp
++++ b/Clips/foleys_ClipDescriptor.cpp
+@@ -162,11 +162,6 @@ double ClipDescriptor::getCurrentTimeInSeconds() const
+     return getClipTimeInDescriptorTime (getOwningClip().getCurrentTimeInSeconds());
+ }
+ 
+-void ClipDescriptor::timecodeChanged (int64_t, double)
+-{
+-    sendTimecode (0, getCurrentTimeInSeconds(), juce::sendNotificationSync);
+-}
+-
+ double ClipDescriptor::getClipTimeInDescriptorTime (double time) const
+ {
+     return time + getOffset() - getStart();
+diff --git a/Clips/foleys_ClipDescriptor.h b/Clips/foleys_ClipDescriptor.h
+index 2b6b238..d06a6ee 100644
+--- a/Clips/foleys_ClipDescriptor.h
++++ b/Clips/foleys_ClipDescriptor.h
+@@ -33,7 +33,6 @@ class ComposedClip;
+  and AudioProcessors including their automation data relative to the clip.
+  */
+ class ClipDescriptor  : public TimeCodeAware,
+-                        public TimeCodeAware::Listener,
+                         private juce::ValueTree::Listener
+ {
+ public:
+@@ -98,8 +97,6 @@ public:
+     /** Transforms a time relative to the containing clip into a local time in ClipDescriptor. */
+     double getClipTimeInDescriptorTime (double time) const;
+ 
+-    void timecodeChanged (int64_t count, double seconds) override;
+-
+     std::shared_ptr<AVClip> clip;
+ 
+     /** Read all plugins getStateInformation() and save it into the statusTree as BLOB */
+diff --git a/Clips/foleys_ComposedClip.cpp b/Clips/foleys_ComposedClip.cpp
+index 68cdd56..40cd74c 100644
+--- a/Clips/foleys_ComposedClip.cpp
++++ b/Clips/foleys_ComposedClip.cpp
+@@ -92,14 +92,12 @@ std::shared_ptr<ClipDescriptor> ComposedClip::addClip (std::shared_ptr<AVClip> c
+     state.appendChild (clipDescriptor->getStatusTree(), getUndoManager());
+ 
+     clipDescriptor->getVideoParameterController().addListener (this);
+-    addTimecodeListener (clipDescriptor.get());
+ 
+     return clipDescriptor;
+ }
+ 
+ void ComposedClip::removeClip (std::shared_ptr<ClipDescriptor> descriptor)
+ {
+-    removeTimecodeListener (descriptor.get());
+     descriptor->getVideoParameterController().removeListener (this);
+ 
+     auto it = std::find (clips.begin(), clips.end(), descriptor);
+@@ -347,7 +345,6 @@ void ComposedClip::valueTreeChildAdded (juce::ValueTree&, juce::ValueTree& child
+             descriptor->clip->prepareToPlay (getDefaultBufferSize(), getSampleRate());
+             descriptor->updateSampleCounts();
+             descriptor->getVideoParameterController().addListener (this);
+-            addTimecodeListener (descriptor.get());
+ 
+             juce::ScopedLock sl (clipDescriptorLock);
+             clips.push_back (descriptor);
+@@ -367,7 +364,6 @@ void ComposedClip::valueTreeChildRemoved (juce::ValueTree&, juce::ValueTree& chi
+             if ((*it)->getStatusTree() == childWhichHasBeenRemoved)
+             {
+                 (*it)->getVideoParameterController().removeListener (this);
+-                removeTimecodeListener (it->get());
+ 
+                 juce::ScopedLock sl (clipDescriptorLock);
+                 clips.erase (it);

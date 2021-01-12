@@ -153,6 +153,11 @@ public:
      */
     double getCurrentTimeInSeconds() const override;
 
+    /**
+     Sends the current local timecode to it's timecodeListeners.
+     */
+    void triggerTimecodeUpdate (juce::NotificationType type);
+
     void updateAudioAutomations (double pts);
     void updateVideoAutomations (double pts);
 
