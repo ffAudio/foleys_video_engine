@@ -162,11 +162,6 @@ double ClipDescriptor::getCurrentTimeInSeconds() const
     return getClipTimeInDescriptorTime (getOwningClip().getCurrentTimeInSeconds());
 }
 
-void ClipDescriptor::timecodeChanged (int64_t, double)
-{
-    sendTimecode (0, getCurrentTimeInSeconds(), juce::sendNotificationSync);
-}
-
 double ClipDescriptor::getClipTimeInDescriptorTime (double time) const
 {
     return time + getOffset() - getStart();

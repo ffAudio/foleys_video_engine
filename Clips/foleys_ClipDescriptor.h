@@ -33,7 +33,6 @@ class ComposedClip;
  and AudioProcessors including their automation data relative to the clip.
  */
 class ClipDescriptor  : public TimeCodeAware,
-                        public TimeCodeAware::Listener,
                         private juce::ValueTree::Listener
 {
 public:
@@ -97,8 +96,6 @@ public:
 
     /** Transforms a time relative to the containing clip into a local time in ClipDescriptor. */
     double getClipTimeInDescriptorTime (double time) const;
-
-    void timecodeChanged (int64_t count, double seconds) override;
 
     std::shared_ptr<AVClip> clip;
 
