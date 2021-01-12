@@ -92,14 +92,12 @@ std::shared_ptr<ClipDescriptor> ComposedClip::addClip (std::shared_ptr<AVClip> c
     state.appendChild (clipDescriptor->getStatusTree(), getUndoManager());
 
     clipDescriptor->getVideoParameterController().addListener (this);
-    addTimecodeListener (clipDescriptor.get());
 
     return clipDescriptor;
 }
 
 void ComposedClip::removeClip (std::shared_ptr<ClipDescriptor> descriptor)
 {
-    removeTimecodeListener (descriptor.get());
     descriptor->getVideoParameterController().removeListener (this);
 
     auto it = std::find (clips.begin(), clips.end(), descriptor);
@@ -347,7 +345,6 @@ void ComposedClip::valueTreeChildAdded (juce::ValueTree&, juce::ValueTree& child
             descriptor->clip->prepareToPlay (getDefaultBufferSize(), getSampleRate());
             descriptor->updateSampleCounts();
             descriptor->getVideoParameterController().addListener (this);
-            addTimecodeListener (descriptor.get());
 
             juce::ScopedLock sl (clipDescriptorLock);
             clips.push_back (descriptor);
@@ -367,7 +364,6 @@ void ComposedClip::valueTreeChildRemoved (juce::ValueTree&, juce::ValueTree& chi
             if ((*it)->getStatusTree() == childWhichHasBeenRemoved)
             {
                 (*it)->getVideoParameterController().removeListener (this);
-                removeTimecodeListener (it->get());
 
                 juce::ScopedLock sl (clipDescriptorLock);
                 clips.erase (it);
