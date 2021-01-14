@@ -37,6 +37,14 @@ struct Size final
     }
 };
 
+enum class Zoom
+{
+    NoZoom = 0, /**< Don't zoom, keep pixel size */
+    ZoomScale,  /**< Zoom to fill target, ignore aspect ratio */
+    LetterBox,  /**< Zoom to show all pixels, may leave bars unpainted */
+    Crop        /**< Zoom to fill all pixels, may crop some pixels from the original */
+};
+
 /** Defines the size and time settings for a VideoStream */
 struct VideoStreamSettings final
 {

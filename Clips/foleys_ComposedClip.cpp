@@ -168,6 +168,20 @@ juce::Image ComposedClip::getStillImage ([[maybe_unused]]double seconds, [[maybe
     return {};
 }
 
+#if FOLEYS_USE_OPENGL
+void ComposedClip::render (juce::OpenGLContext& context, double pts)
+{
+    auto activeClips = getActiveClips ([pos = pts * getSampleRate()](ClipDescriptor& clip)
+                                       { return clip.clip->hasVideo() && pos >= clip.start && pos < clip.start + clip.length; });
+
+    for (auto clip : activeClips)
+    {
+        auto localPts = clip->getClipTimeInDescriptorTime (pts);
+        clip->clip->render (context, localPts);
+    }
+}
+#endif
+
 double ComposedClip::getLengthInSeconds() const
 {
     return convertToSamples (getTotalLength());

@@ -139,7 +139,8 @@
 #include "Clips/foleys_ComposedClip.h"
 
 #include "Basics/foleys_VideoEngine.h"
-#include "Widgets/foleys_VideoPreview.h"
+#include "Widgets/foleys_VideoView.h"
+#include "Widgets/foleys_SoftwareView.h"
 #include "Widgets/foleys_FilmStrip.h"
 #include "Widgets/foleys_AudioStrip.h"
 #include "Widgets/foleys_OpenGLView.h"

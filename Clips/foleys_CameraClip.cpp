@@ -59,9 +59,19 @@ VideoFrame& CameraClip::getFrame (double pts)
 }
 
 #if FOLEYS_USE_OPENGL
-void CameraClip::render (double pts)
+void CameraClip::render (juce::OpenGLContext& context, double pts)
 {
-    juce::ignoreUnused (pts);
+    auto& frame = getFrame (pts);
+    if (frame.image.isNull())
+        return;
+
+    if (! frame.upToDate)
+    {
+        frame.texture.loadImage (frame.image);
+        frame.upToDate = true;
+    }
+
+    renderFrame (context, frame);
 }
 #endif
 

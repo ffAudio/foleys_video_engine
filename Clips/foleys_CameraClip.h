@@ -46,7 +46,7 @@ public:
     VideoFrame& getFrame (double pts) override;
 
 #if FOLEYS_USE_OPENGL
-    void render (double pts) override;
+    void render (juce::OpenGLContext& context, double pts) override;
 #endif
 
     /** Checks, if a frame is available */

@@ -25,9 +25,8 @@ namespace foleys
 
 OpenGLView::OpenGLView()
 {
-
 #if FOLEYS_SHOW_SPLASHSCREEN
-    addAndMakeVisible (splashscreen);
+    addSplashscreen (*this);
 #endif
 }
 
@@ -61,7 +60,7 @@ void OpenGLView::render()
 
     glViewport (0, 0, juce::roundToInt (desktopScale * (float) getWidth()), juce::roundToInt (desktopScale * (float) getHeight()));
 
-    clip->render (clip->getCurrentTimeInSeconds());
+    clip->render (openGLContext, clip->getCurrentTimeInSeconds());
 }
 
 void OpenGLView::setClip (std::shared_ptr<AVClip> clipToUse)
