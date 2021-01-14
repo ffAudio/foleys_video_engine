@@ -51,7 +51,7 @@ public:
     bool isFrameAvailable ([[maybe_unused]]double pts) const override { return frame.image.isValid(); }
 
 #if FOLEYS_USE_OPENGL
-    void render (double) override {}
+    void render (juce::OpenGLContext&, double) override;
 #endif
 
     Size getVideoSize() const override;

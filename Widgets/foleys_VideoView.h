@@ -1,7 +1,7 @@
 /*
  ==============================================================================
 
- Copyright (c) 2019, Foleys Finest Audio - Daniel Walz
+ Copyright (c) 2019-2020, Foleys Finest Audio - Daniel Walz
  All rights reserved.
 
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
@@ -23,47 +23,34 @@
 namespace foleys
 {
 
-/**
- @class VideoPreview
-
- The VideoPreview is a juce Component, that will display the connected AVClip in
- real time.
- */
-class VideoPreview  : public juce::Component,
-                      public TimeCodeAware::Listener
+class VideoView
 {
 public:
-    VideoPreview();
+    VideoView() = default;
+    virtual ~VideoView() = default;
 
-    ~VideoPreview() override;
+    virtual void setClip (std::shared_ptr<AVClip> clip) = 0;
 
-    void setClip (std::shared_ptr<AVClip> clip);
-
-    std::shared_ptr<AVClip> getClip() const;
-
-    void paint (juce::Graphics& g) override;
-
-    void timecodeChanged (int64_t count, double seconds) override;
-
-private:
-    std::shared_ptr<AVClip> clip;
-    juce::RectanglePlacement placement { juce::RectanglePlacement::centred };
-
-#if FOLEYS_USE_OPENGL
-    juce::OpenGLContext openGLcontext;
-#endif
+    virtual std::shared_ptr<AVClip> getClip() const = 0;
 
 #if FOLEYS_SHOW_SPLASHSCREEN
-public:
-    void resized() override
+protected:
+    void addSplashscreen (juce::Component& view)
     {
-        splashscreen.setBounds (getWidth() - 210, getHeight() - 90, 200, 80);
+        view.addAndMakeVisible (splashscreen);
     }
+
+    void viewResized (juce::Component& view)
+    {
+        splashscreen.setBounds (view.getWidth() - 210, view.getHeight() - 90, 200, 80);
+    }
+
 private:
     FoleysSplashScreen splashscreen;
 #endif
-
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (VideoPreview)
+    
+private:
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (VideoView)
 };
 
-} // foleys
+} // namespace foleys

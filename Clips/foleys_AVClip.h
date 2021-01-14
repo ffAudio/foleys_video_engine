@@ -69,7 +69,9 @@ public:
     virtual VideoFrame& getFrame (double pts) = 0;
 
 #if FOLEYS_USE_OPENGL
-    virtual void render (double pts) = 0;
+    virtual void render (juce::OpenGLContext& context, double pts) = 0;
+
+    void renderFrame (juce::OpenGLContext& context, VideoFrame& frame, Zoom zoomType = Zoom::LetterBox);
 #endif
 
     /** Checks, if a frame is available */

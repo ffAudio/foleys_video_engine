@@ -67,6 +67,24 @@ juce::Image ImageClip::getStillImage (double, Size size)
     return frame.image.rescaled (size.width, size.height);
 }
 
+#if FOLEYS_USE_OPENGL
+void ImageClip::render (juce::OpenGLContext& context, double pts)
+{
+    juce::ignoreUnused (pts);
+
+    if (frame.image.isNull())
+        return;
+
+    if (! frame.upToDate)
+    {
+        frame.texture.loadImage (frame.image);
+        frame.upToDate = true;
+    }
+
+    renderFrame (context, frame);
+}
+#endif
+
 double ImageClip::getLengthInSeconds() const
 {
     return std::numeric_limits<double>::max();

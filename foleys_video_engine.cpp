@@ -53,7 +53,7 @@
 #include "ReadWrite/FFmpeg/foleys_FFmpegWriter.cpp"
 #endif
 
-#include "Widgets/foleys_VideoPreview.cpp"
+#include "Widgets/foleys_SoftwareView.cpp"
 #include "Widgets/foleys_FilmStrip.cpp"
 #include "Widgets/foleys_AudioStrip.cpp"
 #include "Widgets/foleys_OpenGLView.cpp"

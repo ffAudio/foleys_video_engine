@@ -21,7 +21,7 @@
 namespace foleys
 {
 
-VideoPreview::VideoPreview()
+SoftwareView::SoftwareView()
 {
 #if FOLEYS_USE_OPENGL
     openGLcontext.setImageCacheSize (64 * 1024 * 1024);
@@ -32,11 +32,11 @@ VideoPreview::VideoPreview()
     setInterceptsMouseClicks (false, true);
 
 #if FOLEYS_SHOW_SPLASHSCREEN
-    addAndMakeVisible (splashscreen);
+    addSplashscreen (*this);
 #endif
 }
 
-VideoPreview::~VideoPreview()
+SoftwareView::~SoftwareView()
 {
     if (clip)
         clip->removeTimecodeListener (this);
@@ -47,7 +47,7 @@ VideoPreview::~VideoPreview()
 
 }
 
-void VideoPreview::setClip (std::shared_ptr<AVClip> clipToUse)
+void SoftwareView::setClip (std::shared_ptr<AVClip> clipToUse)
 {
     if (clip)
         clip->removeTimecodeListener (this);
@@ -60,12 +60,12 @@ void VideoPreview::setClip (std::shared_ptr<AVClip> clipToUse)
     repaint();
 }
 
-std::shared_ptr<AVClip> VideoPreview::getClip() const
+std::shared_ptr<AVClip> SoftwareView::getClip() const
 {
     return clip;
 }
 
-void VideoPreview::paint (juce::Graphics& g)
+void SoftwareView::paint (juce::Graphics& g)
 {
     g.fillAll (juce::Colours::black);
 
@@ -80,7 +80,7 @@ void VideoPreview::paint (juce::Graphics& g)
     }
 }
 
-void VideoPreview::timecodeChanged (int64_t, double)
+void SoftwareView::timecodeChanged (int64_t, double)
 {
     repaint();
 }

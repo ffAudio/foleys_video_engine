@@ -1,7 +1,7 @@
 /*
  ==============================================================================
 
- Copyright (c) 2020, Foleys Finest Audio - Daniel Walz
+ Copyright (c) 2019-2020, Foleys Finest Audio - Daniel Walz
  All rights reserved.
 
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
@@ -20,34 +20,29 @@
 
 #pragma once
 
-#if FOLEYS_USE_OPENGL
-
 namespace foleys
 {
 
-class OpenGLView  : public juce::OpenGLAppComponent,
-                    public VideoView,
-                    public TimeCodeAware::Listener
+/**
+ @class VideoPreview
+
+ The VideoPreview is a juce Component, that will display the connected AVClip in
+ real time.
+ */
+class SoftwareView  : public juce::Component,
+                      public VideoView,
+                      public TimeCodeAware::Listener
 {
 public:
+    SoftwareView();
 
-    OpenGLView();
-    ~OpenGLView() override;
+    ~SoftwareView() override;
 
-    /**
-     Set the clip to display. This is a shared ptr, so it will stay alive until you set a new one or a nullptr.
-     */
     void setClip (std::shared_ptr<AVClip> clip) override;
 
-    /**
-     Access the currently played clip
-     */
     std::shared_ptr<AVClip> getClip() const override;
 
     void paint (juce::Graphics& g) override;
-    void render() override;
-    void initialise() override;
-    void shutdown() override;
 
     void timecodeChanged (int64_t count, double seconds) override;
 
@@ -59,13 +54,14 @@ public:
 #endif
 
 private:
-    juce::CriticalSection   clipLock;
     std::shared_ptr<AVClip> clip;
+    juce::RectanglePlacement placement { juce::RectanglePlacement::centred };
 
-private:
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OpenGLView)
+#if FOLEYS_USE_OPENGL
+    juce::OpenGLContext openGLcontext;
+#endif
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SoftwareView)
 };
 
-} // namespace foleys
-
-#endif // FOLEYS_USE_OPENGL
+} // foleys
