@@ -100,10 +100,10 @@ public:
     class TextureManager
     {
     public:
-        TextureManager()=default;
+        TextureManager() { textureContext.setImageCacheSize (64 * 1024 * 1024); }
 
-        void attachToComponent (juce::Component& c) {textureContext.attachTo (c); }
-        void detach() {textureContext.detach(); }
+        void attachToComponent (juce::Component& c) { textureContext.attachTo (c); }
+        void detach() { textureContext.detach(); }
 
         void* getContext() { return textureContext.getRawContext(); }
         juce::CriticalSection& getLock() { return textureLock; }
