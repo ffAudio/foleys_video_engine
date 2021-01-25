@@ -23,8 +23,10 @@
 namespace foleys
 {
 
-OpenGLView::OpenGLView()
+OpenGLView::OpenGLView (VideoEngine& engine)
 {
+    openGLContext.setNativeSharedContext (engine.textureManager.getContext());
+
 #if FOLEYS_SHOW_SPLASHSCREEN
     addSplashscreen (*this);
 #endif

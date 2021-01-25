@@ -34,7 +34,7 @@ class SoftwareView  : public juce::Component,
                       public TimeCodeAware::Listener
 {
 public:
-    SoftwareView();
+    SoftwareView (foleys::VideoEngine&);
 
     ~SoftwareView() override;
 

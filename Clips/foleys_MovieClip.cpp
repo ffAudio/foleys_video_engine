@@ -123,12 +123,6 @@ void MovieClip::render (juce::OpenGLContext& context, double pts)
     if (frame.image.isNull())
         return;
 
-    if (! frame.upToDate)
-    {
-        frame.texture.loadImage (frame.image);
-        frame.upToDate = true;
-    }
-
     renderFrame (context, frame);
 }
 #endif

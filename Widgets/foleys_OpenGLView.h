@@ -31,7 +31,7 @@ class OpenGLView  : public juce::OpenGLAppComponent,
 {
 public:
 
-    OpenGLView();
+    OpenGLView (VideoEngine& engine);
     ~OpenGLView() override;
 
     /**

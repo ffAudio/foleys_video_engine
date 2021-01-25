@@ -21,7 +21,7 @@
 namespace foleys
 {
 
-SoftwareView::SoftwareView()
+SoftwareView::SoftwareView (foleys::VideoEngine&)
 {
 #if FOLEYS_USE_OPENGL
     openGLcontext.setImageCacheSize (64 * 1024 * 1024);

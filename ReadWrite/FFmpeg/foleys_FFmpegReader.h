@@ -28,7 +28,7 @@ namespace foleys
 class FFmpegReader : public AVReader
 {
 public:
-    FFmpegReader (const juce::File& file, StreamTypes type);
+    FFmpegReader (VideoEngine& engine, const juce::File& file, StreamTypes type);
 
     juce::File getMediaFile() const override;
 

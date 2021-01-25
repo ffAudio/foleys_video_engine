@@ -50,7 +50,8 @@ void ImageClip::setImage (const juce::Image& imageToUse)
     frame.image = imageToUse;
     frame.timecode = 0;
 #if FOLEYS_USE_OPENGL
-    frame.upToDate = false;
+    frame.texture.loadImage (frame.image);
+    frame.upToDate = true;
 #endif
     videoSettings.frameSize.width = frame.image.getWidth();
     videoSettings.frameSize.height = frame.image.getHeight();

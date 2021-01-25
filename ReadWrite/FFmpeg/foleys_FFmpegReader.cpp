@@ -423,7 +423,13 @@ private:
                 scaler.convertFrameToImage (target.image, frame);
                 target.timecode = frame->best_effort_timestamp;
 #if FOLEYS_USE_OPENGL
-                target.upToDate = false;
+                {
+                    juce::ScopedLock lock (reader.videoEngine.textureManager.getLock());
+                    auto activated = reader.videoEngine.textureManager.makeActive();
+                    jassert (activated);
+                    target.texture.loadImage (target.image);
+                    target.upToDate = true;
+                }
 #endif
                 videoFifo.finishWriting();
 
@@ -541,7 +547,8 @@ private:
 
 // ==============================================================================
 
-FFmpegReader::FFmpegReader (const juce::File& file, StreamTypes type)
+FFmpegReader::FFmpegReader (VideoEngine& engine, const juce::File& file, StreamTypes type)
+  : AVReader (engine)
 {
     mediaFile = file;
     pimpl = std::make_unique<Pimpl> (*this, file, type);

@@ -52,7 +52,12 @@ VideoEngine::~VideoEngine()
 
 std::shared_ptr<AVClip> VideoEngine::createClipFromFile (juce::URL url, StreamTypes type)
 {
-    auto clip = formatManager.createClipFromFile (*this, url, type);
+#if FOLEYS_USE_OPENGL
+    juce::ScopedLock lock (textureManager.getLock());
+    textureManager.makeActive();
+#endif
+
+    auto clip = formatManager.createClipFromFile (url, type);
     if (clip)
         manageLifeTime (clip);
 
@@ -128,6 +133,11 @@ void VideoEngine::timerCallback()
         {
             if (auto* client = (*p)->getBackgroundJob())
                 removeFromBackgroundThreads (client);
+
+#if FOLEYS_USE_OPENGL
+            juce::ScopedLock lock (textureManager.getLock());
+            textureManager.makeActive();
+#endif
 
             p = releasePool.erase (p);
         }

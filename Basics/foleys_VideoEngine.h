@@ -96,6 +96,25 @@ public:
      */
     juce::AudioFormatManager& getAudioFormatManager();
 
+#if FOLEYS_USE_OPENGL
+    class TextureManager
+    {
+    public:
+        TextureManager()=default;
+
+        void attachToComponent (juce::Component& c) {textureContext.attachTo (c); }
+        void detach() {textureContext.detach(); }
+
+        void* getContext() { return textureContext.getRawContext(); }
+        juce::CriticalSection& getLock() { return textureLock; }
+        bool makeActive() { return textureContext.makeActive(); }
+    private:
+        juce::OpenGLContext   textureContext;
+        juce::CriticalSection textureLock;
+    };
+    TextureManager textureManager;
+#endif
+
 #if FOLEYS_CAMERA_SUPPORT
     CameraManager& getCameraManager();
 #endif
@@ -125,7 +144,7 @@ private:
 
     void timerCallback() override;
 
-    AVFormatManager formatManager;
+    AVFormatManager    formatManager      { *this };
 
     AudioPluginManager audioPluginManager { *this };
 

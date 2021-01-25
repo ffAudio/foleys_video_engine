@@ -39,9 +39,9 @@ public:
         FFmpeg
     };
 
-    AVFormatManager();
+    AVFormatManager (VideoEngine& videoEngine);
 
-    std::shared_ptr<AVClip> createClipFromFile (VideoEngine& engine, juce::URL url, StreamTypes type = StreamTypes::all());
+    std::shared_ptr<AVClip> createClipFromFile (juce::URL url, StreamTypes type = StreamTypes::all());
 
     std::unique_ptr<AVReader> createReaderFor (juce::File file, StreamTypes type = StreamTypes::all());
 
@@ -52,6 +52,7 @@ public:
     juce::AudioFormatManager audioFormatManager;
 
 private:
+    VideoEngine& videoEngine;
 
     std::map<juce::String, std::function<AVClip*(foleys::VideoEngine& videoEngine, juce::URL url, StreamTypes type)>> factories;
 

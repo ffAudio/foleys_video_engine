@@ -21,17 +21,18 @@
 namespace foleys
 {
 
-AVFormatManager::AVFormatManager()
+AVFormatManager::AVFormatManager (VideoEngine& engine)
+  : videoEngine (engine)
 {
     audioFormatManager.registerBasicFormats();
 }
 
-std::shared_ptr<AVClip> AVFormatManager::createClipFromFile (VideoEngine& engine, juce::URL url, StreamTypes type)
+std::shared_ptr<AVClip> AVFormatManager::createClipFromFile (juce::URL url, StreamTypes type)
 {
     const auto& factory = factories.find (url.getScheme());
     if (factory != factories.end())
     {
-        auto clip = std::shared_ptr<foleys::AVClip> (factory->second (engine, url, type));
+        auto clip = std::shared_ptr<foleys::AVClip> (factory->second (videoEngine, url, type));
         return clip;
     }
 
@@ -41,7 +42,7 @@ std::shared_ptr<AVClip> AVFormatManager::createClipFromFile (VideoEngine& engine
         auto image = juce::ImageFileFormat::loadFrom (file);
         if (image.isValid())
         {
-            auto clip = std::make_shared<ImageClip> (engine);
+            auto clip = std::make_shared<ImageClip> (videoEngine);
             clip->setImage (image);
             clip->setMediaFile (url);
             return clip;
@@ -53,7 +54,7 @@ std::shared_ptr<AVClip> AVFormatManager::createClipFromFile (VideoEngine& engine
         {
             if (auto* audio = audioFormatManager.createReaderFor (file))
             {
-                auto clip = std::make_shared<AudioClip> (engine);
+                auto clip = std::make_shared<AudioClip> (videoEngine);
                 clip->setAudioFormatReader (audio);
                 clip->setMediaFile (url);
                 return clip;
@@ -63,7 +64,7 @@ std::shared_ptr<AVClip> AVFormatManager::createClipFromFile (VideoEngine& engine
         auto reader = AVFormatManager::createReaderFor (file, type);
         if (reader->isOpenedOk())
         {
-            auto clip = std::make_shared<MovieClip> (engine);
+            auto clip = std::make_shared<MovieClip> (videoEngine);
             if (reader->hasVideo())
                 clip->setThumbnailReader (AVFormatManager::createReaderFor (file, StreamTypes::video()));
 
@@ -80,7 +81,7 @@ std::unique_ptr<AVReader> AVFormatManager::createReaderFor (juce::File file, Str
 {
 
 #if FOLEYS_USE_FFMPEG
-    return std::make_unique<FFmpegReader> (file, type);
+    return std::make_unique<FFmpegReader> (videoEngine, file, type);
 #endif
 
     return {};
@@ -93,6 +94,7 @@ std::unique_ptr<AVWriter> AVFormatManager::createClipWriter (juce::File file)
     auto writer = std::make_unique<FFmpegWriter>(file, "");
     return writer;
 #endif
+
     return {};
 }
 

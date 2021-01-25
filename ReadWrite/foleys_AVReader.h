@@ -1,7 +1,7 @@
 /*
  ==============================================================================
 
- Copyright (c) 2019, Foleys Finest Audio - Daniel Walz
+ Copyright (c) 2019-2021, Foleys Finest Audio - Daniel Walz
  All rights reserved.
 
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
@@ -32,8 +32,7 @@ namespace foleys
 class AVReader
 {
 public:
-
-    AVReader() = default;
+    AVReader (VideoEngine& engine) : videoEngine (engine) {}
     virtual ~AVReader() = default;
 
     virtual juce::File getMediaFile() const = 0;
@@ -82,7 +81,7 @@ public:
 
 protected:
     bool   opened    = false;
-
+    VideoEngine& videoEngine;
 private:
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AVReader)
