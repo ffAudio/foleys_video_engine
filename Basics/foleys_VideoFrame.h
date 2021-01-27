@@ -29,11 +29,6 @@ struct VideoFrame
     juce::int64 timecode = -1;
     juce::Image image;
 
-#if FOLEYS_USE_OPENGL
-    juce::OpenGLTexture texture;
-    bool                upToDate = false;
-#endif
-
 private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (VideoFrame)
 };

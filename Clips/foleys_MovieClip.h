@@ -63,7 +63,7 @@ public:
     bool isFrameAvailable (double pts) const override;
 
 #if FOLEYS_USE_OPENGL
-    void render (juce::OpenGLContext& context, double pts) override;
+    void render (OpenGLView& view, double pts) override;
 #endif
 
     void prepareToPlay (int samplesPerBlockExpected, double sampleRate) override;

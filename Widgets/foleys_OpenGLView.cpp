@@ -32,6 +32,9 @@ OpenGLView::OpenGLView()
 
 OpenGLView::~OpenGLView()
 {
+    openGLContext.makeActive();
+    textures.clear();
+
     openGLContext.detach();
     shutdownOpenGL();
 }
@@ -60,7 +63,7 @@ void OpenGLView::render()
 
     glViewport (0, 0, juce::roundToInt (desktopScale * (float) getWidth()), juce::roundToInt (desktopScale * (float) getHeight()));
 
-    clip->render (openGLContext, clip->getCurrentTimeInSeconds());
+    clip->render (*this, clip->getCurrentTimeInSeconds());
 }
 
 void OpenGLView::setClip (std::shared_ptr<AVClip> clipToUse)
@@ -81,6 +84,27 @@ void OpenGLView::initialise()
 
 void OpenGLView::shutdown()
 {
+}
+
+juce::OpenGLContext& OpenGLView::getContext()
+{
+    return openGLContext;
+}
+
+juce::OpenGLTexture& OpenGLView::getTexture (AVClip& source, VideoFrame& frame)
+{
+    auto& texture = textures [&source];
+
+    if (texture.get() == nullptr)
+        texture.reset (new Texture);
+
+    if (texture->timestamp != frame.timecode)
+    {
+        texture->texture.loadImage (frame.image);
+        texture->timestamp = frame.timecode;
+    }
+
+    return texture->texture;
 }
 
 void OpenGLView::timecodeChanged (int64_t count, double seconds)

@@ -49,9 +49,7 @@ void ImageClip::setImage (const juce::Image& imageToUse)
 {
     frame.image = imageToUse;
     frame.timecode = 0;
-#if FOLEYS_USE_OPENGL
-    frame.upToDate = false;
-#endif
+
     videoSettings.frameSize.width = frame.image.getWidth();
     videoSettings.frameSize.height = frame.image.getHeight();
 }
@@ -68,20 +66,10 @@ juce::Image ImageClip::getStillImage (double, Size size)
 }
 
 #if FOLEYS_USE_OPENGL
-void ImageClip::render (juce::OpenGLContext& context, double pts)
+void ImageClip::render (OpenGLView& view, double pts)
 {
     juce::ignoreUnused (pts);
-
-    if (frame.image.isNull())
-        return;
-
-    if (! frame.upToDate)
-    {
-        frame.texture.loadImage (frame.image);
-        frame.upToDate = true;
-    }
-
-    renderFrame (context, frame);
+    renderFrame (view, frame);
 }
 #endif
 

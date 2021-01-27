@@ -84,7 +84,9 @@ struct CameraReceiver::Pimpl : public juce::ObjCClass<NSObject>
 
     VideoFrame& getNewFrameToFill()
     {
-        return owner.videoFifo.getWritingFrame();
+        auto& frame = owner.videoFifo.getWritingFrame();
+        frame.timecode = ++timecode;
+        return frame;
     }
 
     void finishWriting()
@@ -144,6 +146,7 @@ private:
     NSObject<OS_dispatch_queue>* videoDataOutputQueue = nullptr;
     AVCaptureDeviceInput*  input = nullptr;
     AVCaptureVideoDataOutput* output = nullptr;
+    juce::int64 timecode = 0;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Pimpl)
 };
