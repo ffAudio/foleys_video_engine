@@ -21,7 +21,7 @@
 
   ID:                foleys_video_engine
   vendor:            Foleys Finest Audio Ltd.
-  version:           0.1.0
+  version:           0.2.0
   name:              Video engine to read, process, display and write video in JUCE
   description:       Provides classes to read audio streams from video files or to
                      mux audio into an existing video
