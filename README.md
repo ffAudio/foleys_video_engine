@@ -1,7 +1,7 @@
 README - Foleys Video Engine
 ============================
 
-Daniel Walz - developer@foleysfinest.com - 2019
+Daniel Walz - developer@foleysfinest.com - 2019 - 2021
 
 Foleys Finest Audio Ltd.
 
@@ -40,6 +40,8 @@ API-Documentation
 -----------------
 
 Please find the API documentation (doxygen) here: https://foleysfinest.com/foleys_video_engine/
+
+There is also the support forum: https://forum.foleysfinest.com
 
 Examples
 --------
