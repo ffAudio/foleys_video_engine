@@ -18,10 +18,10 @@ Features
 - Audio plugins for clips
 - Automatable parameters for video composition
 - Video plugins for image processing / colour adjustments etc.
-- _Multiple audio stems per ComposedClip (avadilable soon)_
+- Hardware rendering backend
+- _Multiple audio stems per ComposedClip (available soon)_
 - _Video generator plugins for titles, backgrounds etc. (coming later)_
 - _Alternative video file backend (coming much later)_
-- _Hardware rendering backend (coming even later)_
 
 To read and write video files it uses FFmpeg (https://ffmpeg.org). Alternative backends
 like AVFoundation (OSX) or DirectShow (Windows) might follow in the future, but no
@@ -75,4 +75,4 @@ Disclaimer
  OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-Foleys Finest Audio Ltd. - Brighton, UK - 2019
+Foleys Finest Audio - 2019 - Brighton, UK - 2021 Esslingen, Germany
