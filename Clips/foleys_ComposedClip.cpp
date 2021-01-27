@@ -145,10 +145,6 @@ VideoFrame& ComposedClip::getFrame (double pts)
     }));
 
     frame.timecode = nextTimeCode;
-#if FOLEYS_USE_OPENGL
-    frame.upToDate = false;
-#endif
-
     return frame;
 }
 
@@ -169,7 +165,7 @@ juce::Image ComposedClip::getStillImage ([[maybe_unused]]double seconds, [[maybe
 }
 
 #if FOLEYS_USE_OPENGL
-void ComposedClip::render (juce::OpenGLContext& context, double pts)
+void ComposedClip::render (OpenGLView& view, double pts)
 {
     auto activeClips = getActiveClips ([pos = pts * getSampleRate()](ClipDescriptor& clip)
                                        { return clip.clip->hasVideo() && pos >= clip.start && pos < clip.start + clip.length; });
@@ -177,7 +173,7 @@ void ComposedClip::render (juce::OpenGLContext& context, double pts)
     for (auto clip : activeClips)
     {
         auto localPts = clip->getClipTimeInDescriptorTime (pts);
-        clip->clip->render (context, localPts);
+        clip->clip->render (view, localPts);
     }
 }
 #endif

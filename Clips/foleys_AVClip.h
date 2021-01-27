@@ -25,6 +25,9 @@ namespace foleys
 
 class VideoEngine;
 
+#if FOLEYS_USE_OPENGL
+class OpenGLView;
+#endif
 
 /**
  @class AVClip
@@ -69,9 +72,11 @@ public:
     virtual VideoFrame& getFrame (double pts) = 0;
 
 #if FOLEYS_USE_OPENGL
-    virtual void render (juce::OpenGLContext& context, double pts) = 0;
+    /** This is the virtual render() method for OpenGL rendering */
+    virtual void render (OpenGLView& view, double pts) = 0;
 
-    void renderFrame (juce::OpenGLContext& context, VideoFrame& frame, Zoom zoomType = Zoom::LetterBox);
+    /** Renders a frame on the OpenGLView. You can call this from the AVClip subclasses */
+    void renderFrame (OpenGLView& view, VideoFrame& frame, Zoom zoomType = Zoom::LetterBox);
 #endif
 
     /** Checks, if a frame is available */

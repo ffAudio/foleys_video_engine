@@ -107,38 +107,39 @@ VideoEngine* AVClip::getVideoEngine() const
 }
 
 #if FOLEYS_USE_OPENGL
-void AVClip::renderFrame (juce::OpenGLContext& context, VideoFrame& frame, Zoom zoomType)
+void AVClip::renderFrame (OpenGLView& view, VideoFrame& frame, Zoom zoomType)
 {
-    frame.texture.bind();
+    if (frame.image.isNull())
+        return;
 
-    if (auto* component = context.getTargetComponent())
+    auto& texture = view.getTexture (*this, frame);
+    texture.bind();
+
+    auto w      = float (texture.getWidth())  / frame.image.getWidth();
+    auto h      = float (texture.getHeight()) / frame.image.getHeight();
+    auto aspect = float (frame.image.getWidth())    / frame.image.getHeight();
+    auto target = view.getLocalBounds();
+
+    if (zoomType == Zoom::LetterBox)
     {
-        auto w      = float (frame.texture.getWidth())  / frame.image.getWidth();
-        auto h      = float (frame.texture.getHeight()) / frame.image.getHeight();
-        auto aspect = float (frame.image.getWidth())    / frame.image.getHeight();
-        auto target = component->getLocalBounds();
+        auto targetWidth  = view.getHeight() * aspect;
+        auto targetHeight = view.getWidth()  / aspect;
 
-        if (zoomType == Zoom::LetterBox)
-        {
-            auto targetWidth  = component->getHeight() * aspect;
-            auto targetHeight = component->getWidth()  / aspect;
+        if (targetWidth > view.getWidth())
+            target.reduce (0, juce::roundToInt ((view.getHeight() - targetHeight) / 2.0f));
 
-            if (targetWidth > component->getWidth())
-                target.reduce (0, juce::roundToInt ((component->getHeight() - targetHeight) / 2.0f));
-
-            if (targetHeight > component->getHeight())
-                target.reduce (juce::roundToInt ((component->getWidth() - targetWidth) / 2.0f), 0);
-        }
-        // FIXME: Do other zoom types
-
-        // FIXME: apply geometry from clips
-
-        context.copyTexture (target,
-                             juce::Rectangle<int>(0, 0, juce::roundToInt (w * component->getWidth()), juce::roundToInt (h * component->getHeight())),
-                             component->getWidth(), component->getHeight(), false);
+        if (targetHeight > view.getHeight())
+            target.reduce (juce::roundToInt ((view.getWidth() - targetWidth) / 2.0f), 0);
     }
+    // FIXME: Do other zoom types
 
-    frame.texture.unbind();
+    // FIXME: apply geometry from clips
+
+    view.getContext().copyTexture (target,
+                                   juce::Rectangle<int>(0, 0, juce::roundToInt (w * view.getWidth()), juce::roundToInt (h * view.getHeight())),
+                                   view.getWidth(), view.getHeight(), false);
+
+    texture.unbind();
 }
 #endif
 

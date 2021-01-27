@@ -422,9 +422,6 @@ private:
 
                 scaler.convertFrameToImage (target.image, frame);
                 target.timecode = frame->best_effort_timestamp;
-#if FOLEYS_USE_OPENGL
-                target.upToDate = false;
-#endif
                 videoFifo.finishWriting();
 
                 FOLEYS_LOG ("Stream " << juce::String (packet.stream_index) <<

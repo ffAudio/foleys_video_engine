@@ -145,9 +145,6 @@ void VideoFifo::clear()
     for (auto& frame : frames)
     {
         frame->timecode = -1;
-#if FOLEYS_USE_OPENGL
-        frame->upToDate = false;
-#endif
     }
 }
 

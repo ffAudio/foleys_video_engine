@@ -44,6 +44,9 @@ public:
      */
     std::shared_ptr<AVClip> getClip() const override;
 
+    juce::OpenGLContext& getContext();
+    juce::OpenGLTexture& getTexture (AVClip& clip, VideoFrame& frame);
+
     void paint (juce::Graphics& g) override;
     void render() override;
     void initialise() override;
@@ -59,10 +62,17 @@ public:
 #endif
 
 private:
+    struct Texture
+    {
+        juce::OpenGLTexture texture;
+        juce::int64         timestamp = -1;
+    };
+
+    std::map<AVClip*, std::unique_ptr<Texture>> textures;
+
     juce::CriticalSection   clipLock;
     std::shared_ptr<AVClip> clip;
 
-private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OpenGLView)
 };
 
