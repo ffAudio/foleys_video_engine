@@ -168,13 +168,6 @@ juce::AudioFormatManager& VideoEngine::getAudioFormatManager()
     return formatManager.audioFormatManager;
 }
 
-#if FOLEYS_CAMERA_SUPPORT
-CameraManager& VideoEngine::getCameraManager()
-{
-    return cameraManager;
-}
-#endif
-
 std::unique_ptr<VideoProcessor> VideoEngine::createVideoPluginInstance (const juce::String& identifierString,
                                                                         juce::String& error) const
 {

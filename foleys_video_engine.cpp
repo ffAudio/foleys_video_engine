@@ -1,7 +1,7 @@
 /*
  ==============================================================================
 
- Copyright (c) 2019-2020, Foleys Finest Audio - Daniel Walz
+ Copyright (c) 2019-2021, Foleys Finest Audio - Daniel Walz
  All rights reserved.
 
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
@@ -24,14 +24,12 @@
 #include "Basics/foleys_VideoFifo.cpp"
 #include "Basics/foleys_AudioFifo.cpp"
 #include "Basics/foleys_VideoEngine.cpp"
-#include "Basics/foleys_CameraManager.cpp"
 #include "Basics/foleys_TimeCodeAware.cpp"
 
 #include "Clips/foleys_AVClip.cpp"
 #include "Clips/foleys_AudioClip.cpp"
 #include "Clips/foleys_ImageClip.cpp"
 #include "Clips/foleys_MovieClip.cpp"
-#include "Clips/foleys_CameraClip.cpp"
 #include "Clips/foleys_ComposedClip.cpp"
 #include "Clips/foleys_ClipDescriptor.cpp"
 
