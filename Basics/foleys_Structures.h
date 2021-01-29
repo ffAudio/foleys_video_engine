@@ -79,7 +79,7 @@ static inline int64_t convertTimecode (double pts, const AudioStreamSettings& se
 /** Convert a time in seconds into a formatted string */
 static inline juce::String timecodeToString (double pts)
 {
-    int64_t intSeconds = int (pts);
+    auto intSeconds = int64_t (pts);
 
     auto milliSeconds = int (1000.0 * (pts - intSeconds));
     auto days = int (intSeconds / (3600 * 24));

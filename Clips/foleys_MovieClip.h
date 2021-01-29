@@ -130,7 +130,7 @@ private:
 
     Size originalSize;
 
-    VideoFifo videoFifo { 50 };
+    VideoFifo videoFifo { 30 };
     AudioFifo audioFifo;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MovieClip)
