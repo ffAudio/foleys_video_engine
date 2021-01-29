@@ -173,7 +173,21 @@ void ComposedClip::render (OpenGLView& view, double pts)
     for (auto clip : activeClips)
     {
         auto localPts = clip->getClipTimeInDescriptorTime (pts);
+        clip->updateVideoAutomations (localPts);
+
+        // TODO: save projection matrix and alpha value
+
+//        const auto alpha    = float (clip->getVideoParameterController().getValueAtTime (IDs::alpha,  localPts, 1.0));
+//        const auto zoom     = clip->getVideoParameterController().getValueAtTime (IDs::zoom,   localPts, 1.0);
+//        const auto transX   = clip->getVideoParameterController().getValueAtTime (IDs::translateX, localPts, 0.0);
+//        const auto transY   = clip->getVideoParameterController().getValueAtTime (IDs::translateY, localPts, 0.0);
+//        const auto rotation = clip->getVideoParameterController().getValueAtTime (IDs::rotation, localPts, 0.0);
+
+        // TODO: set projection matrix and alpha value
+
         clip->clip->render (view, localPts);
+
+        // TODO: restore projection matrix and alpha value
     }
 }
 #endif
