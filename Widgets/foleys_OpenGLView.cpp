@@ -32,10 +32,6 @@ OpenGLView::OpenGLView()
 
 OpenGLView::~OpenGLView()
 {
-    openGLContext.makeActive();
-    textures.clear();
-
-    openGLContext.detach();
     shutdownOpenGL();
 }
 
@@ -84,6 +80,7 @@ void OpenGLView::initialise()
 
 void OpenGLView::shutdown()
 {
+    textures.clear();
 }
 
 juce::OpenGLContext& OpenGLView::getContext()
