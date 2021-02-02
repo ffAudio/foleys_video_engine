@@ -35,6 +35,11 @@ struct Size final
     {
         return (height > 0) ? width / double (height) : 1.33;
     }
+
+    juce::String toString() const
+    {
+        return juce::String (width) + "x" + juce::String (height);
+    }
 };
 
 enum class Zoom
