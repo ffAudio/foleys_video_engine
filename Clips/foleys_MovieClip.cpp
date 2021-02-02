@@ -309,7 +309,8 @@ int MovieClip::BackgroundReaderJob::useTimeSlice()
     if (suspended == false &&
         owner.sampleRate > 0 &&
         owner.movieReader.get() != nullptr &&
-        owner.audioFifo.getFreeSpace() > 2048)
+        owner.audioFifo.getFreeSpace() > 2048 &&
+        owner.videoFifo.getFreeSpace() > 3)
     {
         juce::ScopedValueSetter<bool> guard (inDecodeBlock, true);
         owner.movieReader->readNewData (owner.videoFifo, owner.audioFifo);

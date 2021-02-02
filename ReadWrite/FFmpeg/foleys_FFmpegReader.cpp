@@ -429,8 +429,8 @@ private:
                      " DTS: " << juce::String (packet.dts) <<
                      " PTS: " << juce::String (packet.pts) <<
                      " best effort PTS: " << juce::String (frame->best_effort_timestamp) <<
-                     " in ms: " << juce::String (frame->best_effort_timestamp * av_q2d (timeBase)) <<
-                     " timebase: " << juce::String (av_q2d(timeBase)));
+                     " in ms: " << juce::String (frame->best_effort_timestamp * av_q2d (timeBase) * 1000.0) <<
+                     " timebase: " << juce::String (timeBase.num != 0 ? double (timeBase.den) / double (timeBase.num) : 0));
             }
         }
     }
@@ -454,10 +454,12 @@ private:
             }
 
             FOLEYS_LOG ("Stream " << juce::String (packet.stream_index) <<
-                 " (Audio) " <<
-                 " DTS: " << juce::String (packet.dts) <<
-                 " PTS: " << juce::String (packet.pts) <<
-                 " Frame PTS: " << juce::String (frame->best_effort_timestamp));
+                        " (Audio) " <<
+                        " DTS: " << juce::String (packet.dts) <<
+                        " PTS: " << juce::String (packet.pts) <<
+                        " Frame PTS: " << juce::String (frame->best_effort_timestamp) <<
+                        " in ms: " << juce::String (frame->best_effort_timestamp * 1000.0 / reader.sampleRate) <<
+                        " timebase: " << reader.sampleRate);
 
             if (frame->extended_data != nullptr  && reader.sampleRate > 0)
             {
@@ -468,8 +470,6 @@ private:
 
                 jassert (std::abs (audioFifo.getWritePosition() - outTimestamp) < std::numeric_limits<int>::max());
                 auto offset = int (audioFifo.getWritePosition() - outTimestamp);
-
-                FOLEYS_LOG ("Audio: " << audioFifo.getWritePosition() << " free: " << audioFifo.getFreeSpace());
 
                 if (audioConvertBuffer.getNumChannels() != channels || audioConvertBuffer.getNumSamples() < numProduced)
                     audioConvertBuffer.setSize (channels, numProduced, false, false, true);

@@ -43,9 +43,16 @@ public:
     int getNumAvailableFrames() const;
     bool isFrameAvailable (double pts) const;
 
+    /**
+     Returns the number of frames that can be filled
+     */
+    int getFreeSpace() const;
+
     void clear();
 
     void setVideoSettings (VideoStreamSettings& settings);
+
+    void dumpTimeCodes() const;
 
 private:
     int findFramePosition (int64_t timecode, int start) const;

@@ -52,6 +52,11 @@ VideoFrame& VideoFifo::getFrame (int64_t timecode)
         return *frames [size_t (nextPos)];
     }
 
+#if FOLEYS_DEBUG_LOGGING
+    FOLEYS_LOG ("miss starting from: " << pos << " timecode: " << timecode);
+    dumpTimeCodes();
+#endif
+
     return *frames [size_t (pos)];
 }
 
@@ -71,7 +76,12 @@ int VideoFifo::getNumAvailableFrames() const
     auto read = readPosition.load();
     auto write = writePosition.load();
 
-    return (write > read) ? write - read : int (frames.size()) + (write - read);
+    return (write >= read) ? write - read : int (frames.size()) + (write - read);
+}
+
+int VideoFifo::getFreeSpace() const
+{
+    return int (frames.size()) - getNumAvailableFrames();
 }
 
 bool VideoFifo::isFrameAvailable (double pts) const
@@ -87,6 +97,8 @@ int VideoFifo::findFramePosition (int64_t timecode, int start) const
     if (juce::isPositiveAndBelow (timecode - frames [size_t (start)]->timecode, settings.defaultDuration))
         return start;
 
+    size_t count = 0;
+
     // forward seek
     while (timecode >= frames [size_t (start)]->timecode + settings.defaultDuration)
     {
@@ -96,6 +108,9 @@ int VideoFifo::findFramePosition (int64_t timecode, int start) const
 
         if (juce::isPositiveAndBelow (timecode - frames [size_t (start)]->timecode, settings.defaultDuration))
             return start;
+
+        if (++count >= frames.size())
+            return -1;
     }
 
     // backward seek
@@ -107,6 +122,9 @@ int VideoFifo::findFramePosition (int64_t timecode, int start) const
 
         if (juce::isPositiveAndBelow (timecode - frames [size_t (start)]->timecode, settings.defaultDuration))
             return start;
+
+        if (++count >= frames.size())
+            return -1;
     }
 
     return -1;
@@ -115,6 +133,7 @@ int VideoFifo::findFramePosition (int64_t timecode, int start) const
 void VideoFifo::setVideoSettings (VideoStreamSettings& s)
 {
     settings = s;
+    FOLEYS_LOG ("FIFO VideoSettings: " << settings.frameSize.toString() << " timebase " << settings.timebase << ", duration " << settings.defaultDuration);
 }
 
 int VideoFifo::nextIndex (int pos, int offset) const
@@ -146,6 +165,16 @@ void VideoFifo::clear()
     {
         frame->timecode = -1;
     }
+}
+
+void VideoFifo::dumpTimeCodes() const
+{
+    juce::String text ( "frames: [");
+    for (auto& f : frames)
+        text += " " + juce::String (f->timecode) + " ";
+
+    text += "]";
+    FOLEYS_LOG (text);
 }
 
 } // foleys
