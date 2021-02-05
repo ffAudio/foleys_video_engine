@@ -175,7 +175,7 @@ bool MovieClip::waitForFrameReady (double pts, int timeout)
     const auto start = juce::Time::getMillisecondCounter();
 
     while (videoFifo.isFrameAvailable (pts) == false && int (juce::Time::getMillisecondCounter() - start) < timeout)
-        juce::Thread::sleep (3);
+        juce::Thread::sleep (1);
 
     return videoFifo.isFrameAvailable (pts);
 }
@@ -265,12 +265,9 @@ void MovieClip::setNextReadPosition (juce::int64 samples)
         {
             movieReader->setPosition (juce::int64 (time * movieReader->sampleRate));
         }
-        videoFifo.clear();
     }
-    else
-    {
-        videoFifo.clear();
-    }
+
+    videoFifo.clear();
 
     backgroundJob.setSuspended (false);
     triggerAsyncUpdate();

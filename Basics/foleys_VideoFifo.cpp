@@ -57,6 +57,8 @@ VideoFrame& VideoFifo::getFrame (int64_t timecode)
     dumpTimeCodes();
 #endif
 
+    readPosition.store (previousIndex (writePosition.load()));
+
     return *frames [size_t (pos)];
 }
 
@@ -102,6 +104,7 @@ int VideoFifo::findFramePosition (int64_t timecode, int start) const
     // forward seek
     while (timecode >= frames [size_t (start)]->timecode + settings.defaultDuration)
     {
+        FOLEYS_LOG ("Seek forward " << count);
         start = nextIndex (start);
         if (frames [size_t (start)]->timecode < 0)
             return -1;
@@ -116,6 +119,7 @@ int VideoFifo::findFramePosition (int64_t timecode, int start) const
     // backward seek
     while (timecode >= frames [size_t (start)]->timecode + settings.defaultDuration)
     {
+        FOLEYS_LOG ("Seek backwards " << count);
         start = previousIndex (start);
         if (frames [size_t (start)]->timecode < 0)
             return -1;
