@@ -107,7 +107,7 @@ VideoEngine* AVClip::getVideoEngine() const
 }
 
 #if FOLEYS_USE_OPENGL
-void AVClip::renderFrame (OpenGLView& view, VideoFrame& frame, Zoom zoomType)
+void AVClip::renderFrame (OpenGLView& view, VideoFrame& frame, float alpha, juce::AffineTransform transform, Zoom zoomType)
 {
     if (frame.image.isNull())
         return;
@@ -133,11 +133,9 @@ void AVClip::renderFrame (OpenGLView& view, VideoFrame& frame, Zoom zoomType)
     }
     // FIXME: Do other zoom types
 
-    // FIXME: apply geometry from clips
-
-    view.getContext().copyTexture (target,
-                                   juce::Rectangle<int>(0, 0, juce::roundToInt (w * view.getWidth()), juce::roundToInt (h * view.getHeight())),
-                                   view.getWidth(), view.getHeight(), false);
+    OpenGLDrawing::drawTexture (view.getContext(), target,
+                                juce::Rectangle<int>(0, 0, juce::roundToInt (w * view.getWidth()), juce::roundToInt (h * view.getHeight())),
+                                view.getWidth(), view.getHeight(), false, alpha, transform);
 
     texture.unbind();
 }
