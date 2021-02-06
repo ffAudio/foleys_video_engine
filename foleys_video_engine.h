@@ -132,6 +132,7 @@
 #include "Widgets/foleys_SoftwareView.h"
 #include "Widgets/foleys_FilmStrip.h"
 #include "Widgets/foleys_AudioStrip.h"
+#include "Widgets/foleys_OpenGLDraw.h"
 #include "Widgets/foleys_OpenGLView.h"
 
 #if FOLEYS_USE_FFMPEG

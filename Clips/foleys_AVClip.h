@@ -73,10 +73,10 @@ public:
 
 #if FOLEYS_USE_OPENGL
     /** This is the virtual render() method for OpenGL rendering */
-    virtual void render (OpenGLView& view, double pts) = 0;
+    virtual void render (OpenGLView& view, double pts, float alpha = 1.0f, juce::AffineTransform transform = juce::AffineTransform()) = 0;
 
     /** Renders a frame on the OpenGLView. You can call this from the AVClip subclasses */
-    void renderFrame (OpenGLView& view, VideoFrame& frame, Zoom zoomType = Zoom::LetterBox);
+    void renderFrame (OpenGLView& view, VideoFrame& frame, float alpha, juce::AffineTransform transform, Zoom zoomType = Zoom::LetterBox);
 #endif
 
     /** Checks, if a frame is available */

@@ -117,9 +117,9 @@ VideoFrame& MovieClip::getFrame (double pts)
 }
 
 #if FOLEYS_USE_OPENGL
-void MovieClip::render (OpenGLView& view, double pts)
+void MovieClip::render (OpenGLView& view, double pts, float alpha, juce::AffineTransform transform)
 {
-    renderFrame (view, getFrame (pts));
+    renderFrame (view, getFrame (pts), alpha, transform);
 }
 #endif
 
