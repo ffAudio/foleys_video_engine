@@ -66,10 +66,10 @@ juce::Image ImageClip::getStillImage (double, Size size)
 }
 
 #if FOLEYS_USE_OPENGL
-void ImageClip::render (OpenGLView& view, double pts, float alpha, juce::AffineTransform transform)
+void ImageClip::render (OpenGLView& view, double pts, float rotation, float zoom, juce::Point<float> translation, float alpha)
 {
     juce::ignoreUnused (pts);
-    renderFrame (view, frame, alpha, transform);
+    renderFrame (view, frame, rotation, zoom, translation, alpha);
 }
 #endif
 
