@@ -70,7 +70,25 @@ VideoFrame& VideoFifo::getFrameSeconds (double pts)
 
 VideoFrame& VideoFifo::getLatestFrame()
 {
-    return *frames [size_t (previousIndex (writePosition.load()))];
+    auto pos = previousIndex (writePosition.load());
+    readPosition.store (pos);
+    return *frames [size_t (pos)];
+}
+
+bool VideoFifo::setTimeCodeSeconds (double pts)
+{
+    auto timecode = convertTimecode (pts, settings);
+
+    auto pos = readPosition.load();
+    auto nextPos = findFramePosition (timecode, pos);
+    if (nextPos >= 0)
+    {
+        readPosition.store (nextPos);
+        return true;
+    }
+
+    readPosition.store (previousIndex (writePosition.load()));
+    return false;
 }
 
 int VideoFifo::getNumAvailableFrames() const

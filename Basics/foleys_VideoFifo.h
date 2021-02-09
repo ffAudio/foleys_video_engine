@@ -31,11 +31,27 @@ class VideoFifo final
 public:
     VideoFifo (int size);
 
+    /**
+     Returns a VideoFrame reference you can write to.
+     Make sure to call finishWriting once you are done writing.
+     */
     VideoFrame& getWritingFrame();
+
+    /**
+     This unlocks the videoFrame you are currently writing to and advances the write pointer.
+     */
     void finishWriting();
 
     VideoFrame& getFrame (int64_t timecode);
     VideoFrame& getFrameSeconds (double pts);
+
+    /**
+     Sets the current timecode. This is important if you don't use the frames,
+     otherwise the video fifo will fill up and clogg the reading
+
+     @returns true if a frame is available, or false if not
+     */
+    bool setTimeCodeSeconds (double pts);
 
     /** Returns tha last written frame. Use this for streaming clips */
     VideoFrame& getLatestFrame();
@@ -48,10 +64,19 @@ public:
      */
     int getFreeSpace() const;
 
+    /**
+     Reset all indices and set all VideoFrames to empty (timecode = -1)
+     */
     void clear();
 
+    /**
+     Sets the VideoSettings. This is needed for the defaultDuration, but can be also used for creating the empty frames.
+     */
     void setVideoSettings (VideoStreamSettings& settings);
 
+    /**
+     For debugging: this shows all currently available timecodes in the fifo
+     */
     void dumpTimeCodes() const;
 
 private:
