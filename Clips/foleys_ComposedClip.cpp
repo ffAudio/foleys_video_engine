@@ -165,7 +165,7 @@ juce::Image ComposedClip::getStillImage ([[maybe_unused]]double seconds, [[maybe
 }
 
 #if FOLEYS_USE_OPENGL
-void ComposedClip::render (OpenGLView& view, double pts, float alphaExtern, juce::AffineTransform transformExtern)
+void ComposedClip::render (OpenGLView& view, double pts, float, float, juce::Point<float>, float alphaExtern)
 {
     auto activeClips = getActiveClips ([pos = pts * getSampleRate()](ClipDescriptor& clip)
                                        { return clip.clip->hasVideo() && pos >= clip.start && pos < clip.start + clip.length; });
@@ -175,19 +175,13 @@ void ComposedClip::render (OpenGLView& view, double pts, float alphaExtern, juce
         auto localPts = clip->getClipTimeInDescriptorTime (pts);
         clip->updateVideoAutomations (localPts);
 
-        // TODO: save projection matrix and alpha value
-
         const auto alpha    = float (clip->getVideoParameterController().getValueAtTime (IDs::alpha,  localPts, 1.0)) * alphaExtern;
-//        const auto zoom     = clip->getVideoParameterController().getValueAtTime (IDs::zoom,   localPts, 1.0);
-//        const auto transX   = clip->getVideoParameterController().getValueAtTime (IDs::translateX, localPts, 0.0);
-//        const auto transY   = clip->getVideoParameterController().getValueAtTime (IDs::translateY, localPts, 0.0);
-//        const auto rotation = clip->getVideoParameterController().getValueAtTime (IDs::rotation, localPts, 0.0);
+        const auto zoom     = clip->getVideoParameterController().getValueAtTime (IDs::zoom,   localPts, 1.0);
+        const auto transX   = clip->getVideoParameterController().getValueAtTime (IDs::translateX, localPts, 0.0);
+        const auto transY   = clip->getVideoParameterController().getValueAtTime (IDs::translateY, localPts, 0.0);
+        const auto rotation = clip->getVideoParameterController().getValueAtTime (IDs::rotation, localPts, 0.0);
 
-        // TODO: set projection matrix and alpha value
-
-        clip->clip->render (view, localPts, alpha, transformExtern);
-
-        // TODO: restore projection matrix and alpha value
+        clip->clip->render (view, localPts, float (rotation), float (zoom), { float (transX), float (transY) }, alpha);
     }
 }
 #endif

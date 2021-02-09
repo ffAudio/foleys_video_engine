@@ -107,7 +107,7 @@ VideoEngine* AVClip::getVideoEngine() const
 }
 
 #if FOLEYS_USE_OPENGL
-void AVClip::renderFrame (OpenGLView& view, VideoFrame& frame, float alpha, juce::AffineTransform transform, Zoom zoomType)
+void AVClip::renderFrame (OpenGLView& view, VideoFrame& frame, float rotation, float zoom, juce::Point<float> translation, float alpha, Zoom zoomType)
 {
     if (frame.image.isNull())
         return;
@@ -132,6 +132,10 @@ void AVClip::renderFrame (OpenGLView& view, VideoFrame& frame, float alpha, juce
             target.reduce (juce::roundToInt ((view.getWidth() - targetWidth) / 2.0f), 0);
     }
     // FIXME: Do other zoom types
+
+    auto transform = juce::AffineTransform::rotation (juce::degreesToRadians (rotation), frame.image.getWidth() * 0.5f, -frame.image.getHeight() * 0.5f)
+                    .scaled (zoom * 0.01f, zoom * 0.01f, frame.image.getWidth() * 0.5f, frame.image.getHeight() * 0.5f)
+                    .translated (frame.image.getWidth() * translation.x, frame.image.getHeight() * translation.y);
 
     OpenGLDrawing::drawTexture (view.getContext(), target,
                                 juce::Rectangle<int>(0, 0, juce::roundToInt (w * view.getWidth()), juce::roundToInt (h * view.getHeight())),

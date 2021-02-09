@@ -104,7 +104,6 @@ static inline void drawTexture (juce::OpenGLContext& context,
         return;
 
     juce::ignoreUnused (transform);
-    juce::ignoreUnused (alpha);
 
     JUCE_CHECK_OPENGL_ERROR
     glBlendFunc (GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
@@ -122,7 +121,7 @@ static inline void drawTexture (juce::OpenGLContext& context,
 
             static const OverlayShaderProgram& select (juce::OpenGLContext& context)
             {
-                static const char programValueID[] = "foleysGLComponentOverlayShader";
+                static const char programValueID[] = "foleysVideoShader";
                 OverlayShaderProgram* program = static_cast<OverlayShaderProgram*> (context.getAssociatedObject (programValueID));
 
                 if (program == nullptr)
@@ -143,12 +142,13 @@ static inline void drawTexture (juce::OpenGLContext& context,
                         "attribute " JUCE_HIGHP " vec2 position;"
                         "uniform " JUCE_HIGHP " vec2 screenSize;"
                         "uniform " JUCE_HIGHP " float textureBounds[4];"
+                        "uniform " JUCE_HIGHP " mat4 transformation;"
                         "uniform " JUCE_HIGHP " vec2 vOffsetAndScale;"
                         "varying " JUCE_HIGHP " vec2 texturePos;"
                         "void main()"
                         "{"
                           JUCE_HIGHP " vec2 scaled = position / (0.5 * screenSize.xy);"
-                          "gl_Position = vec4 (scaled.x - 1.0, 1.0 - scaled.y, 0, 1.0);"
+                          "gl_Position = vec4 (scaled.x - 1.0, 1.0 - scaled.y, 0, 1.0) * transformation;"
                           "texturePos = (position - vec2 (textureBounds[0], textureBounds[1])) / vec2 (textureBounds[2], textureBounds[3]);"
                           "texturePos = vec2 (texturePos.x, vOffsetAndScale.x + vOffsetAndScale.y * texturePos.y);"
                         "}"));
@@ -174,10 +174,11 @@ static inline void drawTexture (juce::OpenGLContext& context,
                       imageTexture (prog, "imageTexture"),
                       textureBounds (prog, "textureBounds"),
                       vOffsetAndScale (prog, "vOffsetAndScale"),
+                      transformation (prog, "transformation"),
                       alphaMultiplier (prog, "alphaMultiplier")
                 {}
 
-                void set (const float targetWidth, const float targetHeight, const juce::Rectangle<float>& bounds, bool flipVertically, const float alpha) const
+                void set (const float targetWidth, const float targetHeight, const juce::Rectangle<float>& bounds, bool flipVertically, const juce::AffineTransform& transform, const float alpha) const
                 {
                     const GLfloat m[] = { bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight() };
                     textureBounds.set (m, 4);
@@ -185,11 +186,15 @@ static inline void drawTexture (juce::OpenGLContext& context,
                     screenSize.set (targetWidth, targetHeight);
                     vOffsetAndScale.set (flipVertically ? 0.0f : 1.0f,
                                          flipVertically ? 1.0f : -1.0f);
+
+                    juce::Matrix3D<GLfloat> matrix (transform);
+                    transformation.setMatrix4 (matrix.mat, 1, false);
+
                     alphaMultiplier.set (alpha);
                 }
 
                 juce::OpenGLShaderProgram::Attribute positionAttribute;
-                juce::OpenGLShaderProgram::Uniform screenSize, imageTexture, textureBounds, vOffsetAndScale, alphaMultiplier;
+                juce::OpenGLShaderProgram::Uniform screenSize, imageTexture, textureBounds, vOffsetAndScale, transformation, alphaMultiplier;
             };
 
             juce::OpenGLShaderProgram program;
@@ -204,7 +209,7 @@ static inline void drawTexture (juce::OpenGLContext& context,
         const GLshort vertices[] = { left, bottom, right, bottom, left, top, right, top };
 
         auto& program = OverlayShaderProgram::select (context);
-        program.params.set ((float) contextWidth, (float) contextHeight, anchorPosAndTextureSize.toFloat(), flippedVertically, alpha);
+        program.params.set ((float) contextWidth, (float) contextHeight, anchorPosAndTextureSize.toFloat(), flippedVertically, transform, alpha);
         JUCE_CHECK_OPENGL_ERROR
 
         GLuint vertexBuffer = 0;
