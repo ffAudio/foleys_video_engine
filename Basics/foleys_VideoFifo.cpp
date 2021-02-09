@@ -152,7 +152,7 @@ int VideoFifo::findFramePosition (int64_t timecode, int start) const
     return -1;
 }
 
-void VideoFifo::setVideoSettings (VideoStreamSettings& s)
+void VideoFifo::setVideoSettings (const VideoStreamSettings& s)
 {
     settings = s;
     FOLEYS_LOG ("FIFO VideoSettings: " << settings.frameSize.toString() << " timebase " << settings.timebase << ", duration " << settings.defaultDuration);

@@ -72,7 +72,7 @@ public:
     /**
      Sets the VideoSettings. This is needed for the defaultDuration, but can be also used for creating the empty frames.
      */
-    void setVideoSettings (VideoStreamSettings& settings);
+    void setVideoSettings (const VideoStreamSettings& settings);
 
     /**
      For debugging: this shows all currently available timecodes in the fifo

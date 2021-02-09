@@ -81,8 +81,9 @@ void MovieClip::setReader (std::unique_ptr<AVReader> readerToUse)
     if (sampleRate > 0)
         movieReader->setOutputSampleRate (sampleRate);
 
-    auto settings = movieReader->getVideoSettings (0);
-    videoFifo.setVideoSettings (settings);
+    if (hasVideo())
+        videoFifo.setVideoSettings (movieReader->getVideoSettings (0));
+
     videoFifo.clear();
 
     backgroundJob.setSuspended (false);
@@ -306,8 +307,8 @@ int MovieClip::BackgroundReaderJob::useTimeSlice()
     if (suspended == false &&
         owner.sampleRate > 0 &&
         owner.movieReader.get() != nullptr &&
-        owner.audioFifo.getFreeSpace() > 2048 &&
-        owner.videoFifo.getFreeSpace() > 3)
+        (owner.hasAudio() == false || owner.audioFifo.getFreeSpace() > 2048) &&
+        (owner.hasVideo() == false || owner.videoFifo.getFreeSpace() > 3))
     {
         juce::ScopedValueSetter<bool> guard (inDecodeBlock, true);
         owner.movieReader->readNewData (owner.videoFifo, owner.audioFifo);
