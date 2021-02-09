@@ -1,7 +1,7 @@
 /*
  ==============================================================================
 
- Copyright (c) 2019, Foleys Finest Audio - Daniel Walz
+ Copyright (c) 2019 - 2021, Foleys Finest Audio - Daniel Walz
  All rights reserved.
 
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
@@ -33,7 +33,6 @@ class ComposedClip;
  and AudioProcessors including their automation data relative to the clip.
  */
 class ClipDescriptor  : public TimeCodeAware,
-                        public TimeCodeAware::Listener,
                         private juce::ValueTree::Listener
 {
 public:
@@ -98,8 +97,6 @@ public:
     /** Transforms a time relative to the containing clip into a local time in ClipDescriptor. */
     double getClipTimeInDescriptorTime (double time) const;
 
-    void timecodeChanged (int64_t count, double seconds) override;
-
     std::shared_ptr<AVClip> clip;
 
     /** Read all plugins getStateInformation() and save it into the statusTree as BLOB */
@@ -155,6 +152,11 @@ public:
      ControllableBase needs a way to tell the local time (presentation time stamp).
      */
     double getCurrentTimeInSeconds() const override;
+
+    /**
+     Sends the current local timecode to it's timecodeListeners.
+     */
+    void triggerTimecodeUpdate (juce::NotificationType type);
 
     void updateAudioAutomations (double pts);
     void updateVideoAutomations (double pts);

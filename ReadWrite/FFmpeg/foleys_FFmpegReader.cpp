@@ -1,7 +1,7 @@
 /*
  ==============================================================================
 
- Copyright (c) 2019, Foleys Finest Audio - Daniel Walz
+ Copyright (c) 2019 - 2021, Foleys Finest Audio - Daniel Walz
  All rights reserved.
 
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
@@ -73,12 +73,12 @@ public:
 
         if (juce::isPositiveAndBelow (audioStreamIdx, static_cast<int> (formatContext->nb_streams)))
         {
-            channelLayout = formatContext->streams [audioStreamIdx]->codecpar->channel_layout;
+            auto* stream = formatContext->streams [audioStreamIdx];
+            channelLayout = stream->codecpar->channel_layout;
 
             reader.sampleRate  = audioContext->sample_rate;
             reader.numChannels = audioContext->channels;
-            reader.numSamples  = formatContext->streams [audioStreamIdx]->duration > 0
-            ? formatContext->streams [audioStreamIdx]->duration : std::numeric_limits<int64_t>::max();
+            reader.numSamples  = stream->duration > 0 ? stream->duration : std::numeric_limits<int64_t>::max();
 
             if (! setOutputSampleRate (audioContext->sample_rate))
             {
@@ -86,6 +86,8 @@ public:
                 closeVideoFile();
                 return;
             }
+
+            FOLEYS_LOG ("Audio stream [" << audioStreamIdx << "]: timebase " << stream->time_base.den << "/" << stream->time_base.num);
         }
 
         if (type.test (StreamTypes::Video))
@@ -105,6 +107,7 @@ public:
                                 videoContext->height,
                                 AV_PIX_FMT_BGR0);
 
+            FOLEYS_LOG ("Video stream [" << videoStreamIdx << "]: timebase " << stream->time_base.den << "/" << stream->time_base.num);
         }
 
         // TODO subtitle and data stream
@@ -314,6 +317,14 @@ public:
 
         foleys::VideoStreamSettings settings;
         settings.frameSize = { videoContext->width, videoContext->height };
+
+        if (juce::isPositiveAndBelow (videoStreamIdx, static_cast<int> (formatContext->nb_streams)))
+        {
+            auto* stream = formatContext->streams [videoStreamIdx];
+            settings.timebase = int (stream->time_base.num > 0 ? double (stream->time_base.den) / stream->time_base.num : AV_TIME_BASE);
+            settings.defaultDuration = stream->time_base.den == stream->avg_frame_rate.num ? stream->avg_frame_rate.den : int (double (stream->avg_frame_rate.den * stream->time_base.den) / stream->avg_frame_rate.num);
+        }
+
         return settings;
     }
 
@@ -405,17 +416,21 @@ private:
                     timeBase = formatContext->streams [videoStreamIdx]->time_base;
                 }
 
-                juce::Image image = videoFifo.getOldestFrameForRecycling();
-                scaler.convertFrameToImage (image, frame);
-                videoFifo.pushVideoFrame (image, frame->best_effort_timestamp);
+                auto& target = videoFifo.getWritingFrame();
+                if (target.image.getWidth() != frame->width || target.image.getHeight() != frame->height)
+                    target.image = juce::Image (juce::Image::ARGB, frame->width, frame->height, false);
+
+                scaler.convertFrameToImage (target.image, frame);
+                target.timecode = frame->best_effort_timestamp;
+                videoFifo.finishWriting();
 
                 FOLEYS_LOG ("Stream " << juce::String (packet.stream_index) <<
                      " (Video) " <<
                      " DTS: " << juce::String (packet.dts) <<
                      " PTS: " << juce::String (packet.pts) <<
                      " best effort PTS: " << juce::String (frame->best_effort_timestamp) <<
-                     " in ms: " << juce::String (frame->best_effort_timestamp * av_q2d (timeBase)) <<
-                     " timebase: " << juce::String (av_q2d(timeBase)));
+                     " in ms: " << juce::String (frame->best_effort_timestamp * av_q2d (timeBase) * 1000.0) <<
+                     " timebase: " << juce::String (timeBase.num != 0 ? double (timeBase.den) / double (timeBase.num) : 0));
             }
         }
     }
@@ -439,10 +454,12 @@ private:
             }
 
             FOLEYS_LOG ("Stream " << juce::String (packet.stream_index) <<
-                 " (Audio) " <<
-                 " DTS: " << juce::String (packet.dts) <<
-                 " PTS: " << juce::String (packet.pts) <<
-                 " Frame PTS: " << juce::String (frame->best_effort_timestamp));
+                        " (Audio) " <<
+                        " DTS: " << juce::String (packet.dts) <<
+                        " PTS: " << juce::String (packet.pts) <<
+                        " Frame PTS: " << juce::String (frame->best_effort_timestamp) <<
+                        " in ms: " << juce::String (frame->best_effort_timestamp * 1000.0 / reader.sampleRate) <<
+                        " timebase: " << reader.sampleRate);
 
             if (frame->extended_data != nullptr  && reader.sampleRate > 0)
             {
@@ -453,8 +470,6 @@ private:
 
                 jassert (std::abs (audioFifo.getWritePosition() - outTimestamp) < std::numeric_limits<int>::max());
                 auto offset = int (audioFifo.getWritePosition() - outTimestamp);
-
-                FOLEYS_LOG ("Audio: " << audioFifo.getWritePosition() << " free: " << audioFifo.getFreeSpace());
 
                 if (audioConvertBuffer.getNumChannels() != channels || audioConvertBuffer.getNumSamples() < numProduced)
                     audioConvertBuffer.setSize (channels, numProduced, false, false, true);

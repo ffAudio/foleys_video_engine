@@ -1,7 +1,7 @@
 /*
  ==============================================================================
 
- Copyright (c) 2019, Foleys Finest Audio - Daniel Walz
+ Copyright (c) 2019 - 2021, Foleys Finest Audio - Daniel Walz
  All rights reserved.
 
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
@@ -162,14 +162,15 @@ double ClipDescriptor::getCurrentTimeInSeconds() const
     return getClipTimeInDescriptorTime (getOwningClip().getCurrentTimeInSeconds());
 }
 
-void ClipDescriptor::timecodeChanged (int64_t, double)
-{
-    sendTimecode (0, getCurrentTimeInSeconds(), juce::sendNotificationSync);
-}
-
 double ClipDescriptor::getClipTimeInDescriptorTime (double time) const
 {
     return time + getOffset() - getStart();
+}
+
+void ClipDescriptor::triggerTimecodeUpdate (juce::NotificationType type)
+{
+    // FIXME: Send actual frame count
+    sendTimecode (0, getCurrentTimeInSeconds(), type);
 }
 
 const std::vector<std::unique_ptr<ProcessorController>>& ClipDescriptor::getVideoProcessors() const

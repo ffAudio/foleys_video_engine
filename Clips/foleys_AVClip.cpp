@@ -1,7 +1,7 @@
 /*
  ==============================================================================
 
- Copyright (c) 2019, Foleys Finest Audio - Daniel Walz
+ Copyright (c) 2019 - 2021, Foleys Finest Audio - Daniel Walz
  All rights reserved.
 
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
@@ -105,5 +105,44 @@ VideoEngine* AVClip::getVideoEngine() const
 {
     return videoEngine;
 }
+
+#if FOLEYS_USE_OPENGL
+void AVClip::renderFrame (OpenGLView& view, VideoFrame& frame, float rotation, float zoom, juce::Point<float> translation, float alpha, Zoom zoomType)
+{
+    if (frame.image.isNull())
+        return;
+
+    auto& texture = view.getTexture (*this, frame);
+    texture.bind();
+
+    auto w      = float (texture.getWidth())  / frame.image.getWidth();
+    auto h      = float (texture.getHeight()) / frame.image.getHeight();
+    auto aspect = float (frame.image.getWidth())    / frame.image.getHeight();
+    auto target = view.getLocalBounds();
+
+    if (zoomType == Zoom::LetterBox)
+    {
+        auto targetWidth  = view.getHeight() * aspect;
+        auto targetHeight = view.getWidth()  / aspect;
+
+        if (targetWidth > view.getWidth())
+            target.reduce (0, juce::roundToInt ((view.getHeight() - targetHeight) / 2.0f));
+
+        if (targetHeight > view.getHeight())
+            target.reduce (juce::roundToInt ((view.getWidth() - targetWidth) / 2.0f), 0);
+    }
+    // FIXME: Do other zoom types
+
+    auto transform = juce::AffineTransform::rotation (juce::degreesToRadians (rotation), frame.image.getWidth() * 0.5f, -frame.image.getHeight() * 0.5f)
+                    .scaled (zoom * 0.01f, zoom * 0.01f, frame.image.getWidth() * 0.5f, frame.image.getHeight() * 0.5f)
+                    .translated (frame.image.getWidth() * translation.x, frame.image.getHeight() * translation.y);
+
+    OpenGLDrawing::drawTexture (view.getContext(), target,
+                                juce::Rectangle<int>(0, 0, juce::roundToInt (w * view.getWidth()), juce::roundToInt (h * view.getHeight())),
+                                view.getWidth(), view.getHeight(), false, alpha, transform);
+
+    texture.unbind();
+}
+#endif
 
 } // foleys

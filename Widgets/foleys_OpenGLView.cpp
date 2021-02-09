@@ -1,7 +1,11 @@
 /*
  ==============================================================================
 
+<<<<<<< HEAD
  Copyright (c) 2020, Foleys Finest Audio - Daniel Walz
+=======
+ Copyright (c) 2020 - 2021, Foleys Finest Audio - Daniel Walz
+>>>>>>> 27d0c5487ac916c201dcc74c82597792ee2934b6
  All rights reserved.
 
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
@@ -25,15 +29,13 @@ namespace foleys
 
 OpenGLView::OpenGLView()
 {
-
 #if FOLEYS_SHOW_SPLASHSCREEN
-    addAndMakeVisible (splashscreen);
+    addSplashscreen (*this);
 #endif
 }
 
 OpenGLView::~OpenGLView()
 {
-    openGLContext.detach();
     shutdownOpenGL();
 }
 
@@ -46,10 +48,22 @@ void OpenGLView::render()
 {
     juce::ScopedLock l (clipLock);
     if (clip.get() == nullptr)
+    {
+        juce::OpenGLHelpers::clear (juce::Colours::black);
         return;
+    }
 
-    auto frame = clip->getCurrentFrame();
-    
+    jassert (juce::OpenGLHelpers::isContextActive());
+
+    auto desktopScale = (float) openGLContext.getRenderingScale();
+    juce::OpenGLHelpers::clear (juce::Colours::black);
+
+    glEnable (GL_BLEND);
+    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    glViewport (0, 0, juce::roundToInt (desktopScale * (float) getWidth()), juce::roundToInt (desktopScale * (float) getHeight()));
+
+    clip->render (*this, clip->getCurrentTimeInSeconds());
 }
 
 void OpenGLView::setClip (std::shared_ptr<AVClip> clipToUse)
@@ -58,13 +72,40 @@ void OpenGLView::setClip (std::shared_ptr<AVClip> clipToUse)
     clip = clipToUse;
 }
 
+std::shared_ptr<AVClip> OpenGLView::getClip() const
+{
+    return clip;
+}
+
 void OpenGLView::initialise()
 {
-    
+    openGLContext.setImageCacheSize (64 * 1024 * 1024);
 }
 
 void OpenGLView::shutdown()
 {
+    textures.clear();
+}
+
+juce::OpenGLContext& OpenGLView::getContext()
+{
+    return openGLContext;
+}
+
+juce::OpenGLTexture& OpenGLView::getTexture (AVClip& source, VideoFrame& frame)
+{
+    auto& texture = textures [&source];
+
+    if (texture.get() == nullptr)
+        texture.reset (new Texture);
+
+    if (texture->timestamp != frame.timecode)
+    {
+        texture->texture.loadImage (frame.image);
+        texture->timestamp = frame.timecode;
+    }
+
+    return texture->texture;
 }
 
 void OpenGLView::timecodeChanged (int64_t count, double seconds)

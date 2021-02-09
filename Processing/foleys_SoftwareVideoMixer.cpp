@@ -1,7 +1,7 @@
 /*
  ==============================================================================
 
- Copyright (c) 2019, Foleys Finest Audio - Daniel Walz
+ Copyright (c) 2019 - 2021, Foleys Finest Audio - Daniel Walz
  All rights reserved.
 
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
@@ -53,7 +53,7 @@ void SoftwareVideoMixer::compose (juce::Image&        target,
         if (clip->clip->waitForFrameReady (clipTime, std::min (timeout, int (juce::Time::getMillisecondCounter() + timeout - renderStart))) == false)
             continue;
 
-        auto frame = clip->clip->getFrame (clipTime).second;
+        auto frame = clip->clip->getFrame (clipTime).image;
 
         auto factor = std::min (double (target.getWidth()) / frame.getWidth(),
                                       double (target.getHeight()) / frame.getHeight());

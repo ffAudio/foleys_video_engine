@@ -1,7 +1,7 @@
 /*
  ==============================================================================
 
- Copyright (c) 2020, Foleys Finest Audio - Daniel Walz
+ Copyright (c) 2020 - 2021, Foleys Finest Audio - Daniel Walz
  All rights reserved.
 
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
@@ -25,13 +25,11 @@ namespace foleys
 
 struct VideoFrame
 {
+    VideoFrame() = default;
     juce::int64 timecode = -1;
     juce::Image image;
 
-#if FOLEYS_USE_OPENGL
-    juce::OpenGLTexture texture;
-#endif
-
+private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (VideoFrame)
 };
 

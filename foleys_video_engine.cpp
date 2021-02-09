@@ -1,7 +1,7 @@
 /*
  ==============================================================================
 
- Copyright (c) 2019-2020, Foleys Finest Audio - Daniel Walz
+ Copyright (c) 2019-2021, Foleys Finest Audio - Daniel Walz
  All rights reserved.
 
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
@@ -51,7 +51,7 @@
 #include "ReadWrite/FFmpeg/foleys_FFmpegWriter.cpp"
 #endif
 
-#include "Widgets/foleys_VideoPreview.cpp"
+#include "Widgets/foleys_SoftwareView.cpp"
 #include "Widgets/foleys_FilmStrip.cpp"
 #include "Widgets/foleys_AudioStrip.cpp"
 #include "Widgets/foleys_OpenGLView.cpp"

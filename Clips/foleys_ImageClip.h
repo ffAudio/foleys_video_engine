@@ -1,7 +1,7 @@
 /*
  ==============================================================================
 
- Copyright (c) 2019, Foleys Finest Audio - Daniel Walz
+ Copyright (c) 2019 - 2021, Foleys Finest Audio - Daniel Walz
  All rights reserved.
 
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
@@ -47,9 +47,12 @@ public:
 
     void setImage (const juce::Image& image);
 
-    std::pair<int64_t, juce::Image> getFrame (double pts) const override;
-    juce::Image getCurrentFrame() const override;
-    bool isFrameAvailable ([[maybe_unused]]double pts) const override { return image.isValid(); }
+    VideoFrame& getFrame (double pts) override;
+    bool isFrameAvailable ([[maybe_unused]]double pts) const override { return frame.image.isValid(); }
+
+#if FOLEYS_USE_OPENGL
+    void render (OpenGLView& view, double pts, float rotation = 0.0f, float zoom = 100.0f, juce::Point<float> translation = juce::Point<float>(), float alpha = 1.0f) override;
+#endif
 
     Size getVideoSize() const override;
     double getCurrentTimeInSeconds() const override;
@@ -77,8 +80,8 @@ public:
 
 private:
 
-    juce::Image image;
-    juce::URL   mediaFile;
+    juce::URL           mediaFile;
+    VideoFrame          frame;
     VideoStreamSettings videoSettings;
 
     double sampleRate = 0.0;

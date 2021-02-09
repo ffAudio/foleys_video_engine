@@ -1,7 +1,7 @@
 /*
  ==============================================================================
 
- Copyright (c) 2019, Foleys Finest Audio - Daniel Walz
+ Copyright (c) 2019 - 2021, Foleys Finest Audio - Daniel Walz
  All rights reserved.
 
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
@@ -153,9 +153,9 @@ juce::ThreadPoolJob::JobStatus ClipRenderer::RenderJob::runJob()
                 juce::Thread::sleep (10);
             }
 
-            auto frame = targetClip->getFrame (timestamp);
+            auto& frame = targetClip->getFrame (timestamp);
 
-            bouncer.writer->pushImage (videoPosition, frame.second);
+            bouncer.writer->pushImage (videoPosition, frame.image);
         }
 
         bouncer.progress.store (double (audioPosition) / totalDuration);

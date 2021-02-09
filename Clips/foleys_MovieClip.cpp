@@ -1,7 +1,7 @@
 /*
  ==============================================================================
 
- Copyright (c) 2019, Foleys Finest Audio - Daniel Walz
+ Copyright (c) 2019 - 2021, Foleys Finest Audio - Daniel Walz
  All rights reserved.
 
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
@@ -81,9 +81,9 @@ void MovieClip::setReader (std::unique_ptr<AVReader> readerToUse)
     if (sampleRate > 0)
         movieReader->setOutputSampleRate (sampleRate);
 
-    auto& settings = videoFifo.getVideoSettings();
-    settings.timebase = juce::roundToInt (movieReader->timebase);
-    settings.frameSize = movieReader->originalSize;
+    if (hasVideo())
+        videoFifo.setVideoSettings (movieReader->getVideoSettings (0));
+
     videoFifo.clear();
 
     backgroundJob.setSuspended (false);
@@ -112,10 +112,17 @@ double MovieClip::getCurrentTimeInSeconds() const
     return sampleRate == 0 ? 0 : nextReadPosition / sampleRate;
 }
 
-std::pair<int64_t, juce::Image> MovieClip::getFrame (double pts) const
+VideoFrame& MovieClip::getFrame (double pts)
 {
-    return videoFifo.getVideoFrame (pts);
+    return videoFifo.getFrameSeconds (pts);
 }
+
+#if FOLEYS_USE_OPENGL
+void MovieClip::render (OpenGLView& view, double pts, float rotation, float zoom, juce::Point<float> translation, float alpha)
+{
+    renderFrame (view, getFrame (pts), rotation, zoom, translation, alpha);
+}
+#endif
 
 bool MovieClip::isFrameAvailable (double pts) const
 {
@@ -128,17 +135,6 @@ juce::Image MovieClip::getStillImage (double seconds, Size size)
         return thumbnailReader->getStillImage (seconds, size);
 
     return {};
-}
-
-juce::Image MovieClip::getCurrentFrame() const
-{
-    if (sampleRate == 0)
-        return videoFifo.getVideoFrame (0).second;
-
-    if (movieReader)
-        return videoFifo.getVideoFrame (audioFifo.getReadPosition() / sampleRate).second;
-
-    return videoFifo.getVideoFrame (nextReadPosition / sampleRate).second;
 }
 
 void MovieClip::prepareToPlay (int, double sampleRateToUse)
@@ -180,7 +176,7 @@ bool MovieClip::waitForFrameReady (double pts, int timeout)
     const auto start = juce::Time::getMillisecondCounter();
 
     while (videoFifo.isFrameAvailable (pts) == false && int (juce::Time::getMillisecondCounter() - start) < timeout)
-        juce::Thread::sleep (3);
+        juce::Thread::sleep (1);
 
     return videoFifo.isFrameAvailable (pts);
 }
@@ -216,8 +212,13 @@ bool MovieClip::hasAudio() const
 
 double MovieClip::getFrameDurationInSeconds() const
 {
-    const auto& settings = videoFifo.getVideoSettings();
-    return double (settings.defaultDuration) / double (settings.timebase);
+    if (movieReader.get() != nullptr)
+    {
+        const auto& settings = movieReader->getVideoSettings (0);
+        return double (settings.defaultDuration) / double (settings.timebase);
+    }
+
+    return {};
 }
 
 std::shared_ptr<AVClip> MovieClip::createCopy (StreamTypes types)
@@ -239,11 +240,11 @@ void MovieClip::handleAsyncUpdate()
     if (sampleRate > 0 && hasVideo())
     {
         auto seconds = nextReadPosition / sampleRate;
-        auto count = videoFifo.getFrameCountForTime (seconds);
-        if (count != lastShownFrame)
+        const auto& frame = videoFifo.getFrameSeconds (seconds);
+        if (frame.timecode != lastShownFrame)
         {
-            sendTimecode (count, seconds, juce::sendNotificationAsync);
-            lastShownFrame = count;
+            sendTimecode (frame.timecode, seconds, juce::sendNotificationAsync);
+            lastShownFrame = frame.timecode;
         }
     }
 }
@@ -265,12 +266,9 @@ void MovieClip::setNextReadPosition (juce::int64 samples)
         {
             movieReader->setPosition (juce::int64 (time * movieReader->sampleRate));
         }
-        videoFifo.clear();
     }
-    else
-    {
-        videoFifo.clear();
-    }
+
+    videoFifo.clear();
 
     backgroundJob.setSuspended (false);
     triggerAsyncUpdate();
@@ -309,7 +307,8 @@ int MovieClip::BackgroundReaderJob::useTimeSlice()
     if (suspended == false &&
         owner.sampleRate > 0 &&
         owner.movieReader.get() != nullptr &&
-        owner.audioFifo.getFreeSpace() > 2048)
+        (owner.hasAudio() == false || owner.audioFifo.getFreeSpace() > 2048) &&
+        (owner.hasVideo() == false || owner.videoFifo.getFreeSpace() > 3))
     {
         juce::ScopedValueSetter<bool> guard (inDecodeBlock, true);
         owner.movieReader->readNewData (owner.videoFifo, owner.audioFifo);

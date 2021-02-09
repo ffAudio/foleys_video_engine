@@ -24,41 +24,44 @@ namespace foleys
 {
 
 /**
- @class AVWriter
+ @class VideoPreview
 
- The AVWriter allows exporting of AVClip classes. This class is pure virtual to allow
- different implementations for various backends.
+ The VideoPreview is a juce Component, that will display the connected AVClip in
+ real time.
  */
-class AVWriter
+class SoftwareView  : public juce::Component,
+                      public VideoView,
+                      public TimeCodeAware::Listener
 {
 public:
+    SoftwareView();
 
-    AVWriter() = default;
-    virtual ~AVWriter() = default;
+    ~SoftwareView() override;
 
-    virtual juce::File getMediaFile() const = 0;
+    void setClip (std::shared_ptr<AVClip> clip) override;
 
-    virtual bool isOpenedOk() const = 0;
+    std::shared_ptr<AVClip> getClip() const override;
 
-    virtual void pushSamples (const juce::AudioBuffer<float>& buffer, int stream = 0) = 0;
+    void paint (juce::Graphics& g) override;
 
-    virtual void pushImage (int64_t pos, juce::Image image, int stream = 0) = 0;
+    void timecodeChanged (int64_t count, double seconds) override;
 
-    virtual int addVideoStream (const VideoStreamSettings& settings) = 0;
-
-    virtual int addAudioStream (const AudioStreamSettings& settings) = 0;
-
-    virtual bool startWriting() = 0;
-
-    virtual void finishWriting() = 0;
-
-    static juce::StringArray getMuxers() { return {}; }
-
-    static juce::StringArray getPixelFormats() { return {}; }
+#if FOLEYS_SHOW_SPLASHSCREEN
+    void resized() override
+    {
+        viewResized (*this);
+    }
+#endif
 
 private:
+    std::shared_ptr<AVClip> clip;
+    juce::RectanglePlacement placement { juce::RectanglePlacement::centred };
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AVWriter)
+#if FOLEYS_USE_OPENGL
+    juce::OpenGLContext openGLcontext;
+#endif
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SoftwareView)
 };
 
 } // foleys

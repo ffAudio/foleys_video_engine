@@ -1,7 +1,7 @@
 /*
  ==============================================================================
 
- Copyright (c) 2019, Foleys Finest Audio - Daniel Walz
+ Copyright (c) 2019 - 2021, Foleys Finest Audio - Daniel Walz
  All rights reserved.
 
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
@@ -25,6 +25,9 @@ namespace foleys
 
 class VideoEngine;
 
+#if FOLEYS_USE_OPENGL
+class OpenGLView;
+#endif
 
 /**
  @class AVClip
@@ -66,13 +69,18 @@ public:
     virtual double getLengthInSeconds() const = 0;
 
     /** Returns the frame for a certain timecode */
-    virtual std::pair<int64_t, juce::Image> getFrame (double pts) const = 0;
+    virtual VideoFrame& getFrame (double pts) = 0;
+
+#if FOLEYS_USE_OPENGL
+    /** This is the virtual render() method for OpenGL rendering */
+    virtual void render (OpenGLView& view, double pts, float rotation = 0.0f, float zoom = 100.0f, juce::Point<float> translation = juce::Point<float>(), float alpha = 1.0f) = 0;
+
+    /** Renders a frame on the OpenGLView. You can call this from the AVClip subclasses */
+    void renderFrame (OpenGLView& view, VideoFrame& frame, float rotation, float zoom, juce::Point<float> translation, float alpha, Zoom zoomType = Zoom::LetterBox);
+#endif
 
     /** Checks, if a frame is available */
     virtual bool isFrameAvailable (double pts) const = 0;
-
-    /** Returns the frame for the current time */
-    virtual juce::Image getCurrentFrame() const = 0;
 
     /** This returns a still frame on the selected position. Don't use
         this method for streaming a video, because it will be slow */

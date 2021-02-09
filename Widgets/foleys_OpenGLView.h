@@ -1,7 +1,11 @@
 /*
  ==============================================================================
 
+<<<<<<< HEAD
  Copyright (c) 2020, Foleys Finest Audio - Daniel Walz
+=======
+ Copyright (c) 2020 - 2021, Foleys Finest Audio - Daniel Walz
+>>>>>>> 27d0c5487ac916c201dcc74c82597792ee2934b6
  All rights reserved.
 
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
@@ -26,8 +30,8 @@ namespace foleys
 {
 
 class OpenGLView  : public juce::OpenGLAppComponent,
+                    public VideoView,
                     public TimeCodeAware::Listener
-
 {
 public:
 
@@ -37,7 +41,15 @@ public:
     /**
      Set the clip to display. This is a shared ptr, so it will stay alive until you set a new one or a nullptr.
      */
-    void setClip (std::shared_ptr<AVClip> clip);
+    void setClip (std::shared_ptr<AVClip> clip) override;
+
+    /**
+     Access the currently played clip
+     */
+    std::shared_ptr<AVClip> getClip() const override;
+
+    juce::OpenGLContext& getContext();
+    juce::OpenGLTexture& getTexture (AVClip& clip, VideoFrame& frame);
 
     void paint (juce::Graphics& g) override;
     void render() override;
@@ -46,19 +58,24 @@ public:
 
     void timecodeChanged (int64_t count, double seconds) override;
 
-private:
-    juce::CriticalSection   clipLock;
-    std::shared_ptr<AVClip> clip;
-
 #if FOLEYS_SHOW_SPLASHSCREEN
-public:
     void resized() override
     {
-        splashscreen.setBounds (getWidth() - 210, getHeight() - 90, 200, 80);
+        viewResized (*this);
     }
-private:
-    FoleysSplashScreen splashscreen;
 #endif
+
+private:
+    struct Texture
+    {
+        juce::OpenGLTexture texture;
+        juce::int64         timestamp = -1;
+    };
+
+    std::map<AVClip*, std::unique_ptr<Texture>> textures;
+
+    juce::CriticalSection   clipLock;
+    std::shared_ptr<AVClip> clip;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OpenGLView)
 };

@@ -1,7 +1,7 @@
 /*
  ==============================================================================
 
- Copyright (c) 2019, Foleys Finest Audio - Daniel Walz
+ Copyright (c) 2019 - 2021, Foleys Finest Audio - Daniel Walz
  All rights reserved.
 
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
@@ -35,6 +35,19 @@ struct Size final
     {
         return (height > 0) ? width / double (height) : 1.33;
     }
+
+    juce::String toString() const
+    {
+        return juce::String (width) + "x" + juce::String (height);
+    }
+};
+
+enum class Zoom
+{
+    NoZoom = 0, /**< Don't zoom, keep pixel size */
+    ZoomScale,  /**< Zoom to fill target, ignore aspect ratio */
+    LetterBox,  /**< Zoom to show all pixels, may leave bars unpainted */
+    Crop        /**< Zoom to fill all pixels, may crop some pixels from the original */
 };
 
 /** Defines the size and time settings for a VideoStream */
@@ -71,7 +84,7 @@ static inline int64_t convertTimecode (double pts, const AudioStreamSettings& se
 /** Convert a time in seconds into a formatted string */
 static inline juce::String timecodeToString (double pts)
 {
-    int64_t intSeconds = int (pts);
+    auto intSeconds = int64_t (pts);
 
     auto milliSeconds = int (1000.0 * (pts - intSeconds));
     auto days = int (intSeconds / (3600 * 24));

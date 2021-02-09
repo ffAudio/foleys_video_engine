@@ -1,7 +1,7 @@
 /*
  ==============================================================================
 
- Copyright (c) 2019, Foleys Finest Audio - Daniel Walz
+ Copyright (c) 2019 - 2021, Foleys Finest Audio - Daniel Walz
  All rights reserved.
 
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
@@ -29,38 +29,67 @@ namespace foleys
 class VideoFifo final
 {
 public:
-    VideoFifo() = default;
+    VideoFifo (int size);
 
-    void pushVideoFrame (juce::Image& image, int64_t timestamp);
-    std::pair<int64_t, juce::Image> popVideoFrame();
+    /**
+     Returns a VideoFrame reference you can write to.
+     Make sure to call finishWriting once you are done writing.
+     */
+    VideoFrame& getWritingFrame();
 
-    std::pair<int64_t, juce::Image> getVideoFrame (double timestamp) const;
-    bool isFrameAvailable (double timestamp) const;
+    /**
+     This unlocks the videoFrame you are currently writing to and advances the write pointer.
+     */
+    void finishWriting();
+
+    VideoFrame& getFrame (int64_t timecode);
+    VideoFrame& getFrameSeconds (double pts);
+
+    /**
+     Sets the current timecode. This is important if you don't use the frames,
+     otherwise the video fifo will fill up and clogg the reading
+
+     @returns true if a frame is available, or false if not
+     */
+    bool setTimeCodeSeconds (double pts);
+
+    /** Returns tha last written frame. Use this for streaming clips */
+    VideoFrame& getLatestFrame();
 
     int getNumAvailableFrames() const;
-    int64_t getLowestTimeCode() const;
-    int64_t getHighestTimeCode() const;
+    bool isFrameAvailable (double pts) const;
 
-    juce::Image getOldestFrameForRecycling();
+    /**
+     Returns the number of frames that can be filled
+     */
+    int getFreeSpace() const;
 
-    int64_t getFrameCountForTime (double time) const;
-
-    size_t size() const;
-
+    /**
+     Reset all indices and set all VideoFrames to empty (timecode = -1)
+     */
     void clear();
 
-    VideoStreamSettings& getVideoSettings();
-    const VideoStreamSettings& getVideoSettings() const;
+    /**
+     Sets the VideoSettings. This is needed for the defaultDuration, but can be also used for creating the empty frames.
+     */
+    void setVideoSettings (const VideoStreamSettings& settings);
+
+    /**
+     For debugging: this shows all currently available timecodes in the fifo
+     */
+    void dumpTimeCodes() const;
 
 private:
-    juce::CriticalSection lock;
+    int findFramePosition (int64_t timecode, int start) const;
 
-    VideoStreamSettings settings;
+    int nextIndex (int pos, int offset=1) const;
+    int previousIndex (int pos, int offset=1) const;
 
-    std::map<int64_t, juce::Image> videoFrames;
-    std::vector<juce::Image>       framesPool;
-    int64_t lastViewedFrame = -1;
-    bool reverse = false;
+    VideoStreamSettings     settings;
+
+    std::vector<std::unique_ptr<VideoFrame>> frames;
+    std::atomic<int>    writePosition {0};
+    std::atomic<int>    readPosition  {0};
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (VideoFifo)
 };

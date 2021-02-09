@@ -1,7 +1,7 @@
 /*
  ==============================================================================
 
- Copyright (c) 2019, Foleys Finest Audio - Daniel Walz
+ Copyright (c) 2019 - 2021, Foleys Finest Audio - Daniel Walz
  All rights reserved.
 
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
@@ -244,7 +244,7 @@ struct VideoStreamDescriptor
     int                  streamIndex = -1;
     AVCodecContext*      context = nullptr;
     VideoStreamSettings  settings;
-    VideoFifo            videoBuffer;
+    VideoFifo            videoBuffer { 30 };
 };
 
 struct AudioStreamDescriptor

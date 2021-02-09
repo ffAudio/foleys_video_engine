@@ -1,7 +1,7 @@
 /*
  ==============================================================================
 
- Copyright (c) 2019, Foleys Finest Audio - Daniel Walz
+ Copyright (c) 2019 - 2021, Foleys Finest Audio - Daniel Walz
  All rights reserved.
 
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
@@ -52,10 +52,12 @@ public:
 
     juce::String getDescription() const override;
 
-    std::pair<int64_t, juce::Image> getFrame (double pts) const override;
+    VideoFrame& getFrame (double pts) override;
     bool isFrameAvailable (double pts) const override;
 
-    juce::Image getCurrentFrame() const override;
+#if FOLEYS_USE_OPENGL
+    void render (OpenGLView& view, double pts, float rotation = 0.0f, float zoom = 100.0f, juce::Point<float> translation = juce::Point<float>(), float alpha = 1.0f) override;
+#endif
 
     Size getVideoSize() const override;
     double getCurrentTimeInSeconds() const override;
@@ -147,6 +149,7 @@ private:
 
     std::vector<std::shared_ptr<ClipDescriptor>> clips;
     std::atomic<int64_t> position = {};
+    VideoFrame           frame;
 
     int64_t lastShownFrame;
 

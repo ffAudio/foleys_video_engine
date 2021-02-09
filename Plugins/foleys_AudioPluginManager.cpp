@@ -1,7 +1,7 @@
 /*
  ==============================================================================
 
- Copyright (c) 2019, Foleys Finest Audio - Daniel Walz
+ Copyright (c) 2019 - 2021, Foleys Finest Audio - Daniel Walz
  All rights reserved.
 
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
@@ -24,6 +24,9 @@ namespace foleys
 AudioPluginManager::AudioPluginManager (VideoEngine& videoEngineToUse)
   : videoEngine (videoEngineToUse)
 {
+    // If no plugin hosting is selected, this would issue a warning
+    juce::ignoreUnused (videoEngine);
+
     pluginManager.addDefaultFormats();
 }
 

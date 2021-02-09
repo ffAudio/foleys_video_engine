@@ -1,7 +1,11 @@
 /*
   ==============================================================================
 
+<<<<<<< HEAD
   Copyright (c) 2019-2020, Foleys Finest Audio - Daniel Walz
+=======
+  Copyright (c) 2019-2021, Foleys Finest Audio - Daniel Walz
+>>>>>>> 27d0c5487ac916c201dcc74c82597792ee2934b6
   All rights reserved.
 
   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
@@ -21,13 +25,13 @@
 
   ID:                foleys_video_engine
   vendor:            Foleys Finest Audio Ltd.
-  version:           0.1.0
+  version:           0.2.0
   name:              Video engine to read, process, display and write video in JUCE
   description:       Provides classes to read audio streams from video files or to
                      mux audio into an existing video
-  dependencies:      juce_audio_basics, juce_audio_formats, juce_gui_basics,
-                     juce_graphics, juce_core, juce_audio_utils
- minimumCppStandard: 17
+  dependencies:      juce_audio_basics juce_audio_formats juce_gui_basics
+                     juce_graphics juce_core juce_audio_utils
+  minimumCppStandard: 17
 
   website:       https://foleysfinest.com/
 
@@ -93,7 +97,7 @@
 #  define FOLEYS_LOG(textToWrite)
 #endif
 
-#if FOLEYS_USE_OPENGL
+#ifdef JUCE_MODULE_AVAILABLE_juce_opengl
 #include <juce_opengl/juce_opengl.h>
 #endif
 
@@ -101,12 +105,12 @@
 #include "Basics/foleys_Usage.h"
 #include "Basics/foleys_VideoFrame.h"
 #include "Basics/foleys_TimeCodeAware.h"
+#include "Basics/foleys_AudioFifo.h"
+#include "Basics/foleys_VideoFifo.h"
 #include "Processing/foleys_ProcessorParameter.h"
 #include "Plugins/foleys_AudioPluginManager.h"
 #include "Plugins/foleys_VideoProcessor.h"
 #include "Plugins/foleys_VideoPluginManager.h"
-#include "Basics/foleys_AudioFifo.h"
-#include "Basics/foleys_VideoFifo.h"
 #include "Processing/foleys_ControllableBase.h"
 #include "Processing/foleys_ProcessorController.h"
 #include "Processing/foleys_ParameterAutomation.h"
@@ -128,9 +132,11 @@
 #include "Clips/foleys_ComposedClip.h"
 
 #include "Basics/foleys_VideoEngine.h"
-#include "Widgets/foleys_VideoPreview.h"
+#include "Widgets/foleys_VideoView.h"
+#include "Widgets/foleys_SoftwareView.h"
 #include "Widgets/foleys_FilmStrip.h"
 #include "Widgets/foleys_AudioStrip.h"
+#include "Widgets/foleys_OpenGLDraw.h"
 #include "Widgets/foleys_OpenGLView.h"
 
 #if FOLEYS_USE_FFMPEG

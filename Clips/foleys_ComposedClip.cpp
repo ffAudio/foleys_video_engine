@@ -1,7 +1,7 @@
 /*
  ==============================================================================
 
- Copyright (c) 2019, Foleys Finest Audio - Daniel Walz
+ Copyright (c) 2019 - 2021, Foleys Finest Audio - Daniel Walz
  All rights reserved.
 
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
@@ -92,14 +92,12 @@ std::shared_ptr<ClipDescriptor> ComposedClip::addClip (std::shared_ptr<AVClip> c
     state.appendChild (clipDescriptor->getStatusTree(), getUndoManager());
 
     clipDescriptor->getVideoParameterController().addListener (this);
-    addTimecodeListener (clipDescriptor.get());
 
     return clipDescriptor;
 }
 
 void ComposedClip::removeClip (std::shared_ptr<ClipDescriptor> descriptor)
 {
-    removeTimecodeListener (descriptor.get());
     descriptor->getVideoParameterController().removeListener (this);
 
     auto it = std::find (clips.begin(), clips.end(), descriptor);
@@ -131,23 +129,23 @@ bool ComposedClip::isFrameAvailable (double pts) const
     return true;
 }
 
-std::pair<int64_t, juce::Image> ComposedClip::getFrame (double pts) const
+VideoFrame& ComposedClip::getFrame (double pts)
 {
     auto nextTimeCode = convertTimecode (pts, videoSettings);
 
-    juce::Image image (juce::Image::ARGB, videoSettings.frameSize.width, videoSettings.frameSize.height, false);
-    videoMixer->compose (image, videoSettings, nextTimeCode, pts,
+    if (frame.image.getWidth() != videoSettings.frameSize.width || frame.image.getHeight() != videoSettings.frameSize.height)
+        frame.image = juce::Image (juce::Image::ARGB, videoSettings.frameSize.width, videoSettings.frameSize.height, true);
+    else
+        frame.image.clear (frame.image.getBounds());
+
+    videoMixer->compose (frame.image, videoSettings, nextTimeCode, pts,
                          getActiveClips ([pos = pts * getSampleRate()](ClipDescriptor& clip)
     {
         return clip.clip->hasVideo() && pos >= clip.start && pos < clip.start + clip.length;
     }));
 
-    return { nextTimeCode, image };
-}
-
-juce::Image ComposedClip::getCurrentFrame() const
-{
-    return getFrame (getCurrentTimeInSeconds()).second;
+    frame.timecode = nextTimeCode;
+    return frame;
 }
 
 Size ComposedClip::getVideoSize() const
@@ -165,6 +163,28 @@ juce::Image ComposedClip::getStillImage ([[maybe_unused]]double seconds, [[maybe
     // TODO
     return {};
 }
+
+#if FOLEYS_USE_OPENGL
+void ComposedClip::render (OpenGLView& view, double pts, float, float, juce::Point<float>, float alphaExtern)
+{
+    auto activeClips = getActiveClips ([pos = pts * getSampleRate()](ClipDescriptor& clip)
+                                       { return clip.clip->hasVideo() && pos >= clip.start && pos < clip.start + clip.length; });
+
+    for (auto clip : activeClips)
+    {
+        auto localPts = clip->getClipTimeInDescriptorTime (pts);
+        clip->updateVideoAutomations (localPts);
+
+        const auto alpha    = float (clip->getVideoParameterController().getValueAtTime (IDs::alpha,  localPts, 1.0)) * alphaExtern;
+        const auto zoom     = clip->getVideoParameterController().getValueAtTime (IDs::zoom,   localPts, 1.0);
+        const auto transX   = clip->getVideoParameterController().getValueAtTime (IDs::translateX, localPts, 0.0);
+        const auto transY   = clip->getVideoParameterController().getValueAtTime (IDs::translateY, localPts, 0.0);
+        const auto rotation = clip->getVideoParameterController().getValueAtTime (IDs::rotation, localPts, 0.0);
+
+        clip->clip->render (view, localPts, float (rotation), float (zoom), { float (transX), float (transY) }, alpha);
+    }
+}
+#endif
 
 double ComposedClip::getLengthInSeconds() const
 {
@@ -311,9 +331,12 @@ void ComposedClip::handleAsyncUpdate()
         auto count = v ? convertTimecode (seconds, videoSettings) : 0;
         if (count != lastShownFrame || lastShownFrame < 0 || v == false)
         {
-            sendTimecode (count, seconds, juce::sendNotificationAsync);
+            sendTimecode (count, seconds, juce::sendNotificationSync);
             lastShownFrame = count;
         }
+
+        for (auto clip : clips)
+            clip->triggerTimecodeUpdate (juce::sendNotificationSync);
     }
 }
 
@@ -343,7 +366,6 @@ void ComposedClip::valueTreeChildAdded (juce::ValueTree&, juce::ValueTree& child
             descriptor->clip->prepareToPlay (getDefaultBufferSize(), getSampleRate());
             descriptor->updateSampleCounts();
             descriptor->getVideoParameterController().addListener (this);
-            addTimecodeListener (descriptor.get());
 
             juce::ScopedLock sl (clipDescriptorLock);
             clips.push_back (descriptor);
@@ -363,7 +385,6 @@ void ComposedClip::valueTreeChildRemoved (juce::ValueTree&, juce::ValueTree& chi
             if ((*it)->getStatusTree() == childWhichHasBeenRemoved)
             {
                 (*it)->getVideoParameterController().removeListener (this);
-                removeTimecodeListener (it->get());
 
                 juce::ScopedLock sl (clipDescriptorLock);
                 clips.erase (it);

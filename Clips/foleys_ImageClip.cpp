@@ -1,7 +1,7 @@
 /*
  ==============================================================================
 
- Copyright (c) 2019, Foleys Finest Audio - Daniel Walz
+ Copyright (c) 2019 - 2021, Foleys Finest Audio - Daniel Walz
  All rights reserved.
 
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
@@ -47,25 +47,31 @@ void ImageClip::setMediaFile (const juce::URL& media)
 
 void ImageClip::setImage (const juce::Image& imageToUse)
 {
-    image = imageToUse;
-    videoSettings.frameSize.width = image.getWidth();
-    videoSettings.frameSize.height = image.getHeight();
+    frame.image = imageToUse;
+    frame.timecode = 0;
+
+    videoSettings.frameSize.width = frame.image.getWidth();
+    videoSettings.frameSize.height = frame.image.getHeight();
 }
 
-std::pair<int64_t, juce::Image> ImageClip::getFrame (double pts) const
+VideoFrame& ImageClip::getFrame (double pts)
 {
-    return { convertTimecode (pts, videoSettings), image };
-}
-
-juce::Image ImageClip::getCurrentFrame() const
-{
-    return image;
+    juce::ignoreUnused (pts);
+    return frame;
 }
 
 juce::Image ImageClip::getStillImage (double, Size size)
 {
-    return image.rescaled (size.width, size.height);
+    return frame.image.rescaled (size.width, size.height);
 }
+
+#if FOLEYS_USE_OPENGL
+void ImageClip::render (OpenGLView& view, double pts, float rotation, float zoom, juce::Point<float> translation, float alpha)
+{
+    juce::ignoreUnused (pts);
+    renderFrame (view, frame, rotation, zoom, translation, alpha);
+}
+#endif
 
 double ImageClip::getLengthInSeconds() const
 {
@@ -74,7 +80,7 @@ double ImageClip::getLengthInSeconds() const
 
 Size ImageClip::getVideoSize() const
 {
-    return { image.getWidth(), image.getHeight() };
+    return { frame.image.getWidth(), frame.image.getHeight() };
 }
 
 double ImageClip::getCurrentTimeInSeconds() const

@@ -1,7 +1,7 @@
 /*
  ==============================================================================
 
- Copyright (c) 2019, Foleys Finest Audio - Daniel Walz
+ Copyright (c) 2019 - 2021, Foleys Finest Audio - Daniel Walz
  All rights reserved.
 
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
@@ -49,9 +49,20 @@ public:
 
     void setAudioFormatReader (juce::AudioFormatReader* reader, int samplesToBuffer = 48000);
 
-    std::pair<int64_t, juce::Image> getFrame ([[maybe_unused]]double pts) const override { return {}; }
-    juce::Image getCurrentFrame() const override  { return {}; }
+    VideoFrame& getFrame ([[maybe_unused]]double pts) override { return dummy; }
     bool isFrameAvailable ([[maybe_unused]]double pts) const override { return false; }
+
+#if FOLEYS_USE_OPENGL
+    void render (OpenGLView& view, double pts, float rotation = 0.0f, float zoom = 100.0f, juce::Point<float> translation = juce::Point<float>(), float alpha = 1.0f) override
+    {
+        juce::ignoreUnused (view);
+        juce::ignoreUnused (pts);
+        juce::ignoreUnused (rotation);
+        juce::ignoreUnused (zoom);
+        juce::ignoreUnused (translation);
+        juce::ignoreUnused (alpha);
+    }
+#endif
 
     Size getVideoSize() const override  { return {}; }
     double getCurrentTimeInSeconds() const override;
@@ -84,7 +95,8 @@ private:
     std::unique_ptr<juce::AudioFormatReader>       reader;
     std::unique_ptr<juce::PositionableAudioSource> readerSource;
     std::unique_ptr<juce::ResamplingAudioSource>   resampler;
-    juce::URL mediaFile;
+    VideoFrame dummy;
+    juce::URL  mediaFile;
     double sampleRate = 0.0;
     double originalSampleRate = 0.0;
     int    samplesPerBlock = 0;

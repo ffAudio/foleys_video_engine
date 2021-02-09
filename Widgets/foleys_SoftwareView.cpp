@@ -1,7 +1,7 @@
 /*
  ==============================================================================
 
- Copyright (c) 2019, Foleys Finest Audio - Daniel Walz
+ Copyright (c) 2019 - 2021, Foleys Finest Audio - Daniel Walz
  All rights reserved.
 
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
@@ -21,9 +21,10 @@
 namespace foleys
 {
 
-VideoPreview::VideoPreview()
+SoftwareView::SoftwareView()
 {
 #if FOLEYS_USE_OPENGL
+    openGLcontext.setImageCacheSize (64 * 1024 * 1024);
     openGLcontext.attachTo (*this);
 #endif
 
@@ -31,11 +32,11 @@ VideoPreview::VideoPreview()
     setInterceptsMouseClicks (false, true);
 
 #if FOLEYS_SHOW_SPLASHSCREEN
-    addAndMakeVisible (splashscreen);
+    addSplashscreen (*this);
 #endif
 }
 
-VideoPreview::~VideoPreview()
+SoftwareView::~SoftwareView()
 {
     if (clip)
         clip->removeTimecodeListener (this);
@@ -46,7 +47,7 @@ VideoPreview::~VideoPreview()
 
 }
 
-void VideoPreview::setClip (std::shared_ptr<AVClip> clipToUse)
+void SoftwareView::setClip (std::shared_ptr<AVClip> clipToUse)
 {
     if (clip)
         clip->removeTimecodeListener (this);
@@ -59,27 +60,27 @@ void VideoPreview::setClip (std::shared_ptr<AVClip> clipToUse)
     repaint();
 }
 
-std::shared_ptr<AVClip> VideoPreview::getClip() const
+std::shared_ptr<AVClip> SoftwareView::getClip() const
 {
     return clip;
 }
 
-void VideoPreview::paint (juce::Graphics& g)
+void SoftwareView::paint (juce::Graphics& g)
 {
     g.fillAll (juce::Colours::black);
 
     if (clip)
     {
         const auto pts = clip->getCurrentTimeInSeconds();
-        auto image = clip->getCurrentFrame();
+
         if (clip->isFrameAvailable (pts) == false)
             juce::Timer::callAfterDelay (20, [&]{ repaint(); });
         else
-            g.drawImage (clip->getFrame (pts).second, getLocalBounds().toFloat(), placement);
+            g.drawImage (clip->getFrame (pts).image, getLocalBounds().toFloat(), placement);
     }
 }
 
-void VideoPreview::timecodeChanged (int64_t, double)
+void SoftwareView::timecodeChanged (int64_t, double)
 {
     repaint();
 }
