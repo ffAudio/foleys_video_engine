@@ -51,16 +51,7 @@ void AudioStrip::setClip (std::shared_ptr<AVClip> clipToUse)
     if (clip.get() == nullptr)
         return;
 
-    const auto url = clip->getMediaFile();
-    if (url.isLocalFile() && url.getLocalFile().existsAsFile())
-    {
-        if (auto* reader = formatManager.createReaderFor (url.getLocalFile()))
-            thumbnail.setReader (reader, 0);
-    }
-    else
-    {
-        update();
-    }
+    update();
 }
 
 void AudioStrip::paint (juce::Graphics& g)
@@ -85,9 +76,7 @@ void AudioStrip::update()
 {
     if (clip == nullptr ||
         endTime <= startTime ||
-        endTime <= rendered ||
-        (clip->getMediaFile().isLocalFile() &&
-         clip->getMediaFile().getLocalFile().existsAsFile()))
+        endTime <= rendered)
         return;
 
     auto* threadPool = getThreadPool();
@@ -156,14 +145,22 @@ juce::ThreadPoolJob::JobStatus AudioStrip::ThumbnailJob::runJob()
         position += buffer.getNumSamples();
     }
 
+    int retryCount = 0;
     while (!shouldExit() && position < length)
     {
-        buffer.clear();
         parameterController->updateAutomations (getCurrentTimeInSeconds());
-        clipToRender->waitForSamplesReady (blockSize);
-        clipToRender->getNextAudioBlock (info);
-        owner.thumbnail.addBlock (position, buffer, 0, buffer.getNumSamples());
-        position += buffer.getNumSamples();
+        if (clipToRender->waitForSamplesReady (blockSize))
+        {
+            clipToRender->getNextAudioBlock (info);
+            owner.thumbnail.addBlock (position, buffer, 0, buffer.getNumSamples());
+            position += buffer.getNumSamples();
+            retryCount = 0;
+        }
+        else
+        {
+            if (++retryCount > 10)
+                return juce::ThreadPoolJob::jobHasFinished;
+        }
     }
 
     return juce::ThreadPoolJob::jobHasFinished;
