@@ -156,6 +156,8 @@ void MovieClip::releaseResources()
 
 bool MovieClip::waitForSamplesReady (int samples, int timeout)
 {
+    jassert (samples > 0 && samples <= 4800);
+
     if (movieReader && movieReader->isOpenedOk() && movieReader->hasAudio())
     {
         const auto start = juce::Time::getMillisecondCounter();

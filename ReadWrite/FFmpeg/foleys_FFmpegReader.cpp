@@ -477,22 +477,14 @@ private:
                 if (outTimestamp < 0)
                     return;
 
-                if (offset < 0 && offset >= -2048)
-                {
-                    // FIXME: ignores sub sample of resampler, loses one sample every other packet
-//                    if (offset < 0)
-//                        audioFifo.pushSilence (-offset);
-                    offset = 0;
-                }
+                // FIXME: add a strategy to smooth back to zero
+                offset = 0;
 
-                if (juce::isPositiveAndBelow (offset, numProduced))
-                {
-                    swr_convert (audioConverterContext,
-                                 (uint8_t**)audioConvertBuffer.getArrayOfWritePointers(), numProduced,
-                                 (const uint8_t**)frame->extended_data, numSamples);
-                    juce::AudioBuffer<float> buffer (audioConvertBuffer.getArrayOfWritePointers(), channels, int (offset), int (numProduced - offset));
-                    audioFifo.pushSamples (buffer);
-                }
+                swr_convert (audioConverterContext,
+                             (uint8_t**)audioConvertBuffer.getArrayOfWritePointers(), numProduced,
+                             (const uint8_t**)frame->extended_data, numSamples);
+                juce::AudioBuffer<float> buffer (audioConvertBuffer.getArrayOfWritePointers(), channels, int (offset), int (numProduced - offset));
+                audioFifo.pushSamples (buffer);
             }
         }
     }
