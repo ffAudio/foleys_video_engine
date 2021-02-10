@@ -28,6 +28,7 @@ namespace foleys
 namespace OpenGLDrawing
 {
 
+#if JUCE_DEBUG
 static const char* getGLErrorMessage (const GLenum e) noexcept
 {
     switch (e)
@@ -66,6 +67,9 @@ static void checkGLError (const char* file, const int line)
 }
 
 #define JUCE_CHECK_OPENGL_ERROR checkGLError (__FILE__, __LINE__);
+#else
+#define JUCE_CHECK_OPENGL_ERROR ;
+#endif
 
 static void clearGLError() noexcept
 {

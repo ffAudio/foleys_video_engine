@@ -102,6 +102,7 @@ public:
     std::shared_ptr<ClipDescriptor> addClip (std::shared_ptr<AVClip> clip, double start, double length = -1, double offset = 0);
     void removeClip (std::shared_ptr<ClipDescriptor> descriptor);
 
+    /** allows safe access to the clips list. It returns a copy you can modify at will */
     std::vector<std::shared_ptr<ClipDescriptor>> getClips() const;
     std::shared_ptr<ClipDescriptor> getClip (int index);
 
@@ -133,8 +134,6 @@ private:
     void handleAsyncUpdate() override;
 
     double convertToSamples (int64_t pos) const;
-
-    std::vector<std::shared_ptr<ClipDescriptor>> getActiveClips (std::function<bool(ClipDescriptor&)> selector) const;
 
     juce::CriticalSection clipDescriptorLock;
 

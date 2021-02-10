@@ -117,14 +117,13 @@ std::shared_ptr<ClipDescriptor> ComposedClip::getClip (int index)
 
 bool ComposedClip::isFrameAvailable (double pts) const
 {
-    for (auto clip : getActiveClips ([pos = pts * getSampleRate()](ClipDescriptor& clip)
-                    {
-                        return clip.clip->hasVideo() && pos >= clip.start && pos < clip.start + clip.length;
-                    }))
-    {
-        if (clip->clip->isFrameAvailable (pts - clip->getStart() + clip->getOffset()) == false)
-            return false;
-    }
+    auto active = getClips();
+    auto pos = pts * getSampleRate();
+
+    for (auto& clip : active)
+        if (clip->clip->hasVideo() && juce::isPositiveAndBelow (pos - clip->start.load(), clip->length.load()))
+            if (clip->clip->isFrameAvailable (pts - clip->getStart() + clip->getOffset()) == false)
+                return false;
 
     return true;
 }
@@ -138,11 +137,15 @@ VideoFrame& ComposedClip::getFrame (double pts)
     else
         frame.image.clear (frame.image.getBounds());
 
-    videoMixer->compose (frame.image, videoSettings, nextTimeCode, pts,
-                         getActiveClips ([pos = pts * getSampleRate()](ClipDescriptor& clip)
-    {
-        return clip.clip->hasVideo() && pos >= clip.start && pos < clip.start + clip.length;
-    }));
+    auto active = getClips();
+    active.erase (std::remove_if (active.begin(), active.end(),
+                                  [pos = pts * getSampleRate()](auto& clip)
+                                  {
+        return ! clip->clip->hasVideo() || ! juce::isPositiveAndBelow (pos - clip->start.load(), clip->length.load());
+    }), active.end());
+    std::sort (active.begin(), active.end(), [](auto& a, auto& b){ return a->start.load() < b->start.load(); });
+
+    videoMixer->compose (frame.image, videoSettings, nextTimeCode, pts, active);
 
     frame.timecode = nextTimeCode;
     return frame;
@@ -167,10 +170,15 @@ juce::Image ComposedClip::getStillImage ([[maybe_unused]]double seconds, [[maybe
 #if FOLEYS_USE_OPENGL
 void ComposedClip::render (OpenGLView& view, double pts, float, float, juce::Point<float>, float alphaExtern)
 {
-    auto activeClips = getActiveClips ([pos = pts * getSampleRate()](ClipDescriptor& clip)
-                                       { return clip.clip->hasVideo() && pos >= clip.start && pos < clip.start + clip.length; });
+    auto active = getClips();
+    active.erase (std::remove_if (active.begin(), active.end(),
+                                  [pos = pts * getSampleRate()](auto& clip)
+                                  {
+        return ! clip->clip->hasVideo() || ! juce::isPositiveAndBelow (pos - clip->start.load(), clip->length.load());
+    }), active.end());
+    std::sort (active.begin(), active.end(), [](auto& a, auto& b){ return a->start.load() < b->start.load(); });
 
-    for (auto clip : activeClips)
+    for (auto clip : active)
     {
         auto localPts = clip->getClipTimeInDescriptorTime (pts);
         clip->updateVideoAutomations (localPts);
@@ -216,10 +224,17 @@ void ComposedClip::getNextAudioBlock (const juce::AudioSourceChannelInfo& info)
     info.clearActiveBufferRegion();
     auto pos = position.load();
 
+    auto active = getClips();
+    active.erase (std::remove_if (active.begin(), active.end(),
+                                  [pos](auto& clip)
+                                  {
+        return ! clip->clip->hasAudio() || ! juce::isPositiveAndBelow (pos - clip->start.load(), clip->length.load());
+    }), active.end());
+
     audioMixer->mixAudio (info,
                           position.load(),
                           getCurrentTimeInSeconds(),
-                          getActiveClips ([pos](ClipDescriptor& clip) { return clip.clip->hasAudio() && pos >= clip.start && pos < clip.start + clip.length; }));
+                          active);
 
     position.fetch_add (info.numSamples);
     triggerAsyncUpdate();
@@ -229,7 +244,16 @@ bool ComposedClip::waitForSamplesReady (int samples, int timeout)
 {
     auto ready = true;
     const auto start = juce::Time::getMillisecondCounter();
-    for (auto clip : getActiveClips ([pos = position.load()](ClipDescriptor& clip) { return clip.clip->hasAudio() && pos >= clip.start && pos < clip.start + clip.length; }))
+    const auto pos = position.load();
+
+    auto active = getClips();
+    active.erase (std::remove_if (active.begin(), active.end(),
+                                  [pos](auto& clip)
+                                  {
+        return ! clip->clip->hasAudio() || ! juce::isPositiveAndBelow (pos - clip->start.load(), clip->length.load());
+    }), active.end());
+
+    for (auto clip : active)
     {
         ready &= clip->clip->waitForSamplesReady (samples, std::min (timeout, timeout + int (start - juce::Time::getMillisecondCounter())));
         if (ready == false)
@@ -418,21 +442,6 @@ std::vector<std::shared_ptr<ClipDescriptor>> ComposedClip::getClips() const
 {
     juce::ScopedLock sl (clipDescriptorLock);
     return clips;
-}
-
-std::vector<std::shared_ptr<ClipDescriptor>> ComposedClip::getActiveClips (std::function<bool(ClipDescriptor&)> selector) const
-{
-    std::vector<std::shared_ptr<ClipDescriptor>> active;
-    {
-        juce::ScopedLock sl (clipDescriptorLock);
-
-        for (auto clip : clips)
-            if (selector (*clip))
-                active.push_back (clip);
-    }
-
-    std::sort (active.begin(), active.end(), [](auto& a, auto& b){ return a->start.load() < b->start.load(); });
-    return active;
 }
 
 juce::String ComposedClip::makeUniqueDescription (const juce::String& description) const
