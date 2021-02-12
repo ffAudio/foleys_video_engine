@@ -117,6 +117,11 @@ VideoFrame& MovieClip::getFrame (double pts)
     return videoFifo.getFrameSeconds (pts);
 }
 
+void MovieClip::render (juce::Graphics& view, double pts, float rotation, float zoom, juce::Point<float> translation, float alpha)
+{
+    renderFrame (view, getFrame (pts), rotation, zoom, translation, alpha);
+}
+
 #if FOLEYS_USE_OPENGL
 void MovieClip::render (OpenGLView& view, double pts, float rotation, float zoom, juce::Point<float> translation, float alpha)
 {
@@ -314,7 +319,7 @@ int MovieClip::BackgroundReaderJob::useTimeSlice()
     {
         juce::ScopedValueSetter<bool> guard (inDecodeBlock, true);
         owner.movieReader->readNewData (owner.videoFifo, owner.audioFifo);
-        return 0;
+        return 3;
     }
 
     return 10;

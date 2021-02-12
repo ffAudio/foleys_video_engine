@@ -37,6 +37,9 @@ void SoftwareVideoMixer::compose (juce::Image&        target,
 
     for (const auto& clip : clips)
     {
+        if (! juce::isPositiveAndBelow (timeInSeconds - clip->getStart(), clip->getLength()))
+            continue;
+
         const auto clipTime = timeInSeconds + clip->getOffset() - clip->getStart();
 
         clip->updateAudioAutomations (timeInSeconds - clip->getStart());

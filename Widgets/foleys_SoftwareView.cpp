@@ -71,12 +71,13 @@ void SoftwareView::paint (juce::Graphics& g)
 
     if (clip)
     {
-        const auto pts = clip->getCurrentTimeInSeconds();
-
-        if (clip->isFrameAvailable (pts) == false)
-            juce::Timer::callAfterDelay (20, [&]{ repaint(); });
-        else
-            g.drawImage (clip->getFrame (pts).image, getLocalBounds().toFloat(), placement);
+        clip->render (g, clip->getCurrentTimeInSeconds());
+//        const auto pts = clip->getCurrentTimeInSeconds();
+//
+//        if (clip->isFrameAvailable (pts) == false)
+//            juce::Timer::callAfterDelay (20, [&]{ repaint(); });
+//        else
+//            g.drawImage (clip->getFrame (pts).image, getLocalBounds().toFloat(), placement);
     }
 }
 

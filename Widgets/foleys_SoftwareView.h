@@ -30,8 +30,7 @@ namespace foleys
  real time.
  */
 class SoftwareView  : public juce::Component,
-                      public VideoView,
-                      public TimeCodeAware::Listener
+                      public VideoView
 {
 public:
     SoftwareView();

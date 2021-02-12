@@ -113,6 +113,7 @@ void OpenGLView::timecodeChanged (int64_t count, double seconds)
     juce::ignoreUnused (count);
     juce::ignoreUnused (seconds);
 
+    openGLContext.triggerRepaint();
 }
 
 } // namespace foleys

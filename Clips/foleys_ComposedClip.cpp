@@ -44,8 +44,6 @@ ComposedClip::ComposedClip (VideoEngine& engine)
 {
     state = juce::ValueTree (IDs::compoundClip);
 
-    videoMixer = std::make_unique<SoftwareVideoMixer>();
-
     videoSettings.frameSize = {1280, 720};
     videoSettings.timebase = 24000;
     videoSettings.defaultDuration = 1001;
@@ -117,14 +115,15 @@ std::shared_ptr<ClipDescriptor> ComposedClip::getClip (int index)
 
 bool ComposedClip::isFrameAvailable (double pts) const
 {
-    auto active = getClips();
-    auto pos = pts * getSampleRate();
-
-    for (auto& clip : active)
-        if (clip->clip->hasVideo() && juce::isPositiveAndBelow (pos - clip->start.load(), clip->length.load()))
-            if (clip->clip->isFrameAvailable (pts - clip->getStart() + clip->getOffset()) == false)
-                return false;
-
+    juce::ignoreUnused (pts);
+//    auto active = getClips();
+//    auto pos = pts * getSampleRate();
+//
+//    for (auto& clip : active)
+//        if (clip->clip->hasVideo() && juce::isPositiveAndBelow (pos - clip->start.load(), clip->length.load()))
+//            if (clip->clip->isFrameAvailable (pts - clip->getStart() + clip->getOffset()) == false)
+//                return false;
+//
     return true;
 }
 
@@ -138,14 +137,10 @@ VideoFrame& ComposedClip::getFrame (double pts)
         frame.image.clear (frame.image.getBounds());
 
     auto active = getClips();
-    active.erase (std::remove_if (active.begin(), active.end(),
-                                  [pos = pts * getSampleRate()](auto& clip)
-                                  {
-        return ! clip->clip->hasVideo() || ! juce::isPositiveAndBelow (pos - clip->start.load(), clip->length.load());
-    }), active.end());
-    std::sort (active.begin(), active.end(), [](auto& a, auto& b){ return a->start.load() < b->start.load(); });
 
-    videoMixer->compose (frame.image, videoSettings, nextTimeCode, pts, active);
+    juce::Graphics g (frame.image);
+
+    render (g, pts, 0.0, 100.0, juce::Point<float>(), 1.0);
 
     frame.timecode = nextTimeCode;
     return frame;
@@ -158,7 +153,7 @@ Size ComposedClip::getVideoSize() const
 
 double ComposedClip::getCurrentTimeInSeconds() const
 {
-    return convertToSamples (position.load());
+    return convertToSeconds (position.load());
 }
 
 juce::Image ComposedClip::getStillImage ([[maybe_unused]]double seconds, [[maybe_unused]]Size size)
@@ -167,19 +162,38 @@ juce::Image ComposedClip::getStillImage ([[maybe_unused]]double seconds, [[maybe
     return {};
 }
 
+void ComposedClip::render (juce::Graphics& view, double pts, float, float, juce::Point<float>, float alphaExtern)
+{
+    auto active = getClips();
+
+    for (auto clip : active)
+    {
+        if (! juce::isPositiveAndBelow (pts - clip->getStart(), clip->getLength()))
+            continue;
+
+        auto localPts = clip->getClipTimeInDescriptorTime (pts);
+        clip->updateVideoAutomations (localPts);
+
+        const auto alpha    = float (clip->getVideoParameterController().getValueAtTime (IDs::alpha,  localPts, 1.0)) * alphaExtern;
+        const auto zoom     = clip->getVideoParameterController().getValueAtTime (IDs::zoom,   localPts, 1.0);
+        const auto transX   = clip->getVideoParameterController().getValueAtTime (IDs::translateX, localPts, 0.0);
+        const auto transY   = clip->getVideoParameterController().getValueAtTime (IDs::translateY, localPts, 0.0);
+        const auto rotation = clip->getVideoParameterController().getValueAtTime (IDs::rotation, localPts, 0.0);
+
+        clip->clip->render (view, localPts, float (rotation), float (zoom), { float (transX), float (transY) }, alpha);
+    }
+}
+
 #if FOLEYS_USE_OPENGL
 void ComposedClip::render (OpenGLView& view, double pts, float, float, juce::Point<float>, float alphaExtern)
 {
     auto active = getClips();
-    active.erase (std::remove_if (active.begin(), active.end(),
-                                  [pos = pts * getSampleRate()](auto& clip)
-                                  {
-        return ! clip->clip->hasVideo() || ! juce::isPositiveAndBelow (pos - clip->start.load(), clip->length.load());
-    }), active.end());
-    std::sort (active.begin(), active.end(), [](auto& a, auto& b){ return a->start.load() < b->start.load(); });
 
     for (auto clip : active)
     {
+        if (! juce::isPositiveAndBelow (pts - clip->getStart(), clip->getLength()))
+            continue;
+
         auto localPts = clip->getClipTimeInDescriptorTime (pts);
         clip->updateVideoAutomations (localPts);
 
@@ -196,7 +210,7 @@ void ComposedClip::render (OpenGLView& view, double pts, float, float, juce::Poi
 
 double ComposedClip::getLengthInSeconds() const
 {
-    return convertToSamples (getTotalLength());
+    return convertToSeconds (getTotalLength());
 }
 
 void ComposedClip::prepareToPlay (int samplesPerBlockExpected, double sampleRateToUse)
@@ -228,7 +242,7 @@ void ComposedClip::getNextAudioBlock (const juce::AudioSourceChannelInfo& info)
     active.erase (std::remove_if (active.begin(), active.end(),
                                   [pos](auto& clip)
                                   {
-        return ! clip->clip->hasAudio() || ! juce::isPositiveAndBelow (pos - clip->start.load(), clip->length.load());
+        return ! clip->clip->hasAudio() || ! juce::isPositiveAndBelow (pos - clip->getStartInSamples(), clip->getLengthInSamples());
     }), active.end());
 
     audioMixer->mixAudio (info,
@@ -250,7 +264,7 @@ bool ComposedClip::waitForSamplesReady (int samples, int timeout)
     active.erase (std::remove_if (active.begin(), active.end(),
                                   [pos](auto& clip)
                                   {
-        return ! clip->clip->hasAudio() || ! juce::isPositiveAndBelow (pos - clip->start.load(), clip->length.load());
+        return ! clip->clip->hasAudio() || ! juce::isPositiveAndBelow (pos - clip->getStartInSamples(), clip->getLengthInSamples());
     }), active.end());
 
     for (auto clip : active)
@@ -267,7 +281,7 @@ void ComposedClip::setNextReadPosition (juce::int64 samples)
 {
     position.store (samples);
     for (auto& descriptor : getClips())
-        descriptor->clip->setNextReadPosition (std::max (juce::int64 (samples + descriptor->offset - descriptor->start), juce::int64 (descriptor->offset)));
+        descriptor->clip->setNextReadPosition (std::max (juce::int64 (samples + descriptor->getOffsetInSamples() - descriptor->getStartInSamples()), juce::int64 (descriptor->getOffsetInSamples())));
 
     lastShownFrame = 0;
 
@@ -283,7 +297,7 @@ juce::int64 ComposedClip::getTotalLength() const
 {
     int64_t length = 0;
     for (auto& descriptor : getClips())
-        length = std::max (length, descriptor->start.load() + descriptor->length.load());
+        length = std::max (length, descriptor->getStartInSamples() + descriptor->getLengthInSamples());
 
     return length;
 }
@@ -364,7 +378,7 @@ void ComposedClip::handleAsyncUpdate()
     }
 }
 
-double ComposedClip::convertToSamples (int64_t pos) const
+double ComposedClip::convertToSeconds (int64_t pos) const
 {
     if (audioSettings.timebase > 0)
         return pos / double (audioSettings.timebase);

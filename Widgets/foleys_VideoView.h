@@ -23,7 +23,7 @@
 namespace foleys
 {
 
-class VideoView
+class VideoView : public foleys::TimeCodeAware::Listener
 {
 public:
     VideoView() = default;

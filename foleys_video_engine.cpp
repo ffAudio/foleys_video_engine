@@ -40,7 +40,6 @@
 #include "Processing/foleys_ParameterAutomation.cpp"
 #include "Processing/foleys_ProcessorParameter.cpp"
 #include "Processing/foleys_ProcessorController.cpp"
-#include "Processing/foleys_SoftwareVideoMixer.cpp"
 #include "Processing/foleys_DefaultAudioMixer.cpp"
 
 #include "ReadWrite/foleys_AVFormatManager.cpp"

@@ -62,6 +62,8 @@ public:
     VideoFrame& getFrame (double pts) override;
     bool isFrameAvailable (double pts) const override;
 
+    void render (juce::Graphics& view, double pts, float rotation = 0.0f, float zoom = 100.0f, juce::Point<float> translation = juce::Point<float>(), float alpha = 1.0f) override;
+
 #if FOLEYS_USE_OPENGL
     void render (OpenGLView& view, double pts, float rotation = 0.0f, float zoom = 100.0f, juce::Point<float> translation = juce::Point<float>(), float alpha = 1.0f) override;
 #endif

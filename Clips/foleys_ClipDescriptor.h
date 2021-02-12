@@ -72,18 +72,18 @@ public:
     void setDescription (const juce::String& name);
 
     /** start of the clip in seconds */
-    double getStart() const;
-    int64_t getStartInSamples() const;
+    double getStart() const           { return start; }
+    int64_t getStartInSamples() const { return startSamples; }
     void setStart (double start);
 
     /** length of the clip in seconds */
-    double getLength() const;
-    int64_t getLengthInSamples() const;
+    double getLength() const           { return length; }
+    int64_t getLengthInSamples() const { return lengthSamples; }
     void setLength (double length);
 
     /** offset in seconds into the media */
-    double getOffset() const;
-    int64_t getOffsetInSamples() const;
+    double getOffset() const           { return offset; }
+    int64_t getOffsetInSamples() const { return offsetSamples; }
     void setOffset (double offset);
 
     /** switch video invisible */
@@ -192,9 +192,13 @@ private:
     ClipParameterController audioParameterController { *this };
     ClipParameterController videoParameterController { *this };
 
-    std::atomic<int64_t> start {0};
-    std::atomic<int64_t> length {0};
-    std::atomic<int64_t> offset {0};
+    double start  = 0.0;
+    double length = 0.0;
+    double offset = 0.0;
+
+    int64_t startSamples  = 0;
+    int64_t lengthSamples = 0;
+    int64_t offsetSamples = 0;
 
     void valueTreePropertyChanged (juce::ValueTree& treeWhosePropertyHasChanged,
                                    const juce::Identifier& property) override;

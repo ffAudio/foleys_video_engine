@@ -107,29 +107,14 @@ void ClipDescriptor::setDescription (const juce::String& name)
     state.setProperty (IDs::description, name,undoManager);
 }
 
-double ClipDescriptor::getStart() const
-{
-    return state.getProperty (IDs::start, 0.0);
-}
-
 void ClipDescriptor::setStart (double s)
 {
     state.setProperty (IDs::start, s, undoManager);
 }
 
-double ClipDescriptor::getLength() const
-{
-    return state.getProperty (IDs::length, 0.0);
-}
-
 void ClipDescriptor::setLength (double l)
 {
     state.setProperty (IDs::length, l, undoManager);
-}
-
-double ClipDescriptor::getOffset() const
-{
-    return state.getProperty (IDs::offset, 0.0);
 }
 
 void ClipDescriptor::setOffset (double o)
@@ -233,11 +218,14 @@ void ClipDescriptor::valueTreeChildRemoved (juce::ValueTree& parentTree,
 
 void ClipDescriptor::updateSampleCounts()
 {
-    auto sampleRate = clip->getSampleRate();
+    start  = state.getProperty (IDs::start);
+    length = state.getProperty (IDs::length);
+    offset = state.getProperty (IDs::offset);
 
-    start  = juce::int64 (sampleRate * double (state.getProperty (IDs::start)));
-    length = juce::int64 (sampleRate * double (state.getProperty (IDs::length)));
-    offset = juce::int64 (sampleRate * double (state.getProperty (IDs::offset)));
+    const auto sampleRate = clip->getSampleRate();
+    startSamples  = juce::int64 (sampleRate * start);
+    lengthSamples = juce::int64 (sampleRate * length);
+    offsetSamples = juce::int64 (sampleRate * offset);
 }
 
 ClipDescriptor::ClipParameterController& ClipDescriptor::getAudioParameterController()
@@ -249,10 +237,6 @@ ClipDescriptor::ClipParameterController& ClipDescriptor::getVideoParameterContro
 {
     return videoParameterController;
 }
-
-int64_t ClipDescriptor::getStartInSamples() const { return start; }
-int64_t ClipDescriptor::getLengthInSamples() const { return length; }
-int64_t ClipDescriptor::getOffsetInSamples() const { return offset; }
 
 juce::ValueTree& ClipDescriptor::getStatusTree()
 {

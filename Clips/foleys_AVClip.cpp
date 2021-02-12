@@ -106,6 +106,22 @@ VideoEngine* AVClip::getVideoEngine() const
     return videoEngine;
 }
 
+void AVClip::renderFrame (juce::Graphics& view, VideoFrame& frame, float rotation, float zoom, juce::Point<float> translation, float alpha, Zoom zoomType)
+{
+    if (frame.image.isNull())
+        return;
+
+    juce::ignoreUnused (zoomType);
+    juce::Graphics::ScopedSaveState state (view);
+
+    auto transformation = juce::AffineTransform::rotation (juce::degreesToRadians (rotation), frame.image.getWidth() * 0.5f, frame.image.getHeight() * 0.5f)
+    .scaled (zoom * 0.01f, zoom * 0.01f, frame.image.getWidth() * 0.5f, frame.image.getHeight() * 0.5f)
+    .translated (frame.image.getWidth() * translation.x, frame.image.getHeight() * translation.y);
+
+    view.setOpacity (alpha);
+    view.drawImageTransformed (frame.image, transformation);
+}
+
 #if FOLEYS_USE_OPENGL
 void AVClip::renderFrame (OpenGLView& view, VideoFrame& frame, float rotation, float zoom, juce::Point<float> translation, float alpha, Zoom zoomType)
 {

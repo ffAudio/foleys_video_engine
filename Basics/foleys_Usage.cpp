@@ -136,7 +136,8 @@ FoleysSplashScreen::FoleysSplashScreen()
 
     foleys = juce::Drawable::createFromImageData (logo, 1456);
 
-    juce::Timer::callAfterDelay (6000, [this] { setVisible (false); } );
+    auto safe = juce::Component::SafePointer<juce::Component>(this);
+    juce::Timer::callAfterDelay (6000, [safe] () mutable { if (safe != nullptr) safe->setVisible (false); } );
 }
 
 void FoleysSplashScreen::paint (juce::Graphics& g)
