@@ -246,7 +246,7 @@ void MovieClip::handleAsyncUpdate()
 {
     if (sampleRate > 0 && hasVideo())
     {
-        auto seconds = nextReadPosition / sampleRate;
+        auto seconds = getCurrentTimeInSeconds();
         const auto& frame = videoFifo.getFrameSeconds (seconds);
         if (frame.timecode != lastShownFrame)
         {

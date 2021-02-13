@@ -120,7 +120,8 @@ int VideoFifo::findFramePosition (int64_t timecode, int start) const
     size_t count = 0;
 
     // forward seek
-    while (timecode >= frames [size_t (start)]->timecode + settings.defaultDuration)
+//    while (timecode >= frames [size_t (start)]->timecode + settings.defaultDuration)
+    while (true)
     {
         FOLEYS_LOG ("Seek forward " << count);
         start = nextIndex (start);

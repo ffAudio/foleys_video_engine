@@ -113,7 +113,7 @@ private:
         bool isSuspended() const;
     private:
         MovieClip& owner;
-        bool suspended = true;
+        std::atomic<bool> suspended = true;
         bool inDecodeBlock = false;
     };
 
