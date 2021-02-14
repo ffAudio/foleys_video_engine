@@ -65,10 +65,10 @@ juce::Image ImageClip::getStillImage (double, Size size)
     return frame.image.rescaled (size.width, size.height);
 }
 
-void ImageClip::render (juce::Graphics& view, double pts, float rotation, float zoom, juce::Point<float> translation, float alpha)
+void ImageClip::render (juce::Graphics& view, juce::Rectangle<float> area, double pts, float rotation, float zoom, juce::Point<float> translation, float alpha)
 {
     juce::ignoreUnused (pts);
-    renderFrame (view, frame, rotation, zoom, translation, alpha);
+    renderFrame (view, area, frame, rotation, zoom, translation, alpha);
 }
 
 #if FOLEYS_USE_OPENGL

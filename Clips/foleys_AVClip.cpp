@@ -106,20 +106,33 @@ VideoEngine* AVClip::getVideoEngine() const
     return videoEngine;
 }
 
-void AVClip::renderFrame (juce::Graphics& view, VideoFrame& frame, float rotation, float zoom, juce::Point<float> translation, float alpha, Zoom zoomType)
+void AVClip::renderFrame (juce::Graphics& g, juce::Rectangle<float> area, VideoFrame& frame, float rotation, float zoom, juce::Point<float> translation, float alpha, Zoom zoomType)
 {
     if (frame.image.isNull())
         return;
 
-    juce::ignoreUnused (zoomType);
-    juce::Graphics::ScopedSaveState state (view);
+    juce::Graphics::ScopedSaveState state (g);
 
-    auto transformation = juce::AffineTransform::rotation (juce::degreesToRadians (rotation), frame.image.getWidth() * 0.5f, frame.image.getHeight() * 0.5f)
-    .scaled (zoom * 0.01f, zoom * 0.01f, frame.image.getWidth() * 0.5f, frame.image.getHeight() * 0.5f)
-    .translated (frame.image.getWidth() * translation.x, frame.image.getHeight() * translation.y);
+    juce::AffineTransform transformation;
 
-    view.setOpacity (alpha);
-    view.drawImageTransformed (frame.image, transformation);
+    const auto factorX = area.getWidth() / frame.image.getWidth();
+    const auto factorY = area.getHeight() / frame.image.getHeight();
+
+    if (zoomType == Zoom::LetterBox)
+        transformation = transformation.scale (std::min (factorX, factorY));
+    else if (zoomType == Zoom::Crop)
+        transformation = transformation.scale (std::max (factorX, factorY));
+    else if (zoomType == Zoom::ZoomScale)
+        transformation = transformation.scale (factorX, factorY);
+
+    transformation = transformation.translated (area.getX(), area.getY());
+
+    transformation = transformation.rotated (juce::degreesToRadians (rotation), area.getCentreX(), area.getCentreY())
+                                   .scaled (zoom * 0.01f, zoom * 0.01f, area.getCentreX(), area.getCentreY())
+                                   .translated (area.getWidth() * translation.x, area.getHeight() * translation.y);
+
+    g.setOpacity (alpha);
+    g.drawImageTransformed (frame.image, transformation);
 }
 
 #if FOLEYS_USE_OPENGL

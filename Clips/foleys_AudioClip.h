@@ -52,9 +52,10 @@ public:
     VideoFrame& getFrame ([[maybe_unused]]double pts) override { return dummy; }
     bool isFrameAvailable ([[maybe_unused]]double pts) const override { return false; }
 
-    void render (juce::Graphics& view, double pts, float rotation = 0.0f, float zoom = 100.0f, juce::Point<float> translation = juce::Point<float>(), float alpha = 1.0f) override
+    void render (juce::Graphics& view, juce::Rectangle<float> area, double pts, float rotation = 0.0f, float zoom = 100.0f, juce::Point<float> translation = juce::Point<float>(), float alpha = 1.0f) override
     {
         juce::ignoreUnused (view);
+        juce::ignoreUnused (area);
         juce::ignoreUnused (pts);
         juce::ignoreUnused (rotation);
         juce::ignoreUnused (zoom);

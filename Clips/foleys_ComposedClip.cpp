@@ -116,14 +116,14 @@ std::shared_ptr<ClipDescriptor> ComposedClip::getClip (int index)
 bool ComposedClip::isFrameAvailable (double pts) const
 {
     juce::ignoreUnused (pts);
-//    auto active = getClips();
-//    auto pos = pts * getSampleRate();
-//
-//    for (auto& clip : active)
-//        if (clip->clip->hasVideo() && juce::isPositiveAndBelow (pos - clip->start.load(), clip->length.load()))
-//            if (clip->clip->isFrameAvailable (pts - clip->getStart() + clip->getOffset()) == false)
-//                return false;
-//
+    auto active = getClips();
+    auto pos = pts * getSampleRate();
+
+    for (auto& clip : active)
+        if (clip->clip->hasVideo() && juce::isPositiveAndBelow (pos - clip->getStartInSamples(), clip->getLengthInSamples()))
+            if (clip->clip->isFrameAvailable (pts - clip->getStart() + clip->getOffset()) == false)
+                return false;
+
     return true;
 }
 
@@ -140,7 +140,7 @@ VideoFrame& ComposedClip::getFrame (double pts)
 
     juce::Graphics g (frame.image);
 
-    render (g, pts, 0.0, 100.0, juce::Point<float>(), 1.0);
+    render (g, frame.image.getBounds().toFloat(), pts, 0.0, 100.0, juce::Point<float>(), 1.0);
 
     frame.timecode = nextTimeCode;
     return frame;
@@ -162,7 +162,7 @@ juce::Image ComposedClip::getStillImage ([[maybe_unused]]double seconds, [[maybe
     return {};
 }
 
-void ComposedClip::render (juce::Graphics& view, double pts, float, float, juce::Point<float>, float alphaExtern)
+void ComposedClip::render (juce::Graphics& view, juce::Rectangle<float> area, double pts, float, float, juce::Point<float>, float alphaExtern)
 {
     auto active = getClips();
 
@@ -180,7 +180,7 @@ void ComposedClip::render (juce::Graphics& view, double pts, float, float, juce:
         const auto transY   = clip->getVideoParameterController().getValueAtTime (IDs::translateY, localPts, 0.0);
         const auto rotation = clip->getVideoParameterController().getValueAtTime (IDs::rotation, localPts, 0.0);
 
-        clip->clip->render (view, localPts, float (rotation), float (zoom), { float (transX), float (transY) }, alpha);
+        clip->clip->render (view, area, localPts, float (rotation), float (zoom), { float (transX), float (transY) }, alpha);
     }
 }
 

@@ -72,10 +72,10 @@ public:
     virtual VideoFrame& getFrame (double pts) = 0;
 
     /** This is the virtual render() method for OpenGL rendering */
-    virtual void render (juce::Graphics& view, double pts, float rotation = 0.0f, float zoom = 100.0f, juce::Point<float> translation = juce::Point<float>(), float alpha = 1.0f) = 0;
+    virtual void render (juce::Graphics& g, juce::Rectangle<float> area, double pts, float rotation = 0.0f, float zoom = 100.0f, juce::Point<float> translation = juce::Point<float>(), float alpha = 1.0f) = 0;
 
     /** Renders a frame on the OpenGLView. You can call this from the AVClip subclasses */
-    void renderFrame (juce::Graphics& view, VideoFrame& frame, float rotation, float zoom, juce::Point<float> translation, float alpha, Zoom zoomType = Zoom::LetterBox);
+    void renderFrame (juce::Graphics& g, juce::Rectangle<float> area, VideoFrame& frame, float rotation, float zoom, juce::Point<float> translation, float alpha, Zoom zoomType = Zoom::LetterBox);
 
 #if FOLEYS_USE_OPENGL
     /** This is the virtual render() method for OpenGL rendering */

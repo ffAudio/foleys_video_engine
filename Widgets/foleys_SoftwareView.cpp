@@ -71,7 +71,7 @@ void SoftwareView::paint (juce::Graphics& g)
 
     if (clip)
     {
-        clip->render (g, clip->getCurrentTimeInSeconds());
+        clip->render (g, getLocalBounds().toFloat(), clip->getCurrentTimeInSeconds());
 //        const auto pts = clip->getCurrentTimeInSeconds();
 //
 //        if (clip->isFrameAvailable (pts) == false)

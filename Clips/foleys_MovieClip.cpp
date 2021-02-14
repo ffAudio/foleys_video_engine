@@ -117,9 +117,9 @@ VideoFrame& MovieClip::getFrame (double pts)
     return videoFifo.getFrameSeconds (pts);
 }
 
-void MovieClip::render (juce::Graphics& view, double pts, float rotation, float zoom, juce::Point<float> translation, float alpha)
+void MovieClip::render (juce::Graphics& view, juce::Rectangle<float> area, double pts, float rotation, float zoom, juce::Point<float> translation, float alpha)
 {
-    renderFrame (view, getFrame (pts), rotation, zoom, translation, alpha);
+    renderFrame (view, area, getFrame (pts), rotation, zoom, translation, alpha);
 }
 
 #if FOLEYS_USE_OPENGL
@@ -322,7 +322,7 @@ int MovieClip::BackgroundReaderJob::useTimeSlice()
         return 3;
     }
 
-    return 10;
+    return 30;
 }
 
 void MovieClip::BackgroundReaderJob::setSuspended (bool s)
