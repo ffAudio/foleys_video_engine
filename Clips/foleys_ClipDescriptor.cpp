@@ -34,6 +34,10 @@ namespace IDs
     static juce::Identifier parameter       { "Parameter" };
     static juce::Identifier pluginStatus    { "PluginStatus" };
     static juce::Identifier active          { "active" };
+    static juce::Identifier aspect          { "aspect" };
+    static juce::String     aspectLetterbox { "letterbox" };
+    static juce::String     aspectCrop      { "crop" };
+    static juce::String     aspectScale     { "scale" };
 }
 
 ClipDescriptor::ClipDescriptor (ComposedClip& ownerToUse, std::shared_ptr<AVClip> clipToUse, juce::UndoManager* undo)
@@ -183,6 +187,17 @@ void ClipDescriptor::valueTreePropertyChanged (juce::ValueTree& treeWhosePropert
 {
     if (treeWhosePropertyHasChanged != state)
         return;
+
+    if (clip.get() != nullptr && state.hasProperty (IDs::aspect))
+    {
+        const auto aspect = state.getProperty (IDs::aspect).toString();
+        if (aspect == IDs::aspectLetterbox)
+            clip->setAspectType (Aspect::LetterBox);
+        else if (aspect == IDs::aspectCrop)
+            clip->setAspectType (Aspect::Crop);
+        else if (aspect == IDs::aspectScale)
+            clip->setAspectType (Aspect::ZoomScale);
+    }
 
     updateSampleCounts();
 }

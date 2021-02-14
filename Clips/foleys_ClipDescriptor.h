@@ -192,13 +192,13 @@ private:
     ClipParameterController audioParameterController { *this };
     ClipParameterController videoParameterController { *this };
 
-    double start  = 0.0;
-    double length = 0.0;
-    double offset = 0.0;
+    std::atomic<double> start  = 0.0;
+    std::atomic<double> length  = 0.0;
+    std::atomic<double> offset  = 0.0;
 
-    int64_t startSamples  = 0;
-    int64_t lengthSamples = 0;
-    int64_t offsetSamples = 0;
+    std::atomic<int64_t> startSamples  = 0;
+    std::atomic<int64_t> lengthSamples  = 0;
+    std::atomic<int64_t> offsetSamples  = 0;
 
     void valueTreePropertyChanged (juce::ValueTree& treeWhosePropertyHasChanged,
                                    const juce::Identifier& property) override;

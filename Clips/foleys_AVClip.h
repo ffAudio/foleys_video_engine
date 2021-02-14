@@ -75,14 +75,14 @@ public:
     virtual void render (juce::Graphics& g, juce::Rectangle<float> area, double pts, float rotation = 0.0f, float zoom = 100.0f, juce::Point<float> translation = juce::Point<float>(), float alpha = 1.0f) = 0;
 
     /** Renders a frame on the OpenGLView. You can call this from the AVClip subclasses */
-    void renderFrame (juce::Graphics& g, juce::Rectangle<float> area, VideoFrame& frame, float rotation, float zoom, juce::Point<float> translation, float alpha, Zoom zoomType = Zoom::LetterBox);
+    void renderFrame (juce::Graphics& g, juce::Rectangle<float> area, VideoFrame& frame, float rotation, float zoom, juce::Point<float> translation, float alpha);
 
 #if FOLEYS_USE_OPENGL
     /** This is the virtual render() method for OpenGL rendering */
     virtual void render (OpenGLView& view, double pts, float rotation = 0.0f, float zoom = 100.0f, juce::Point<float> translation = juce::Point<float>(), float alpha = 1.0f) = 0;
 
     /** Renders a frame on the OpenGLView. You can call this from the AVClip subclasses */
-    void renderFrame (OpenGLView& view, VideoFrame& frame, float rotation, float zoom, juce::Point<float> translation, float alpha, Zoom zoomType = Zoom::LetterBox);
+    void renderFrame (OpenGLView& view, VideoFrame& frame, float rotation, float zoom, juce::Point<float> translation, float alpha);
 #endif
 
     /** Checks, if a frame is available */
@@ -101,6 +101,8 @@ public:
      This is the samplerate supplied from prepareToPlay and the sample rate
      this clip will produce audio and use as clock source. */
     virtual double getSampleRate() const = 0;
+
+    void setAspectType (Aspect type);
 
     /**
      Returns the duration of a frame in seconds. This is the inverse of frame rate.
@@ -153,6 +155,8 @@ protected:
 
 private:
     juce::WeakReference<VideoEngine> videoEngine;
+
+    Aspect zoomType = Aspect::LetterBox;
 
     ParameterMap videoParameters;
     ParameterMap audioParameters;

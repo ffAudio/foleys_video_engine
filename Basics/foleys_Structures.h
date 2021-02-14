@@ -42,7 +42,7 @@ struct Size final
     }
 };
 
-enum class Zoom
+enum class Aspect
 {
     NoZoom = 0, /**< Don't zoom, keep pixel size */
     ZoomScale,  /**< Zoom to fill target, ignore aspect ratio */
@@ -86,9 +86,10 @@ static inline juce::String timecodeToString (double pts)
 {
     auto intSeconds = int64_t (pts);
 
+    constexpr auto secondsPerDay = 3600 * 24;
     auto milliSeconds = int (1000.0 * (pts - intSeconds));
-    auto days = int (intSeconds / (3600 * 24));
-    intSeconds -= days * 3600 * 24;
+    auto days = int (intSeconds / secondsPerDay);
+    intSeconds -= days * secondsPerDay;
     auto hours = int (intSeconds / 3600);
     intSeconds -= hours * 3600;
     auto minutes = int (intSeconds / 60);

@@ -54,24 +54,13 @@ public:
 
     void render (juce::Graphics& view, juce::Rectangle<float> area, double pts, float rotation = 0.0f, float zoom = 100.0f, juce::Point<float> translation = juce::Point<float>(), float alpha = 1.0f) override
     {
-        juce::ignoreUnused (view);
-        juce::ignoreUnused (area);
-        juce::ignoreUnused (pts);
-        juce::ignoreUnused (rotation);
-        juce::ignoreUnused (zoom);
-        juce::ignoreUnused (translation);
-        juce::ignoreUnused (alpha);
+        juce::ignoreUnused (view, area, pts, rotation, zoom, translation, alpha);
     }
 
 #if FOLEYS_USE_OPENGL
     void render (OpenGLView& view, double pts, float rotation = 0.0f, float zoom = 100.0f, juce::Point<float> translation = juce::Point<float>(), float alpha = 1.0f) override
     {
-        juce::ignoreUnused (view);
-        juce::ignoreUnused (pts);
-        juce::ignoreUnused (rotation);
-        juce::ignoreUnused (zoom);
-        juce::ignoreUnused (translation);
-        juce::ignoreUnused (alpha);
+        juce::ignoreUnused (view, pts, rotation, zoom, translation, alpha);
     }
 #endif
 

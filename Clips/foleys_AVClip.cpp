@@ -73,6 +73,10 @@ AVClip::AVClip (VideoEngine& videoEngineToUse) : videoEngine (&videoEngineToUse)
 {
 }
 
+void AVClip::setAspectType (Aspect type)
+{
+    zoomType = type;
+}
 
 const ParameterMap& AVClip::getVideoParameters()
 {
@@ -106,7 +110,7 @@ VideoEngine* AVClip::getVideoEngine() const
     return videoEngine;
 }
 
-void AVClip::renderFrame (juce::Graphics& g, juce::Rectangle<float> area, VideoFrame& frame, float rotation, float zoom, juce::Point<float> translation, float alpha, Zoom zoomType)
+void AVClip::renderFrame (juce::Graphics& g, juce::Rectangle<float> area, VideoFrame& frame, float rotation, float zoom, juce::Point<float> translation, float alpha)
 {
     if (frame.image.isNull())
         return;
@@ -118,12 +122,26 @@ void AVClip::renderFrame (juce::Graphics& g, juce::Rectangle<float> area, VideoF
     const auto factorX = area.getWidth() / frame.image.getWidth();
     const auto factorY = area.getHeight() / frame.image.getHeight();
 
-    if (zoomType == Zoom::LetterBox)
-        transformation = transformation.scale (std::min (factorX, factorY));
-    else if (zoomType == Zoom::Crop)
-        transformation = transformation.scale (std::max (factorX, factorY));
-    else if (zoomType == Zoom::ZoomScale)
+    juce::Point<float> offset;
+
+    if (zoomType == Aspect::LetterBox)
+    {
+        const auto factor = std::min (factorX, factorY);
+        transformation = transformation.scale (factor);
+        offset.setXY ((area.getWidth() - frame.image.getWidth() * factor) * 0.5f,
+                      (area.getHeight() - frame.image.getHeight() * factor) * 0.5f);
+    }
+    else if (zoomType == Aspect::Crop)
+    {
+        const auto factor = std::max (factorX, factorY);
+        transformation = transformation.scale (factor);
+        offset.setXY ((area.getWidth() - frame.image.getWidth() * factor) * 0.5f,
+                      (area.getHeight() - frame.image.getHeight() * factor) * 0.5f);
+    }
+    else if (zoomType == Aspect::ZoomScale)
+    {
         transformation = transformation.scale (factorX, factorY);
+    }
 
     transformation = transformation.translated (area.getX(), area.getY());
 
@@ -132,11 +150,12 @@ void AVClip::renderFrame (juce::Graphics& g, juce::Rectangle<float> area, VideoF
                                    .translated (area.getWidth() * translation.x, area.getHeight() * translation.y);
 
     g.setOpacity (alpha);
+    g.setOrigin (offset.roundToInt());
     g.drawImageTransformed (frame.image, transformation);
 }
 
 #if FOLEYS_USE_OPENGL
-void AVClip::renderFrame (OpenGLView& view, VideoFrame& frame, float rotation, float zoom, juce::Point<float> translation, float alpha, Zoom zoomType)
+void AVClip::renderFrame (OpenGLView& view, VideoFrame& frame, float rotation, float zoom, juce::Point<float> translation, float alpha)
 {
     if (frame.image.isNull())
         return;
@@ -149,7 +168,7 @@ void AVClip::renderFrame (OpenGLView& view, VideoFrame& frame, float rotation, f
     auto aspect = float (frame.image.getWidth())    / frame.image.getHeight();
     auto target = view.getLocalBounds();
 
-    if (zoomType == Zoom::LetterBox)
+    if (zoomType == Aspect::LetterBox)
     {
         auto targetWidth  = view.getHeight() * aspect;
         auto targetHeight = view.getWidth()  / aspect;
@@ -162,7 +181,7 @@ void AVClip::renderFrame (OpenGLView& view, VideoFrame& frame, float rotation, f
     }
     // FIXME: Do other zoom types
 
-    auto transform = juce::AffineTransform::rotation (juce::degreesToRadians (rotation), frame.image.getWidth() * 0.5f, -frame.image.getHeight() * 0.5f)
+    auto transform = juce::AffineTransform::rotation (juce::degreesToRadians (rotation), frame.image.getWidth() * 0.5f, frame.image.getHeight() * 0.5f)
                     .scaled (zoom * 0.01f, zoom * 0.01f, frame.image.getWidth() * 0.5f, frame.image.getHeight() * 0.5f)
                     .translated (frame.image.getWidth() * translation.x, frame.image.getHeight() * translation.y);
 
