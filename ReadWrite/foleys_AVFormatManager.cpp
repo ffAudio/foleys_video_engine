@@ -81,9 +81,10 @@ std::unique_ptr<AVReader> AVFormatManager::createReaderFor (juce::File file, Str
 
 #if FOLEYS_USE_FFMPEG
     return std::make_unique<FFmpegReader> (file, type);
-#endif
-
+#else
+    juce::ignoreUnused (file, type);
     return {};
+#endif
 }
 
 std::unique_ptr<AVWriter> AVFormatManager::createClipWriter (juce::File file)
@@ -92,8 +93,10 @@ std::unique_ptr<AVWriter> AVFormatManager::createClipWriter (juce::File file)
 #if FOLEYS_USE_FFMPEG
     auto writer = std::make_unique<FFmpegWriter>(file, "");
     return writer;
-#endif
+#else
+    juce::ignoreUnused (file);
     return {};
+#endif
 }
 
 void AVFormatManager::registerFactory (const juce::String& schema, std::function<AVClip*(foleys::VideoEngine& videoEngine, juce::URL url, StreamTypes type)> factory)
