@@ -70,6 +70,7 @@ private:
     double startTime = {};
     double endTime   = {};
     double aspectRatio = 1.33;
+    int    lastHeight  = -1;
 
     std::unique_ptr<ThumbnailJob> thumbnailJob;
     std::vector<juce::Image> thumbnails;
