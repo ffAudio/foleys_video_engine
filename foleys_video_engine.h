@@ -1,11 +1,7 @@
 /*
   ==============================================================================
 
-<<<<<<< HEAD
-  Copyright (c) 2019-2020, Foleys Finest Audio - Daniel Walz
-=======
   Copyright (c) 2019-2021, Foleys Finest Audio - Daniel Walz
->>>>>>> 27d0c5487ac916c201dcc74c82597792ee2934b6
   All rights reserved.
 
   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
@@ -41,9 +37,9 @@
  */
 
 /** Config: FOLEYS_USE_OPENGL
-    Set this flag to attach an OpenGLContext to the VideoPreview
-    and use the juce OpenGL backend. Make sure to add the
-    optional module juce_opengl
+    *Experimental* This flag will switch from the juce paint() to the
+    juce::OpenGLRenderer. That way every AVClip has the chance to issue
+    raw OpenGL calls.
  */
 #ifndef FOLEYS_USE_OPENGL
 #define FOLEYS_USE_OPENGL 0
@@ -80,7 +76,7 @@
 #define FOLEYS_DEBUG_LOGGING 0
 #endif
 
-#define FOLEYS_ENGINE_VERSION "0.1.0"
+#define FOLEYS_ENGINE_VERSION "0.2.0"
 
 #pragma once
 

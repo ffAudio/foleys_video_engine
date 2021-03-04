@@ -174,6 +174,20 @@ public:
         }
     }
 
+#if JUCE_ANDROID
+  #if JUCE_BIG_ENDIAN
+    static const AVPixelFormat juceInternalFormat = AV_PIX_FMT_0BGR;
+  #else
+    static const AVPixelFormat juceInternalFormat = AV_PIX_FMT_RGB0;
+  #endif
+#else
+  #if JUCE_BIG_ENDIAN
+    static const AVPixelFormat juceInternalFormat = AV_PIX_FMT_0RGB;
+  #else
+    static const AVPixelFormat juceInternalFormat = AV_PIX_FMT_BGR0;
+  #endif
+#endif
+
 
 private:
     SwsContext*     scalerContext = nullptr;

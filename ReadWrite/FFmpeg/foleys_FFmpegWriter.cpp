@@ -205,7 +205,7 @@ struct FFmpegWriter::Pimpl
 
         descriptor.scaler.setupScaler (image.getWidth(),
                                        image.getHeight(),
-                                       AV_PIX_FMT_BGR0,
+                                       FFmpegVideoScaler::juceInternalFormat,
                                        descriptor.context->width,
                                        descriptor.context->height,
                                        descriptor.context->pix_fmt);

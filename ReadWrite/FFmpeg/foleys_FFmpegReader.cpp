@@ -105,7 +105,7 @@ public:
                                 videoContext->pix_fmt,
                                 videoContext->width,
                                 videoContext->height,
-                                AV_PIX_FMT_BGR0);
+                                FFmpegVideoScaler::juceInternalFormat);
 
             FOLEYS_LOG ("Video stream [" << videoStreamIdx << "]: timebase " << stream->time_base.den << "/" << stream->time_base.num);
         }
