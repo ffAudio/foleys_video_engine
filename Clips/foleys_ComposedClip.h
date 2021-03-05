@@ -118,7 +118,7 @@ public:
                                 juce::ValueTree& childWhichHasBeenRemoved,
                                 int indexFromWhichChildWasRemoved) override;
 
-    void valueTreeChildOrderChanged (juce::ValueTree&, int, int) override {}
+    void valueTreeChildOrderChanged (juce::ValueTree&, int oldIndex, int newIndex) override;
 
     void valueTreeParentChanged (juce::ValueTree&) override {}
 

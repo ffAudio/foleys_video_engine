@@ -405,8 +405,13 @@ void ComposedClip::valueTreeChildAdded (juce::ValueTree&, juce::ValueTree& child
             descriptor->updateSampleCounts();
             descriptor->getVideoParameterController().addListener (this);
 
+            auto index = state.indexOf (childWhichHasBeenAdded);
+
             juce::ScopedLock sl (clipDescriptorLock);
-            clips.push_back (descriptor);
+            if (index >= 0)
+                clips.insert (clips.begin() + index, descriptor);
+            else
+                clips.push_back (descriptor);
         }
     }
 }
@@ -418,18 +423,29 @@ void ComposedClip::valueTreeChildRemoved (juce::ValueTree&, juce::ValueTree& chi
 
     if (childWhichHasBeenRemoved.getType() == IDs::clip)
     {
+        juce::ScopedLock sl (clipDescriptorLock);
         for (auto it = clips.begin(); it != clips.end(); ++it)
         {
             if ((*it)->getStatusTree() == childWhichHasBeenRemoved)
             {
                 (*it)->getVideoParameterController().removeListener (this);
-
-                juce::ScopedLock sl (clipDescriptorLock);
                 clips.erase (it);
                 return;
             }
         }
     }
+}
+
+void ComposedClip::valueTreeChildOrderChanged (juce::ValueTree&, int oldIndex, int newIndex)
+{
+    if (manualStateChange)
+        return;
+
+    juce::ScopedLock sl (clipDescriptorLock);
+    auto oldIt = clips.begin() + oldIndex;
+    auto element = *oldIt;
+    clips.erase (oldIt);
+    clips.insert (clips.begin() + newIndex, element);
 }
 
 juce::UndoManager* ComposedClip::getUndoManager()
