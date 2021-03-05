@@ -78,6 +78,16 @@
 
 #define FOLEYS_ENGINE_VERSION "0.2.0"
 
+// foleys_video_addons is a proprietory module containing
+// camera support and reading and writing using the
+// platform SDKs instead of ffmpeg
+#ifdef JUCE_MODULE_AVAILABLE_foleys_video_addons
+#define FOLEYS_HAS_ADDONS JUCE_MODULE_AVAILABLE_foleys_video_addons
+#else
+#define FOLEYS_HAS_ADDONS 0
+#endif
+
+
 #pragma once
 
 #include <juce_core/juce_core.h>

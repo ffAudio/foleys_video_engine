@@ -24,6 +24,10 @@
 namespace foleys
 {
 
+#if FOLEYS_HAS_ADDONS && FOLEYS_CAMERA_SUPPORT
+class CameraManager;
+#endif
+
 /**
  @class VideoEngine
 
@@ -136,6 +140,22 @@ private:
 
     JUCE_DECLARE_WEAK_REFERENCEABLE (VideoEngine)
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (VideoEngine)
+    
+#if FOLEYS_HAS_ADDONS && FOLEYS_CAMERA_SUPPORT
+public:
+    void setCameraManager (CameraManager* manager)
+    {
+        cameraManager = manager;
+    }
+    CameraManager* getCameraManager()
+    {
+        return cameraManager;
+    }
+
+private:
+    CameraManager* cameraManager = nullptr;
+#endif
+
 };
 
 } // foleys

@@ -56,9 +56,10 @@ void FilmStrip::paint (juce::Graphics& g)
 
 void FilmStrip::resized()
 {
-    if (lastHeight != getHeight())
+    if (lastBounds.getWidth() != getWidth() ||
+        lastBounds.getHeight() != getHeight())
     {
-        lastHeight = getHeight();
+        lastBounds = getBounds();
         update();
     }
 }
