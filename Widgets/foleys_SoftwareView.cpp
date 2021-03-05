@@ -71,19 +71,40 @@ void SoftwareView::paint (juce::Graphics& g)
 
     if (clip)
     {
-        clip->render (g, getLocalBounds().toFloat(), clip->getCurrentTimeInSeconds());
-//        const auto pts = clip->getCurrentTimeInSeconds();
-//
-//        if (clip->isFrameAvailable (pts) == false)
-//            juce::Timer::callAfterDelay (20, [&]{ repaint(); });
-//        else
-//            g.drawImage (clip->getFrame (pts).image, getLocalBounds().toFloat(), placement);
+        const auto time = clip->getCurrentTimeInSeconds();
+        const auto ready = clip->isFrameAvailable (time);
+
+        clip->render (g, getLocalBounds().toFloat(), time);
+
+        if (ready == false)
+        {
+            juce::Component::SafePointer<juce::Component> safe (this);
+            juce::Timer::callAfterDelay (10, [safe]()mutable
+            {
+                if (safe)
+                    safe->repaint();
+            });
+        }
     }
 }
 
 void SoftwareView::timecodeChanged (int64_t, double)
 {
+    if (! isTimerRunning())
+        repaint();
+}
+
+void SoftwareView::timerCallback()
+{
     repaint();
+}
+
+void SoftwareView::setContinuousRepaint (int hz)
+{
+    if (hz > 0)
+        startTimerHz (hz);
+    else
+        stopTimer();
 }
 
 } // foleys

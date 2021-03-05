@@ -30,7 +30,8 @@ namespace foleys
  real time.
  */
 class SoftwareView  : public juce::Component,
-                      public VideoView
+                      public VideoView,
+                      private juce::Timer
 {
 public:
     SoftwareView();
@@ -42,6 +43,10 @@ public:
     std::shared_ptr<AVClip> getClip() const override;
 
     void paint (juce::Graphics& g) override;
+
+    void setContinuousRepaint (int hz) override;
+
+    void timerCallback() override;
 
     void timecodeChanged (int64_t count, double seconds) override;
 

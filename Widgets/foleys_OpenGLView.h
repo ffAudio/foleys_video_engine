@@ -1,11 +1,7 @@
 /*
  ==============================================================================
 
-<<<<<<< HEAD
- Copyright (c) 2020, Foleys Finest Audio - Daniel Walz
-=======
  Copyright (c) 2020 - 2021, Foleys Finest Audio - Daniel Walz
->>>>>>> 27d0c5487ac916c201dcc74c82597792ee2934b6
  All rights reserved.
 
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
@@ -54,6 +50,8 @@ public:
     void render() override;
     void initialise() override;
     void shutdown() override;
+
+    void setContinuousRepaint (int hz) override;
 
     void timecodeChanged (int64_t count, double seconds) override;
 

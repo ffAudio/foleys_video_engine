@@ -1,11 +1,7 @@
 /*
  ==============================================================================
 
-<<<<<<< HEAD
- Copyright (c) 2020, Foleys Finest Audio - Daniel Walz
-=======
  Copyright (c) 2020 - 2021, Foleys Finest Audio - Daniel Walz
->>>>>>> 27d0c5487ac916c201dcc74c82597792ee2934b6
  All rights reserved.
 
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
@@ -85,6 +81,11 @@ void OpenGLView::initialise()
 void OpenGLView::shutdown()
 {
     textures.clear();
+}
+
+void OpenGLView::setContinuousRepaint (int hz)
+{
+    openGLContext.setContinuousRepainting (hz > 0);
 }
 
 juce::OpenGLContext& OpenGLView::getContext()

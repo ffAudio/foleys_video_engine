@@ -33,6 +33,8 @@ public:
 
     virtual std::shared_ptr<AVClip> getClip() const = 0;
 
+    virtual void setContinuousRepaint (int hz) = 0;
+
 #if FOLEYS_SHOW_SPLASHSCREEN
 protected:
     void addSplashscreen (juce::Component& view)
