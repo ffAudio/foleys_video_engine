@@ -99,7 +99,7 @@ std::unique_ptr<AVWriter> AVFormatManager::createClipWriter (juce::File file)
 #endif
 }
 
-void AVFormatManager::registerFactory (const juce::String& schema, std::function<AVClip*(foleys::VideoEngine& videoEngine, juce::URL url, StreamTypes type)> factory)
+void AVFormatManager::registerFactory (const juce::String& schema, std::function<std::shared_ptr<AVClip>(foleys::VideoEngine& videoEngine, juce::URL url, StreamTypes type)> factory)
 {
     factories [schema] = factory;
 }
