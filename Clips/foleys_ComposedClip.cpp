@@ -70,26 +70,30 @@ void ComposedClip::invalidateVideo()
     handleUpdateNowIfNeeded();
 }
 
-std::shared_ptr<ClipDescriptor> ComposedClip::addClip (std::shared_ptr<AVClip> clip, double start, double length, double offset)
+std::shared_ptr<ClipDescriptor> ComposedClip::addClip (std::shared_ptr<AVClip> clip, ClipPosition pos, int zPosition)
 {
     auto clipDescriptor = std::make_shared<ClipDescriptor> (*this, clip, getUndoManager());
     clip->prepareToPlay (audioSettings.defaultNumSamples, audioSettings.timebase);
 
     clipDescriptor->setDescription (makeUniqueDescription (clip->getDescription()));
-    clipDescriptor->setStart (start);
-    clipDescriptor->setOffset (offset);
-    clipDescriptor->setLength (length > 0 ? length : clip->getLengthInSeconds());
+    clipDescriptor->setStart (pos.start);
+    clipDescriptor->setOffset (pos.offset);
+    clipDescriptor->setLength (pos.length > 0 ? pos.length : clip->getLengthInSeconds());
 
     clipDescriptor->updateSampleCounts();
 
-    juce::ScopedLock sl (clipDescriptorLock);
-
-    clips.push_back (clipDescriptor);
-
     juce::ScopedValueSetter<bool> manual (manualStateChange, true);
-    state.appendChild (clipDescriptor->getStatusTree(), getUndoManager());
+    state.addChild (clipDescriptor->getStatusTree(), zPosition, getUndoManager());
 
     clipDescriptor->getVideoParameterController().addListener (this);
+
+    {
+        juce::ScopedLock sl (clipDescriptorLock);
+        if (juce::isPositiveAndBelow (zPosition, clips.size()))
+            clips.insert (std::next (clips.begin(), zPosition), clipDescriptor);
+        else
+            clips.push_back (clipDescriptor);
+    }
 
     return clipDescriptor;
 }

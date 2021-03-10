@@ -42,6 +42,14 @@ class ComposedClip  : public AVClip,
                       private juce::ValueTree::Listener
 {
 public:
+
+    struct ClipPosition
+    {
+        double start  = 0.0;
+        double length = -1.0;
+        double offset = 0.0;
+    };
+
     ComposedClip (VideoEngine& videoEngine);
 
     /** Used to identify the clip type to the user */
@@ -101,7 +109,18 @@ public:
         You can use this to listen to changes or to serialise a clip / project */
     juce::ValueTree& getStatusTree();
 
-    std::shared_ptr<ClipDescriptor> addClip (std::shared_ptr<AVClip> clip, double start, double length = -1, double offset = 0);
+    /**
+     Add an existing clip to the ComposedClip.
+     @param clip is the clip you want to add
+     @param position is a struct containing start, length and offset
+     @param zPosition is the position in the clips vector. This value determins the drawing order of the clip. -1 will add at the end.
+     @return a descriptor that holds the clip as well as the information like position, plugins etc.
+     */
+    std::shared_ptr<ClipDescriptor> addClip (std::shared_ptr<AVClip> clip, ClipPosition position, int zPosition = -1);
+
+    /**
+     remove a ClipDescriptor from the clips vector
+     */
     void removeClip (std::shared_ptr<ClipDescriptor> descriptor);
 
     /** allows safe access to the clips list. It returns a copy you can modify at will */
