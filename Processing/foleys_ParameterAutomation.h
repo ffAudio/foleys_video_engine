@@ -46,18 +46,58 @@ public:
     virtual int getNumSteps() const = 0;
     virtual juce::StringArray getAllValueStrings() const = 0;
 
+    /**
+     This updates the parameter to match the state at a certain timepoint.
+     Call this before you process a block.
+     */
     virtual void updateProcessor (double pts) = 0;
 
+    /**
+     This sets the value of the parameter.
+     Note as soon as there is a keyframe on the automation, this has no more effect.
+     */
     void setValue (double value);
 
+    /**
+     Set the value at a certain timepoint.
+     If there was no keyframe recorded yet, this will just call setValue.
+     If there was a keyframe anywhere on the automation, this will add a keyframe at this position.
+     */
     void setValue (double pts, double value);
 
+    /**
+     This will add a keyframe at the given position.
+     */
     void addKeyframe (double pts, double value);
+
+    /**
+     Set the value from an unnormalised value.
+     */
+    virtual void setRealValue (double value) = 0;
+
+    /**
+     Set the value from an unnormalised value at a certain timepoint.
+     If there was no keyframe recorded yet, this will just call setValue.
+     If there was a keyframe anywhere on the automation, this will add a keyframe at this position.
+     */
+    virtual void setRealValue (double pts, double value) = 0;
+
+    /**
+     This will add a keyframe with an unnormalised value at the given position.
+     */
+    virtual void addRealKeyframe (double pts, double value) = 0;
 
     void setKeyframe (int index, double pts, double value);
     void deleteKeyframe (int index);
 
+    /**
+     Returns the normalised value at a certain time.
+     */
     double         getValueForTime (double pts) const;
+
+    /**
+     Returns the unnormalised value at a certain time.
+     */
     virtual double getRealValueForTime (double pts) const = 0;
 
     double getValue() const;
@@ -161,6 +201,10 @@ public:
     void updateProcessor (double pts) override;
     double getRealValueForTime (double pts) const override;
 
+    void setRealValue (double value) override;
+    void setRealValue (double pts, double value) override;
+    void addRealKeyframe (double pts, double value) override;
+
     void parameterValueChanged (int parameterIndex, float newValue) override;
 
     void parameterGestureChanged (int parameterIndex, bool gestureIsStarting) override;
@@ -202,6 +246,10 @@ public:
 
     void updateProcessor (double pts) override;
     double getRealValueForTime (double pts) const override;
+
+    void setRealValue (double value) override;
+    void setRealValue (double pts, double value) override;
+    void addRealKeyframe (double pts, double value) override;
 
     void valueChanged (ProcessorParameter& parameter, double newValue) override;
     void gestureStarted (ProcessorParameter& parameter) override;

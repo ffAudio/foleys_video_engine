@@ -344,6 +344,30 @@ double AudioParameterAutomation::getRealValueForTime (double pts) const
     return getValueForTime (pts);
 }
 
+void AudioParameterAutomation::setRealValue (double value)
+{
+    if (auto* ranged = dynamic_cast<juce::RangedAudioParameter*>(&parameter))
+        setValue (ranged->getNormalisableRange().convertTo0to1 (value));
+    else
+        setValue (value);
+}
+
+void AudioParameterAutomation::setRealValue (double pts, double value)
+{
+    if (auto* ranged = dynamic_cast<juce::RangedAudioParameter*>(&parameter))
+        setValue (pts, ranged->getNormalisableRange().convertTo0to1 (value));
+    else
+        setValue (pts, value);
+}
+
+void AudioParameterAutomation::addRealKeyframe (double pts, double value)
+{
+    if (auto* ranged = dynamic_cast<juce::RangedAudioParameter*>(&parameter))
+        addKeyframe (pts, ranged->getNormalisableRange().convertTo0to1 (value));
+    else
+        addKeyframe (pts, value);
+}
+
 void AudioParameterAutomation::parameterValueChanged (int, float newValue)
 {
 //    DBG ("Got Value: " << getName() << " - " << juce::String (newValue) << " " << juce::String (parameterIndex) << "/" << juce::String (parameter.getParameterIndex()));
@@ -429,6 +453,21 @@ void VideoParameterAutomation::updateProcessor (double pts)
 double VideoParameterAutomation::getRealValueForTime (double pts) const
 {
     return parameter.unNormaliseValue (getValueForTime (pts));
+}
+
+void VideoParameterAutomation::setRealValue (double value)
+{
+    setValue (parameter.normaliseValue (value));
+}
+
+void VideoParameterAutomation::setRealValue (double pts, double value)
+{
+    setValue (pts, parameter.normaliseValue (value));
+}
+
+void VideoParameterAutomation::addRealKeyframe (double pts, double value)
+{
+    addKeyframe (pts, parameter.normaliseValue (value));
 }
 
 void VideoParameterAutomation::valueChanged (ProcessorParameter&, double newValue)
