@@ -347,7 +347,7 @@ double AudioParameterAutomation::getRealValueForTime (double pts) const
 void AudioParameterAutomation::setRealValue (double value)
 {
     if (auto* ranged = dynamic_cast<juce::RangedAudioParameter*>(&parameter))
-        setValue (ranged->getNormalisableRange().convertTo0to1 (value));
+        setValue (ranged->getNormalisableRange().convertTo0to1 (float (value)));
     else
         setValue (value);
 }
@@ -355,7 +355,7 @@ void AudioParameterAutomation::setRealValue (double value)
 void AudioParameterAutomation::setRealValue (double pts, double value)
 {
     if (auto* ranged = dynamic_cast<juce::RangedAudioParameter*>(&parameter))
-        setValue (pts, ranged->getNormalisableRange().convertTo0to1 (value));
+        setValue (pts, ranged->getNormalisableRange().convertTo0to1 (float (value)));
     else
         setValue (pts, value);
 }
@@ -363,7 +363,7 @@ void AudioParameterAutomation::setRealValue (double pts, double value)
 void AudioParameterAutomation::addRealKeyframe (double pts, double value)
 {
     if (auto* ranged = dynamic_cast<juce::RangedAudioParameter*>(&parameter))
-        addKeyframe (pts, ranged->getNormalisableRange().convertTo0to1 (value));
+        addKeyframe (pts, ranged->getNormalisableRange().convertTo0to1 (float (value)));
     else
         addKeyframe (pts, value);
 }
