@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['movieclip',['MovieClip',['../classfoleys_1_1MovieClip.html',1,'foleys']]]
+  ['keyframecomparator_9755',['KeyframeComparator',['../structfoleys_1_1KeyframeComparator.html',1,'foleys']]]
 ];

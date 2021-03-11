@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['subtitles',['Subtitles',['../classfoleys_1_1StreamTypes.html#a8a65141d9ea4bf9d2e2377ed6b888a1da2e450aab5b8b71a21c3ad97b9ae19358',1,'foleys::StreamTypes']]]
+  ['idft_5fc2r_15554',['IDFT_C2R',['../group__lavc__fft.html#gga58a704747daba49afa3611cea218a24baadf7acc2f968f4345998fef751bedc8c',1,'avfft.h']]],
+  ['idft_5fr2c_15555',['IDFT_R2C',['../group__lavc__fft.html#gga58a704747daba49afa3611cea218a24ba5b4ae99ec831a4fc29d1a4bac635cdb6',1,'avfft.h']]]
 ];

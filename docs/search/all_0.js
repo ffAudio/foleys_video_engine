@@ -1,31 +1,4 @@
 var searchData=
 [
-  ['acceptsmidi',['acceptsMidi',['../classfoleys_1_1PanningAudioProcessor.html#a53eb950f018c477390f827558a61fe26',1,'foleys::PanningAudioProcessor']]],
-  ['addaudioprocessor',['addAudioProcessor',['../classfoleys_1_1ClipDescriptor.html#ad0bb53f871060eaea348d0a4c762cf04',1,'foleys::ClipDescriptor::addAudioProcessor(std::unique_ptr&lt; ProcessorController &gt; controller, int index=-1)'],['../classfoleys_1_1ClipDescriptor.html#a17f7d6fe3e83e74f98b7043d8bd34fba',1,'foleys::ClipDescriptor::addAudioProcessor(std::unique_ptr&lt; juce::AudioProcessor &gt; processor, int index=-1)']]],
-  ['addaudiostream',['addAudioStream',['../classfoleys_1_1AVWriter.html#a205fdad2d58f8b6a4b2d13f001cba1e5',1,'foleys::AVWriter']]],
-  ['addclip',['addClip',['../classfoleys_1_1ComposedClip.html#ab89734620611ea6efa8e8c10b55c93d1',1,'foleys::ComposedClip']]],
-  ['addjob',['addJob',['../classfoleys_1_1VideoEngine.html#ac21caff9c9c252de9ec456b9d89133fe',1,'foleys::VideoEngine::addJob(std::function&lt; void()&gt; job)'],['../classfoleys_1_1VideoEngine.html#ae13050714dce9c65276b4d54624bf6a6',1,'foleys::VideoEngine::addJob(juce::ThreadPoolJob *job, bool deleteJobWhenFinished)']]],
-  ['addkeyframe',['addKeyframe',['../classfoleys_1_1ParameterAutomation.html#abda9fbd5f4d6f29b441e85bcda466599',1,'foleys::ParameterAutomation']]],
-  ['addlistener',['addListener',['../classfoleys_1_1ClipDescriptor.html#abf312004846c89cae4c3a05315494840',1,'foleys::ClipDescriptor::addListener()'],['../classfoleys_1_1ProcessorParameter.html#abf312004846c89cae4c3a05315494840',1,'foleys::ProcessorParameter::addListener()']]],
-  ['addtimecodelistener',['addTimecodeListener',['../classfoleys_1_1AVClip.html#a04c9b04b7b73196f2e661c09060918f5',1,'foleys::AVClip']]],
-  ['addvideoprocessor',['addVideoProcessor',['../classfoleys_1_1ClipDescriptor.html#af8cf1e7ec2e8f858763f8359396a7953',1,'foleys::ClipDescriptor::addVideoProcessor(std::unique_ptr&lt; ProcessorController &gt; controller, int index=-1)'],['../classfoleys_1_1ClipDescriptor.html#a963ab30b2145bea41c3d4c3b4655b6bd',1,'foleys::ClipDescriptor::addVideoProcessor(std::unique_ptr&lt; VideoProcessor &gt; processor, int index=-1)']]],
-  ['addvideostream',['addVideoStream',['../classfoleys_1_1AVWriter.html#abee686cda7bc6b8b4dc633d4c8d60a50',1,'foleys::AVWriter']]],
-  ['all',['all',['../classfoleys_1_1StreamTypes.html#a71f5cc477590cfbcc016833175ad82c1',1,'foleys::StreamTypes']]],
-  ['applylut',['applyLUT',['../classfoleys_1_1ColourCurve.html#a5c3da8f58434169ccba9ee7498d5e695',1,'foleys::ColourCurve']]],
-  ['applyluts',['applyLUTs',['../classfoleys_1_1ColourCurve.html#a991cd76be957f9818c0c858e11fb479c',1,'foleys::ColourCurve::applyLUTs(juce::Image &amp;image, const ColourCurve &amp;red, const ColourCurve &amp;green, const ColourCurve &amp;blue)'],['../classfoleys_1_1ColourCurve.html#a6b081644a281346ce61afa12587dce18',1,'foleys::ColourCurve::applyLUTs(juce::Image &amp;image, const ColourCurve &amp;red, const ColourCurve &amp;green, const ColourCurve &amp;blue, const ColourCurve &amp;alpha)']]],
-  ['audio',['Audio',['../classfoleys_1_1StreamTypes.html#a8a65141d9ea4bf9d2e2377ed6b888a1dad3c111fe8a0e835609a6187d6e9d2e57',1,'foleys::StreamTypes::Audio()'],['../classfoleys_1_1StreamTypes.html#a1fc0429827d685bbe8435add933c997d',1,'foleys::StreamTypes::audio()']]],
-  ['audioclip',['AudioClip',['../classfoleys_1_1AudioClip.html',1,'AudioClip'],['../classfoleys_1_1AudioClip.html#afd582c8f928fdaa75383854295e2c728',1,'foleys::AudioClip::AudioClip()']]],
-  ['audiofifo',['AudioFifo',['../classfoleys_1_1AudioFifo.html',1,'AudioFifo'],['../classfoleys_1_1AudioFifo.html#a24bd408de9653562c7e94de715a9b154',1,'foleys::AudioFifo::AudioFifo()']]],
-  ['audiomixer',['AudioMixer',['../classfoleys_1_1AudioMixer.html',1,'AudioMixer'],['../classfoleys_1_1AudioMixer.html#aee7c2e583f66f1897ea2aa1223aebd5d',1,'foleys::AudioMixer::AudioMixer()']]],
-  ['audioparameterautomation',['AudioParameterAutomation',['../classfoleys_1_1AudioParameterAutomation.html',1,'AudioParameterAutomation'],['../classfoleys_1_1AudioParameterAutomation.html#a1aaab74f2d1cf0df74c2df96bfc3cdb0',1,'foleys::AudioParameterAutomation::AudioParameterAutomation()']]],
-  ['audioplugineditormanager',['AudioPluginEditorManager',['../classfoleys_1_1AudioPluginEditorManager.html',1,'AudioPluginEditorManager'],['../classfoleys_1_1AudioPluginEditorManager.html#ab91c8a0864fbbadddca2ffa60f43a614',1,'foleys::AudioPluginEditorManager::AudioPluginEditorManager()']]],
-  ['audiopluginmanager',['AudioPluginManager',['../classfoleys_1_1AudioPluginManager.html',1,'AudioPluginManager'],['../classfoleys_1_1AudioPluginManager.html#a4e85f0c40d2534a587e0b9ad9e1184a2',1,'foleys::AudioPluginManager::AudioPluginManager()']]],
-  ['audioprocessoradapter',['AudioProcessorAdapter',['../structfoleys_1_1AudioProcessorAdapter.html',1,'AudioProcessorAdapter'],['../structfoleys_1_1AudioProcessorAdapter.html#a66265898aba32501ae079604284e82e6',1,'foleys::AudioProcessorAdapter::AudioProcessorAdapter()']]],
-  ['audioprocessorwindow',['AudioProcessorWindow',['../classfoleys_1_1AudioProcessorWindow.html',1,'AudioProcessorWindow'],['../classfoleys_1_1AudioProcessorWindow.html#aeda1abcdf865fad462a62031fa249c05',1,'foleys::AudioProcessorWindow::AudioProcessorWindow()']]],
-  ['audiostreamsettings',['AudioStreamSettings',['../structfoleys_1_1AudioStreamSettings.html',1,'foleys']]],
-  ['audiostrip',['AudioStrip',['../classfoleys_1_1AudioStrip.html',1,'AudioStrip'],['../classfoleys_1_1AudioStrip.html#aa07f99d73b9e854969aee3c3a70c9b59',1,'foleys::AudioStrip::AudioStrip()']]],
-  ['avclip',['AVClip',['../classfoleys_1_1AVClip.html',1,'AVClip'],['../classfoleys_1_1AVClip.html#a48fa9431d26f6e26365d8e539bf4c493',1,'foleys::AVClip::AVClip()']]],
-  ['avformatmanager',['AVFormatManager',['../classfoleys_1_1AVFormatManager.html',1,'AVFormatManager'],['../classfoleys_1_1AVFormatManager.html#aab615fbfb4bbea5210a6338f17f93be7',1,'foleys::AVFormatManager::AVFormatManager()']]],
-  ['avreader',['AVReader',['../classfoleys_1_1AVReader.html',1,'AVReader'],['../classfoleys_1_1AVReader.html#afa13002f8c49fef924e1ce73722b0e80',1,'foleys::AVReader::AVReader()']]],
-  ['avwriter',['AVWriter',['../classfoleys_1_1AVWriter.html',1,'AVWriter'],['../classfoleys_1_1AVWriter.html#aace746096519258a6ee44214e9378f80',1,'foleys::AVWriter::AVWriter()']]]
+  ['012v_2ed_0',['012v.d',['../012v_8d.html',1,'']]]
 ];

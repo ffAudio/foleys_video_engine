@@ -1,8 +1,5 @@
 var searchData=
 [
-  ['data',['data',['../classfoleys_1_1StreamTypes.html#a9ab1875bf8e379bf97a342d28767a15a',1,'foleys::StreamTypes::data()'],['../classfoleys_1_1StreamTypes.html#a8a65141d9ea4bf9d2e2377ed6b888a1daa9703801ac7bd790f6f980532e4224c0',1,'foleys::StreamTypes::Data()']]],
-  ['defaultaudiomixer',['DefaultAudioMixer',['../classfoleys_1_1DefaultAudioMixer.html',1,'DefaultAudioMixer'],['../classfoleys_1_1DefaultAudioMixer.html#a7f5a36c3fda45c9fdd51a46a8a87c161',1,'foleys::DefaultAudioMixer::DefaultAudioMixer()']]],
-  ['defaultduration',['defaultDuration',['../structfoleys_1_1VideoStreamSettings.html#a8b164d47aa74c590f75dfd1c20cd59c8',1,'foleys::VideoStreamSettings']]],
-  ['defaultnumsamples',['defaultNumSamples',['../structfoleys_1_1AudioStreamSettings.html#a458a24c47f77cc90c759d3736b647be6',1,'foleys::AudioStreamSettings']]],
-  ['deletekeyframe',['deleteKeyframe',['../classfoleys_1_1ParameterAutomation.html#aaef08133ef0af3ae08169394e38761ad',1,'foleys::ParameterAutomation']]]
+  ['_5fwin32_5fwinnt_4',['_WIN32_WINNT',['../d3d11va_8h.html#ac50762666aa00bd3a4308158510f1748',1,'_WIN32_WINNT():&#160;d3d11va.h'],['../dxva2_8h.html#ac50762666aa00bd3a4308158510f1748',1,'_WIN32_WINNT():&#160;dxva2.h']]],
+  ['_5fxopen_5fsource_5',['_XOPEN_SOURCE',['../filtering__video_8c.html#a78c99ffd76a7bb3c8c74db76207e9ab4',1,'filtering_video.c']]]
 ];

@@ -1,4 +1,5 @@
 <map id="ControllableBase" name="ControllableBase">
-<area shape="rect" id="node1" title="The ControllableBase acts as counterpart to ParameterAutomation." alt="" coords="13,5,136,31"/>
-<area shape="rect" id="node2" href="$classfoleys_1_1ProcessorController.html" title="The ProcessorController acts as container foe one AudioProcessor or VideoProcessor inside the ClipDes..." alt="" coords="5,79,144,104"/>
+<area shape="rect" id="node1" title="The ControllableBase acts as counterpart to ParameterAutomation." alt="" coords="112,5,233,32"/>
+<area shape="rect" id="node2" href="$classfoleys_1_1ClipDescriptor_1_1ClipParameterController.html" title=" " alt="" coords="5,80,167,107"/>
+<area shape="rect" id="node3" href="$classfoleys_1_1ProcessorController.html" title="The ProcessorController acts as container foe one AudioProcessor or VideoProcessor inside the ClipDes..." alt="" coords="191,80,328,107"/>
 </map>

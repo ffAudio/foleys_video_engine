@@ -1,4 +1,5 @@
 <map id="AudioClip" name="AudioClip">
-<area shape="rect" id="node1" title="The AudioClip plays back an audio file inside the video engine." alt="" coords="5,79,84,104"/>
-<area shape="rect" id="node2" href="$classfoleys_1_1AVClip.html" title="AVClip is the abstract base class of displayable/playable clips." alt="" coords="14,5,75,31"/>
+<area shape="rect" id="node1" title=" " alt="" coords="25,155,104,181"/>
+<area shape="rect" id="node2" href="$classfoleys_1_1AVClip.html" title=" " alt="" coords="34,80,95,107"/>
+<area shape="rect" id="node3" href="$classfoleys_1_1TimeCodeAware.html" title="Add this interface if your class is aware of a time continuum." alt="" coords="5,5,124,32"/>
 </map>

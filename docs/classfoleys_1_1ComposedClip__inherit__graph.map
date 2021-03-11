@@ -1,4 +1,5 @@
 <map id="ComposedClip" name="ComposedClip">
-<area shape="rect" id="node1" title="This clip does the actual work of composing images into a video." alt="" coords="5,79,114,104"/>
-<area shape="rect" id="node2" href="$classfoleys_1_1AVClip.html" title="AVClip is the abstract base class of displayable/playable clips." alt="" coords="29,5,90,31"/>
+<area shape="rect" id="node1" title=" " alt="" coords="11,155,119,181"/>
+<area shape="rect" id="node2" href="$classfoleys_1_1AVClip.html" title=" " alt="" coords="34,80,95,107"/>
+<area shape="rect" id="node3" href="$classfoleys_1_1TimeCodeAware.html" title="Add this interface if your class is aware of a time continuum." alt="" coords="5,5,124,32"/>
 </map>

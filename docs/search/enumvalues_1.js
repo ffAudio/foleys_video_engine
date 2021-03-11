@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['data',['Data',['../classfoleys_1_1StreamTypes.html#a8a65141d9ea4bf9d2e2377ed6b888a1daa9703801ac7bd790f6f980532e4224c0',1,'foleys::StreamTypes']]]
+  ['crop_15529',['Crop',['../namespacefoleys.html#a0f51d4c02b530b54fc1cdebf9825d0b2ad388632d05e8826abe4b95de0b110529',1,'foleys']]]
 ];

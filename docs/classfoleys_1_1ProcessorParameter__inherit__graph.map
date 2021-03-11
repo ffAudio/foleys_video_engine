@@ -1,4 +1,4 @@
 <map id="ProcessorParameter" name="ProcessorParameter">
-<area shape="rect" id="node1" title="This is the base class for parameters to configure and automate your VideoProcessors." alt="" coords="20,5,164,31"/>
-<area shape="rect" id="node2" href="$classfoleys_1_1ProcessorParameterFloat.html" title="This is a floating point (double) parameter to configure and automate your VideoProcessors." alt="" coords="5,79,179,104"/>
+<area shape="rect" id="node1" title="This is the base class for parameters to configure and automate your VideoProcessors." alt="" coords="20,5,161,32"/>
+<area shape="rect" id="node2" href="$classfoleys_1_1ProcessorParameterFloat.html" title="This is a floating point (double) parameter to configure and automate your VideoProcessors." alt="" coords="5,80,176,107"/>
 </map>
