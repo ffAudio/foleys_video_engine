@@ -375,7 +375,7 @@ void AudioParameterAutomation::setKeyframesWithRealValues (std::map<double, doub
         auto range = param->getNormalisableRange();
         std::map<double, double> realKeys;
         for (auto& k : keys)
-            realKeys [k.first] = range.convertTo0to1 (k.second);
+            realKeys [k.first] = range.convertTo0to1 (float (k.second));
 
         setKeyframes (realKeys);
     }
