@@ -159,6 +159,11 @@ void VideoFifo::setVideoSettings (const VideoStreamSettings& s)
     FOLEYS_LOG ("FIFO VideoSettings: " << settings.frameSize.toString() << " timebase " << settings.timebase << ", duration " << settings.defaultDuration);
 }
 
+double VideoFifo::getFrameDurationInSeconds() const
+{
+    return static_cast<double> (settings.defaultDuration) / static_cast<double> (settings.timebase);
+}
+
 int VideoFifo::nextIndex (int pos, int offset) const
 {
     jassert (offset < int (frames.size()));
