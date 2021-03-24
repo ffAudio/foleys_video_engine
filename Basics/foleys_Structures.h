@@ -72,7 +72,7 @@ static inline int64_t convertTimecode (double pts, const VideoStreamSettings& se
     if (settings.defaultDuration == 0)
         return 0;
 
-    return settings.defaultDuration * int64_t (pts * settings.timebase / settings.defaultDuration);
+    return int64_t (pts * settings.timebase);
 }
 
 /** Convert a time in seconds into samples, using the sample rate in AudioStreamSettings */

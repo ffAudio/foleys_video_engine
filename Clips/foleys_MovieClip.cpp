@@ -319,10 +319,22 @@ int MovieClip::BackgroundReaderJob::useTimeSlice()
     {
         juce::ScopedValueSetter<bool> guard (inDecodeBlock, true);
         owner.movieReader->readNewData (owner.videoFifo, owner.audioFifo);
-        return 3;
     }
 
-    return 30;
+    if (owner.movieReader.get() != nullptr)
+    {
+        if (owner.getNextReadPosition() >= owner.movieReader->getTotalLength())
+            return 100;
+    }
+
+    double secs = 1;
+    if (owner.hasAudio())
+        secs = std::min (secs, owner.audioFifo.getAvailableSamples() / owner.sampleRate);
+
+    if (owner.hasVideo())
+        secs = std::min (secs, owner.videoFifo.getNumAvailableFrames() * owner.videoFifo.getFrameDurationInSeconds());
+
+    return int (50.0 * secs);
 }
 
 void MovieClip::BackgroundReaderJob::setSuspended (bool s)
