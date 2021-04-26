@@ -121,12 +121,14 @@ bool ComposedClip::isFrameAvailable (double pts) const
 {
     juce::ignoreUnused (pts);
     auto active = getClips();
-    auto pos = pts * getSampleRate();
 
     for (auto& clip : active)
-        if (clip->clip->hasVideo() && juce::isPositiveAndBelow (pos - clip->getStartInSamples(), clip->getLengthInSamples()))
-            if (clip->clip->isFrameAvailable (pts - clip->getStart() + clip->getOffset()) == false)
+    {
+        auto localPts = clip->getClipTimeInDescriptorTime (pts);
+        if (clip->clip->hasVideo() && juce::isPositiveAndBelow (localPts * getSampleRate(), clip->getLengthInSamples()))
+            if (clip->clip->isFrameAvailable (localPts) == false)
                 return false;
+    }
 
     return true;
 }

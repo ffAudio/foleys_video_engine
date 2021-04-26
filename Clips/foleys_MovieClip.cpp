@@ -131,7 +131,10 @@ void MovieClip::render (OpenGLView& view, double pts, float rotation, float zoom
 
 bool MovieClip::isFrameAvailable (double pts) const
 {
-    return videoFifo.isFrameAvailable (pts);
+    if (juce::isPositiveAndBelow (pts * movieReader->sampleRate, movieReader->getTotalLength()))
+        return videoFifo.isFrameAvailable (pts);
+
+    return true;
 }
 
 juce::Image MovieClip::getStillImage (double seconds, Size size)
