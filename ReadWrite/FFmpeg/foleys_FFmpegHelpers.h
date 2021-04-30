@@ -42,9 +42,7 @@
 extern "C" {
 #endif
 
-#include <libavutil/pixdesc.h>
-#include <libavutil/imgutils.h>
-#include <libavutil/opt.h>
+#include <libavutil/libavutil.h>
 #include <libavformat/avformat.h>
 #include <libswscale/swscale.h>
 #include <libswresample/swresample.h>
