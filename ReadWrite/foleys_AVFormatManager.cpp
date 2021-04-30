@@ -78,13 +78,18 @@ std::shared_ptr<AVClip> AVFormatManager::createClipFromFile (VideoEngine& engine
 
 std::unique_ptr<AVReader> AVFormatManager::createReaderFor (juce::File file, StreamTypes type)
 {
+    // If you hit this jassert you didn't add an AVFormat to read video files.
+    // use @see registerFormat() to add a reader backend, e.g.
+    // videoEngine.getFormatManager().registerFormat (std::make_unique<foleys::FFmpegFormat>());
+    jassert(videoFormats.empty() == false);
 
-#if FOLEYS_USE_FFMPEG
-    return std::make_unique<FFmpegReader> (file, type);
-#else
-    juce::ignoreUnused (file, type);
+    for (auto& format : videoFormats)
+    {
+        if (format->canRead (file))
+            return format->createReaderFor (file, type);
+    }
+
     return {};
-#endif
 }
 
 std::unique_ptr<AVWriter> AVFormatManager::createClipWriter (juce::File file)
@@ -97,6 +102,11 @@ std::unique_ptr<AVWriter> AVFormatManager::createClipWriter (juce::File file)
     juce::ignoreUnused (file);
     return {};
 #endif
+}
+
+void AVFormatManager::registerFormat(std::unique_ptr<AVFormat> format)
+{
+    videoFormats.push_back (std::move (format));
 }
 
 void AVFormatManager::registerFactory (const juce::String& schema, std::function<std::shared_ptr<AVClip>(foleys::VideoEngine& videoEngine, juce::URL url, StreamTypes type)> factory)
