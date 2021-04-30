@@ -18,26 +18,37 @@
  ==============================================================================
  */
 
-#pragma once
-
 #if FOLEYS_USE_FFMPEG
 
 
 namespace foleys
 {
 
-struct FFmpegFormat : public AVFormat
+FFmpegFormat::FFmpegFormat() {}
+FFmpegFormat::~FFmpegFormat() {}
+
+bool FFmpegFormat::canRead(juce::File file)
 {
-	FFmpegFormat();
-    ~FFmpegFormat() override;
+    juce::ignoreUnused(file);
+    return true;
+}
 
-    bool canRead(juce::File file) override;
-    std::unique_ptr<AVReader> createReaderFor(juce::File file, StreamTypes types = StreamTypes::all()) override;
+std::unique_ptr<AVReader> FFmpegFormat::createReaderFor(juce::File file, StreamTypes types)
+{
+    return std::make_unique<FFmpegReader>(file, types);
+}
 
-    bool canWrite(juce::File file) override;
-    std::unique_ptr<AVWriter> createWriterFor(juce::File file, StreamTypes types = StreamTypes::all()) override;
-};
+bool FFmpegFormat::canWrite(juce::File file)
+{
+    juce::ignoreUnused(file);
+    return true;
+}
 
+std::unique_ptr<AVWriter> FFmpegFormat::createWriterFor(juce::File file, StreamTypes types)
+{
+    juce::ignoreUnused (file, types);
+    return {};
+}
 
 
 } // foleys
