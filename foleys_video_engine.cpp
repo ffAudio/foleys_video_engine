@@ -48,6 +48,7 @@
 #if FOLEYS_USE_FFMPEG
 #include "ReadWrite/FFmpeg/foleys_FFmpegReader.cpp"
 #include "ReadWrite/FFmpeg/foleys_FFmpegWriter.cpp"
+#include "ReadWrite/FFmpeg/foleys_FFmpegFormat.cpp"
 #endif
 
 #include "Widgets/foleys_SoftwareView.cpp"
