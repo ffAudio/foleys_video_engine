@@ -147,6 +147,7 @@
 #if FOLEYS_USE_FFMPEG
 #include "ReadWrite/FFmpeg/foleys_FFmpegReader.h"
 #include "ReadWrite/FFmpeg/foleys_FFmpegWriter.h"
+#include "ReadWrite/FFmpeg/foleys_FFmpegFormat.h"
 #endif
 
 #include "Plugins/foleys_ColourCurveVideoProcessor.h"
