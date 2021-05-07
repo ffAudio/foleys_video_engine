@@ -66,7 +66,8 @@ struct AudioStreamSettings final
 {
     int numChannels       = 2;
     int defaultNumSamples = 1024;
-    int timebase          = 48000;
+    int timebase = 48000;
+    juce::String toString() { return juce::String( numChannels ) + " channels at " + juce::String( timebase ) + " Hz."; }
 };
 
 /** Convert a time in seconds in frame counts, using the time base and duration in VideoStreamSettings */
