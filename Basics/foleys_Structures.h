@@ -56,6 +56,9 @@ struct VideoStreamSettings final
     Size frameSize;
     int  defaultDuration = 1001;
     int  timebase        = 24000;
+
+    double getFrameRate() { return (timebase > 0 ? (defaultDuration / static_cast<double>(timebase)) : 0.0); }
+    juce::String toString() { return frameSize.toString() + " " + juce::String(getFrameRate(), 2) + " FPS."; }
 };
 
 /** Defines the number of channels and time settings for an AudioStream */
