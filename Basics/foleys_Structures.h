@@ -53,11 +53,13 @@ enum class Aspect
 /** Defines the size and time settings for a VideoStream */
 struct VideoStreamSettings final
 {
-    Size frameSize;
-    int  defaultDuration = 1001;
-    int  timebase        = 24000;
+    Size        frameSize;
+    int         defaultDuration = 1001;
+    int         timebase        = 24000;
+    juce::int64 defaultStride   = 0;
 
-    double getFrameRate() { return (timebase > 0 ? (defaultDuration / static_cast<double>(timebase)) : 0.0); }
+    bool         isTopDown() const noexcept { return defaultStride > 0; }
+    double       getFrameRate() { return (timebase > 0 ? (defaultDuration / static_cast<double>(timebase)) : 0.0); }
     juce::String toString() { return frameSize.toString() + " " + juce::String(getFrameRate(), 2) + " FPS."; }
 };
 
