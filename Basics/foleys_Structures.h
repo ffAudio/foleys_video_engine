@@ -56,9 +56,9 @@ struct VideoStreamSettings final
     Size        frameSize;
     int         defaultDuration = 1001;
     int         timebase        = 24000;
-    juce::int64 defaultStride   = 0;
+    juce::int64 stride   = 0;
 
-    bool         isTopDown() const noexcept { return defaultStride > 0; }
+    bool         isTopDown() const noexcept { return stride > 0; }
     double       getFrameRate() { return (timebase > 0 ? (defaultDuration / static_cast<double>(timebase)) : 0.0); }
     juce::String toString() { return frameSize.toString() + " " + juce::String(getFrameRate(), 2) + " FPS."; }
 };
