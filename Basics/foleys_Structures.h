@@ -55,9 +55,9 @@ struct VideoStreamSettings final
     juce::int64 stride = 0;
 
     bool isTopDown() const noexcept { return stride > 0; }
-    bool isValid() { return (abs(stride) >= frameSize.width) && (!frameSize.isEmpty()) && (timebase != 0) && (defaultDuration != 0); }
-    double getFrameRate() { return (timebase > 0 ? (timebase / static_cast<double>(defaultDuration)) : 0.0); }
-    juce::String toString() { return frameSize.toString() + " " + juce::String(getFrameRate(), 2) + " FPS."; }
+    bool isValid() const { return (abs(stride) >= frameSize.width) && (!frameSize.isEmpty()) && (timebase != 0) && (defaultDuration != 0); }
+    double getFrameRate() const { return (timebase > 0 ? (timebase / static_cast<double>(defaultDuration)) : 0.0); }
+    juce::String toString() const { return frameSize.toString() + " (stride: " + juce::String(stride) + ") " + juce::String(getFrameRate(), 2) + " FPS"; }
 };
 
 /** Defines the number of channels and time settings for an AudioStream */
@@ -67,7 +67,9 @@ struct AudioStreamSettings final
     int defaultNumSamples = 1024;
     int timebase = 48000;
     int bitsPerSample = 0;
-    juce::String toString() { return juce::String(numChannels) + " channels at " + juce::String(timebase) + " Hz @ " + juce::String( bitsPerSample ) + " bits."; }
+    [[nodiscard]] bool isValid() const { return (timebase > 0) && (numChannels > 0) && (bitsPerSample > 0); }
+    [[nodiscard]] juce::String toString() const { return juce::String(numChannels) + " channels at " + juce::String(timebase) + " Hz @ " + juce::String(bitsPerSample) + " bits"; }
+    [[nodiscard]] int getFrameSize() const { return numChannels * ( bitsPerSample / 8 ); }
 };
 
 /** Convert a time in seconds in frame counts, using the time base and duration in VideoStreamSettings */
