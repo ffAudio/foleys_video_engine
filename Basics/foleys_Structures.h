@@ -57,6 +57,7 @@ struct VideoStreamSettings final
     bool isTopDown() const noexcept { return stride > 0; }
     bool isValid() const { return (abs(stride) >= frameSize.width) && (!frameSize.isEmpty()) && (timebase != 0) && (defaultDuration != 0); }
     double getFrameRate() const { return (timebase > 0 ? (timebase / static_cast<double>(defaultDuration)) : 0.0); }
+    double getFrameDurationSeconds() const { return defaultDuration / static_cast<double>( timebase); }
     juce::String toString() const { return frameSize.toString() + " (stride: " + juce::String(stride) + ") " + juce::String(getFrameRate(), 2) + " FPS"; }
 };
 
@@ -69,7 +70,8 @@ struct AudioStreamSettings final
     int bitsPerSample = 0;
     [[nodiscard]] bool isValid() const { return (timebase > 0) && (numChannels > 0) && (bitsPerSample > 0); }
     [[nodiscard]] juce::String toString() const { return juce::String(numChannels) + " channels at " + juce::String(timebase) + " Hz @ " + juce::String(bitsPerSample) + " bits"; }
-    [[nodiscard]] int getFrameSize() const { return numChannels * ( bitsPerSample / 8 ); }
+    [[nodiscard]] int getFrameSize() const { return numChannels * getSampleSize(); }
+    [[nodiscard]] int getSampleSize() const { return (bitsPerSample / 8); }
 };
 
 /** Convert a time in seconds in frame counts, using the time base and duration in VideoStreamSettings */
