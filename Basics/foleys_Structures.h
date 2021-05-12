@@ -52,13 +52,11 @@ struct VideoStreamSettings final
     Size        frameSize;
     int         defaultDuration = 1001;
     int         timebase        = 24000;
-    juce::int64 stride = 0;
 
-    bool isTopDown() const noexcept { return stride > 0; }
-    bool isValid() const { return (abs(stride) >= frameSize.width) && (!frameSize.isEmpty()) && (timebase != 0) && (defaultDuration != 0); }
+    bool isValid() const { return (!frameSize.isEmpty()) && (timebase != 0) && (defaultDuration != 0); }
     double getFrameRate() const { return (timebase > 0 ? (timebase / static_cast<double>(defaultDuration)) : 0.0); }
     double getFrameDurationSeconds() const { return defaultDuration / static_cast<double>( timebase); }
-    juce::String toString() const { return frameSize.toString() + " (stride: " + juce::String(stride) + ") " + juce::String(getFrameRate(), 2) + " FPS"; }
+    juce::String toString() const { return frameSize.toString() + " " + juce::String(getFrameRate(), 2) + " FPS"; }
 };
 
 /** Defines the number of channels and time settings for an AudioStream */
