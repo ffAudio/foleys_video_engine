@@ -25,8 +25,7 @@
   name:              Video engine to read, process, display and write video in JUCE
   description:       Provides classes to read audio streams from video files or to
                      mux audio into an existing video
-  dependencies:      juce_audio_basics juce_audio_formats juce_gui_basics
-                     juce_graphics juce_core juce_audio_utils
+  dependencies:      juce_audio_basics juce_audio_devices juce_audio_formats juce_gui_basics juce_graphics juce_core juce_audio_utils juce_audio_processors
   minimumCppStandard: 17
 
   website:       https://foleysfinest.com/

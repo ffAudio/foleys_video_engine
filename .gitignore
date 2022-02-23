@@ -1,5 +1,6 @@
 **/.DS*
 **/Builds/
+**/Cache/
 **/JuceLibraryCode/
 **/!JuceLibraryCode/AppConfig.h
 libs/

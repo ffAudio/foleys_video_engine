@@ -21,7 +21,7 @@
 #if FOLEYS_USE_FFMPEG
 
 #include "foleys_FFmpegHelpers.h"
-
+#include <libavcodec/avcodec.h>
 
 namespace foleys
 {
@@ -353,7 +353,7 @@ private:
                           enum AVMediaType type,
                           bool refCounted)
     {
-        AVCodec *decoder = nullptr;
+        const AVCodec *decoder = nullptr;
         AVDictionary *opts = nullptr;
 
         int id = av_find_best_stream (formatContext, type, -1, -1, nullptr, 0);
