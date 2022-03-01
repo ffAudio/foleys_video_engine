@@ -12,7 +12,6 @@ set (CONFIGURE_COMMAND
         #--ranlib=@FFMPEG_RANLIB@
         #--as=@FFMPEG_AS@
         #--nm=@FFMPEG_NM@
-        #--arch=@CMAKE_SYSTEM_PROCESSOR@
         --disable-static
         --enable-shared
         --enable-protocol=file
@@ -34,7 +33,6 @@ if ("@FFMPEG_LD_FLAGS@")
 endif()
 
 if ("@IOS@" OR "@ANDROID@")
-
         set (CONFIGURE_COMMAND 
                 ${CONFIGURE_COMMAND}
                 --enable-cross-compile
@@ -45,21 +43,18 @@ if ("@IOS@" OR "@ANDROID@")
 endif()
 
 if ("@IOS@")
-
         set (CONFIGURE_COMMAND 
                 ${CONFIGURE_COMMAND}
                 --target-os=darwin)
 
 elseif ("@ANDROID@")
-
         set (CONFIGURE_COMMAND 
                 ${CONFIGURE_COMMAND}
                 --target-os=android)
-
 endif()
 
 
 execute_process (COMMAND ${CONFIGURE_COMMAND}
-                 WORKING_DIRECTORY @FFMPEG_SOURCE_DIR@
+                 WORKING_DIRECTORY "@FFMPEG_SOURCE_DIR@"
                  COMMAND_ECHO STDOUT
                  COMMAND_ERROR_IS_FATAL ANY)

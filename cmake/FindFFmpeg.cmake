@@ -22,8 +22,6 @@ if (NOT TARGET foleys_ffmpeg)
     message (FATAL_ERROR "Error creating foleys_ffmpeg target!")
 endif()
 
-# customXcodeResourceFolders
-
 target_compile_definitions (foleys_ffmpeg INTERFACE FOLEYS_USE_FFMPEG=1)
 
 add_library (Foleys::foleys_ffmpeg ALIAS foleys_ffmpeg)

@@ -2,13 +2,18 @@ cmake_minimum_required (VERSION 3.15 FATAL_ERROR)
 
 include_guard (GLOBAL)
 
+find_program (MAKE_EXECUTABLE NAMES make gmake 
+              DOC "Path to the make executable used for building FFmpeg")
+
+if (NOT MAKE_EXECUTABLE)
+    message (FATAL_ERROR "Make could not be found, and is required to build FFmpeg!")
+endif()
+
 set (FFMPEG_CONFIGURE_EXTRAS "")
 set (FFMPEG_EXTRA_C_FLAGS "")
 set (FFMPEG_EXTRA_LD_FLAGS "")
+set (FFMPEG_VERSION 4.4.1 CACHE STRING "FFmpeg version")
 
-#
-
-set (FFMPEG_VERSION 4.4.1)
 set (FFMPEG_NAME "ffmpeg-${FFMPEG_VERSION}")
 set (FFMPEG_URL "https://ffmpeg.org/releases/${FFMPEG_NAME}.tar.bz2")
 
@@ -33,7 +38,7 @@ if (NOT EXISTS "${FFMPEG_SOURCE_DIR}")
 
     file (DOWNLOAD "${FFMPEG_URL}" "${ffmpeg_tarball}")
 
-    execute_process (COMMAND ${CMAKE_COMMAND} -E tar xzf "${ffmpeg_tarball}"
+    execute_process (COMMAND "${CMAKE_COMMAND}" -E tar xzf "${ffmpeg_tarball}"
                      WORKING_DIRECTORY "${FOLEYS_SOURCE_CACHE}")
 
     file (REMOVE "${ffmpeg_tarball}")
@@ -57,9 +62,9 @@ set (FFMPEG_LD_FLAGS "${FFMPEG_C_FLAGS} ${FFMPEG_LD_FLAGS} ${FFMPEG_EXTRA_LD_FLA
 
 #set (HOST_BIN "${ANDROID_NDK}/prebuilt/${ANDROID_HOST_TAG}/bin")
 
-if ("${CMAKE_ANDROID_ARCH_ABI}" STREQUAL x86)
-    list (APPEND FFMPEG_CONFIGURE_EXTRAS --disable-asm)
-endif()
+# if ("${CMAKE_ANDROID_ARCH_ABI}" STREQUAL x86)
+#     list (APPEND FFMPEG_CONFIGURE_EXTRAS --disable-asm)
+# endif()
 
 string (REPLACE ";" "|" FFMPEG_CONFIGURE_EXTRAS_ENCODED "${FFMPEG_CONFIGURE_EXTRAS}")
 
@@ -75,10 +80,10 @@ ExternalProject_Add (ffmpeg_build
         PREFIX ffmpeg
         URL "${FFMPEG_SOURCE_DIR}"
         DOWNLOAD_NO_EXTRACT 1
-        CONFIGURE_COMMAND ${CMAKE_COMMAND} -P "${CMAKE_CURRENT_BINARY_DIR}/configure_ffmpeg_build.cmake"
-        BUILD_COMMAND make -j4
+        CONFIGURE_COMMAND "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/configure_ffmpeg_build.cmake"
+        BUILD_COMMAND "${MAKE_EXECUTABLE}" -j4
         BUILD_IN_SOURCE 1
-        INSTALL_COMMAND make install
+        INSTALL_COMMAND "${MAKE_EXECUTABLE}" install
         STEP_TARGETS ffmpeg_copy_headers
         LOG_CONFIGURE 1
         LOG_BUILD 1
@@ -92,28 +97,32 @@ configure_file ("${CMAKE_CURRENT_LIST_DIR}/copy_ffmpeg_headers.cmake" copy_ffmpe
 ExternalProject_Add_Step (
         ffmpeg_build
         ffmpeg_copy_headers
-        COMMAND ${CMAKE_COMMAND} -P "${CMAKE_CURRENT_BINARY_DIR}/copy_ffmpeg_headers.cmake"
+        COMMAND "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/copy_ffmpeg_headers.cmake"
         DEPENDEES build
         DEPENDERS install
 )
 
 #
 
-function (foleys_make_lib_filename libname filename_out)
+function (foleys_make_lib_filename libname filename_out libname_out)
 
-    set (output "")
+    set (filename "")
+    set (implibname "")
 
     if (CMAKE_SHARED_LIBRARY_PREFIX)
-        set (output "${CMAKE_SHARED_LIBRARY_PREFIX}")
+        set (filename "${CMAKE_SHARED_LIBRARY_PREFIX}")
+        set (implibname "${CMAKE_SHARED_LIBRARY_PREFIX}")
     endif()
 
-    set (output "${output}${libname}")
+    set (filename "${filename}${libname}")
+    set (implibname "${implibname}${libname}")
 
     if (CMAKE_SHARED_LIBRARY_SUFFIX)
-        set (output "${output}${CMAKE_SHARED_LIBRARY_SUFFIX}")
+        set (filename "${filename}${CMAKE_SHARED_LIBRARY_SUFFIX}")
     endif()
 
-    set (${filename_out} "${output}" PARENT_SCOPE)
+    set (${filename_out} "${filename}" PARENT_SCOPE)
+    set (${libname_out} "${implibname}.lib" PARENT_SCOPE)
 
 endfunction()
 
@@ -125,11 +134,11 @@ foreach (ffmpeg_lib IN LISTS foleys_ffmpeg_libs)
 
     add_library (Foleys::${ffmpeg_lib} SHARED IMPORTED)
 
-    add_dependencies (Foleys::${ffmpeg_lib} ffmpeg_build)
+    foleys_make_lib_filename (${ffmpeg_lib} lib_filename lib_libname)
 
-    foleys_make_lib_filename (${ffmpeg_lib} lib_filename)
-
-    set_target_properties (Foleys::${ffmpeg_lib} PROPERTIES IMPORTED_LOCATION "${FFMPEG_OUTPUT_DIR}/${lib_filename}")
+    set_target_properties (Foleys::${ffmpeg_lib} PROPERTIES 
+                            IMPORTED_LOCATION "${FFMPEG_OUTPUT_DIR}/${lib_filename}"
+                            IMPORTED_IMPLIB "${FFMPEG_OUTPUT_DIR}/${lib_libname}")
 
     target_link_libraries (foleys_ffmpeg INTERFACE Foleys::${ffmpeg_lib})
 
