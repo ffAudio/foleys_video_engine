@@ -54,10 +54,10 @@ void OpenGLView::render()
     auto desktopScale = (float) openGLContext.getRenderingScale();
     juce::OpenGLHelpers::clear (juce::Colours::black);
 
-    glEnable (GL_BLEND);
-    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	juce::gl::glEnable (juce::gl::GL_BLEND);
+	juce::gl::glBlendFunc (juce::gl::GL_SRC_ALPHA, juce::gl::GL_ONE_MINUS_SRC_ALPHA);
 
-    glViewport (0, 0, juce::roundToInt (desktopScale * (float) getWidth()), juce::roundToInt (desktopScale * (float) getHeight()));
+	juce::gl::glViewport (0, 0, juce::roundToInt (desktopScale * (float) getWidth()), juce::roundToInt (desktopScale * (float) getHeight()));
 
     clip->render (*this, clip->getCurrentTimeInSeconds());
 }

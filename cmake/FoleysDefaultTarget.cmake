@@ -44,14 +44,13 @@ endif()
 
 # MacOS options
 
-option (FOLEYS_MAC_UNIVERSAL_BINARY "Builds for x86_64 and arm64" ON)
-
 if(APPLE)
 
 	set_target_properties (FoleysDefaultTarget PROPERTIES XCODE_ATTRIBUTE_ENABLE_HARDENED_RUNTIME YES)
 	target_compile_definitions (FoleysDefaultTarget INTERFACE JUCE_USE_VDSP_FRAMEWORK=1)
 
 	if(IOS)
+
 		set_target_properties (FoleysDefaultTarget PROPERTIES 
 						ARCHIVE_OUTPUT_DIRECTORY "./" 
 						XCODE_ATTRIBUTE_INSTALL_PATH "$(LOCAL_APPS_DIR)"
@@ -61,15 +60,26 @@ if(APPLE)
 
 		target_compile_options (FoleysDefaultTarget INTERFACE "-mmacosx-version-min=9.3")
 		target_link_options (FoleysDefaultTarget INTERFACE "-mmacosx-version-min=9.3")
+
 	else()
+
+		option (FOLEYS_MAC_UNIVERSAL_BINARY "Builds for x86_64 and arm64" ON)
+
+		if (FOLEYS_MAC_UNIVERSAL_BINARY AND XCODE)
+
+			execute_process (COMMAND uname -m RESULT_VARIABLE result OUTPUT_VARIABLE osx_native_arch
+							 OUTPUT_STRIP_TRAILING_WHITESPACE)
+
+			if ("${osx_native_arch}" STREQUAL "arm64")
+				set_target_properties (FoleysDefaultTarget PROPERTIES OSX_ARCHITECTURES "x86_64;arm64")
+				message (STATUS "Enabling Mac universal binary")
+			endif()
+		endif()
+
 		set_target_properties (FoleysDefaultTarget PROPERTIES XCODE_ATTRIBUTE_MACOSX_DEPLOYMENT_TARGET "10.11")
 
 		target_compile_options (FoleysDefaultTarget INTERFACE "-mmacosx-version-min=10.11")
 		target_link_options (FoleysDefaultTarget INTERFACE "-mmacosx-version-min=10.11")
-
-		if (FOLEYS_MAC_UNIVERSAL_BINARY)
-			set_target_properties (FoleysDefaultTarget PROPERTIES OSX_ARCHITECTURES "x86_64;arm64")
-		endif()
 	endif()
 endif()
 

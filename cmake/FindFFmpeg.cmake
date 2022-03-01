@@ -11,6 +11,10 @@ if (FOLEYS_USE_SYSTEM_FFMPEG)
 endif()
 
 if (NOT TARGET foleys_ffmpeg)
+    if (FOLEYS_USE_SYSTEM_FFMPEG)
+        message (WARNING "System installation of FFmpeg was requested, but targets couldn't be imported. Configuring to build from source...")
+    endif()
+
     include ("${CMAKE_CURRENT_LIST_DIR}/ffmpeg/BuildFFmpeg.cmake")
 endif()
 
@@ -19,11 +23,6 @@ if (NOT TARGET foleys_ffmpeg)
 endif()
 
 # customXcodeResourceFolders
-
-# extra def FFMPEG_ROOT=...
-
-# linux: compile flag -I${FFMPEG_ROOT}/include
-# linux: linker flag -L${FFMPEG_ROOT}/lib
 
 target_compile_definitions (foleys_ffmpeg INTERFACE FOLEYS_USE_FFMPEG=1)
 

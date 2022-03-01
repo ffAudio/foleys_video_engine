@@ -49,8 +49,12 @@ wipe: clean  ## Removes the builds directory and the dependencies cache
 
 #
 
-config_tests:  ## Configure the tests
+config:  ## Configure the tests
 	$(call cmake_config) -D FOLEYS_BUILD_TESTS=1
 
-tests: config_tests  ## Build the tests
+tests: config  ## Build the tests
 	@$(call cmake_build_configuration,Debug)
+
+#
+
+.PHONY: $(shell grep -E '^[a-zA-Z_-]+:.*?\#\# .*$$' $(THIS_MAKEFILE) | sed 's/:.*/\ /' | tr '\n' ' ')

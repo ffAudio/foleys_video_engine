@@ -19,7 +19,6 @@ else()
 endif()
 
 set (FFMPEG_SOURCE_DIR "${FOLEYS_SOURCE_CACHE}/${FFMPEG_NAME}")
-
 set (FFMPEG_OUTPUT_DIR "${CMAKE_CURRENT_BINARY_DIR}/ffmpeg")
 
 #
@@ -66,9 +65,6 @@ string (REPLACE ";" "|" FFMPEG_CONFIGURE_EXTRAS_ENCODED "${FFMPEG_CONFIGURE_EXTR
 
 #
 
-#
-# CMAKE_SYSTEM_PROCESSOR
-
 ## FFMPEG_ASM_FLAGS ?
 
 include (ExternalProject)
@@ -76,18 +72,13 @@ include (ExternalProject)
 configure_file ("${CMAKE_CURRENT_LIST_DIR}/configure_ffmpeg_build.cmake" configure_ffmpeg_build.cmake @ONLY)
 
 ExternalProject_Add (ffmpeg_build
-        PREFIX ffmpeg_pref
+        PREFIX ffmpeg
         URL "${FFMPEG_SOURCE_DIR}"
         DOWNLOAD_NO_EXTRACT 1
-        CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env PATH=${ANDROID_TOOLCHAIN_ROOT}/bin:$ENV{PATH}
-                          ${CMAKE_COMMAND} -P "${CMAKE_CURRENT_BINARY_DIR}/configure_ffmpeg_build.cmake"
-        BUILD_COMMAND ${CMAKE_COMMAND} -E env PATH=${ANDROID_TOOLCHAIN_ROOT}/bin:$ENV{PATH}
-                      make -j4
-                      #${HOST_BIN}/make -j4
+        CONFIGURE_COMMAND ${CMAKE_COMMAND} -P "${CMAKE_CURRENT_BINARY_DIR}/configure_ffmpeg_build.cmake"
+        BUILD_COMMAND make -j4
         BUILD_IN_SOURCE 1
-        INSTALL_COMMAND ${CMAKE_COMMAND} -E env PATH=${ANDROID_TOOLCHAIN_ROOT}/bin:$ENV{PATH}
-                        make install
-                        #${HOST_BIN}/make install
+        INSTALL_COMMAND make install
         STEP_TARGETS ffmpeg_copy_headers
         LOG_CONFIGURE 1
         LOG_BUILD 1
@@ -108,9 +99,27 @@ ExternalProject_Add_Step (
 
 #
 
-add_library (foleys_ffmpeg INTERFACE)
+function (foleys_make_lib_filename libname filename_out)
 
-ExternalProject_Get_Property (ffmpeg_build INSTALL_DIR)
+    set (output "")
+
+    if (CMAKE_SHARED_LIBRARY_PREFIX)
+        set (output "${CMAKE_SHARED_LIBRARY_PREFIX}")
+    endif()
+
+    set (output "${output}${libname}")
+
+    if (CMAKE_SHARED_LIBRARY_SUFFIX)
+        set (output "${output}${CMAKE_SHARED_LIBRARY_SUFFIX}")
+    endif()
+
+    set (${filename_out} "${output}" PARENT_SCOPE)
+
+endfunction()
+
+#
+
+add_library (foleys_ffmpeg INTERFACE)
 
 foreach (ffmpeg_lib IN LISTS foleys_ffmpeg_libs)
 
@@ -118,7 +127,9 @@ foreach (ffmpeg_lib IN LISTS foleys_ffmpeg_libs)
 
     add_dependencies (Foleys::${ffmpeg_lib} ffmpeg_build)
 
-    set_target_properties (Foleys::${ffmpeg_lib} PROPERTIES IMPORTED_LOCATION "${INSTALL_DIR}/${CMAKE_SHARED_LIBRARY_PREFIX}${ffmpeg_lib}.${CMAKE_SHARED_LIBRARY_SUFFIX}")
+    foleys_make_lib_filename (${ffmpeg_lib} lib_filename)
+
+    set_target_properties (Foleys::${ffmpeg_lib} PROPERTIES IMPORTED_LOCATION "${FFMPEG_OUTPUT_DIR}/${lib_filename}")
 
     target_link_libraries (foleys_ffmpeg INTERFACE Foleys::${ffmpeg_lib})
 
@@ -126,12 +137,8 @@ endforeach()
 
 #
 
-#target_sources (foleys_ffmpeg PRIVATE ${ffmpeg_src})
-
 add_dependencies (foleys_ffmpeg ffmpeg_build)
 
-#target_link_libraries (foleys_ffmpeg PRIVATE ${foleys_ffmpeg_libs})
-
-target_link_directories (foleys_ffmpeg INTERFACE "${FFMPEG_OUTPUT_DIR}" "${INSTALL_DIR}")
+target_link_directories (foleys_ffmpeg INTERFACE "${FFMPEG_OUTPUT_DIR}")
 
 target_include_directories (foleys_ffmpeg INTERFACE "${FFMPEG_OUTPUT_DIR}/include")
