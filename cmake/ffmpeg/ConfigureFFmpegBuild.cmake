@@ -30,6 +30,7 @@ function (foleys_preconfigure_ffmpeg_build)
         "./configure
         --disable-static
         --disable-doc
+        --disable-asm
         --enable-shared
         --enable-protocol=file
         --shlibdir=${FOLEYS_ARG_OUTPUT_DIR}
