@@ -71,9 +71,13 @@ function (foleys_preconfigure_ffmpeg_build)
 
     separate_arguments (ffmpeg_config_command UNIX_COMMAND "${CONFIGURE_COMMAND}")
 
+    if (NOT FFmpeg_FIND_QUIETLY)
+        set (cmd_echo_flag COMMAND_ECHO STDOUT)
+    endif()
+
     execute_process (COMMAND ${ffmpeg_config_command}
                      WORKING_DIRECTORY "${FOLEYS_ARG_SOURCE_DIR}"
-                     COMMAND_ECHO STDOUT
+                     ${cmd_echo_flag}
                      COMMAND_ERROR_IS_FATAL ANY)
 
 endfunction()
@@ -125,40 +129,36 @@ function (foleys_create_ffmpeg_build_target)
     #
 
     # the target should only already exist if this is a Mac universal binary build...
-    if (NOT TARGET foleys_ffmpeg)
-    	add_library (foleys_ffmpeg INTERFACE)
+    if (NOT TARGET ffmpeg)
+    	add_library (ffmpeg INTERFACE)
 	endif()
 
-    #set (ffmpeg_libs_input_files "")
     set (ffmpeg_libs_output_files "")
 
-    foreach (libname ${foleys_ffmpeg_libs})
+    foreach (libname ${FFMPEG_LIBS})
         foleys_make_lib_filename ("${libname}" libfilename)
 
-        #list (APPEND ffmpeg_libs_input_files "${FOLEYS_ARG_OUTPUT_DIR}/${libfilename}")
         list (APPEND ffmpeg_libs_output_files "${FOLEYS_ARG_OUTPUT_DIR}/${libfilename}")
 
-        target_link_libraries (foleys_ffmpeg INTERFACE "${FOLEYS_ARG_OUTPUT_DIR}/${libfilename}")
-
+        target_link_libraries (ffmpeg INTERFACE "${FOLEYS_ARG_OUTPUT_DIR}/${libfilename}")
     endforeach()
 
     #
 
     add_custom_target ("${FOLEYS_ARG_BUILD_TARGET}"
-                       COMMAND "${MAKE_EXECUTABLE}" -j4
+                       COMMAND "${FFMPEG_MAKE_EXECUTABLE}" -j4
                        WORKING_DIRECTORY "${FOLEYS_ARG_SOURCE_DIR}"
                        COMMENT "Building FFmpeg..."
                        VERBATIM USES_TERMINAL)
-                       #BYPRODUCTS "${ffmpeg_libs_input_files}")
 
     add_custom_command (TARGET "${FOLEYS_ARG_BUILD_TARGET}"
                         POST_BUILD
-                        COMMAND "${MAKE_EXECUTABLE}" install
+                        COMMAND "${FFMPEG_MAKE_EXECUTABLE}" install
                         BYPRODUCTS "${ffmpeg_libs_output_files}"
                         WORKING_DIRECTORY "${FOLEYS_ARG_SOURCE_DIR}"
                         VERBATIM USES_TERMINAL)
 
-    add_dependencies (foleys_ffmpeg "${FOLEYS_ARG_BUILD_TARGET}")
+    add_dependencies (ffmpeg "${FOLEYS_ARG_BUILD_TARGET}")
 
 endfunction()
 
@@ -167,7 +167,7 @@ endfunction()
 function (foleys_configure_ffmpeg_build)
 
 	set (options "")
-	set (oneValueArgs SOURCE_DIR)
+	set (oneValueArgs SOURCE_DIR OUTPUT_DIR)
 	set (multiValueArgs "")
 
 	cmake_parse_arguments (FOLEYS_ARG "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
@@ -176,22 +176,24 @@ function (foleys_configure_ffmpeg_build)
 		message (FATAL_ERROR "${CMAKE_CURRENT_FUNCTION} called without required argument SOURCE_DIR!")
 	endif()
 
-	set (outputDir "${CMAKE_CURRENT_BINARY_DIR}/ffmpeg")
+    if (NOT FOLEYS_ARG_OUTPUT_DIR)
+        set (FOLEYS_ARG_OUTPUT_DIR "${CMAKE_CURRENT_BINARY_DIR}/ffmpeg")
+    endif()
 
 	if (APPLE AND NOT IOS)
 		foleys_configure_ffmpeg_macos_universal_binary_build (SOURCE_DIR "${FOLEYS_ARG_SOURCE_DIR}" 
-											 				  OUTPUT_DIR "${outputDir}")
+											 				  OUTPUT_DIR "${FOLEYS_ARG_OUTPUT_DIR}")
 	else()
 		message (STATUS "Configuring FFmpeg build...")
 
 		foleys_preconfigure_ffmpeg_build (SOURCE_DIR "${FOLEYS_ARG_SOURCE_DIR}" 
-									  	  OUTPUT_DIR "${outputDir}")
+									  	  OUTPUT_DIR "${FOLEYS_ARG_OUTPUT_DIR}")
 
 		foleys_create_ffmpeg_build_target (SOURCE_DIR "${FOLEYS_ARG_SOURCE_DIR}" 
-										   OUTPUT_DIR "${outputDir}" 
+										   OUTPUT_DIR "${FOLEYS_ARG_OUTPUT_DIR}" 
 										   BUILD_TARGET ffmpeg_build)
 	endif()
 
-	target_include_directories (foleys_ffmpeg INTERFACE "${outputDir}/include")
+	target_include_directories (ffmpeg INTERFACE "${FOLEYS_ARG_OUTPUT_DIR}/include")
 
 endfunction()

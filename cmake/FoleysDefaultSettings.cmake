@@ -5,7 +5,7 @@ include_guard (GLOBAL)
 set_property (GLOBAL PROPERTY USE_FOLDERS YES)
 
 set (ENV{CMAKE_EXPORT_COMPILE_COMMANDS} TRUE)
-set (CMAKE_EXPORT_COMPILE_COMMANDS TRUE CACHE INTERNAL "")
+set (CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
 
 if (NOT DEFINED ENV{CMAKE_INSTALL_MODE})
 	set (ENV{CMAKE_INSTALL_MODE} ABS_SYMLINK_OR_COPY)
@@ -22,14 +22,12 @@ if(result)
 endif()
 
 
-# platform settings
-
 if(APPLE)
 	if(IOS)
 		set (ENV{MACOSX_DEPLOYMENT_TARGET} 9.3)
-		set (CMAKE_OSX_DEPLOYMENT_TARGET "9.3" CACHE INTERNAL "")
+		set (CMAKE_OSX_DEPLOYMENT_TARGET 9.3)
 
-		set (CMAKE_XCODE_ATTRIBUTE_ONLY_ACTIVE_ARCH NO CACHE INTERNAL "")
+		set (CMAKE_XCODE_ATTRIBUTE_ONLY_ACTIVE_ARCH NO)
 
 		option (FOLEYS_IOS_SIMULATOR "Build for an iOS simulator, rather than a real device" ON)
 
@@ -55,21 +53,7 @@ if(APPLE)
 		endif()
 	else()
 		set (ENV{MACOSX_DEPLOYMENT_TARGET} 10.11)
-		set (CMAKE_OSX_DEPLOYMENT_TARGET "10.11" CACHE INTERNAL "")
-
-		set (FOLEYS_MAC_SDK_VERSION "10.13" CACHE STRING "")
-		mark_as_advanced (FOLEYS_MAC_SDK_VERSION FORCE)
-
-		set (
-			MAC_SDK_DIR
-			"/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX${FOLEYS_MAC_SDK_VERSION}.sdk"
-			)
-
-		if(IS_DIRECTORY ${MAC_SDK_DIR})
-			set (CMAKE_OSX_SYSROOT ${MAC_SDK_DIR} CACHE INTERNAL "")
-		else()
-			message (DEBUG "Mac SDK dir ${MAC_SDK_DIR} doesn't exist!")
-		endif()
+		set (CMAKE_OSX_DEPLOYMENT_TARGET 10.11)
 
 		option (FOLEYS_MAC_UNIVERSAL_BINARY "Builds for x86_64 and arm64" ON)
 
@@ -79,16 +63,10 @@ if(APPLE)
 		endif()
 	endif()
 else()
-	set (CMAKE_INSTALL_RPATH $ORIGIN CACHE INTERNAL "")
+	set (CMAKE_INSTALL_RPATH $ORIGIN)
 
 	if(WIN32)
-		set (CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>" CACHE INTERNAL "")
-	else()
-		# fixes a bug with LTO on Ubuntu with Clang
-		set (CMAKE_AR ${CMAKE_CXX_COMPILER_AR} CACHE PATH "AR" FORCE)
-		set (CMAKE_RANLIB ${CMAKE_CXX_COMPILER_RANLIB} CACHE PATH "RANLIB" FORCE)
-
-		mark_as_advanced (CMAKE_AR CMAKE_RANLIB FORCE)
+		set (CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 	endif()
 endif()
 

@@ -5,8 +5,14 @@ include_guard (GLOBAL)
 #
 
 find_program (YASM yasm)
+find_program (LIPO lipo)
 
-if (NOT YASM)  # install yasm via Homebrew
+if (NOT YASM OR NOT LIPO)  # install yasm and/or lipo via Homebrew
+	
+	if (NOT FFmpeg_FIND_QUIETLY)
+		message (STATUS "Installing YASM via Homebrew...")
+		set (cmd_echo_flag COMMAND_ECHO STDOUT)
+	endif()
 
 	find_program (HOMEBREW brew)
 
@@ -19,10 +25,12 @@ if (NOT YASM)  # install yasm via Homebrew
 			message (FATAL_ERROR "bash is required for installing Homebrew, and cannot be found!")
 		endif()
 
-		message (STATUS "Installing Homebrew...")
+		if (NOT FFmpeg_FIND_QUIETLY)
+			message (STATUS "Installing Homebrew...")
+		endif()
 
 		execute_process (COMMAND "${BASH}" "${CMAKE_CURRENT_LIST_DIR}/mac_install_homebrew.sh"
-						 COMMAND_ECHO STDOUT 
+						 ${cmd_echo_flag}
 						 COMMAND_ERROR_IS_FATAL ANY)
 
 		find_program (HOMEBREW brew)
@@ -32,8 +40,8 @@ if (NOT YASM)  # install yasm via Homebrew
 		endif()
 	endif()
 
-	execute_process (COMMAND "${HOMEBREW}" install yasm
-					 COMMAND_ECHO STDOUT
+	execute_process (COMMAND "${HOMEBREW}" install yasm lipo
+					 ${cmd_echo_flag}
 					 COMMAND_ERROR_IS_FATAL ANY)
 endif()
 
@@ -59,7 +67,9 @@ function (foleys_configure_ffmpeg_macos_universal_binary_build)
 
 	foreach (arch ${FFMPEG_ARCHITECTURES})
 
-		message (STATUS "Configuring FFmpeg build for arch ${arch}...")
+		if (NOT FFmpeg_FIND_QUIETLY)
+			message (STATUS "Configuring FFmpeg build for arch ${arch}...")
+		endif()
 
 		set (sourceDir "${CMAKE_CURRENT_BINARY_DIR}/ffmpeg_arch_sources/${arch}/${FFMPEG_NAME}")
 
@@ -73,12 +83,34 @@ function (foleys_configure_ffmpeg_macos_universal_binary_build)
 
 		foleys_preconfigure_ffmpeg_build (SOURCE_DIR "${sourceDir}"
 										  OUTPUT_DIR "${outputDir}"
-										  EXTRA_ARGS "--arch=${arch} --target-os=darwin")
+										  EXTRA_ARGS "--arch=${arch} --cc=clang --cxx=clang++")
 
 		foleys_create_ffmpeg_build_target (SOURCE_DIR "${sourceDir}"
 										   OUTPUT_DIR "${outputDir}"
 										   BUILD_TARGET "ffmpeg_build_${arch}")
+
+		set_target_properties (ffmpeg_build_x86_64 PROPERTIES OSX_ARCHITECTURES ${arch})
 	endforeach()
+
+	# foreach(ffmpeg_lib ${FFMPEG_LIBS})
+
+	# 	set (libFilename "lib${ffmpeg_lib}.dylib")
+
+	# 	set (output_file "${FOLEYS_ARG_OUTPUT_DIR}/universal/${libFilename}")
+
+	# 	add_custom_target (ffmpeg_${ffmpeg_lib}_lipo 
+	# 					   COMMAND lipo -create "${FOLEYS_ARG_OUTPUT_DIR}/x86_64/${libFilename}" "${FOLEYS_ARG_OUTPUT_DIR}/arm64/${libFilename}" -output "${output_file}"
+	# 					   BYPRODUCTS "${output_file}"
+	# 					   VERBATIM USES_TERMINAL
+	# 					   COMMENT "FFmpeg - running lipo on ${ffmpeg_lib}...")
+
+	# 	add_dependencies (ffmpeg_${ffmpeg_lib}_lipo ffmpeg_build_x86_64)
+	# 	add_dependencies (ffmpeg_${ffmpeg_lib}_lipo ffmpeg_build_arm64)
+
+	# 	add_dependencies (foleys_ffmpeg ffmpeg_${ffmpeg_lib}_lipo)
+
+	# 	target_link_libraries (foleys_ffmpeg INTERFACE "${output_file}")
+	# endforeach()
 
 	# Need to manually copy headers...
 	file (GLOB libs ${FOLEYS_ARG_SOURCE_DIR}/lib*)

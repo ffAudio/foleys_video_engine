@@ -8,7 +8,7 @@ if (NOT PkgConfig_FOUND)
 	return()
 endif()
 
-list (TRANSFORM foleys_ffmpeg_libs 
+list (TRANSFORM FFMPEG_LIBS 
 	  PREPEND lib 
 	  OUTPUT_VARIABLE libav_libs)
 
@@ -18,6 +18,6 @@ if (NOT LIBAV_FOUND)
 	return()
 endif()
 
-add_library (foleys_ffmpeg INTERFACE)
+add_library (ffmpeg INTERFACE)
 
-target_link_libraries (foleys_ffmpeg INTERFACE PkgConfig::LIBAV)
+target_link_libraries (ffmpeg INTERFACE PkgConfig::LIBAV)
