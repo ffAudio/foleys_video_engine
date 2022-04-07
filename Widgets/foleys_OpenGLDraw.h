@@ -27,6 +27,7 @@ namespace foleys
 
 namespace OpenGLDrawing
 {
+using namespace juce::gl;
 
 #if JUCE_DEBUG
 static const char* getGLErrorMessage (const GLenum e) noexcept
