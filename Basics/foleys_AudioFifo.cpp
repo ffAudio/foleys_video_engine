@@ -45,7 +45,7 @@ void AudioFifo::pushSamples (const juce::AudioBuffer<float>& samples)
 void AudioFifo::setNumSamples (int samples)
 {
     audioFifo.setTotalSize (samples);
-    audioBuffer.setSize (2, samples);
+    audioBuffer.setSize (audioBuffer.getNumChannels(), samples);
 }
 
 void AudioFifo::pullSamples (const juce::AudioSourceChannelInfo& info)
