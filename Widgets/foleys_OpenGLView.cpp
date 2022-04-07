@@ -22,6 +22,7 @@
 
 namespace foleys
 {
+using namespace juce::gl;
 
 OpenGLView::OpenGLView()
 {
