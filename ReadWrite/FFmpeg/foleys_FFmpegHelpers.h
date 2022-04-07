@@ -35,7 +35,6 @@
 #pragma comment (lib, "avcodec.lib")
 #pragma comment (lib, "swscale.lib")
 #pragma comment (lib, "swresample.lib")
-#pragma comment (lib, "avresample.lib")
 #endif
 
 #ifdef __cplusplus
