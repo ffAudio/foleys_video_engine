@@ -28,6 +28,7 @@
   dependencies:      juce_audio_basics juce_audio_formats juce_gui_basics
                      juce_graphics juce_core juce_audio_utils
   minimumCppStandard: 17
+  searchpaths:        ffmpeg/include
 
   website:       https://foleysfinest.com/
 
