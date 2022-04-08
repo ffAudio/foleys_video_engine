@@ -29,7 +29,7 @@
                      juce_graphics juce_core juce_audio_utils
   minimumCppStandard: 17
   searchpaths:        ffmpeg/include
-  windowsLibs:        avformat,avutil,avcodec,swscale,swresample,avdevice,avfilter,avresample,postproc
+  windowsLibs:        avformat,avutil,avcodec,swscale,swresample
   OSXLibs:            avformat,avutil,avcodec,swscale,swresample,avdevice,avfilter,avresample,postproc
 
   website:       https://foleysfinest.com/
