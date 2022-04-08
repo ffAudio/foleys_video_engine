@@ -30,7 +30,7 @@
   minimumCppStandard: 17
   searchpaths:        ffmpeg/include
   windowsLibs:        avformat,avutil,avcodec,swscale,swresample
-  OSXLibs:            avformat,avutil,avcodec,swscale,swresample,avdevice,avfilter,avresample,postproc
+  OSXLibs:            avformat,avutil,avcodec,swscale,swresample,avresample
 
   website:       https://foleysfinest.com/
 
