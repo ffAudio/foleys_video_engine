@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -e
-
 if [ ! `which brew` ]
 then
     echo 'Homebrew not found. Trying to install...'
