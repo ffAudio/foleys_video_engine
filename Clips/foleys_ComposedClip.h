@@ -94,6 +94,8 @@ public:
 
     std::shared_ptr<AVClip> createCopy (StreamTypes types) override;
 
+    int getNumChannels() const override;
+
     double getSampleRate() const override;
 
     /** When rendering non realtime (bounce), use this to wait for background

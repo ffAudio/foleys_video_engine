@@ -356,6 +356,11 @@ std::shared_ptr<AVClip> ComposedClip::createCopy (StreamTypes)
     return clipCopy;
 }
 
+int ComposedClip::getNumChannels() const
+{
+    return audioSettings.numChannels;
+}
+
 double ComposedClip::getSampleRate() const
 {
     return audioSettings.timebase;
