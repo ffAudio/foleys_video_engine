@@ -143,6 +143,12 @@ std::shared_ptr<AVClip> ImageClip::createCopy (StreamTypes types)
     return engine->createClipFromFile (getMediaFile(), types);
 }
 
+
+int ImageClip::getNumChannels() const
+{ 
+    return 0;
+}
+
 double ImageClip::getSampleRate() const
 {
     return sampleRate;

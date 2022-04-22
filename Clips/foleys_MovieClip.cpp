@@ -242,6 +242,11 @@ double MovieClip::getSampleRate() const
     return sampleRate;
 }
 
+int MovieClip::getNumChannels() const 
+{
+    return movieReader ? movieReader->numChannels : 0;
+}
+
 void MovieClip::handleAsyncUpdate()
 {
     if (sampleRate > 0 && hasVideo())

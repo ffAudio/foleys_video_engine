@@ -86,6 +86,8 @@ public:
 
     std::shared_ptr<AVClip> createCopy (StreamTypes types) override;
 
+    int getNumChannels() const override { return reader.get() ? reader->numChannels : 0; }
+
     double getSampleRate() const override { return sampleRate; }
 
 private:
