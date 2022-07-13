@@ -13,7 +13,7 @@ set_package_properties ("${CMAKE_FIND_PACKAGE_NAME}"
 
 FetchContent_Declare (JUCE
                       GIT_REPOSITORY https://github.com/juce-framework/JUCE.git
-                      GIT_TAG origin/master)
+                      GIT_TAG 37d6161da2aa94d1530cef860b1642e1e4d9e08d) # most recent JUCE 6 commit
 
 set (JUCE_BUILD_EXAMPLES OFF)
 set (JUCE_BUILD_EXTRAS OFF)
