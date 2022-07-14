@@ -31,7 +31,7 @@ list (APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 include (CMakeFindDependencyMacro)
 
 find_dependency (JUCE 6)
-find_dependency (FFmpeg)
+find_dependency (ffmpeg)
 
 juce_add_module ("${CMAKE_CURRENT_LIST_DIR}"
                  ALIAS_NAMESPACE Foleys)

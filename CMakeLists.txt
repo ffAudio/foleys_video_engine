@@ -8,7 +8,8 @@ project (FoleysVideoEngine
 
 list (APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
-find_package (FFmpeg MODULE REQUIRED)
+find_package (ffmpeg REQUIRED)
+
 find_package (JUCE 6 REQUIRED)
 
 juce_add_module ("${CMAKE_CURRENT_LIST_DIR}" 
