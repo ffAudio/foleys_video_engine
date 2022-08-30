@@ -26,6 +26,6 @@ brew install $USER/ffmpeg-4-4/ffmpeg@4.4
 brew unlink $USER/ffmpeg-4-4/ffmpeg@4.4
 
 echo 'Copying include directory to module'
-rsync -rl /usr/local/Cellar/ffmpeg@4.4/*/include/ ../ffmpeg/include
+rsync -rl /usr/local/Cellar/ffmpeg@4.4/*/include/ ffmpeg/include
 echo 'Copying macOS libs to module'
-rsync -rl /usr/local/Cellar/ffmpeg@4.4/*/lib/ ../libs/MacOSX/x86_64
+rsync -rl /usr/local/Cellar/ffmpeg@4.4/*/lib/ libs/MacOSX/x86_64
