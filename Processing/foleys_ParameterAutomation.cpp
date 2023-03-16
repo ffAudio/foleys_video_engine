@@ -154,12 +154,12 @@ double ParameterAutomation::getPreviousKeyframeTime (double time) const
 
 double ParameterAutomation::getNextKeyframeTime (double time) const
 {
-    const auto& next = keyframes.upper_bound (time);
+    auto next = keyframes.upper_bound (time);
     if (next == keyframes.end())
         return time;
 
     if (next->first == time)
-        std::next (next);
+		next = std::next (next);
 
     if (next == keyframes.end())
         return time;
@@ -344,28 +344,45 @@ double AudioParameterAutomation::getRealValueForTime (double pts) const
     return getValueForTime (pts);
 }
 
-void AudioParameterAutomation::setRealValue (double value)
+void AudioParameterAutomation::setRealValue (double newValue)
 {
     if (auto* ranged = dynamic_cast<juce::RangedAudioParameter*>(&parameter))
-        setValue (ranged->getNormalisableRange().convertTo0to1 (float (value)));
+        setValue (ranged->getNormalisableRange().convertTo0to1 (float (newValue)));
     else
-        setValue (value);
+        setValue (newValue);
 }
 
-void AudioParameterAutomation::setRealValue (double pts, double value)
+void AudioParameterAutomation::setRealValue (double pts, double newValue)
 {
     if (auto* ranged = dynamic_cast<juce::RangedAudioParameter*>(&parameter))
-        setValue (pts, ranged->getNormalisableRange().convertTo0to1 (float (value)));
+        setValue (pts, ranged->getNormalisableRange().convertTo0to1 (float (newValue)));
     else
-        setValue (pts, value);
+        setValue (pts, newValue);
 }
 
-void AudioParameterAutomation::addRealKeyframe (double pts, double value)
+void AudioParameterAutomation::addRealKeyframe (double pts, double newValue)
 {
     if (auto* ranged = dynamic_cast<juce::RangedAudioParameter*>(&parameter))
-        addKeyframe (pts, ranged->getNormalisableRange().convertTo0to1 (float (value)));
+        addKeyframe (pts, ranged->getNormalisableRange().convertTo0to1 (float (newValue)));
     else
-        addKeyframe (pts, value);
+        addKeyframe (pts, newValue);
+}
+
+void AudioParameterAutomation::setKeyframesWithRealValues (std::map<double, double> keys)
+{
+    if (auto* param = dynamic_cast<juce::RangedAudioParameter*>(&parameter))
+    {
+        auto range = param->getNormalisableRange();
+        std::map<double, double> realKeys;
+        for (auto& k : keys)
+            realKeys [k.first] = range.convertTo0to1 (float (k.second));
+
+        setKeyframes (realKeys);
+    }
+    else
+    {
+        setKeyframes (keys);
+    }
 }
 
 void AudioParameterAutomation::parameterValueChanged (int, float newValue)
@@ -455,19 +472,28 @@ double VideoParameterAutomation::getRealValueForTime (double pts) const
     return parameter.unNormaliseValue (getValueForTime (pts));
 }
 
-void VideoParameterAutomation::setRealValue (double value)
+void VideoParameterAutomation::setRealValue (double newValue)
 {
-    setValue (parameter.normaliseValue (value));
+    setValue (parameter.normaliseValue (newValue));
 }
 
-void VideoParameterAutomation::setRealValue (double pts, double value)
+void VideoParameterAutomation::setRealValue (double pts, double newValue)
 {
-    setValue (pts, parameter.normaliseValue (value));
+    setValue (pts, parameter.normaliseValue (newValue));
 }
 
-void VideoParameterAutomation::addRealKeyframe (double pts, double value)
+void VideoParameterAutomation::addRealKeyframe (double pts, double newValue)
 {
-    addKeyframe (pts, parameter.normaliseValue (value));
+    addKeyframe (pts, parameter.normaliseValue (newValue));
+}
+
+void VideoParameterAutomation::setKeyframesWithRealValues (std::map<double, double> keys)
+{
+    std::map<double, double> realKeys;
+    for (auto& k : keys)
+        realKeys [k.first] = parameter.normaliseValue (k.second);
+
+    setKeyframes (realKeys);
 }
 
 void VideoParameterAutomation::valueChanged (ProcessorParameter&, double newValue)

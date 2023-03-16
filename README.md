@@ -8,6 +8,35 @@ Foleys Finest Audio Ltd.
 With the module foleys_video_engine we offer a simple way to implement reading,
 writing, displaying and editing of videos using the audio framework JUCE (https://juce.com)
 
+Setup
+--------
+
+To use the video engine, add this module via Projucer or CMake to your JUCE project.
+
+In CMake, this module can be added like this:
+```cmake
+add_subdirectory (foleys_video_engine)
+```
+or like this:
+```cmake
+find_package (foleys_video_engine)
+```
+This repo's CMake scripts add JUCE by calling `find_package()`. Foleys video engine requires JUCE version 6, and may
+be incompatible with JUCE version 7.
+
+You can override the path to JUCE on the command line like so:
+```shell
+cmake -B Builds -D FETCHCONTENT_SOURCE_DIR_JUCE=<your_juce_path>
+```
+
+If you are using CMake and the CPM.cmake package manager to add this repository, be aware that:
+- JUCE's module system expects the root folder of a module to have the same name as the module
+- By default, CPM.cmake will download the source code into a nested folder named with the version, for example `foleys_video_engine/<version>/<sourcesHere>`
+This can cause the JUCE module system to get confused. If you are using CPM.cmake, we recommend you set the `CPM_USE_NAMED_CACHE_DIRECTORIES` CMake or environment variable to `ON` to prevent this issue.
+
+foleys_video_engine requires [ffmpeg](https://www.ffmpeg.org/), which is built in CMake using [this repository](https://github.com/ffAudio/FFmpegBuild). The CMake configuration should "just work" out of the box, you don't need
+to download or install anything.
+
 Features
 --------
 

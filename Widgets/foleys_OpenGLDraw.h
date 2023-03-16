@@ -33,18 +33,18 @@ static const char* getGLErrorMessage (const GLenum e) noexcept
 {
     switch (e)
     {
-        case GL_INVALID_ENUM:                   return "GL_INVALID_ENUM";
-        case GL_INVALID_VALUE:                  return "GL_INVALID_VALUE";
-        case GL_INVALID_OPERATION:              return "GL_INVALID_OPERATION";
-        case GL_OUT_OF_MEMORY:                  return "GL_OUT_OF_MEMORY";
+		case juce::gl::GL_INVALID_ENUM:                   return "GL_INVALID_ENUM";
+		case juce::gl::GL_INVALID_VALUE:                  return "GL_INVALID_VALUE";
+		case juce::gl::GL_INVALID_OPERATION:              return "GL_INVALID_OPERATION";
+		case juce::gl::GL_OUT_OF_MEMORY:                  return "GL_OUT_OF_MEMORY";
        #ifdef GL_STACK_OVERFLOW
-        case GL_STACK_OVERFLOW:                 return "GL_STACK_OVERFLOW";
+		case juce::gl::GL_STACK_OVERFLOW:                 return "GL_STACK_OVERFLOW";
        #endif
        #ifdef GL_STACK_UNDERFLOW
-        case GL_STACK_UNDERFLOW:                return "GL_STACK_UNDERFLOW";
+		case juce::gl::GL_STACK_UNDERFLOW:                return "GL_STACK_UNDERFLOW";
        #endif
        #ifdef GL_INVALID_FRAMEBUFFER_OPERATION
-        case GL_INVALID_FRAMEBUFFER_OPERATION:  return "GL_INVALID_FRAMEBUFFER_OPERATION";
+		case juce::gl::GL_INVALID_FRAMEBUFFER_OPERATION:  return "GL_INVALID_FRAMEBUFFER_OPERATION";
        #endif
         default: break;
     }
@@ -56,9 +56,9 @@ static void checkGLError (const char* file, const int line)
 {
     for (;;)
     {
-        const GLenum e = glGetError();
+        const GLenum e = juce::gl::glGetError();
 
-        if (e == GL_NO_ERROR)
+		if (e == juce::gl::GL_NO_ERROR)
             break;
 
         DBG ("***** " << getGLErrorMessage (e) << "  at " << file << " : " << line);
@@ -73,7 +73,7 @@ static void checkGLError (const char* file, const int line)
 
 static void clearGLError() noexcept
 {
-    while (glGetError() != GL_NO_ERROR) {}
+    while (juce::gl::glGetError() != juce::gl::GL_NO_ERROR) {}
 }
 
 
@@ -81,19 +81,19 @@ struct DepthTestDisabler
 {
     DepthTestDisabler() noexcept
     {
-        glGetBooleanv (GL_DEPTH_TEST, &wasEnabled);
+		juce::gl::glGetBooleanv (juce::gl::GL_DEPTH_TEST, &wasEnabled);
 
         if (wasEnabled)
-            glDisable (GL_DEPTH_TEST);
+			juce::gl::glDisable (juce::gl::GL_DEPTH_TEST);
     }
 
     ~DepthTestDisabler() noexcept
     {
         if (wasEnabled)
-            glEnable (GL_DEPTH_TEST);
+			juce::gl::glEnable (juce::gl::GL_DEPTH_TEST);
     }
 
-    GLboolean wasEnabled;
+	GLboolean wasEnabled;
 };
 
 static inline void drawTexture (juce::OpenGLContext& context,
@@ -110,8 +110,8 @@ static inline void drawTexture (juce::OpenGLContext& context,
     juce::ignoreUnused (transform);
 
     JUCE_CHECK_OPENGL_ERROR
-    glBlendFunc (GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable (GL_BLEND);
+	juce::gl::glBlendFunc (juce::gl::GL_ONE, juce::gl::GL_ONE_MINUS_SRC_ALPHA);
+	juce::gl::glEnable (juce::gl::GL_BLEND);
 
     DepthTestDisabler depthDisabler;
 
@@ -218,20 +218,20 @@ static inline void drawTexture (juce::OpenGLContext& context,
 
         GLuint vertexBuffer = 0;
         context.extensions.glGenBuffers (1, &vertexBuffer);
-        context.extensions.glBindBuffer (GL_ARRAY_BUFFER, vertexBuffer);
-        context.extensions.glBufferData (GL_ARRAY_BUFFER, sizeof (vertices), vertices, GL_STATIC_DRAW);
+        context.extensions.glBindBuffer (juce::gl::GL_ARRAY_BUFFER, vertexBuffer);
+        context.extensions.glBufferData (juce::gl::GL_ARRAY_BUFFER, sizeof (vertices), vertices, juce::gl::GL_STATIC_DRAW);
         JUCE_CHECK_OPENGL_ERROR
 
         auto index = (GLuint) program.params.positionAttribute.attributeID;
-        context.extensions.glVertexAttribPointer (index, 2, GL_SHORT, GL_FALSE, 4, nullptr);
+        context.extensions.glVertexAttribPointer (index, 2, juce::gl::GL_SHORT, juce::gl::GL_FALSE, 4, nullptr);
         context.extensions.glEnableVertexAttribArray (index);
         JUCE_CHECK_OPENGL_ERROR
 
-        if (context.extensions.glCheckFramebufferStatus (GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE)
+        if (context.extensions.glCheckFramebufferStatus (juce::gl::GL_FRAMEBUFFER) == juce::gl::GL_FRAMEBUFFER_COMPLETE)
         {
-            glDrawArrays (GL_TRIANGLE_STRIP, 0, 4);
+			juce::gl::glDrawArrays (juce::gl::GL_TRIANGLE_STRIP, 0, 4);
 
-            context.extensions.glBindBuffer (GL_ARRAY_BUFFER, 0);
+            context.extensions.glBindBuffer (juce::gl::GL_ARRAY_BUFFER, 0);
             context.extensions.glUseProgram (0);
             context.extensions.glDisableVertexAttribArray (index);
             context.extensions.glDeleteBuffers (1, &vertexBuffer);
