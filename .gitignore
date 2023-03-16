@@ -3,4 +3,9 @@
 **/Cache/
 **/JuceLibraryCode/
 **/!JuceLibraryCode/AppConfig.h
+
+# ingore ffmpeg lib folder contents
 libs/
+ffmpeg/
+# except for the .gitkeep(s)
+!.gitkeep

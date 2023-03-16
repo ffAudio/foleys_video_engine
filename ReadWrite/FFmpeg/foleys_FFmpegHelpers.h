@@ -29,15 +29,6 @@
 #pragma clang diagnostic ignored "-Wfloat-conversion"
 #endif
 
-#if JUCE_MSVC
-#pragma comment (lib, "avformat.lib")
-#pragma comment (lib, "avutil.lib")
-#pragma comment (lib, "avcodec.lib")
-#pragma comment (lib, "swscale.lib")
-#pragma comment (lib, "swresample.lib")
-#pragma comment (lib, "avresample.lib")
-#endif
-
 #ifdef __cplusplus
 extern "C" {
 #endif
