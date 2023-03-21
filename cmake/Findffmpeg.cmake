@@ -12,7 +12,7 @@ set_package_properties ("${CMAKE_FIND_PACKAGE_NAME}"
                             DESCRIPTION "Audio and video codecs")
 
 FetchContent_Declare (ffmpeg 
-                        GIT_REPOSITORY "https://github.com/ffAudio/FFmpegBuild.git"
+                        GIT_REPOSITORY "https://github.com/mach1studios/FFmpegBuild.git"
                         GIT_TAG origin/main)
 
 FetchContent_MakeAvailable (ffmpeg)

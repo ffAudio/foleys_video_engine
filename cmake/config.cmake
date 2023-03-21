@@ -30,7 +30,10 @@ list (APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
 include (CMakeFindDependencyMacro)
 
+if(PROJECT_IS_TOP_LEVEL)
+    message(STATUS "No parent project found, requiring JUCE")
 find_dependency (JUCE 6)
+endif()
 find_dependency (ffmpeg)
 
 juce_add_module ("${CMAKE_CURRENT_LIST_DIR}"
