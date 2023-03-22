@@ -27,10 +27,6 @@
                      mux audio into an existing video
   dependencies:      juce_audio_basics juce_audio_devices juce_audio_formats juce_gui_basics juce_graphics juce_core juce_audio_utils juce_audio_processors
   minimumCppStandard: 17
-  searchpaths:        ffmpeg/include
-  windowsLibs:        avformat,avutil,avcodec,swscale,swresample
-  OSXLibs:            avformat,avutil,avcodec,swscale,swresample,avresample
-
   website:       https://foleysfinest.com/
 
   END_JUCE_MODULE_DECLARATION
