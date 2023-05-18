@@ -29,10 +29,12 @@
 #pragma clang diagnostic ignored "-Wfloat-conversion"
 #endif
 
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+#include <libavcodec/avcodec.h>
 #include <libavutil/pixdesc.h>
 #include <libavutil/imgutils.h>
 #include <libavutil/opt.h>
