@@ -8,7 +8,9 @@ project (FoleysVideoEngine
 
 list (APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
-find_package (ffmpeg REQUIRED)
+if(NOT ffmpeg_FOUND)
+    find_package (ffmpeg REQUIRED)
+endif()
 
 if(PROJECT_IS_TOP_LEVEL)
     message(STATUS "No parent project found, requiring JUCE")
