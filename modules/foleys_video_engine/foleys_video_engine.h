@@ -45,14 +45,6 @@
 #define FOLEYS_USE_OPENGL 0
 #endif
 
-/** Config: FOLEYS_REPORT_USAGE
-    Set this flag to send a single ping each time the engine starts.
-    This is mandatory, if you use the Personal License (free)
- */
-#ifndef FOLEYS_REPORT_USAGE
-#define FOLEYS_REPORT_USAGE 1
-#endif
-
 /** Config: FOLEYS_SHOW_SPLASHSCREEN
     Set this flag to show 6 seconds a splash screen in your
     VideoPreview component.
@@ -108,7 +100,6 @@
 #endif
 
 #include "Basics/foleys_Structures.h"
-#include "Basics/foleys_Usage.h"
 #include "Basics/foleys_VideoFrame.h"
 #include "Basics/foleys_TimeCodeAware.h"
 #include "Basics/foleys_AudioFifo.h"
