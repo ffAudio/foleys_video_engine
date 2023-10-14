@@ -35,22 +35,6 @@ public:
 
     virtual void setContinuousRepaint (int hz) = 0;
 
-#if FOLEYS_SHOW_SPLASHSCREEN
-protected:
-    void addSplashscreen (juce::Component& view)
-    {
-        view.addAndMakeVisible (splashscreen);
-    }
-
-    void viewResized (juce::Component& view)
-    {
-        splashscreen.setBounds (view.getWidth() - 210, view.getHeight() - 90, 200, 80);
-    }
-
-private:
-    FoleysSplashScreen splashscreen;
-#endif
-    
 private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (VideoView)
 };

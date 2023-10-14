@@ -25,9 +25,6 @@ namespace foleys
 
 OpenGLView::OpenGLView()
 {
-#if FOLEYS_SHOW_SPLASHSCREEN
-    addSplashscreen (*this);
-#endif
 }
 
 OpenGLView::~OpenGLView()

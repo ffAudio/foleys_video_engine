@@ -1,5 +1,6 @@
 **/.DS*
+**/.idea
 **/Builds/
 **/JuceLibraryCode/
-**/!JuceLibraryCode/AppConfig.h
+**/cmake-build-*/
 libs/

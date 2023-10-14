@@ -50,13 +50,6 @@ public:
 
     void timecodeChanged (int64_t count, double seconds) override;
 
-#if FOLEYS_SHOW_SPLASHSCREEN
-    void resized() override
-    {
-        viewResized (*this);
-    }
-#endif
-
 private:
     std::shared_ptr<AVClip> clip;
     juce::RectanglePlacement placement { juce::RectanglePlacement::centred };

@@ -55,13 +55,6 @@ public:
 
     void timecodeChanged (int64_t count, double seconds) override;
 
-#if FOLEYS_SHOW_SPLASHSCREEN
-    void resized() override
-    {
-        viewResized (*this);
-    }
-#endif
-
 private:
     struct Texture
     {

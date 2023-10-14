@@ -30,10 +30,6 @@ SoftwareView::SoftwareView()
 
     setOpaque (true);
     setInterceptsMouseClicks (false, true);
-
-#if FOLEYS_SHOW_SPLASHSCREEN
-    addSplashscreen (*this);
-#endif
 }
 
 SoftwareView::~SoftwareView()
