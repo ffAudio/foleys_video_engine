@@ -34,7 +34,7 @@ Library::Library (Player& player, foleys::VideoEngine& engine)
 {
     ignoreUnused (videoEngine);
 
-    directoryThread.startThread (3);
+    directoryThread.startThread();
 
     tabs.addTab (NEEDS_TRANS ("Movies"), Colours::darkgrey,
                  new MediaList (player,

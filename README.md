@@ -36,6 +36,12 @@ refer to the included document LICENSE.md
 The paid licenses are currently developed and will be announced soon. You are welcome to
 get in touch to register your interest and tell us about your use case.
 
+Repository Layout
+-----------------
+
+The module can be found in the `modules` folder. There are also additional modules used by
+the examples, as well as a cmake project that will build ffmpeg.
+
 API-Documentation
 -----------------
 
@@ -46,11 +52,11 @@ There is also the support forum: https://forum.foleysfinest.com
 Examples
 --------
 
-On https://github.com/ffAudio/VideoExamples we have a simple video player using this engine,
+In the folder `examples` we have a simple video player using this engine,
 as well as a Video Editor (NLE) to test the functionality and to give an idea about it's
 intended use.
 
-To use the engine, just start the Projucer and add foleys_video_engine to your project.
+To use the engine, just add foleys_video_engine to your project using Projucer of preferably cmake.
 
 We hope this is useful and are looking forward to your feedback:
 
@@ -75,4 +81,4 @@ Disclaimer
  OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-Foleys Finest Audio - 2019 - Brighton, UK - 2021 Esslingen, Germany
+Foleys Finest Audio - 2019 - Brighton, UK - 2023 Esslingen, Germany

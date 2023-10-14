@@ -21,6 +21,15 @@ touch!
 will need you to waive your copyright, but we will find a way to show our gratitude.
 Let's have a talk about it.
 
+Contributions:
+--------------
+
+- **Ben Vining**: ffmpeg build scripts (2022)
+- **Marcel Huibers**: Windows Video file reading (2022)
+
+Get in touch:
+-------------
+
 You can reach us at:
 
 Email:       developer@foleysfinest.com \

@@ -17,11 +17,14 @@ juce_add_gui_app(${PROJECT_NAME}
         COMPANY_EMAIL "info@foleysfinest.com"
         PLUGINHOST_AU TRUE)
 
+find_package (ffmpeg)
+
 add_subdirectory(Source)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
         Foleys::foleys_video_engine
         Foleys::ff_meters
+        ffmpeg::ffmpeg
         juce_audio_utils
         juce_opengl
         juce_gui_extra
@@ -31,6 +34,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
         juce_audio_formats)
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE
+        JUCE_MODAL_LOOPS_PERMITTED=1
         JUCE_STRICT_REFCOUNTEDPOINTER=1
         JUCE_PLUGINHOST_VST3=1
         JUCE_PLUGINHOST_LADSPA=1
