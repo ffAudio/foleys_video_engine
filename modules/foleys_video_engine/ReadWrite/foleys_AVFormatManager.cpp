@@ -61,7 +61,7 @@ std::shared_ptr<AVClip> AVFormatManager::createClipFromFile (VideoEngine& engine
         }
 
         auto reader = AVFormatManager::createReaderFor (file, type);
-        if (reader->isOpenedOk())
+        if (reader && reader->isOpenedOk())
         {
             auto clip = std::make_shared<MovieClip> (engine);
             if (reader->hasVideo())
