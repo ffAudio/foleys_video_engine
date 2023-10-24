@@ -79,6 +79,8 @@ public:
      */
     void dumpTimeCodes() const;
 
+    double getFrameDurationInSeconds() const;
+
 private:
     int findFramePosition (int64_t timecode, int start) const;
 

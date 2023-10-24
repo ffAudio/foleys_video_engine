@@ -131,7 +131,10 @@ void MovieClip::render (OpenGLView& view, double pts, float rotation, float zoom
 
 bool MovieClip::isFrameAvailable (double pts) const
 {
-    return videoFifo.isFrameAvailable (pts);
+    if (juce::isPositiveAndBelow (pts * movieReader->sampleRate, movieReader->getTotalLength()))
+        return videoFifo.isFrameAvailable (pts);
+
+    return true;
 }
 
 juce::Image MovieClip::getStillImage (double seconds, Size size)
@@ -324,10 +327,22 @@ int MovieClip::BackgroundReaderJob::useTimeSlice()
     {
         juce::ScopedValueSetter<bool> guard (inDecodeBlock, true);
         owner.movieReader->readNewData (owner.videoFifo, owner.audioFifo);
-        return 3;
     }
 
-    return 30;
+    if (owner.movieReader.get() != nullptr)
+    {
+        if (owner.getNextReadPosition() >= owner.movieReader->getTotalLength())
+            return 100;
+    }
+
+    double secs = 1;
+    if (owner.hasAudio())
+        secs = std::min (secs, owner.audioFifo.getAvailableSamples() / owner.sampleRate);
+
+    if (owner.hasVideo())
+        secs = std::min (secs, owner.videoFifo.getNumAvailableFrames() * owner.videoFifo.getFrameDurationInSeconds());
+
+    return int (50.0 * secs);
 }
 
 void MovieClip::BackgroundReaderJob::setSuspended (bool s)

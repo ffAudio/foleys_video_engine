@@ -50,14 +50,22 @@ void AudioFifo::setNumSamples (int samples)
 
 void AudioFifo::pullSamples (const juce::AudioSourceChannelInfo& info)
 {
+    auto ready = audioFifo.getNumReady() >= info.numSamples;
+
+    if (!ready)
+        info.clearActiveBufferRegion();
+
     auto read = audioFifo.read (info.numSamples);
 
-    for (int channel=0; channel<audioBuffer.getNumChannels(); ++channel)
+    if (ready)
     {
-        const auto sourceChannel = channel % audioBuffer.getNumChannels();
-        info.buffer->copyFrom (channel, info.startSample, audioBuffer.getReadPointer (sourceChannel, read.startIndex1), read.blockSize1);
-        if (read.blockSize2 > 0)
-            info.buffer->copyFrom (channel, info.startSample + read.blockSize1, audioBuffer.getReadPointer (sourceChannel, read.startIndex2), read.blockSize2);
+        for (int channel=0; channel<audioBuffer.getNumChannels(); ++channel)
+        {
+            const auto sourceChannel = channel % audioBuffer.getNumChannels();
+            info.buffer->copyFrom (channel, info.startSample, audioBuffer.getReadPointer (sourceChannel, read.startIndex1), read.blockSize1);
+            if (read.blockSize2 > 0)
+                info.buffer->copyFrom (channel, info.startSample + read.blockSize1, audioBuffer.getReadPointer (sourceChannel, read.startIndex2), read.blockSize2);
+        }
     }
 
     readPosition.fetch_add (read.blockSize1 + read.blockSize2);

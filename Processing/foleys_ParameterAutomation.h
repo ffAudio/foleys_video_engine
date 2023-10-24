@@ -127,6 +127,11 @@ public:
      */
     void  setKeyframes (std::map<double, double> keys);
 
+    /**
+     Replace all keyframes specifying the value in unnormalised values
+     */
+    virtual void  setKeyframesWithRealValues (std::map<double, double> keys) = 0;
+
     virtual juce::String getText (float normalisedValue, int numDigits = 2) const = 0;
     virtual double getValueForText (const juce::String& text) const = 0;
 
@@ -205,6 +210,11 @@ public:
     void setRealValue (double pts, double value) override;
     void addRealKeyframe (double pts, double value) override;
 
+    /**
+     Replace all keyframes specifying the value in unnormalised values
+     */
+    void setKeyframesWithRealValues (std::map<double, double> keys) override;
+
     void parameterValueChanged (int parameterIndex, float newValue) override;
 
     void parameterGestureChanged (int parameterIndex, bool gestureIsStarting) override;
@@ -250,6 +260,11 @@ public:
     void setRealValue (double value) override;
     void setRealValue (double pts, double value) override;
     void addRealKeyframe (double pts, double value) override;
+
+    /**
+     Replace all keyframes specifying the value in unnormalised values
+     */
+    void setKeyframesWithRealValues (std::map<double, double> keys) override;
 
     void valueChanged (ProcessorParameter& parameter, double newValue) override;
     void gestureStarted (ProcessorParameter& parameter) override;

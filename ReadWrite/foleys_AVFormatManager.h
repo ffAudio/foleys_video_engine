@@ -24,6 +24,19 @@
 namespace foleys
 {
 
+    
+struct AVFormat {
+    AVFormat() = default;
+    virtual ~AVFormat() = default;
+
+    virtual bool canRead(juce::File file) = 0;
+    virtual std::unique_ptr<AVReader> createReaderFor(juce::File file, StreamTypes type = StreamTypes::all()) = 0;
+
+    virtual bool canWrite(juce::File file) = 0;
+    virtual std::unique_ptr<AVWriter> createWriterFor(juce::File file, StreamTypes type = StreamTypes::all()) = 0;
+};
+
+
 /**
  @class AVFormatManager
 
@@ -47,6 +60,8 @@ public:
 
     std::unique_ptr<AVWriter> createClipWriter (juce::File file);
 
+    void registerFormat (std::unique_ptr<AVFormat> format);
+
     void registerFactory (const juce::String& schema, std::function<std::shared_ptr<AVClip>(foleys::VideoEngine& videoEngine, juce::URL url, StreamTypes type)> factory);
 
     juce::AudioFormatManager audioFormatManager;
@@ -54,6 +69,8 @@ public:
 private:
 
     std::map<juce::String, std::function<std::shared_ptr<AVClip>(foleys::VideoEngine& videoEngine, juce::URL url, StreamTypes type)>> factories;
+
+    std::vector<std::unique_ptr<AVFormat>> videoFormats;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AVFormatManager)
 };

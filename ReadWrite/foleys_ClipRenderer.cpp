@@ -144,6 +144,9 @@ juce::ThreadPoolJob::JobStatus ClipRenderer::RenderJob::runJob()
             {
                 if (shouldExit())
                 {
+                    bouncer.writer->finishWriting();
+                    bouncer.writer.reset();
+
                     if (bouncer.onRenderingFinished)
                         bouncer.onRenderingFinished (false);
 
