@@ -133,7 +133,7 @@ private:
 
     juce::OptionalScopedPointer<juce::UndoManager> undoManager { new juce::UndoManager(), true };
 
-    juce::ThreadPool jobThreads { std::max (4, juce::SystemStats::getNumCpus()) };
+    juce::ThreadPool jobThreads{ (std::max)(4, juce::SystemStats::getNumCpus()) };
     std::vector<std::unique_ptr<juce::TimeSliceThread>> readingThreads;
 
     std::vector<std::shared_ptr<AVClip>> releasePool;
