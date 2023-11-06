@@ -44,6 +44,15 @@
 #include "ReadWrite/foleys_AVFormatManager.cpp"
 #include "ReadWrite/foleys_ClipRenderer.cpp"
 
+#if JUCE_WINDOWS
+    #include "Native/foleys_Helpers_Win.h"
+    #include "Camera/foleys_CameraManager_Win.cpp"
+    #include "ReadWrite/Windows/foleys_MediaFoundation_Win.cpp"
+#endif
+
+#include "Camera/foleys_CameraManager.cpp"
+#include "Camera/foleys_CameraClip.cpp"
+
 #if FOLEYS_USE_FFMPEG
 #include "ReadWrite/FFmpeg/foleys_FFmpegReader.cpp"
 #include "ReadWrite/FFmpeg/foleys_FFmpegWriter.cpp"

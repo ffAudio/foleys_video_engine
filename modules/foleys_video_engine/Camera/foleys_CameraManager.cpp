@@ -61,24 +61,6 @@ std::unique_ptr<CameraReceiver> CameraManager::openCamera (const juce::String& u
     return pimpl->openCamera (uid);
 }
 
-std::shared_ptr<CameraClip> CameraManager::createCameraClip (int index)
-{
-    auto camera = openCamera (index);
-    camera->onCaptureEngineInitialized = [cameraPtr = camera.get()]()
-    { cameraPtr->start(); };
-
-    return createCameraClip (std::move (camera));
-}
-
-std::shared_ptr<CameraClip> CameraManager::createCameraClip (const juce::String& uid)
-{
-    auto camera = openCamera (uid);
-    camera->onCaptureEngineInitialized = [cameraPtr = camera.get()]()
-    { cameraPtr->start(); };
-
-    return createCameraClip (std::move (camera));
-}
-
 std::shared_ptr<CameraClip> CameraManager::createCameraClip (std::unique_ptr<CameraReceiver> camera)
 {
     auto clip = std::make_shared<CameraClip> (engine, std::move (camera));

@@ -45,6 +45,13 @@
 #define FOLEYS_USE_OPENGL 0
 #endif
 
+/** Config: FOLEYS_CAMERA_SUPPORT
+    Set this flag to access the cameras attached to the system
+ */
+#ifndef FOLEYS_CAMERA_SUPPORT
+    #define FOLEYS_CAMERA_SUPPORT 1
+#endif
+
 /** Config: FOLEYS_USE_FFMPEG
     Set this flag to use FFmpeg as reading/writing library
  */
@@ -126,10 +133,17 @@
 #include "Widgets/foleys_OpenGLDraw.h"
 #include "Widgets/foleys_OpenGLView.h"
 
+#include "Camera/foleys_CameraManager.h"
+#include "Camera/foleys_CameraClip.h"
+
 #if FOLEYS_USE_FFMPEG
 #include "ReadWrite/FFmpeg/foleys_FFmpegReader.h"
 #include "ReadWrite/FFmpeg/foleys_FFmpegWriter.h"
 #include "ReadWrite/FFmpeg/foleys_FFmpegFormat.h"
+#endif
+
+#if JUCE_WINDOWS
+    #include "ReadWrite/foleys_MediaFoundation_Win.h"
 #endif
 
 #include "Plugins/foleys_ColourCurveVideoProcessor.h"

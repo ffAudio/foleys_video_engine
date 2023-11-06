@@ -1,7 +1,7 @@
 /*
  ==============================================================================
 
- Copyright (c) 2019, Foleys Finest Audio - Daniel Walz
+ Copyright (c) 2019 - 2023, Foleys Finest Audio - Daniel Walz
  All rights reserved.
 
  Redistribution and use in source and binary forms, with or without modification,

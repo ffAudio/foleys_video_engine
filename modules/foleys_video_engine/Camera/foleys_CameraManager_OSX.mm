@@ -1,7 +1,7 @@
 /*
  ==============================================================================
 
- Copyright (c) 2020-2021, Foleys Finest Audio - Daniel Walz
+ Copyright (c) 2020-2023, Foleys Finest Audio - Daniel Walz
  All rights reserved.
 
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
@@ -24,7 +24,7 @@
 #include <AVFoundation/AVFoundation.h>
 #include <CoreImage/CoreImage.h>
 #include <objc/message.h>
-#include <juce_core/native/juce_mac_ObjCHelpers.h>
+#include <juce_core/native/juce_ObjCHelpers_mac.h>
 #undef AVMediaType
 
 namespace foleys

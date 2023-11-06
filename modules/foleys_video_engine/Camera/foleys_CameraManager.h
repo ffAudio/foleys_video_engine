@@ -138,9 +138,6 @@ public:
      */
     std::shared_ptr<CameraClip> createCameraClip (std::unique_ptr<CameraReceiver>);
 
-    JUCE_DEPRECATED (std::shared_ptr<CameraClip> createCameraClip (int index));
-    JUCE_DEPRECATED (std::shared_ptr<CameraClip> createCameraClip (const juce::String& uid));
-
 private:
     struct Pimpl;
 
