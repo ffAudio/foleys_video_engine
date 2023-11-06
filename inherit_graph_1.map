@@ -1,0 +1,41 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" title=" " alt="" coords="19,243,162,268"/>
+<area shape="rect" id="Node000001" href="$classMainComponent.html" title=" " alt="" coords="465,7,580,32"/>
+<area shape="poly" id="edge21_Node000000_Node000001" title=" " alt="" coords="98,227,114,184,140,133,175,83,197,61,222,42,252,28,283,17,348,5,411,3,465,7,464,13,410,9,348,10,284,22,254,32,225,47,201,65,179,86,144,136,119,186,103,228"/>
+<area shape="rect" id="Node000016" href="$classMainContentComponent.html" title=" " alt="" coords="224,260,384,286"/>
+<area shape="poly" id="edge22_Node000000_Node000016" title=" " alt="" coords="178,260,223,264,223,269,177,265"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="248,57,360,83"/>
+<area shape="poly" id="edge23_Node000002_Node000001" title=" " alt="" coords="374,51,464,30,465,35,376,56"/>
+<area shape="rect" id="Node000003" href="$classfoleys_1_1AudioStrip.html" title="This class displays the audio curves of the clip." alt="" coords="482,56,563,82"/>
+<area shape="poly" id="edge24_Node000002_Node000003" title=" " alt="" coords="375,67,481,66,481,72,375,72"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="260,180,348,206"/>
+<area shape="poly" id="edge26_Node000004_Node000003" title=" " alt="" coords="327,167,373,128,431,90,481,73,482,78,433,95,376,132,331,171"/>
+<area shape="rect" id="Node000005" href="$classOSDComponent.html" title=" " alt="" coords="465,105,580,131"/>
+<area shape="poly" id="edge25_Node000004_Node000005" title=" " alt="" coords="349,171,431,140,466,129,468,134,433,145,351,176"/>
+<area shape="rect" id="Node000006" href="$classfoleys_1_1FilmStrip.html" title="The FilmStrip allows to display a line of thumbnails of a video clip." alt="" coords="486,155,559,180"/>
+<area shape="poly" id="edge27_Node000004_Node000006" title=" " alt="" coords="362,183,485,169,486,174,363,189"/>
+<area shape="rect" id="Node000007" href="$classfoleys_1_1LevelMeter.html" title=" " alt="" coords="480,253,566,279"/>
+<area shape="poly" id="edge28_Node000004_Node000007" title=" " alt="" coords="352,209,433,240,480,253,479,258,431,245,350,214"/>
+<area shape="rect" id="Node000011" href="$classfoleys_1_1SoftwareView.html" title=" " alt="" coords="472,352,574,378"/>
+<area shape="poly" id="edge29_Node000004_Node000011" title=" " alt="" coords="345,212,366,227,386,246,402,272,408,295,416,317,434,339,452,349,472,356,470,361,449,354,430,343,411,320,403,297,397,274,382,249,363,231,342,216"/>
+<area shape="rect" id="Node000018" href="$classfoleys_1_1StereoFieldComponent.html" title="This class implements a circular buffer to buffer audio samples." alt="" coords="446,204,599,230"/>
+<area shape="poly" id="edge31_Node000004_Node000018" title=" " alt="" coords="363,196,446,206,445,211,363,202"/>
+<area shape="rect" id="Node000012" href="$classVideoComponentWithDropper.html" title=" " alt="" coords="661,328,853,354"/>
+<area shape="poly" id="edge30_Node000011_Node000012" title=" " alt="" coords="589,355,660,348,661,353,589,361"/>
+<area shape="rect" id="Node000013" title=" " alt="" coords="445,303,601,328"/>
+<area shape="poly" id="edge32_Node000013_Node000012" title=" " alt="" coords="616,323,661,328,660,333,616,328"/>
+<area shape="rect" id="Node000015" href="$structfoleys_1_1TimeCodeAware_1_1Listener.html" title="Use a TimecodeListener to be notified, when the visual frame changes." alt="" coords="5,304,176,330"/>
+<area shape="poly" id="edge33_Node000015_Node000016" title=" " alt="" coords="171,298,238,284,239,289,172,303"/>
+<area shape="rect" id="Node000014" href="$classfoleys_1_1VideoView.html" title=" " alt="" coords="262,328,346,354"/>
+<area shape="poly" id="edge34_Node000015_Node000014" title=" " alt="" coords="192,325,262,333,262,339,191,331"/>
+<area shape="poly" id="edge35_Node000014_Node000011" title=" " alt="" coords="361,344,471,356,471,362,360,350"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="250,451,358,476"/>
+<area shape="rect" id="Node000009" href="$classOSDComponent_1_1MouseIdle.html" title=" " alt="" coords="432,451,613,476"/>
+<area shape="poly" id="edge36_Node000010_Node000009" title=" " alt="" coords="373,461,432,461,432,466,373,466"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="277,377,331,403"/>
+<area shape="poly" id="edge38_Node000008_Node000007" title=" " alt="" coords="345,381,365,374,382,364,398,346,405,327,413,307,430,288,454,275,478,268,480,273,456,280,434,292,418,310,410,329,403,349,386,368,367,379,347,386"/>
+<area shape="poly" id="edge39_Node000008_Node000011" title=" " alt="" coords="346,383,471,368,471,373,347,388"/>
+<area shape="poly" id="edge37_Node000008_Node000009" title=" " alt="" coords="346,405,433,437,468,447,467,453,431,442,345,410"/>
+<area shape="rect" id="Node000017" href="$classfoleys_1_1VideoEngine.html" title="The VideoEngine is handling the background tasks of the video." alt="" coords="476,401,569,427"/>
+<area shape="poly" id="edge40_Node000008_Node000017" title=" " alt="" coords="347,392,476,406,475,412,346,397"/>
+</map>

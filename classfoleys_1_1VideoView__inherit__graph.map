@@ -1,0 +1,9 @@
+<map id="VideoView" name="VideoView">
+<area shape="rect" id="Node000001" title=" " alt="" coords="59,79,143,105"/>
+<area shape="rect" id="Node000003" href="$classfoleys_1_1SoftwareView.html" title=" " alt="" coords="50,153,152,178"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="104,120,104,152,98,152,98,120"/>
+<area shape="rect" id="Node000002" href="$structfoleys_1_1TimeCodeAware_1_1Listener.html" title="Use a TimecodeListener to be notified, when the visual frame changes." alt="" coords="67,5,135,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="104,46,104,79,98,79,98,46"/>
+<area shape="rect" id="Node000004" href="$classVideoComponentWithDropper.html" title=" " alt="" coords="5,226,197,252"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="104,194,104,226,98,226,98,194"/>
+</map>

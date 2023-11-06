@@ -1,0 +1,7 @@
+<map id="ImageClip" name="ImageClip">
+<area shape="rect" id="Node000001" title="This class delivers a still image as video." alt="" coords="24,153,104,178"/>
+<area shape="rect" id="Node000002" href="$classfoleys_1_1AVClip.html" title="AVClip is the abstract base class of displayable/playable clips." alt="" coords="33,79,95,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="67,120,67,152,61,152,61,120"/>
+<area shape="rect" id="Node000003" href="$classfoleys_1_1TimeCodeAware.html" title="Add this interface if your class is aware of a time continuum." alt="" coords="5,5,123,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="67,46,67,79,61,79,61,46"/>
+</map>

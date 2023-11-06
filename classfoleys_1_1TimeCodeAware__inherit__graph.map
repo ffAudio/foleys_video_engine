@@ -1,0 +1,17 @@
+<map id="TimeCodeAware" name="TimeCodeAware">
+<area shape="rect" id="Node000001" title="Add this interface if your class is aware of a time continuum." alt="" coords="262,5,380,31"/>
+<area shape="rect" id="Node000002" href="$classfoleys_1_1AVClip.html" title="AVClip is the abstract base class of displayable/playable clips." alt="" coords="185,79,246,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="292,42,235,81,232,76,289,38"/>
+<area shape="rect" id="Node000007" href="$classfoleys_1_1AudioStrip_1_1ThumbnailJob.html" title=" " alt="" coords="270,79,372,105"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="324,46,324,79,318,79,318,46"/>
+<area shape="rect" id="Node000008" href="$classfoleys_1_1ClipDescriptor.html" title="The ClipDescriptor configures the placement of each clip to be used in compositing the ComposedClip." alt="" coords="396,79,499,105"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="357,37,427,76,425,81,354,41"/>
+<area shape="rect" id="Node000003" href="$classfoleys_1_1AudioClip.html" title="The AudioClip plays back an audio file inside the video engine." alt="" coords="5,153,82,178"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="173,113,74,155,72,150,171,108"/>
+<area shape="rect" id="Node000004" href="$classfoleys_1_1ComposedClip.html" title="This clip does the actual work of composing images into a video." alt="" coords="106,153,211,178"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="199,118,170,154,166,151,194,115"/>
+<area shape="rect" id="Node000005" href="$classfoleys_1_1ImageClip.html" title="This class delivers a still image as video." alt="" coords="235,153,314,178"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="237,115,266,150,262,154,233,118"/>
+<area shape="rect" id="Node000006" href="$classfoleys_1_1MovieClip.html" title="The MovieClip plays back a video file." alt="" coords="338,153,416,178"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="258,109,350,150,348,155,256,114"/>
+</map>

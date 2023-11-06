@@ -1,0 +1,7 @@
+<map id="LevelMeterLookAndFeel" name="LevelMeterLookAndFeel">
+<area shape="rect" id="Node000001" title="Convenience LookAndFeel which derives from LookAndFeel_V3 and LevelMeter::LookAndFeelMethods." alt="" coords="83,79,247,105"/>
+<area shape="rect" id="Node000002" href="$classfoleys_1_1LevelMeter_1_1LookAndFeelMethods.html" title="These methods define a interface for the LookAndFeel class of juce." alt="" coords="5,5,154,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="107,39,152,77,149,81,104,43"/>
+<area shape="rect" id="Node000003" href="$classfoleys_1_1StereoFieldComponent_1_1LookAndFeelMethods.html" title=" " alt="" coords="177,5,326,31"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="227,43,181,81,178,77,223,39"/>
+</map>

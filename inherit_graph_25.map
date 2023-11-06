@@ -1,0 +1,9 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" title=" " alt="" coords="54,5,176,31"/>
+<area shape="rect" id="Node000001" href="$classfoleys_1_1LevelMeterLookAndFeel.html" title="Convenience LookAndFeel which derives from LookAndFeel_V3 and LevelMeter::LookAndFeelMethods." alt="" coords="273,55,436,80"/>
+<area shape="poly" id="edge54_Node000000_Node000001" title=" " alt="" coords="192,31,289,51,288,57,190,36"/>
+<area shape="rect" id="Node000002" href="$classfoleys_1_1LevelMeter_1_1LookAndFeelMethods.html" title="These methods define a interface for the LookAndFeel class of juce." alt="" coords="5,55,225,80"/>
+<area shape="poly" id="edge55_Node000002_Node000001" title=" " alt="" coords="241,65,272,65,272,70,241,70"/>
+<area shape="rect" id="Node000003" href="$classfoleys_1_1StereoFieldComponent_1_1LookAndFeelMethods.html" title=" " alt="" coords="38,105,192,145"/>
+<area shape="poly" id="edge56_Node000003_Node000001" title=" " alt="" coords="207,100,297,78,298,84,208,105"/>
+</map>

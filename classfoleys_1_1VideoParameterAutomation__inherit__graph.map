@@ -1,0 +1,7 @@
+<map id="VideoParameterAutomation" name="VideoParameterAutomation">
+<area shape="rect" id="Node000001" title="Controls the ProcessorParameters of a VideoProcessor." alt="" coords="54,79,235,105"/>
+<area shape="rect" id="Node000002" href="$classfoleys_1_1ParameterAutomation.html" title="This class allows storing and playing back automation values." alt="" coords="5,5,153,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="102,40,135,77,131,80,98,44"/>
+<area shape="rect" id="Node000003" href="$classfoleys_1_1ProcessorParameter_1_1Listener.html" title=" " alt="" coords="177,5,245,31"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="192,44,158,80,154,77,188,40"/>
+</map>

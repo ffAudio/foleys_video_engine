@@ -1,0 +1,27 @@
+var classfoleys_1_1AVReader =
+[
+    [ "AVReader", "classfoleys_1_1AVReader.html#afa13002f8c49fef924e1ce73722b0e80", null ],
+    [ "~AVReader", "classfoleys_1_1AVReader.html#a1d0a5df6d2992da90ad7293bc629e04e", null ],
+    [ "getMediaFile", "classfoleys_1_1AVReader.html#aaa95549269e859cb30b9373b9c8c7dee", null ],
+    [ "isOpenedOk", "classfoleys_1_1AVReader.html#a40812a9db6012274565bb1d5359122e1", null ],
+    [ "getLengthInSeconds", "classfoleys_1_1AVReader.html#a368043d53f3b94c27710e039d2387289", null ],
+    [ "getTotalLength", "classfoleys_1_1AVReader.html#a937b7fbf7ef5fa7f0798260ee343e024", null ],
+    [ "setPosition", "classfoleys_1_1AVReader.html#a0a8a5592edf485a68403dda0af384f3e", null ],
+    [ "getStillImage", "classfoleys_1_1AVReader.html#a655dd2e37e784257a7636fda9603f9dc", null ],
+    [ "readNewData", "classfoleys_1_1AVReader.html#a5f41f86ecf2e052bba870c10da544620", null ],
+    [ "hasVideo", "classfoleys_1_1AVReader.html#aac83a4ed84dd21947ade6e0288aa93e1", null ],
+    [ "hasAudio", "classfoleys_1_1AVReader.html#a5c0218cfedafc948ea9050a665578d6e", null ],
+    [ "hasSubtitle", "classfoleys_1_1AVReader.html#a2520b685a650cc62969729e426c855ae", null ],
+    [ "setOutputSampleRate", "classfoleys_1_1AVReader.html#a998b1e38f8af9ed4d14f5e121f65b4a7", null ],
+    [ "getNumVideoStreams", "classfoleys_1_1AVReader.html#a309e3f3468da95d09cef50297c476597", null ],
+    [ "getVideoSettings", "classfoleys_1_1AVReader.html#ab44b2a42eded922a71ed0ddd6c6a27b4", null ],
+    [ "getNumAudioStreams", "classfoleys_1_1AVReader.html#a89e4c110de98dc839cfdf842c0f84514", null ],
+    [ "getAudioSettings", "classfoleys_1_1AVReader.html#a67a846d0c0fa4fe2e59e9c6e5fbc99d1", null ],
+    [ "originalSize", "classfoleys_1_1AVReader.html#ad90f3307bbc29c2ffd4a50a51bf9b951", null ],
+    [ "pixelFormat", "classfoleys_1_1AVReader.html#a7cb12aafc0fa9a0c11fb8953db8d0b58", null ],
+    [ "timebase", "classfoleys_1_1AVReader.html#a55e7e8c18dd354d62a445c15b0b5609f", null ],
+    [ "sampleRate", "classfoleys_1_1AVReader.html#a2bd79d2ab2dfb6aeaf75c2878ad30e1f", null ],
+    [ "numChannels", "classfoleys_1_1AVReader.html#a833642af16b83f234a41e9038ac89aaf", null ],
+    [ "numSamples", "classfoleys_1_1AVReader.html#a1d6f1ce794c2b3ab63209225b1acc8a4", null ],
+    [ "opened", "classfoleys_1_1AVReader.html#ae4fc1742a358d497af869e3a39eb55d3", null ]
+];

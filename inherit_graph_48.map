@@ -1,0 +1,5 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" href="$classfoleys_1_1VideoMixer.html" title="The VideoMixer is used by the ComposedClip to sum the audio of the individual clips." alt="" coords="5,5,91,31"/>
+<area shape="rect" id="Node000001" href="$classfoleys_1_1SoftwareVideoMixer.html" title="This class mixes the individual clips in ComposedClip." alt="" coords="139,5,276,31"/>
+<area shape="poly" id="edge61_Node000000_Node000001" title=" " alt="" coords="107,16,138,16,138,21,107,21"/>
+</map>

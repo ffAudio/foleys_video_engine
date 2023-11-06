@@ -1,0 +1,41 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" title=" " alt="" coords="254,104,358,130"/>
+<area shape="rect" id="Node000001" href="$classfoleys_1_1ComposedClip.html" title="This clip does the actual work of composing images into a video." alt="" coords="478,153,583,179"/>
+<area shape="poly" id="edge1_Node000000_Node000001" title=" " alt="" coords="373,129,478,152,476,157,372,134"/>
+<area shape="rect" id="Node000009" href="$classfoleys_1_1MovieClip.html" title="The MovieClip plays back a video file." alt="" coords="491,104,569,130"/>
+<area shape="poly" id="edge2_Node000000_Node000009" title=" " alt="" coords="373,114,491,114,491,120,373,120"/>
+<area shape="rect" id="Node000002" href="$classfoleys_1_1ControllableBase_1_1Listener.html" title="The Listener can subscribe to automation changes, e.g." alt="" coords="220,153,392,179"/>
+<area shape="poly" id="edge3_Node000002_Node000001" title=" " alt="" coords="407,164,477,164,477,169,407,169"/>
+<area shape="rect" id="Node000018" href="$classfoleys_1_1ProcessorParameter_1_1Listener.html" title=" " alt="" coords="236,353,376,393"/>
+<area shape="rect" id="Node000017" href="$classfoleys_1_1VideoParameterAutomation.html" title="Controls the ProcessorParameters of a VideoProcessor." alt="" coords="440,389,620,415"/>
+<area shape="poly" id="edge4_Node000018_Node000017" title=" " alt="" coords="391,381,440,388,439,393,391,387"/>
+<area shape="rect" id="Node000016" title=" " alt="" coords="272,516,340,542"/>
+<area shape="rect" id="Node000015" href="$classfoleys_1_1AudioParameterAutomation.html" title="Controls the AudioProcessorParameters of an AudioProcessor." alt="" coords="440,463,620,488"/>
+<area shape="poly" id="edge5_Node000016_Node000015" title=" " alt="" coords="354,515,472,486,474,492,355,520"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="54,303,123,328"/>
+<area shape="poly" id="edge7_Node000003_Node000001" title=" " alt="" coords="138,318,192,320,257,318,325,308,391,288,432,264,468,233,517,178,521,181,472,237,435,268,393,293,326,313,257,323,192,326,138,323"/>
+<area shape="rect" id="Node000004" href="$classfoleys_1_1ClipDescriptor.html" title="The ClipDescriptor configures the placement of each clip to be used in compositing the ComposedClip." alt="" coords="255,203,357,228"/>
+<area shape="poly" id="edge6_Node000003_Node000004" title=" " alt="" coords="120,291,166,264,219,237,254,225,255,230,221,242,168,268,123,296"/>
+<area shape="rect" id="Node000014" href="$classfoleys_1_1ParameterAutomation.html" title="This class allows storing and playing back automation values." alt="" coords="232,417,380,443"/>
+<area shape="poly" id="edge8_Node000003_Node000014" title=" " alt="" coords="119,336,165,370,221,402,251,414,249,419,219,407,162,375,116,341"/>
+<area shape="poly" id="edge10_Node000014_Node000017" title=" " alt="" coords="394,416,439,411,440,416,395,422"/>
+<area shape="poly" id="edge9_Node000014_Node000015" title=" " alt="" coords="388,444,464,459,463,465,387,449"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="5,55,172,80"/>
+<area shape="rect" id="Node000006" href="$classfoleys_1_1AVClip.html" title="AVClip is the abstract base class of displayable/playable clips." alt="" coords="275,55,337,80"/>
+<area shape="poly" id="edge11_Node000010_Node000006" title=" " alt="" coords="188,65,275,65,275,70,188,70"/>
+<area shape="poly" id="edge13_Node000006_Node000001" title=" " alt="" coords="353,73,393,89,409,102,418,115,427,128,441,140,478,155,476,160,439,144,423,132,414,118,405,106,391,94,351,78"/>
+<area shape="poly" id="edge15_Node000006_Node000009" title=" " alt="" coords="352,75,491,106,490,111,351,80"/>
+<area shape="rect" id="Node000007" href="$classfoleys_1_1AudioClip.html" title="The AudioClip plays back an audio file inside the video engine." alt="" coords="492,5,568,31"/>
+<area shape="poly" id="edge12_Node000006_Node000007" title=" " alt="" coords="351,55,491,24,492,29,352,60"/>
+<area shape="rect" id="Node000008" href="$classfoleys_1_1ImageClip.html" title="This class delivers a still image as video." alt="" coords="491,55,570,80"/>
+<area shape="poly" id="edge14_Node000006_Node000008" title=" " alt="" coords="352,65,490,65,490,70,352,70"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="34,409,143,435"/>
+<area shape="rect" id="Node000011" href="$classfoleys_1_1AudioStrip_1_1ThumbnailJob.html" title=" " alt="" coords="222,252,390,278"/>
+<area shape="poly" id="edge16_Node000012_Node000011" title=" " alt="" coords="119,398,285,276,288,280,122,402"/>
+<area shape="rect" id="Node000013" href="$classfoleys_1_1FilmStrip_1_1ThumbnailJob.html" title=" " alt="" coords="226,467,386,492"/>
+<area shape="poly" id="edge17_Node000012_Node000013" title=" " alt="" coords="155,437,255,463,253,469,154,442"/>
+<area shape="rect" id="Node000005" href="$classfoleys_1_1TimeCodeAware.html" title="Add this interface if your class is aware of a time continuum." alt="" coords="30,203,147,228"/>
+<area shape="poly" id="edge20_Node000005_Node000004" title=" " alt="" coords="163,213,254,213,254,218,163,218"/>
+<area shape="poly" id="edge18_Node000005_Node000006" title=" " alt="" coords="108,189,154,138,185,112,218,89,246,77,274,70,276,75,248,82,221,94,188,116,158,142,111,192"/>
+<area shape="poly" id="edge19_Node000005_Node000011" title=" " alt="" coords="163,230,247,249,245,254,162,235"/>
+</map>

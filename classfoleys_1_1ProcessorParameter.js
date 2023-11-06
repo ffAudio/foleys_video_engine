@@ -1,0 +1,28 @@
+var classfoleys_1_1ProcessorParameter =
+[
+    [ "Listener", "classfoleys_1_1ProcessorParameter_1_1Listener.html", "classfoleys_1_1ProcessorParameter_1_1Listener" ],
+    [ "ProcessorParameter", "classfoleys_1_1ProcessorParameter.html#a801e47c8ea80f0963a4ab787e390c89e", null ],
+    [ "~ProcessorParameter", "classfoleys_1_1ProcessorParameter.html#ab051188bedd2d50439b90cd3d9d70e3d", null ],
+    [ "getParameterID", "classfoleys_1_1ProcessorParameter.html#a38a05f1dd7e2119ffc3ce6bb90897e68", null ],
+    [ "getName", "classfoleys_1_1ProcessorParameter.html#ac63c065cdc9b0208421b67eb3d9cc2b3", null ],
+    [ "getProperties", "classfoleys_1_1ProcessorParameter.html#a9788d0ac2957d53b72a41cef6088d9fb", null ],
+    [ "setParameterIndex", "classfoleys_1_1ProcessorParameter.html#a1ce08fbe5a8bf620123988329dc20346", null ],
+    [ "getParameterIndex", "classfoleys_1_1ProcessorParameter.html#a67f0c07cf84dccd2b986688db9d48ced", null ],
+    [ "getNumSteps", "classfoleys_1_1ProcessorParameter.html#aabd9f287c4f18c75d5386d14ee694d39", null ],
+    [ "getRawParameterValue", "classfoleys_1_1ProcessorParameter.html#a538852ba6f4a803b6d8f45f36db6194b", null ],
+    [ "getNormalisedValue", "classfoleys_1_1ProcessorParameter.html#a160afb3fd1045008dbbcc36006200f7f", null ],
+    [ "getRealValue", "classfoleys_1_1ProcessorParameter.html#ac551deb501fefa12e50776cdf22a6ecb", null ],
+    [ "normaliseValue", "classfoleys_1_1ProcessorParameter.html#a54e14148d85e95890988187bf09011dd", null ],
+    [ "unNormaliseValue", "classfoleys_1_1ProcessorParameter.html#a5e0654a15e5b5183efdb8f7c7519bfb4", null ],
+    [ "getDefaultValue", "classfoleys_1_1ProcessorParameter.html#a9753788f11d7bf9a71aac58aec62a61e", null ],
+    [ "setNormalisedValue", "classfoleys_1_1ProcessorParameter.html#a90928f59cc4da92d4df5e0f3e963bc53", null ],
+    [ "setRealValue", "classfoleys_1_1ProcessorParameter.html#a2e28f4a163cad0ce7461cfbbbe3bb4ef", null ],
+    [ "getText", "classfoleys_1_1ProcessorParameter.html#ab65c22b10f8d773c8fa0367eaa722c59", null ],
+    [ "getValueForText", "classfoleys_1_1ProcessorParameter.html#a9494bd1a67e2000d883f73e06b3b95ab", null ],
+    [ "beginGesture", "classfoleys_1_1ProcessorParameter.html#a7de3d2942dc7551647d212b588a8502a", null ],
+    [ "endGesture", "classfoleys_1_1ProcessorParameter.html#aa6cd18e2e783c4e85417f8d01e5ef523", null ],
+    [ "isGestureInProgress", "classfoleys_1_1ProcessorParameter.html#a3adaeebb8390d05121b39c9d58ee4e43", null ],
+    [ "addListener", "classfoleys_1_1ProcessorParameter.html#abf312004846c89cae4c3a05315494840", null ],
+    [ "removeListener", "classfoleys_1_1ProcessorParameter.html#aa45c27354c4333759444d23ec9248b66", null ],
+    [ "sendUpdateNotification", "classfoleys_1_1ProcessorParameter.html#adf3144e14bf8a8a3174c9f279b72dffc", null ]
+];

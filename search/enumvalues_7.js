@@ -1,0 +1,21 @@
+var searchData=
+[
+  ['letterbox_0',['LetterBox',['../namespacefoleys.html#a0f51d4c02b530b54fc1cdebf9825d0b2a4498ae8b1e81d93dc0179720b3711650',1,'foleys']]],
+  ['lmbackgroundclipcolour_1',['lmBackgroundClipColour',['../classfoleys_1_1LevelMeter.html#a4dde7f9621b7b13ca0f47b0b5b08f094a73dac4a4695a224419748c86fadbc827',1,'foleys::LevelMeter']]],
+  ['lmbackgroundcolour_2',['lmBackgroundColour',['../classfoleys_1_1LevelMeter.html#a4dde7f9621b7b13ca0f47b0b5b08f094a065de79a651437d61ee4a22dd9175379',1,'foleys::LevelMeter']]],
+  ['lmmeterbackgroundcolour_3',['lmMeterBackgroundColour',['../classfoleys_1_1LevelMeter.html#a4dde7f9621b7b13ca0f47b0b5b08f094af9aeb79e067457e153ae396e3909f6c6',1,'foleys::LevelMeter']]],
+  ['lmmeterforegroundcolour_4',['lmMeterForegroundColour',['../classfoleys_1_1LevelMeter.html#a4dde7f9621b7b13ca0f47b0b5b08f094a71b0715c574f8295063dcad927b6f973',1,'foleys::LevelMeter']]],
+  ['lmmetergradientlowcolour_5',['lmMeterGradientLowColour',['../classfoleys_1_1LevelMeter.html#a4dde7f9621b7b13ca0f47b0b5b08f094a36a3fa02ca64d108db8b35d327652363',1,'foleys::LevelMeter']]],
+  ['lmmetergradientmaxcolour_6',['lmMeterGradientMaxColour',['../classfoleys_1_1LevelMeter.html#a4dde7f9621b7b13ca0f47b0b5b08f094a450a140898616b5a3d2c951e4b89590e',1,'foleys::LevelMeter']]],
+  ['lmmetergradientmidcolour_7',['lmMeterGradientMidColour',['../classfoleys_1_1LevelMeter.html#a4dde7f9621b7b13ca0f47b0b5b08f094a77d3039af3cb3bab8587dc5aa203daf3',1,'foleys::LevelMeter']]],
+  ['lmmetermaxnormalcolour_8',['lmMeterMaxNormalColour',['../classfoleys_1_1LevelMeter.html#a4dde7f9621b7b13ca0f47b0b5b08f094a74b66f825add5ad4e6ec949786acf087',1,'foleys::LevelMeter']]],
+  ['lmmetermaxovercolour_9',['lmMeterMaxOverColour',['../classfoleys_1_1LevelMeter.html#a4dde7f9621b7b13ca0f47b0b5b08f094a69d7f839874d2c34a6c7ec418c08ce99',1,'foleys::LevelMeter']]],
+  ['lmmetermaxwarncolour_10',['lmMeterMaxWarnColour',['../classfoleys_1_1LevelMeter.html#a4dde7f9621b7b13ca0f47b0b5b08f094a9195ac61716819f6a6639ac676031f7a',1,'foleys::LevelMeter']]],
+  ['lmmeteroutlinecolour_11',['lmMeterOutlineColour',['../classfoleys_1_1LevelMeter.html#a4dde7f9621b7b13ca0f47b0b5b08f094af01188badc3a500e9a20b2d32db1be3d',1,'foleys::LevelMeter']]],
+  ['lmmeterreductioncolour_12',['lmMeterReductionColour',['../classfoleys_1_1LevelMeter.html#a4dde7f9621b7b13ca0f47b0b5b08f094a5e6838554f9b12d083dfae486e40295e',1,'foleys::LevelMeter']]],
+  ['lmoutlinecolour_13',['lmOutlineColour',['../classfoleys_1_1LevelMeter.html#a4dde7f9621b7b13ca0f47b0b5b08f094af72aa736ac9881db45172a1cffd078a6',1,'foleys::LevelMeter']]],
+  ['lmtextclipcolour_14',['lmTextClipColour',['../classfoleys_1_1LevelMeter.html#a4dde7f9621b7b13ca0f47b0b5b08f094ad5ae7bcbb239371f90ed322ce877d304',1,'foleys::LevelMeter']]],
+  ['lmtextcolour_15',['lmTextColour',['../classfoleys_1_1LevelMeter.html#a4dde7f9621b7b13ca0f47b0b5b08f094af05ad5d0a6fb7c1a0d2235d5e6ff7feb',1,'foleys::LevelMeter']]],
+  ['lmtextdeactivecolour_16',['lmTextDeactiveColour',['../classfoleys_1_1LevelMeter.html#a4dde7f9621b7b13ca0f47b0b5b08f094a04bdad99766e2e67fc4b66a95f5bae8a',1,'foleys::LevelMeter']]],
+  ['lmtickscolour_17',['lmTicksColour',['../classfoleys_1_1LevelMeter.html#a4dde7f9621b7b13ca0f47b0b5b08f094a0099477125d3bdd531e243fa32d317dd',1,'foleys::LevelMeter']]]
+];

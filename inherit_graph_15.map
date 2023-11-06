@@ -1,0 +1,7 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" href="$classfoleys_1_1ControllableBase.html" title="The ControllableBase acts as counterpart to ParameterAutomation." alt="" coords="5,42,125,68"/>
+<area shape="rect" id="Node000001" href="$classfoleys_1_1ClipDescriptor_1_1ClipParameterController.html" title=" " alt="" coords="173,5,363,46"/>
+<area shape="poly" id="edge46_Node000000_Node000001" title=" " alt="" coords="140,42,172,37,173,42,141,47"/>
+<area shape="rect" id="Node000002" href="$classfoleys_1_1ProcessorController.html" title="The ProcessorController acts as container foe one AudioProcessor or VideoProcessor inside the ClipDes..." alt="" coords="200,70,336,96"/>
+<area shape="poly" id="edge47_Node000000_Node000002" title=" " alt="" coords="141,63,200,71,199,76,140,68"/>
+</map>

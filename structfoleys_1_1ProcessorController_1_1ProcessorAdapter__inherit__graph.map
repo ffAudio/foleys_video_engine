@@ -1,0 +1,7 @@
+<map id="ProcessorController::ProcessorAdapter" name="ProcessorController::ProcessorAdapter">
+<area shape="rect" id="Node000001" title=" " alt="" coords="108,5,243,46"/>
+<area shape="rect" id="Node000002" href="$structfoleys_1_1AudioProcessorAdapter.html" title=" " alt="" coords="5,94,164,120"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="143,58,100,95,97,91,140,54"/>
+<area shape="rect" id="Node000003" href="$structfoleys_1_1VideoProcessorAdapter.html" title=" " alt="" coords="188,94,346,120"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="211,54,255,91,251,95,208,58"/>
+</map>

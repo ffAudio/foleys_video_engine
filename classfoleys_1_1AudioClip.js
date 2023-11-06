@@ -1,0 +1,28 @@
+var classfoleys_1_1AudioClip =
+[
+    [ "AudioClip", "classfoleys_1_1AudioClip.html#afd582c8f928fdaa75383854295e2c728", null ],
+    [ "getClipType", "classfoleys_1_1AudioClip.html#ae78e21190d2642399051b130b78a02d1", null ],
+    [ "getDescription", "classfoleys_1_1AudioClip.html#a014639146d6a5d1b103d8b8af9240634", null ],
+    [ "getMediaFile", "classfoleys_1_1AudioClip.html#aac5927b01425d5a1f007267b5b4921a4", null ],
+    [ "setMediaFile", "classfoleys_1_1AudioClip.html#accebeb20f815a556bb84fc587221462d", null ],
+    [ "setAudioFormatReader", "classfoleys_1_1AudioClip.html#a148f80b1a2afc2829f0d0e8dcde45be4", null ],
+    [ "getFrame", "classfoleys_1_1AudioClip.html#a5f47f9c3eb4482d4a7e7a83819aef518", null ],
+    [ "isFrameAvailable", "classfoleys_1_1AudioClip.html#ac3d3676f324d9c3a6a5ffcea1fa6fe1c", null ],
+    [ "render", "classfoleys_1_1AudioClip.html#a090287d5edb84202f8f25c619f7e74d8", null ],
+    [ "getVideoSize", "classfoleys_1_1AudioClip.html#ae2aee23fb6ae2aca0e5411027f732749", null ],
+    [ "getCurrentTimeInSeconds", "classfoleys_1_1AudioClip.html#ae5bba736ff85e6feee28cc80530e2af1", null ],
+    [ "prepareToPlay", "classfoleys_1_1AudioClip.html#a892da9367952ad735eebc655a4b1e23c", null ],
+    [ "releaseResources", "classfoleys_1_1AudioClip.html#ae2ec82cb5acbefbac9cb8e0530b9b803", null ],
+    [ "getNextAudioBlock", "classfoleys_1_1AudioClip.html#a96e093dc999f52718517bf3b2bb3478a", null ],
+    [ "setNextReadPosition", "classfoleys_1_1AudioClip.html#acee171c911d44a79f629b3ff02b42a15", null ],
+    [ "getNextReadPosition", "classfoleys_1_1AudioClip.html#a4de9d21d82ada9d139e21bd26820f7a1", null ],
+    [ "getTotalLength", "classfoleys_1_1AudioClip.html#a391a263ec7f7f92ce192a2b14b87ee1c", null ],
+    [ "isLooping", "classfoleys_1_1AudioClip.html#a74719a8b0b679ff7345d6fdaa46b8dad", null ],
+    [ "setLooping", "classfoleys_1_1AudioClip.html#a914b697592af3cb9e04fcc7666e188e5", null ],
+    [ "getStillImage", "classfoleys_1_1AudioClip.html#afae70eec0c45157458c0dae26b6434eb", null ],
+    [ "getLengthInSeconds", "classfoleys_1_1AudioClip.html#a058f80a9bbfb1d31eac4312628dcd042", null ],
+    [ "hasVideo", "classfoleys_1_1AudioClip.html#a80789a6994173966857abe0d3ad28ed2", null ],
+    [ "hasAudio", "classfoleys_1_1AudioClip.html#adb9f016436729ec5ad2a99bc93d14b22", null ],
+    [ "createCopy", "classfoleys_1_1AudioClip.html#a266edde408be4132775d86b133a98e7a", null ],
+    [ "getSampleRate", "classfoleys_1_1AudioClip.html#aaf7722c4396a44d31c6c844b15c44e6c", null ]
+];
