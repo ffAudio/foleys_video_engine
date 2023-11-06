@@ -1,4 +1,0 @@
-<map id="VideoProcessor" name="VideoProcessor">
-<area shape="rect" id="node1" title="The VideoProcessor is the base class to implement any video processor." alt="" coords="41,5,156,32"/>
-<area shape="rect" id="node2" href="$classfoleys_1_1ColourCurveVideoProcessor.html" title=" " alt="" coords="5,80,192,107"/>
-</map>

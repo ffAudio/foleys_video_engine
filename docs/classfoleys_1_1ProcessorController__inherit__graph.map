@@ -1,4 +1,0 @@
-<map id="ProcessorController" name="ProcessorController">
-<area shape="rect" id="node1" title="The ProcessorController acts as container foe one AudioProcessor or VideoProcessor inside the ClipDes..." alt="" coords="5,80,143,107"/>
-<area shape="rect" id="node2" href="$classfoleys_1_1ControllableBase.html" title="The ControllableBase acts as counterpart to ParameterAutomation." alt="" coords="13,5,135,32"/>
-</map>

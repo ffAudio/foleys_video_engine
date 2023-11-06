@@ -3,4 +3,5 @@
 **/Builds/
 **/JuceLibraryCode/
 **/cmake-build-*/
+docs/
 libs/

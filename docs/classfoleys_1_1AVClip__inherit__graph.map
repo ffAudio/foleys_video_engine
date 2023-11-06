@@ -1,8 +1,0 @@
-<map id="AVClip" name="AVClip">
-<area shape="rect" id="node1" title=" " alt="" coords="190,80,251,107"/>
-<area shape="rect" id="node3" href="$classfoleys_1_1AudioClip.html" title=" " alt="" coords="5,155,84,181"/>
-<area shape="rect" id="node4" href="$classfoleys_1_1ComposedClip.html" title=" " alt="" coords="108,155,216,181"/>
-<area shape="rect" id="node5" href="$classfoleys_1_1ImageClip.html" title=" " alt="" coords="240,155,321,181"/>
-<area shape="rect" id="node6" href="$classfoleys_1_1MovieClip.html" title=" " alt="" coords="346,155,426,181"/>
-<area shape="rect" id="node2" href="$classfoleys_1_1TimeCodeAware.html" title="Add this interface if your class is aware of a time continuum." alt="" coords="161,5,280,32"/>
-</map>
