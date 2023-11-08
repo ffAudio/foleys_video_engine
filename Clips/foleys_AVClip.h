@@ -97,6 +97,8 @@ public:
     /** Returns true, if this clip will produce audio */
     virtual bool hasAudio() const = 0;
 
+    virtual int getNumChannels() const = 0;
+
     /**
      This is the samplerate supplied from prepareToPlay and the sample rate
      this clip will produce audio and use as clock source. */
