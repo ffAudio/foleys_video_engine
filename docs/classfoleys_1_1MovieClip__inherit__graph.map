@@ -1,5 +1,0 @@
-<map id="MovieClip" name="MovieClip">
-<area shape="rect" id="node1" title=" " alt="" coords="25,155,105,181"/>
-<area shape="rect" id="node2" href="$classfoleys_1_1AVClip.html" title=" " alt="" coords="34,80,95,107"/>
-<area shape="rect" id="node3" href="$classfoleys_1_1TimeCodeAware.html" title="Add this interface if your class is aware of a time continuum." alt="" coords="5,5,124,32"/>
-</map>

@@ -1,0 +1,37 @@
+name: CMake
+
+on:
+  push:
+    branches:
+      - 'master'
+  pull_request: {}
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    name: ${{ matrix.os }} - ${{ matrix.build_type }}
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest]
+        build_type: [Release]
+      fail-fast: false
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install MacOS dependencies
+        if: runner.os == 'macOS'
+        run: brew install yasm
+
+      - name: Configure CMake
+        run: cmake --log-level=VERBOSE
+
+      - name: Build
+        run: cmake --build --config ${{ matrix.build_type }}
+
+#      - name: Run tests
+#        run: ctest --preset maintainer -j 4 -C ${{ matrix.build_type }}

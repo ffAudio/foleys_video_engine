@@ -1,4 +1,0 @@
-<map id="DefaultAudioMixer" name="DefaultAudioMixer">
-<area shape="rect" id="node1" title=" " alt="" coords="5,80,135,107"/>
-<area shape="rect" id="node2" href="$classfoleys_1_1AudioMixer.html" title="The AudioMixer is used by the ComposedClip to sum the audio of the individual clips." alt="" coords="27,5,113,32"/>
-</map>
