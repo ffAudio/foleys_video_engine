@@ -23,6 +23,8 @@
 namespace foleys
 {
 
+class AudioMixer;
+
 /**
  @class ComposedClip
 

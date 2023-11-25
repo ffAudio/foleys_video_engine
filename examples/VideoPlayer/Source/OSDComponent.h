@@ -51,7 +51,7 @@ public:
         addAndMakeVisible (open);
         flexBox.items.add (juce::FlexItem (open).withFlex (1.0, 1.0, 0.5).withHeight (20.0));
 
-#if FOLEYS_HAS_ADDONS
+#if FOLEYS_CAMERA_SUPPORT
         camera.setWantsKeyboardFocus (false);
         addAndMakeVisible (camera);
         flexBox.items.add (juce::FlexItem (camera).withFlex (1.0, 1.0, 0.5).withHeight (20.0));
@@ -77,7 +77,7 @@ public:
         addAndMakeVisible (ffwd);
         flexBox.items.add (juce::FlexItem (ffwd).withFlex (1.0, 1.0, 0.5).withHeight (20.0));
 
-#if FOLEYS_HAS_ADDONS
+#if FOLEYS_CAMERA_SUPPORT
         open.setConnectedEdges   (juce::TextButton::ConnectedOnRight);
         camera.setConnectedEdges (juce::TextButton::ConnectedOnLeft);
 #endif

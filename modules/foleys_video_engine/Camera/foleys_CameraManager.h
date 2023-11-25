@@ -22,6 +22,8 @@
 
 #if FOLEYS_CAMERA_SUPPORT
 
+#include "../Basics/foleys_VideoFifo.h"
+
 namespace foleys
 {
 

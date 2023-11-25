@@ -1,7 +1,7 @@
 /*
   ==============================================================================
 
-  Copyright (c) 2019-2021, Foleys Finest Audio - Daniel Walz
+  Copyright (c) 2019-2023, Foleys Finest Audio - Daniel Walz
   All rights reserved.
 
   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
@@ -21,12 +21,14 @@
 
   ID:                foleys_video_engine
   vendor:            Foleys Finest Audio Ltd.
-  version:           0.2.0
+  version:           0.3.0
   name:              Video engine to read, process, display and write video in JUCE
   description:       Provides classes to read audio streams from video files or to
                      mux audio into an existing video
   dependencies:      juce_audio_basics juce_audio_formats juce_gui_basics
                      juce_graphics juce_core juce_audio_utils
+  OSXFrameworks:     AVFoundation CoreMedia
+  iOSFrameworks:     AVFoundation CoreMedia
   minimumCppStandard: 17
 
   website:       https://foleysfinest.com/
@@ -42,7 +44,7 @@
     raw OpenGL calls.
  */
 #ifndef FOLEYS_USE_OPENGL
-#define FOLEYS_USE_OPENGL 0
+    #define FOLEYS_USE_OPENGL 0
 #endif
 
 /** Config: FOLEYS_CAMERA_SUPPORT
@@ -56,90 +58,81 @@
     Set this flag to use FFmpeg as reading/writing library
  */
 #ifndef FOLEYS_USE_FFMPEG
-#define FOLEYS_USE_FFMPEG 1
+    #define FOLEYS_USE_FFMPEG 1
 #endif
 
 /** Config: FOLEYS_DEBUG_LOGGING
     Set this flag to enable logging
  */
 #ifndef FOLEYS_DEBUG_LOGGING
-#define FOLEYS_DEBUG_LOGGING 0
+    #define FOLEYS_DEBUG_LOGGING 0
 #endif
 
-#define FOLEYS_ENGINE_VERSION "0.2.0"
-
-// foleys_video_addons is a proprietory module containing
-// camera support and reading and writing using the
-// platform SDKs instead of ffmpeg
-#ifdef JUCE_MODULE_AVAILABLE_foleys_video_addons
-#define FOLEYS_HAS_ADDONS JUCE_MODULE_AVAILABLE_foleys_video_addons
-#else
-#define FOLEYS_HAS_ADDONS 0
-#endif
+#define FOLEYS_ENGINE_VERSION "0.3.0"
 
 
 #pragma once
 
-#include <juce_core/juce_core.h>
 #include <juce_audio_basics/juce_audio_basics.h>
 #include <juce_audio_formats/juce_audio_formats.h>
+#include <juce_audio_utils/juce_audio_utils.h>
+#include <juce_core/juce_core.h>
 #include <juce_graphics/juce_graphics.h>
 #include <juce_gui_basics/juce_gui_basics.h>
-#include <juce_audio_utils/juce_audio_utils.h>
 
 #if FOLEYS_DEBUG_LOGGING
-#  define FOLEYS_LOG(textToWrite)          JUCE_BLOCK_WITH_FORCED_SEMICOLON(juce::String tempDbgBuf; tempDbgBuf << "foleys: " << textToWrite; juce::Logger::outputDebugString (tempDbgBuf);)
+    #define FOLEYS_LOG(textToWrite) \
+        JUCE_BLOCK_WITH_FORCED_SEMICOLON (juce::String tempDbgBuf; tempDbgBuf << "foleys: " << textToWrite; juce::Logger::outputDebugString (tempDbgBuf);)
 #else
-#  define FOLEYS_LOG(textToWrite)
+    #define FOLEYS_LOG(textToWrite)
 #endif
 
 #ifdef JUCE_MODULE_AVAILABLE_juce_opengl
-#include <juce_opengl/juce_opengl.h>
+    #include <juce_opengl/juce_opengl.h>
 #endif
 
-#include "Basics/foleys_Structures.h"
-#include "Basics/foleys_VideoFrame.h"
-#include "Basics/foleys_TimeCodeAware.h"
-#include "Basics/foleys_AudioFifo.h"
-#include "Basics/foleys_VideoFifo.h"
-#include "Processing/foleys_ProcessorParameter.h"
-#include "Plugins/foleys_AudioPluginManager.h"
-#include "Plugins/foleys_VideoProcessor.h"
-#include "Plugins/foleys_VideoPluginManager.h"
-#include "Processing/foleys_ControllableBase.h"
-#include "Processing/foleys_ProcessorController.h"
-#include "Processing/foleys_ParameterAutomation.h"
-#include "Clips/foleys_AVClip.h"
-#include "Clips/foleys_ClipDescriptor.h"
-#include "ReadWrite/foleys_AVReader.h"
-#include "ReadWrite/foleys_AVWriter.h"
-#include "ReadWrite/foleys_AVFormatManager.h"
-#include "ReadWrite/foleys_ClipRenderer.h"
-#include "Processing/foleys_AudioMixer.h"
-#include "Processing/foleys_VideoMixer.h"
-#include "Processing/foleys_DefaultAudioMixer.h"
-#include "Processing/foleys_ColourLookuptables.h"
+#include "foleys_video_engine_types.h"
 
+#include "Basics/foleys_AudioFifo.h"
+#include "Basics/foleys_Structures.h"
+#include "Basics/foleys_TimeCodeAware.h"
+#include "Camera/foleys_CameraManager.h"
+#include "Basics/foleys_VideoFifo.h"
+#include "Basics/foleys_VideoFrame.h"
+#include "Camera/foleys_CameraClip.h"
+#include "Basics/foleys_VideoEngine.h"
+#include "Clips/foleys_AVClip.h"
 #include "Clips/foleys_AudioClip.h"
+#include "Clips/foleys_ClipDescriptor.h"
+#include "Clips/foleys_ComposedClip.h"
 #include "Clips/foleys_ImageClip.h"
 #include "Clips/foleys_MovieClip.h"
-#include "Clips/foleys_ComposedClip.h"
-
-#include "Basics/foleys_VideoEngine.h"
-#include "Widgets/foleys_VideoView.h"
-#include "Widgets/foleys_SoftwareView.h"
-#include "Widgets/foleys_FilmStrip.h"
+#include "Plugins/foleys_AudioPluginManager.h"
+#include "Plugins/foleys_VideoPluginManager.h"
+#include "Plugins/foleys_VideoProcessor.h"
+#include "Processing/foleys_AudioMixer.h"
+#include "Processing/foleys_ColourLookuptables.h"
+#include "Processing/foleys_ControllableBase.h"
+#include "Processing/foleys_DefaultAudioMixer.h"
+#include "Processing/foleys_ParameterAutomation.h"
+#include "Processing/foleys_ProcessorController.h"
+#include "Processing/foleys_ProcessorParameter.h"
+#include "Processing/foleys_VideoMixer.h"
+#include "ReadWrite/foleys_AVFormatManager.h"
+#include "ReadWrite/foleys_AVReader.h"
+#include "ReadWrite/foleys_AVWriter.h"
+#include "ReadWrite/foleys_ClipRenderer.h"
 #include "Widgets/foleys_AudioStrip.h"
+#include "Widgets/foleys_FilmStrip.h"
 #include "Widgets/foleys_OpenGLDraw.h"
 #include "Widgets/foleys_OpenGLView.h"
-
-#include "Camera/foleys_CameraManager.h"
-#include "Camera/foleys_CameraClip.h"
+#include "Widgets/foleys_SoftwareView.h"
+#include "Widgets/foleys_VideoView.h"
 
 #if FOLEYS_USE_FFMPEG
-#include "ReadWrite/FFmpeg/foleys_FFmpegReader.h"
-#include "ReadWrite/FFmpeg/foleys_FFmpegWriter.h"
-#include "ReadWrite/FFmpeg/foleys_FFmpegFormat.h"
+    #include "ReadWrite/FFmpeg/foleys_FFmpegFormat.h"
+    #include "ReadWrite/FFmpeg/foleys_FFmpegReader.h"
+    #include "ReadWrite/FFmpeg/foleys_FFmpegWriter.h"
 #endif
 
 #if JUCE_WINDOWS

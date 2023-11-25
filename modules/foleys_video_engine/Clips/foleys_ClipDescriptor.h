@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include "../Processing/foleys_ControllableBase.h"
+
 namespace foleys
 {
 

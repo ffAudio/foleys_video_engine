@@ -94,7 +94,7 @@ struct CameraReceiver::Pimpl : public juce::ObjCClass<NSObject>
             return;
 
         addProtocol (@protocol (AVCaptureVideoDataOutputSampleBufferDelegate));
-        addMethod (@selector (captureOutput:didOutputSampleBuffer:fromConnection:), captureOutput, "v@:@@@");
+        addMethod (@selector (captureOutput:didOutputSampleBuffer:fromConnection:), captureOutput);
         registerClass();
 
         videoDataOutputQueue = dispatch_queue_create ("VideoDataOutputQueue", DISPATCH_QUEUE_SERIAL);

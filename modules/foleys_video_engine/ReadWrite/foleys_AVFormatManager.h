@@ -24,7 +24,6 @@
 namespace foleys
 {
 
-    
 struct AVFormat {
     AVFormat() = default;
     virtual ~AVFormat() = default;

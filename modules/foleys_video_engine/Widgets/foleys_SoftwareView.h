@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include "foleys_VideoView.h"
+
 namespace foleys
 {
 

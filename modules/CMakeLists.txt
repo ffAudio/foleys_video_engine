@@ -1,5 +1,5 @@
 
-juce_add_modules(foleys_video_engine foleys_video_addons ff_meters
+juce_add_modules(foleys_video_engine ff_meters
         ALIAS_NAMESPACE Foleys)
 
 add_subdirectory(ffmpeg)

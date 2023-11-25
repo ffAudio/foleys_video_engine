@@ -33,7 +33,6 @@
 
 
 #include "../JuceLibraryCode/JuceHeader.h"
-
 #include "OSDComponent.h"
 
 //==============================================================================
@@ -41,13 +40,14 @@
  The display plus drop target to allow movies dragged into
  */
 #if FOLEYS_USE_OPENGL
-using ViewType=foleys::OpenGLView;
+using ViewType = foleys::OpenGLView;
 #else
-using ViewType=foleys::SoftwareView;
+using ViewType = foleys::SoftwareView;
 #endif
 
-class VideoComponentWithDropper :   public ViewType,
-                                    public juce::FileDragAndDropTarget
+class VideoComponentWithDropper
+  : public ViewType
+  , public juce::FileDragAndDropTarget
 {
 public:
     VideoComponentWithDropper()
@@ -58,20 +58,18 @@ public:
         setContinuousRepaint (30);
     }
 
-    bool isInterestedInFileDrag (const juce::StringArray &) override
-    {
-        return true;
-    }
+    bool isInterestedInFileDrag (const juce::StringArray&) override { return true; }
 
-    void filesDropped (const juce::StringArray &files, int, int) override
+    void filesDropped (const juce::StringArray& files, int, int) override
     {
         if (onFileDropped)
-            onFileDropped (files [0]);
+            onFileDropped (files[0]);
 
         juce::Process::makeForegroundProcess();
     }
 
-    std::function<void(juce::File)> onFileDropped;
+    std::function<void (juce::File)> onFileDropped;
+
 private:
     JUCE_DECLARE_NON_COPYABLE (VideoComponentWithDropper)
 };
@@ -81,8 +79,9 @@ private:
     This component lives inside our window, and this is where you should put all
     your controls and content.
 */
-class MainContentComponent   :  public juce::AudioAppComponent,
-                                public foleys::TimeCodeAware::Listener
+class MainContentComponent
+  : public juce::AudioAppComponent
+  , public foleys::TimeCodeAware::Listener
 {
 public:
     //==============================================================================
@@ -90,9 +89,11 @@ public:
     {
         setWantsKeyboardFocus (true);
 
+        videoEngine.getFormatManager().registerFormat (std::make_unique<foleys::FFmpegFormat>());
+
         dummy.setBounds (0, 0, 1, 1);
         addAndMakeVisible (dummy);
-        
+
         addAndMakeVisible (videoComponent);
         videoComponent.addAndMakeVisible (osdComponent);
 
@@ -100,7 +101,8 @@ public:
         setAudioChannels (0, 2);
 
 #ifdef DEBUG
-        if (auto* device = deviceManager.getCurrentAudioDevice()) {
+        if (auto* device = deviceManager.getCurrentAudioDevice())
+        {
             DBG ("Current Samplerate: " + juce::String (device->getCurrentSampleRate()));
             DBG ("Current Buffersize: " + juce::String (device->getCurrentBufferSizeSamples()));
             DBG ("Current Bitdepth:   " + juce::String (device->getCurrentBitDepth()));
@@ -109,16 +111,12 @@ public:
 
 #if USE_FF_AUDIO_METERS
         meter = std::make_unique<foleys::LevelMeter>();
-        meter->getLookAndFeel().setColour (foleys::LevelMeter::ColourIds::lmBackgroundColour,
-										   juce::Colour::fromFloatRGBA (0.0f, 0.0f, 0.0f, 0.6f));
+        meter->getLookAndFeel().setColour (foleys::LevelMeter::ColourIds::lmBackgroundColour, juce::Colour::fromFloatRGBA (0.0f, 0.0f, 0.0f, 0.6f));
         meter->setMeterSource (&meterSource);
         addAndMakeVisible (*meter);
 #endif
 
-        osdComponent.open.onClick = [this]
-        {
-            openFile();
-        };
+        osdComponent.open.onClick = [this] { openFile(); };
 
         osdComponent.stop.onClick = [this]
         {
@@ -127,10 +125,7 @@ public:
                 clip->setNextReadPosition (0);
         };
 
-        osdComponent.pause.onClick = [this]
-        {
-            transportSource.stop();
-        };
+        osdComponent.pause.onClick = [this] { transportSource.stop(); };
 
         osdComponent.play.onClick = [this]
         {
@@ -140,8 +135,8 @@ public:
             if (ffwdSpeed != 2)
             {
                 auto lastPos = clip->getNextReadPosition();
-                ffwdSpeed = 2;
-                auto factor = 0.5 + (ffwdSpeed / 4.0);
+                ffwdSpeed    = 2;
+                auto factor  = 0.5 + (ffwdSpeed / 4.0);
                 transportSource.setSource (clip.get(), 0, nullptr, factor, 2);
                 clip->setNextReadPosition (lastPos);
             }
@@ -154,11 +149,11 @@ public:
                 return;
 
             auto lastPos = clip->getNextReadPosition();
-            ffwdSpeed = (ffwdSpeed + 1) % 7;
-            auto factor = 0.5 + (ffwdSpeed / 4.0);
+            ffwdSpeed    = (ffwdSpeed + 1) % 7;
+            auto factor  = 0.5 + (ffwdSpeed / 4.0);
             transportSource.setSource (clip.get(), 0, nullptr, factor, 2);
             clip->setNextReadPosition (lastPos);
-            transportSource.start ();
+            transportSource.start();
         };
 
         osdComponent.seekBar.onValueChange = [this]
@@ -167,25 +162,16 @@ public:
                 clip->setNextReadPosition (juce::int64 (osdComponent.seekBar.getValue() * sampleRate));
         };
 
-#if FOLEYS_HAS_ADDONS
-        osdComponent.camera.onClick = [this]
-        {
-            openCamera();
-        };
+#if FOLEYS_CAMERA_SUPPORT
+        osdComponent.camera.onClick = [this] { openCamera(); };
 #endif
 
-        videoComponent.onFileDropped = [this](juce::File file)
-        {
-            openFile (file);
-        };
+        videoComponent.onFileDropped = [this] (juce::File file) { openFile (file); };
 
         setSize (800, 600);
     }
 
-    ~MainContentComponent() override
-    {
-        shutdownAudio();
-    }
+    ~MainContentComponent() override { shutdownAudio(); }
 
     //==============================================================================
     void prepareToPlay (int samplesPerBlockExpected, double newSampleRate) override
@@ -205,11 +191,9 @@ public:
 
     void getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill) override
     {
-        auto numInputChannels = 2; //movieClip->getVideoChannels();
+        auto numInputChannels = 2;  // movieClip->getVideoChannels();
 
-        juce::AudioSourceChannelInfo info (&readBuffer,
-                                           bufferToFill.startSample,
-                                           bufferToFill.numSamples);
+        juce::AudioSourceChannelInfo info (&readBuffer, bufferToFill.startSample, bufferToFill.numSamples);
         // the AudioTransportSource takes care of start, stop and resample
         transportSource.getNextAudioBlock (info);
 
@@ -219,17 +203,14 @@ public:
 
         if (numInputChannels > 0)
         {
-            for (int i=0; i < bufferToFill.buffer->getNumChannels(); ++i) {
+            for (int i = 0; i < bufferToFill.buffer->getNumChannels(); ++i)
+            {
 
-                bufferToFill.buffer->copyFrom (i, bufferToFill.startSample,
-                                               readBuffer.getReadPointer (i % numInputChannels),
-                                               bufferToFill.numSamples);
-                if (bufferToFill.buffer->getNumChannels() == 2 &&
-                    readBuffer.getNumChannels() > 2) {
+                bufferToFill.buffer->copyFrom (i, bufferToFill.startSample, readBuffer.getReadPointer (i % numInputChannels), bufferToFill.numSamples);
+                if (bufferToFill.buffer->getNumChannels() == 2 && readBuffer.getNumChannels() > 2)
+                {
                     // add center to left and right
-                    bufferToFill.buffer->addFrom (i, bufferToFill.startSample,
-                                                  readBuffer.getReadPointer (2),
-                                                  bufferToFill.numSamples, 0.7f);
+                    bufferToFill.buffer->addFrom (i, bufferToFill.startSample, readBuffer.getReadPointer (2), bufferToFill.numSamples, 0.7f);
                 }
             }
         }
@@ -241,15 +222,12 @@ public:
 
     void releaseResources() override
     {
-        transportSource.releaseResources ();
+        transportSource.releaseResources();
         if (clip.get() != nullptr)
-            clip->releaseResources ();
+            clip->releaseResources();
     }
 
-    void timecodeChanged (int64_t, double seconds) override
-    {
-        osdComponent.seekBar.setValue (seconds, juce::dontSendNotification);
-    }
+    void timecodeChanged (int64_t, double seconds) override { osdComponent.seekBar.setValue (seconds, juce::dontSendNotification); }
 
     void openFile (juce::File name)
     {
@@ -286,14 +264,15 @@ public:
         }
     }
 
-#if FOLEYS_HAS_ADDONS
+#if FOLEYS_CAMERA_SUPPORT
     void openCamera()
     {
         osdComponent.setClip ({});
         transportSource.stop();
         transportSource.setSource (nullptr);
 
-        auto newClip = cameraManager.createCameraClip (1);
+        auto camera  = cameraManager.openCamera (0);
+        auto newClip = cameraManager.createCameraClip (std::move (camera));
         videoEngine.manageLifeTime (newClip);
         newClip->prepareToPlay (blockSize, sampleRate);
         clip = newClip;
@@ -303,10 +282,7 @@ public:
     }
 #endif
 
-    void paint (juce::Graphics& g) override
-    {
-        g.fillAll (juce::Colours::black);
-    }
+    void paint (juce::Graphics& g) override { g.fillAll (juce::Colours::black); }
 
     void resized() override
     {
@@ -314,12 +290,12 @@ public:
         osdComponent.setBounds (getBounds());
 
 #if USE_FF_AUDIO_METERS
-		const int w = 30 + 20 * meterSource.getNumChannels();
+        const int w = 30 + 20 * meterSource.getNumChannels();
         meter->setBounds (getWidth() - w, getHeight() - 240, w, 200);
 #endif
     }
 
-    bool keyPressed (const juce::KeyPress &key) override
+    bool keyPressed (const juce::KeyPress& key) override
     {
         if (key == juce::KeyPress::spaceKey)
         {
@@ -346,24 +322,27 @@ private:
 
     std::shared_ptr<foleys::AVClip> clip;
 
-    juce::AudioTransportSource  transportSource;
-    double                      sampleRate = 0.0;
-    int                         blockSize  = 0;
-    int                         ffwdSpeed  = 2;
+    juce::AudioTransportSource transportSource;
+    double                     sampleRate = 0.0;
+    int                        blockSize  = 0;
+    int                        ffwdSpeed  = 2;
 
-    VideoComponentWithDropper   videoComponent;
-    OSDComponent                osdComponent;
+    VideoComponentWithDropper videoComponent;
+    OSDComponent              osdComponent;
 
 #if USE_FF_AUDIO_METERS
     std::unique_ptr<foleys::LevelMeter> meter;
     foleys::LevelMeterSource            meterSource;
 #endif
 
-    juce::AudioBuffer<float>    readBuffer;
+    juce::AudioBuffer<float> readBuffer;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainContentComponent)
 };
 
 
 // (This function is called by the app startup code to create our main component)
-juce::Component* createMainContentComponent()     { return new MainContentComponent(); }
+juce::Component* createMainContentComponent()
+{
+    return new MainContentComponent();
+}

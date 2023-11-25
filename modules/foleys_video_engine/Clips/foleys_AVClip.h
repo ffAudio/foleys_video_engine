@@ -20,6 +20,9 @@
 
 #pragma once
 
+#include "../Processing/foleys_ProcessorParameter.h"
+#include "../Processing/foleys_ParameterAutomation.h"
+
 namespace foleys
 {
 

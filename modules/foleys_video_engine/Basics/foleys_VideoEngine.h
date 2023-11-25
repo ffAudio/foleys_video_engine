@@ -20,13 +20,12 @@
 
 #pragma once
 
+#include "../Plugins/foleys_AudioPluginManager.h"
+#include "../Plugins/foleys_VideoPluginManager.h"
+#include "../ReadWrite/foleys_AVFormatManager.h"
 
 namespace foleys
 {
-
-#if FOLEYS_HAS_ADDONS && FOLEYS_CAMERA_SUPPORT
-class CameraManager;
-#endif
 
 /**
  @class VideoEngine
@@ -141,7 +140,7 @@ private:
     JUCE_DECLARE_WEAK_REFERENCEABLE (VideoEngine)
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (VideoEngine)
     
-#if FOLEYS_HAS_ADDONS && FOLEYS_CAMERA_SUPPORT
+#if FOLEYS_CAMERA_SUPPORT
 public:
     void setCameraManager (CameraManager* manager)
     {

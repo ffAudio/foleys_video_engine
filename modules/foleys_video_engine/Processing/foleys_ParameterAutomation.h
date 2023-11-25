@@ -20,8 +20,13 @@
 
 #pragma once
 
+#include "foleys_ProcessorParameter.h"
+
 namespace foleys
 {
+
+class ControllableBase;
+class ProcessorController;
 
 /**
  This class allows storing and playing back automation values. It is used in

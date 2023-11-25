@@ -22,8 +22,11 @@
 
 #if FOLEYS_CAMERA_SUPPORT
 
+#include "../Clips/foleys_AVClip.h"
+
 namespace foleys
 {
+
 
 class CameraClip : public AVClip
 {
